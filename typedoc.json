@@ -1,0 +1,22 @@
+{
+  "inputFiles": ["./src"],
+  "mode": "file",
+  "out": "./docs",
+  "exclude": [
+    "**/api/**",
+    "**/shared/**"
+  ],
+  "theme": "minimal",
+  "hideGenerator": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "stripInternal": true,
+  "excludeNotExported": true,
+  "gaID": "UA-116480461-1",
+  "toc": [
+    "Applications", "Editframe", "VideoBuilder", "Videos",
+    "Application", "AudioLayer", "EditframeConfig", "EncodeResponse", 
+    "ImageLayer", "Video", "VideoLayer", "VideoOptions",
+    "WaveformLayer"
+  ]
+}
