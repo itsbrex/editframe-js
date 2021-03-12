@@ -28,9 +28,7 @@ class Api {
 
   private _getBaseUrl() {
     const version = this._options.version
-    return process.env.NODE_ENV == 'production' 
-      ? `https://api.editframe.com/v${version}/` 
-      : `https://api.editframe.test/v${version}/`
+    return `https://api.editframe.com/v${version}/`
   }
 
   private _getHeaders(): ApiHeaders {
