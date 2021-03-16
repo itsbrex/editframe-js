@@ -81,7 +81,7 @@ class VideoBuilder {
    * 
    * ```
    * const newVideo = await videos.build({ aspectRatio: '1:1', backgroundColor: 'black', duration: 10, hd: false })
-   * newVideo.addImage(fs.createReadStream('./files/video.mp4'), { format: 'fit' })
+   * newVideo.addVideo(fs.createReadStream('./files/video.mp4'), { format: 'fit' })
    * ```
    */
   addVideo (file: Blob, options: VideoLayer) : Layer {
