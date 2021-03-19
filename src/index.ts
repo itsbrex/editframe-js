@@ -22,7 +22,7 @@ class Editframe {
    * Constructs a new instance of an Editframe client.
    * @param configuration options
    */
-  constructor({ clientId, token, version = 1 }: EditframeConfig) {
+  constructor({ clientId, token, version = 2 }: EditframeConfig) {
     this._clientId = clientId
     this._token = token
     this._version = version
@@ -42,7 +42,7 @@ class Editframe {
     return this._version
   }
 
-  initialize({ clientId, token, version = 1 }: EditframeConfig) {
+  initialize({ clientId, token, version = 2 }: EditframeConfig) {
     this._clientId = clientId
     this._token = token
     this._version = version
