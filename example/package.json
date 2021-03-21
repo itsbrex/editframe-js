@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@editframe/editframe-js": "^0.0.2",
+    "@editframe/editframe-js": "^0.0.4",
     "http": "0.0.1-security"
   }
 }

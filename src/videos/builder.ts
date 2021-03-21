@@ -53,8 +53,13 @@ class VideoBuilder {
    * newVideo.addAudio(fs.createReadStream('./files/audio.mp3'))
    * ```
    */
-  addAudio (file: Blob, options: AudioLayer = {}) : Layer {
+  addAudio (file: Blob | string, options: AudioLayer = {}) : Layer {
     const layer = this.addLayer({ type: 'audio', ...options })
+    // if(file instanceof String){
+    //   this._form.append(`url${layer.id}`, file)
+    // } else {
+    //   this._form.append(`file${layer.id}`, file)
+    // } 
     this._form.append(`file${layer.id}`, file)
     return layer
   }
@@ -69,8 +74,13 @@ class VideoBuilder {
    * newVideo.addImage(fs.createReadStream('./files/image.png'), { format: 'fit' })
    * ```
    */
-  addImage (file: Blob, options: ImageLayer) : Layer {
+  addImage (file: Blob | string, options: ImageLayer) : Layer {
     const layer = this.addLayer({ type: 'image', ...options })
+    // if(file instanceof String){
+    //   this._form.append(`url${layer.id}`, file)
+    // } else {
+    //   this._form.append(`file${layer.id}`, file)
+    // } 
     this._form.append(`file${layer.id}`, file)
     return layer
   }

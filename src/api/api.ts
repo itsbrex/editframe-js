@@ -1,3 +1,6 @@
+//@ts-ignore
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
+
 import { ApiReadyStates, ApiOptions, ApiFetchOptions, ApiHeaders } from './types'
 import fetchUtil from './fetch'
 class Api {
@@ -26,7 +29,7 @@ class Api {
 
   private _getBaseUrl() {
     const version = this._options.version
-    return `https://api.editframe.com/v${version}/`
+    return `https://api.editframe.test/v${version}/`
   }
 
   private _getHeaders(): ApiHeaders {
