@@ -1,6 +1,3 @@
-//@ts-ignore
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-
 import { ApiReadyStates, ApiOptions, ApiFetchOptions, ApiHeaders } from './types'
 import fetchUtil from './fetch'
 class Api {

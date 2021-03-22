@@ -55,12 +55,11 @@ class VideoBuilder {
    */
   addAudio (file: Blob | string, options: AudioLayer = {}) : Layer {
     const layer = this.addLayer({ type: 'audio', ...options })
-    // if(file instanceof String){
-    //   this._form.append(`url${layer.id}`, file)
-    // } else {
-    //   this._form.append(`file${layer.id}`, file)
-    // } 
-    this._form.append(`file${layer.id}`, file)
+    if(file instanceof String){
+      this._form.append(`url${layer.id}`, file)
+    } else {
+      this._form.append(`file${layer.id}`, file)
+    } 
     return layer
   }
 
@@ -76,12 +75,11 @@ class VideoBuilder {
    */
   addImage (file: Blob | string, options: ImageLayer) : Layer {
     const layer = this.addLayer({ type: 'image', ...options })
-    // if(file instanceof String){
-    //   this._form.append(`url${layer.id}`, file)
-    // } else {
-    //   this._form.append(`file${layer.id}`, file)
-    // } 
-    this._form.append(`file${layer.id}`, file)
+    if(file instanceof String){
+      this._form.append(`url${layer.id}`, file)
+    } else {
+      this._form.append(`file${layer.id}`, file)
+    } 
     return layer
   }
 
