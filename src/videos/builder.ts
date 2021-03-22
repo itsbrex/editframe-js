@@ -146,6 +146,7 @@ class VideoBuilder {
 
   protected generateConfig () : EncodeConfig { 
     const { aspectRatio, hd, resolution } = this._options
+    let options = {  ...this._options }
     let dimensions = resolution
     if(typeof(resolution) == 'undefined') 
       dimensions = sizeForApsectRatio(aspectRatio, hd)
@@ -153,8 +154,7 @@ class VideoBuilder {
       const values = dimensions.split('x')
       dimensions = { width: values[0], height: values[1] }
     }
-    let options = {  ...this._options }
-    options = delete options['resolution']
+    delete options['resolution']
     const config : EncodeConfig = { ...options, dimensions, layers: this._layers }
     return config 
   }
