@@ -152,7 +152,7 @@ class VideoBuilder {
       dimensions = sizeForApsectRatio(aspectRatio, hd)
     if(typeof (dimensions) == 'string'){
       const values = dimensions.split('x')
-      dimensions = { width: values[0], height: values[1] }
+      dimensions = { width: parseInt(values[0]), height: parseInt(values[1]) }
     }
     delete options['resolution']
     const config : EncodeConfig = { ...options, dimensions, layers: this._layers }
