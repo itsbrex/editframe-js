@@ -153,6 +153,7 @@ class VideoBuilder {
     if(typeof (dimensions) == 'string'){
       const values = dimensions.split('x')
       dimensions = { width: parseInt(values[0]), height: parseInt(values[1]) }
+      options['hd'] = dimensions.width >= 1024
     }
     delete options['resolution']
     const config : EncodeConfig = { ...options, dimensions, layers: this._layers }
