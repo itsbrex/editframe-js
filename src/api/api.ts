@@ -1,7 +1,5 @@
 import { ApiReadyStates, ApiOptions, ApiFetchOptions, ApiHeaders } from './types'
 import fetchUtil from './fetch'
-// import BaseError from './BaseError'
-
 class Api {
   private _readyState: ApiReadyStates = ApiReadyStates.READY
   private _options: ApiOptions
