@@ -10,6 +10,7 @@ type EncodeConfig = VideoOptions & {
 }
 
 type EncodeResponse = {
+  id: string
   status: string
   timestamp: number
 }
