@@ -5,12 +5,18 @@ export type Video = Hashided & Timestamped & {
   title: string
 }
 
+export type VideoResolution = {
+  width: number
+  height: number
+}
+
 export type VideoOptions = {
-  aspectRatio: string
+  aspectRatio?: string
   backgroundColor: string
   description: string
+  resolution?: string | VideoResolution
   duration: number | string 
-  hd: boolean
+  hd?: boolean
   title?: string
 }
 

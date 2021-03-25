@@ -1,6 +1,6 @@
 {
   "name": "@editframe/editframe-js",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Node library for interacting with the Editframe API.",
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
   },
   "scripts": {
     "test": "echo \"No test specified, better write some!\"",
-    "build": "npm run docs && rollup -c && npm pack",
+    "build": "rollup -c && npm pack",
     "start": "npm run docs && rollup -c -w",
     "docs": "typedoc",
     "lint": "./node_modules/.bin/eslint 'src/**/*.ts*'",

@@ -10,6 +10,7 @@ type EncodeConfig = VideoOptions & {
 }
 
 type EncodeResponse = {
+  id: string
   status: string
   timestamp: number
 }
@@ -139,15 +140,24 @@ class VideoBuilder {
   * 
   */
   updateOptions (options: Partial<VideoOptions>) : VideoBuilder {
-    const { aspectRatio, backgroundColor, duration, hd } = options
-    this._options = { aspectRatio, backgroundColor, duration, hd }
+    const { aspectRatio, backgroundColor, duration, hd, resolution } = options
+    this._options = { aspectRatio, backgroundColor, duration, hd, resolution }
     return this
   }
 
   protected generateConfig () : EncodeConfig { 
-    const { aspectRatio, hd } = this._options
-    const dimensions = sizeForApsectRatio(aspectRatio, hd)
-    const config : EncodeConfig = { ...this._options, dimensions, layers: this._layers }
+    const { aspectRatio, hd, resolution } = this._options
+    let options = {  ...this._options }
+    let dimensions = resolution
+    if(typeof(resolution) == 'undefined') 
+      dimensions = sizeForApsectRatio(aspectRatio, hd)
+    if(typeof (dimensions) == 'string'){
+      const values = dimensions.split('x')
+      dimensions = { width: parseInt(values[0]), height: parseInt(values[1]) }
+      options['hd'] = dimensions.width >= 1024
+    }
+    delete options['resolution']
+    const config : EncodeConfig = { ...options, dimensions, layers: this._layers }
     return config 
   }
 }
