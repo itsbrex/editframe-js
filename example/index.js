@@ -18,8 +18,8 @@ const requestHandler = (request, response) => {
       })
       break
     case "/videos":
-      editframe.videos.all().then((applications) => {
-        response.end(JSON.stringify(applications))
+      editframe.videos.all().then((videos) => {
+        response.end(JSON.stringify(videos))
       }).catch((err) => {
         console.log(err)
       })
