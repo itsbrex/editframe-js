@@ -39,7 +39,6 @@ const requestHandler = (request, response) => {
         // video is processing
         response.end(JSON.stringify(data))
       }).catch(err => {
-        console.log(err)
         // response failed, view error
         response.end(JSON.stringify(err.body))
       })

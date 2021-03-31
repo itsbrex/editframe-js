@@ -38,7 +38,7 @@ const fetchUtil = async <T = Response>(
     : undefined
 
   if (!response.ok) {
-    throw new FetchError(response, json)
+    throw new FetchError(response, json['body'])
   }
 
   if (json) {
