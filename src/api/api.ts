@@ -26,7 +26,7 @@ class Api {
 
   private _getBaseUrl() {
     const version = this._options.version
-    return `https://api.editframe.com/v${version}/`
+    return `https://api.editframe.test/v${version}/`
   }
 
   private _getHeaders(): ApiHeaders {
@@ -61,7 +61,7 @@ class Api {
     try {
       return await performRequest()
     } catch (error) {
-      throw error
+      throw error.body
     } finally {
       
     }
