@@ -61,7 +61,7 @@ class Api {
     try {
       return await performRequest()
     } catch (error) {
-      throw error
+      throw error.body
     } finally {
       
     }
