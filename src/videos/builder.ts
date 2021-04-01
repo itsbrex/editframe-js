@@ -152,8 +152,8 @@ class VideoBuilder {
   * 
   */
   updateOptions (options: Partial<VideoOptions>) : VideoBuilder {
-    const { aspectRatio, backgroundColor, duration, hd, resolution } = options
-    this._options = { aspectRatio, backgroundColor, duration, hd, resolution }
+    const { aspectRatio, backgroundColor, description, duration, hd, resolution, title } = options
+    this._options = { aspectRatio, backgroundColor, description, duration, hd, resolution, title }
     return this
   }
 
