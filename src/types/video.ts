@@ -13,10 +13,11 @@ export type VideoResolution = {
 export type VideoOptions = {
   aspectRatio?: string
   backgroundColor: string
-  description: string
+  description?: string
   resolution?: string | VideoResolution
   duration: number | string 
   hd?: boolean
+  metadata?: object
   title?: string
 }
 

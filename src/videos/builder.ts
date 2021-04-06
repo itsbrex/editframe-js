@@ -141,19 +141,19 @@ class VideoBuilder {
   }
 
   /**
-  * Set/update main video composition options
+  * Set main video composition options
   *
   * @example
   * 
   * ```
   * const newVideo = videos.build({ aspectRatio: '1:1', backgroundColor: 'black', duration: 10, hd: false })
-  * newVideo.updateOptions({ aspectRatio: '9:16', backgroundColor: 'white', duration: 10, hd: false })
+  * newVideo.setOptions({ aspectRatio: '9:16', backgroundColor: 'white', duration: 10, hd: false })
   * ```
   * 
   */
-  updateOptions (options: Partial<VideoOptions>) : VideoBuilder {
-    const { aspectRatio, backgroundColor, description, duration, hd, resolution, title } = options
-    this._options = { aspectRatio, backgroundColor, description, duration, hd, resolution, title }
+  setOptions(options: Partial<VideoOptions>) : VideoBuilder {
+    const { aspectRatio, backgroundColor, description, duration, hd, metadata, resolution, title } = options
+    this._options = { aspectRatio, backgroundColor, description, duration, hd, metadata, resolution, title }
     return this
   }
 
