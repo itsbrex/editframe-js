@@ -1,7 +1,7 @@
 import Api from 'api/api'
 import FetchError from 'api/Error'
 import { sizeForApsectRatio, uuid } from '../shared/utils'
-import { AudioLayer, ComposableLayer, ImageLayer, VideoLayer, WaveformLayer, Layer, VideoOptions } from '../types/video'
+import { AudioLayer, ComposableLayer, ImageLayer, TextLayer, VideoLayer, WaveformLayer, Layer, VideoOptions } from '../types/video'
 const FormData = require('form-data')
 
 type EncodeConfig = VideoOptions & {
@@ -80,6 +80,11 @@ class VideoBuilder {
     } else {
       this._form.append(`file${layer.id}`, file)
     } 
+    return layer
+  }
+
+  addText (text: string, options: TextLayer) : Layer {
+    const layer = this.addLayer({ type: 'text', text, ...options })
     return layer
   }
 
