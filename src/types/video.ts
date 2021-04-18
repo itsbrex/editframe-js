@@ -21,12 +21,19 @@ export type VideoOptions = {
   title?: string
 }
 
+export type LayerHorizontalAlignment = 'left' | 'center' | 'right'
+export type LayerVerticalAlignment = 'top' | 'middle' | 'bottom'
 export type LayerFormat = 'fill' | 'fit' | 'stretch'
 export type WaveformLayerStyle = 'wave' | 'line'
 
 export type BaseLayer = {
   start?: number 
   end?: number
+}
+
+export type LayerAlignment = {
+  horizontalAlignment?: LayerHorizontalAlignment
+  verticalAlignment?: LayerVerticalAlignment
 }
 
 export type LayerColors = {
@@ -42,19 +49,32 @@ export type LayerShape = {
   format?: LayerFormat
 }
 
+export type LayerText = {
+  autoHeight?: boolean
+  autoWidth?: boolean
+  fontFamily?: string
+  fontSize?: number
+  maxFontSize?: number
+  maxHeight?: number
+  maxWidth?: number
+  text: string
+  textAlignment?: LayerHorizontalAlignment
+}
+
 export type AudioLayer = BaseLayer 
 export type ImageLayer = BaseLayer & LayerShape
+export type TextLayer = BaseLayer & LayerAlignment & LayerShape & LayerText
 export type VideoLayer = BaseLayer & LayerShape
 
 export type WaveformLayer = LayerColors & LayerShape & {
   style? : string
 }
 
-export type ComposableLayer = AudioLayer | ImageLayer | VideoLayer | WaveformLayer & {
+export type ComposableLayer = AudioLayer | ImageLayer | TextLayer | VideoLayer | WaveformLayer & {
   type: string
 }
 
-export type Layer =  ComposableLayer & {
+export type Layer = ComposableLayer & {
   id: string
 }
 /* eslint-enable camelcase */

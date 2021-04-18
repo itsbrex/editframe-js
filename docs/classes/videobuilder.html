@@ -2741,6 +2741,9 @@ img {
 					<a href="videobuilder.html#addimage" class="tsd-kind-icon">add<wbr>Image</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="videobuilder.html#addtext" class="tsd-kind-icon">add<wbr>Text</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="videobuilder.html#addvideo" class="tsd-kind-icon">add<wbr>Video</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -2750,7 +2753,7 @@ img {
 					<a href="videobuilder.html#encode" class="tsd-kind-icon">encode</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="videobuilder.html#updateoptions" class="tsd-kind-icon">update<wbr>Options</a>
+					<a href="videobuilder.html#setoptions" class="tsd-kind-icon">set<wbr>Options</a>
 				</li>
 			</ul>
 		</li>
@@ -2811,10 +2814,11 @@ img {
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addaudio" class="tsd-kind-icon">add<wbr>Audio</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addimage" class="tsd-kind-icon">add<wbr>Image</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addtext" class="tsd-kind-icon">add<wbr>Text</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addvideo" class="tsd-kind-icon">add<wbr>Video</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addwaveform" class="tsd-kind-icon">add<wbr>Waveform</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#encode" class="tsd-kind-icon">encode</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#updateoptions" class="tsd-kind-icon">update<wbr>Options</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#setoptions" class="tsd-kind-icon">set<wbr>Options</a></li>
 						</ul>
 					</section>
 				</div>
@@ -2832,7 +2836,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/ceeb07f/src/videos/builder.ts#L36">videos/builder.ts:36</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/91098a0/src/videos/builder.ts#L36">videos/builder.ts:36</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2857,7 +2861,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/ceeb07f/src/videos/builder.ts#L56">videos/builder.ts:56</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/91098a0/src/videos/builder.ts#L56">videos/builder.ts:56</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2893,7 +2897,7 @@ newVideo.addAudio(fs.createReadStream(<span class="hljs-string">&#x27;./files/au
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/ceeb07f/src/videos/builder.ts#L76">videos/builder.ts:76</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/91098a0/src/videos/builder.ts#L76">videos/builder.ts:76</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2920,6 +2924,42 @@ newVideo.addImage(fs.createReadStream(<span class="hljs-string">&#x27;./files/im
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="addtext" class="tsd-anchor"></a>
+				<h3>add<wbr>Text</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Text<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../globals.html#textlayer" class="tsd-signature-type">TextLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#layer" class="tsd-signature-type">Layer</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/91098a0/src/videos/builder.ts#L96">videos/builder.ts:96</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Add a text layer to your video composition</p>
+							</div>
+							<dl class="tsd-comment-tags">
+								<dt>example</dt>
+								<dd><pre><code>const newVideo = await videos.build({ <span class="hljs-attr">aspectRatio:</span> <span class="hljs-string">&#x27;1:1&#x27;</span>, <span class="hljs-attr">backgroundColor:</span> <span class="hljs-string">&#x27;black&#x27;</span>, <span class="hljs-attr">duration:</span> <span class="hljs-number">10</span>, <span class="hljs-attr">hd:</span> <span class="hljs-literal">false</span> })
+newVideo.addText(<span class="hljs-string">&#x27;hello world&#x27;</span>, { <span class="hljs-attr">x:</span> <span class="hljs-number">20</span>, <span class="hljs-attr">y:</span> <span class="hljs-number">40</span>, <span class="hljs-attr">fontFamily:</span> <span class="hljs-string">&#x27;Arial&#x27;</span>, <span class="hljs-attr">fontSize:</span> <span class="hljs-number">32</span>, <span class="hljs-attr">color:</span> <span class="hljs-string">&#x27;#02a4d3&#x27;</span>  })</code></pre></dd>
+							</dl>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>text: <span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li>
+								<h5>options: <a href="../globals.html#textlayer" class="tsd-signature-type">TextLayer</a></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="../globals.html#layer" class="tsd-signature-type">Layer</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 				<a name="addvideo" class="tsd-anchor"></a>
 				<h3>add<wbr>Video</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -2929,7 +2969,7 @@ newVideo.addImage(fs.createReadStream(<span class="hljs-string">&#x27;./files/im
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/ceeb07f/src/videos/builder.ts#L96">videos/builder.ts:96</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/91098a0/src/videos/builder.ts#L111">videos/builder.ts:111</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2965,7 +3005,7 @@ newVideo.addVideo(fs.createReadStream(<span class="hljs-string">&#x27;./files/vi
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/ceeb07f/src/videos/builder.ts#L116">videos/builder.ts:116</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/91098a0/src/videos/builder.ts#L131">videos/builder.ts:131</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2998,7 +3038,7 @@ video.addWaveform({ <span class="hljs-attr">style:</span> <span class="hljs-stri
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/ceeb07f/src/videos/builder.ts#L132">videos/builder.ts:132</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/91098a0/src/videos/builder.ts#L147">videos/builder.ts:147</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3016,26 +3056,26 @@ const response = await videos.encode()</code></pre></dd>
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="updateoptions" class="tsd-anchor"></a>
-				<h3>update<wbr>Options</h3>
+				<a name="setoptions" class="tsd-anchor"></a>
+				<h3>set<wbr>Options</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">update<wbr>Options<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#videooptions" class="tsd-signature-type">VideoOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Options<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#videooptions" class="tsd-signature-type">VideoOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/ceeb07f/src/videos/builder.ts#L154">videos/builder.ts:154</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/91098a0/src/videos/builder.ts#L169">videos/builder.ts:169</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Set/update main video composition options</p>
+								<p>Set main video composition options</p>
 							</div>
 							<dl class="tsd-comment-tags">
 								<dt>example</dt>
 								<dd><pre><code>const newVideo = videos.build({ <span class="hljs-attr">aspectRatio:</span> <span class="hljs-string">&#x27;1:1&#x27;</span>, <span class="hljs-attr">backgroundColor:</span> <span class="hljs-string">&#x27;black&#x27;</span>, <span class="hljs-attr">duration:</span> <span class="hljs-number">10</span>, <span class="hljs-attr">hd:</span> <span class="hljs-literal">false</span> })
-newVideo.updateOptions({ <span class="hljs-attr">aspectRatio:</span> <span class="hljs-string">&#x27;9:16&#x27;</span>, <span class="hljs-attr">backgroundColor:</span> <span class="hljs-string">&#x27;white&#x27;</span>, <span class="hljs-attr">duration:</span> <span class="hljs-number">10</span>, <span class="hljs-attr">hd:</span> <span class="hljs-literal">false</span> })</code></pre></dd>
+newVideo.setOptions({ <span class="hljs-attr">aspectRatio:</span> <span class="hljs-string">&#x27;9:16&#x27;</span>, <span class="hljs-attr">backgroundColor:</span> <span class="hljs-string">&#x27;white&#x27;</span>, <span class="hljs-attr">duration:</span> <span class="hljs-number">10</span>, <span class="hljs-attr">hd:</span> <span class="hljs-literal">false</span> })</code></pre></dd>
 							</dl>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
