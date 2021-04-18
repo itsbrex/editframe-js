@@ -83,6 +83,16 @@ class VideoBuilder {
     return layer
   }
 
+  /**
+   * Add a text layer to your video composition
+   *
+   * @example
+   * 
+   * ```
+   * const newVideo = await videos.build({ aspectRatio: '1:1', backgroundColor: 'black', duration: 10, hd: false })
+   * newVideo.addText('hello world', { x: 20, y: 40, fontFamily: 'Arial', fontSize: 32, color: '#02a4d3'  })
+   * ```
+   */
   addText (text: string, options: TextLayer) : Layer {
     const layer = this.addLayer({ type: 'text', text, ...options })
     return layer
