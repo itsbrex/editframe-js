@@ -151,7 +151,7 @@ class VideoBuilder {
       const response = await this._api.post(`videos`, { body: this._form }, true)
       return response
     } catch (error) {
-      throw error
+      throw(error.message)
     }
   }
 
