@@ -16,7 +16,7 @@
   "toc": [
     "Applications", "Editframe", "VideoBuilder", "Videos",
     "Application", "AudioLayer", "EditframeConfig", "EncodeResponse", 
-    "ImageLayer", "Video", "VideoLayer", "VideoOptions",
+    "ImageLayer", "TextLayer", "Video", "VideoLayer", "VideoOptions",
     "WaveformLayer"
   ]
 }
