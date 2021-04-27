@@ -50,8 +50,6 @@ export type LayerShape = {
 }
 
 export type LayerText = {
-  autoHeight?: boolean
-  autoWidth?: boolean
   fontFamily?: string
   fontSize?: number
   maxFontSize?: number
