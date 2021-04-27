@@ -1,5 +1,4 @@
 const Editframe = require('@editframe/editframe-js')
-const fs = require('fs')
 const http = require('http')
 const port = 3000
 
@@ -26,15 +25,8 @@ const requestHandler = (request, response) => {
       break
     case "/videos/create":
       const video = editframe.videos.build({ aspectRatio: '1:1', backgroundColor: 'black', duration: 10, hd: false })
-      video.addAudio(fs.createReadStream('./files/audio.mp3'))
-      video.addImage(fs.createReadStream('./files/image.png'), { format: 'fit' })
-      video.addWaveform({ 
-        style: 'line', 
-        height: 100, 
-        color: '#be5c5c', 
-        backgroundColor: 'transparent', 
-        y: 'b:40' 
-      })
+      video.addAudio('https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_1MG.mp3')
+      video.addImage('https://images.unsplash.com/photo-1504266411383-1b1d524195f1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1867&q=80')
       video.encode().then(data => {
         // video is processing
         response.end(JSON.stringify(data))
