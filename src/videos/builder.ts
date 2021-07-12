@@ -17,9 +17,9 @@ type EncodeResponse = {
 
 class VideoBuilder {
   protected _api: Api
-  protected _form : FormData
-  protected _layers : Array<VideoLayer> = []
-  protected _options : any
+  protected _form: FormData
+  protected _layers: Array<VideoLayer> = []
+  protected _options: any
 
   /**
   * @ignore
