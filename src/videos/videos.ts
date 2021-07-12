@@ -3,11 +3,12 @@ import { ApiOptions, ApiFetchOptions } from '../api/types'
 import Api from '../api/api'
 import FetchError from '../api/Error'
 import VideoBuilder from './builder'
+import VideoClip from './clip'
 import { VideoOptions } from '../types/video'
+import { ClipRequestOptions } from 'types/clip'
 
 class Videos {
   protected _api: Api
-  
   /**
   * @ignore
   */
@@ -55,6 +56,19 @@ class Videos {
   */
   build (options: VideoOptions): VideoBuilder {
     return new VideoBuilder(options, this._api)
+  }
+
+  /**
+  * Returns a new instance of an video clip which can be manipulated
+  *
+  * @example
+  * 
+  * ```
+  * const newVideo = await videos.fromClip(fs.createReadStream('./files/video.mp4'))
+  * ```
+  */
+  fromClip (source: Blob | string, options?: ClipRequestOptions): VideoClip {
+    return new VideoClip(source, options, this._api)
   }
   
 }
