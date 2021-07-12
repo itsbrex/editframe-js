@@ -44,7 +44,7 @@ class VideoClip {
     if(typeof(source) == 'string'){
       this._form.append(`url${this._id}`, source)
     } else {
-      this._form.append(`source${this._id}`, source)
+      this._form.append(`file${this._id}`, source)
     } 
   }
 
