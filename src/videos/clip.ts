@@ -19,6 +19,7 @@ type EncodeResponse = {
 class VideoClip {
   protected _api: Api
   protected _form: FormData
+  protected _filters: Array<any>
   protected _id: any
   protected _layers: Array<VideoLayer> = []
   protected _resolution: VideoResolution
@@ -32,6 +33,7 @@ class VideoClip {
   */
   constructor(source: Blob | string, options: ClipRequestOptions, api: Api){
     this._api = api
+    this._filters = []
     this._form = new FormData()
     this._id = uuid()
     this._options = options || {}
@@ -98,13 +100,26 @@ class VideoClip {
    */
    trim (start: Number, end? : Number) {
     this._trim = { start, end }
-    console.log(this._trim)
     if(this._trim['start'] < 0) this._trim['start'] = 0
     if(this._trim['end'] && this._trim['end'] < 0) delete this._trim['end']
   }
 
   /**
-  * Send your video clip the the API to be encoded
+   * Trim the video clip
+   *
+   * @example
+   * 
+   * ```
+   * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
+   * newVideo.trim(0, 60)
+   * ```
+   */
+  filter (name: string, ...args: any[]): void {
+    this._filters.push({ name, args })
+  } 
+
+  /**
+  * Send your video clip to the API to be encoded
   *
   * @example
   * 
@@ -126,7 +141,7 @@ class VideoClip {
   }
 
   protected generateConfig () : ClipEncodeConfig { 
-    let clip = { id: this._id }
+    let clip = { id: this._id, filters: this._filters }
     let options = {  ...this._options }
     if(this._trim) clip['trim'] = this._trim
     if(this._resolution) clip['resolution'] = this._resolution
