@@ -1,20 +1,15 @@
 /* eslint-disable camelcase */
-import { Hashided, Timestamped } from './common'
+import { Hashided, Size, Timestamped } from './common'
 
 export type Video = Hashided & Timestamped & {
   title: string
-}
-
-export type VideoResolution = {
-  width: number
-  height: number
 }
 
 export type VideoOptions = {
   aspectRatio?: string
   backgroundColor: string
   description?: string
-  resolution?: string | VideoResolution
+  resolution?: string | Size
   duration: number | string 
   hd?: boolean
   metadata?: object
@@ -41,11 +36,9 @@ export type LayerColors = {
   backgroundColor?: string
 }
 
-export type LayerShape = {
+export type LayerShape = Size & {
   x?: number 
   y?: number | string
-  width?: number
-  height?: number
   format?: LayerFormat
 }
 
