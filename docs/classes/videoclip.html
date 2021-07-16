@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Videos | @editframe/editframe-js</title>
+	<title>VideoClip | @editframe/editframe-js</title>
 	<meta name="description" content="Documentation for @editframe/editframe-js">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">/*! normalize.css v1.1.3 | MIT License | git.io/normalize */
@@ -2731,25 +2731,37 @@ img {
 		<li class=" tsd-kind-class">
 			<a href="videobuilder.html" class="tsd-kind-icon">Video<wbr>Builder</a>
 		</li>
-		<li class=" tsd-kind-class">
-			<a href="videoclip.html" class="tsd-kind-icon">Video<wbr>Clip</a>
-		</li>
 		<li class="current tsd-kind-class">
-			<a href="videos.html" class="tsd-kind-icon">Videos</a>
+			<a href="videoclip.html" class="tsd-kind-icon">Video<wbr>Clip</a>
 			<ul>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="videos.html#all" class="tsd-kind-icon">all</a>
+					<a href="videoclip.html#encode" class="tsd-kind-icon">encode</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="videos.html#build" class="tsd-kind-icon">build</a>
+					<a href="videoclip.html#filter" class="tsd-kind-icon">filter</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="videos.html#fromclip" class="tsd-kind-icon">from<wbr>Clip</a>
+					<a href="videoclip.html#mute" class="tsd-kind-icon">mute</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="videos.html#get" class="tsd-kind-icon">get</a>
+					<a href="videoclip.html#resize" class="tsd-kind-icon">resize</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="videoclip.html#setresolution" class="tsd-kind-icon">set<wbr>Resolution</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="videoclip.html#setvolume" class="tsd-kind-icon">set<wbr>Volume</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="videoclip.html#trim" class="tsd-kind-icon">trim</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="videoclip.html#volume" class="tsd-kind-icon">volume</a>
 				</li>
 			</ul>
+		</li>
+		<li class=" tsd-kind-class">
+			<a href="videos.html" class="tsd-kind-icon">Videos</a>
 		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="../globals.html#application" class="tsd-kind-icon">Application</a>
@@ -2789,7 +2801,7 @@ img {
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="target">Videos</span>
+					<span class="target">VideoClip</span>
 				</li>
 			</ul>
 		</section>
@@ -2800,10 +2812,14 @@ img {
 					<section class="tsd-index-section ">
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videos.html#all" class="tsd-kind-icon">all</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videos.html#build" class="tsd-kind-icon">build</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videos.html#fromclip" class="tsd-kind-icon">from<wbr>Clip</a></li>
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videos.html#get" class="tsd-kind-icon">get</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videoclip.html#encode" class="tsd-kind-icon">encode</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videoclip.html#filter" class="tsd-kind-icon">filter</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videoclip.html#mute" class="tsd-kind-icon">mute</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videoclip.html#resize" class="tsd-kind-icon">resize</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videoclip.html#setresolution" class="tsd-kind-icon">set<wbr>Resolution</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videoclip.html#setvolume" class="tsd-kind-icon">set<wbr>Volume</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videoclip.html#trim" class="tsd-kind-icon">trim</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videoclip.html#volume" class="tsd-kind-icon">volume</a></li>
 						</ul>
 					</section>
 				</div>
@@ -2812,98 +2828,62 @@ img {
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Methods</h2>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="all" class="tsd-anchor"></a>
-				<h3>all</h3>
+				<a name="encode" class="tsd-anchor"></a>
+				<h3>encode</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">all<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ApiFetchOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><a href="../globals.html#video" class="tsd-signature-type">Video</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">FetchError</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">encode<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#encoderesponse" class="tsd-signature-type">EncodeResponse</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">FetchError</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/videos.ts#L29">videos/videos.ts:29</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L132">videos/clip.ts:132</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Get all videos created for the authenticated application</p>
+								<p>Send your video clip to the API to be encoded</p>
 							</div>
 							<dl class="tsd-comment-tags">
 								<dt>example</dt>
-								<dd><pre><code><span class="hljs-keyword">const</span> videos = <span class="hljs-keyword">await</span> videos.all()</code></pre></dd>
+								<dd><pre><code>const clip = videos.from<span class="hljs-constructor">Clip(<span class="hljs-params">fs</span>.<span class="hljs-params">createReadStream</span>(&#x27;.<span class="hljs-operator">/</span><span class="hljs-params">files</span><span class="hljs-operator">/</span><span class="hljs-params">video</span>.<span class="hljs-params">mp4</span>&#x27;)</span>)
+const response = await clip.encode<span class="hljs-literal">()</span></code></pre></dd>
 							</dl>
 						</div>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ApiFetchOptions</span></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><a href="../globals.html#video" class="tsd-signature-type">Video</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">FetchError</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#encoderesponse" class="tsd-signature-type">EncodeResponse</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">FetchError</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="build" class="tsd-anchor"></a>
-				<h3>build</h3>
+				<a name="filter" class="tsd-anchor"></a>
+				<h3>filter</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">build<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../globals.html#videooptions" class="tsd-signature-type">VideoOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
+					<li class="tsd-signature tsd-kind-icon">filter<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videoclip.html" class="tsd-signature-type">VideoClip</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/videos.ts#L57">videos/videos.ts:57</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L116">videos/clip.ts:116</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Returns a new instance of the Editframe video builder</p>
+								<p>Add a filter to the video clip</p>
 							</div>
 							<dl class="tsd-comment-tags">
 								<dt>example</dt>
-								<dd><pre><code>const newVideo = await videos.build({ <span class="hljs-attr">aspectRatio:</span> <span class="hljs-string">&#x27;1:1&#x27;</span>, <span class="hljs-attr">backgroundColor:</span> <span class="hljs-string">&#x27;black&#x27;</span>, <span class="hljs-attr">duration:</span> <span class="hljs-number">10</span>, <span class="hljs-attr">hd:</span> <span class="hljs-literal">false</span> })</code></pre></dd>
+								<dd><pre><code>const <span class="hljs-keyword">clip</span> = videos.fromClip(fs.createReadStream(<span class="hljs-string">&#x27;./files/video.mp4&#x27;</span>))
+<span class="hljs-keyword">clip</span>.<span class="hljs-keyword">filter</span>(<span class="hljs-string">&#x27;fadein&#x27;</span>, { duration: <span class="hljs-number">3</span>, <span class="hljs-keyword">color</span>: <span class="hljs-string">&#x27;black&#x27;</span> })</code></pre></dd>
 							</dl>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>options: <a href="../globals.html#videooptions" class="tsd-signature-type">VideoOptions</a></h5>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></h4>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="fromclip" class="tsd-anchor"></a>
-				<h3>from<wbr>Clip</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">from<wbr>Clip<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../globals.html#cliprequestoptions" class="tsd-signature-type">ClipRequestOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videoclip.html" class="tsd-signature-type">VideoClip</a></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/videos.ts#L70">videos/videos.ts:70</a></li>
-							</ul>
-						</aside>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>Returns a new instance of an video clip which can be manipulated</p>
-							</div>
-							<dl class="tsd-comment-tags">
-								<dt>example</dt>
-								<dd><pre><code>const newVideo = await videos.from<span class="hljs-constructor">Clip(<span class="hljs-params">fs</span>.<span class="hljs-params">createReadStream</span>(&#x27;.<span class="hljs-operator">/</span><span class="hljs-params">files</span><span class="hljs-operator">/</span><span class="hljs-params">video</span>.<span class="hljs-params">mp4</span>&#x27;)</span>)</code></pre></dd>
-							</dl>
-						</div>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>source: <span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+								<h5>name: <span class="tsd-signature-type">string</span></h5>
 							</li>
 							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../globals.html#cliprequestoptions" class="tsd-signature-type">ClipRequestOptions</a></h5>
+								<h5>options: <span class="tsd-signature-type">object</span></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <a href="videoclip.html" class="tsd-signature-type">VideoClip</a></h4>
@@ -2911,37 +2891,170 @@ img {
 				</ul>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="get" class="tsd-anchor"></a>
-				<h3>get</h3>
+				<a name="mute" class="tsd-anchor"></a>
+				<h3>mute</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">ApiFetchOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#video" class="tsd-signature-type">Video</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">mute<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/videos.ts#L43">videos/videos.ts:43</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L86">videos/clip.ts:86</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="resize" class="tsd-anchor"></a>
+				<h3>resize</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">resize<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L66">videos/clip.ts:66</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>value: <span class="tsd-signature-type">String</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="setresolution" class="tsd-anchor"></a>
+				<h3>set<wbr>Resolution</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Resolution<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videoclip.html" class="tsd-signature-type">VideoClip</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L60">videos/clip.ts:60</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>Get specific video for authenticated application</p>
+								<p>Set the resolution of the video clip</p>
 							</div>
 							<dl class="tsd-comment-tags">
 								<dt>example</dt>
-								<dd><pre><code><span class="hljs-keyword">const</span> video = videos.<span class="hljs-keyword">get</span>(<span class="hljs-string">&#x27;yKOqd7QnJZ&#x27;</span>)</code></pre></dd>
+								<dd><pre><code>const clip = videos.fromClip(fs.createReadStream(&#x27;./files/video.mp4&#x27;))
+clip.setResolution(&#x27;<span class="hljs-number">1080</span>x<span class="hljs-number">1080</span>&#x27;)
+clip.resize(&#x27;<span class="hljs-number">1080</span>x<span class="hljs-number">1080</span>&#x27;)</code></pre></dd>
 							</dl>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>id: <span class="tsd-signature-type">string</span></h5>
-							</li>
-							<li>
-								<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <span class="tsd-signature-type">ApiFetchOptions</span></h5>
+								<h5>value: <span class="tsd-signature-type">String</span></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#video" class="tsd-signature-type">Video</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <a href="videoclip.html" class="tsd-signature-type">VideoClip</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="setvolume" class="tsd-anchor"></a>
+				<h3>set<wbr>Volume</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">set<wbr>Volume<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videoclip.html" class="tsd-signature-type">VideoClip</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L80">videos/clip.ts:80</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Set the volume of the video clip</p>
+							</div>
+							<dl class="tsd-comment-tags">
+								<dt>example</dt>
+								<dd><pre><code>const clip = videos.from<span class="hljs-constructor">Clip(<span class="hljs-params">fs</span>.<span class="hljs-params">createReadStream</span>(&#x27;.<span class="hljs-operator">/</span><span class="hljs-params">files</span><span class="hljs-operator">/</span><span class="hljs-params">video</span>.<span class="hljs-params">mp4</span>&#x27;)</span>)
+clip.set<span class="hljs-constructor">Volume(.9)</span>
+clip.volume(.<span class="hljs-number">5</span>)
+clip.mute<span class="hljs-literal">()</span></code></pre></dd>
+							</dl>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>value: <span class="tsd-signature-type">Number</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="videoclip.html" class="tsd-signature-type">VideoClip</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="trim" class="tsd-anchor"></a>
+				<h3>trim</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">trim<span class="tsd-signature-symbol">(</span>start<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Number</span>, end<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videoclip.html" class="tsd-signature-type">VideoClip</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L99">videos/clip.ts:99</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Trim the video clip</p>
+							</div>
+							<dl class="tsd-comment-tags">
+								<dt>example</dt>
+								<dd><pre><code>const clip = videos.from<span class="hljs-constructor">Clip(<span class="hljs-params">fs</span>.<span class="hljs-params">createReadStream</span>(&#x27;.<span class="hljs-operator">/</span><span class="hljs-params">files</span><span class="hljs-operator">/</span><span class="hljs-params">video</span>.<span class="hljs-params">mp4</span>&#x27;)</span>)
+clip.trim(<span class="hljs-number">0</span>, <span class="hljs-number">60</span>)</code></pre></dd>
+							</dl>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>start: <span class="tsd-signature-type">Number</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagOptional">Optional</span> end: <span class="tsd-signature-type">Number</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="videoclip.html" class="tsd-signature-type">VideoClip</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="volume" class="tsd-anchor"></a>
+				<h3>volume</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">volume<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L87">videos/clip.ts:87</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>value: <span class="tsd-signature-type">Number</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 					</li>
 				</ul>
 			</section>
