@@ -1,14 +1,10 @@
 import Api from 'api/api'
 import FetchError from 'api/Error'
 import { uuid } from 'shared/utils'
-import { ClipRequestOptions } from 'types/clip'
-import { VideoLayer, VideoResolution } from 'types/video'
+import { ClipRequestOptions, ClipEncodeConfig } from 'types/clip'
+import { Size } from 'types/common'
+import { VideoLayer } from 'types/video'
 const FormData = require('form-data')
-
-type ClipEncodeConfig = ClipRequestOptions & {
-  clip: { id: any, resolution?: VideoResolution, volume?: Number }
-  layers: Array<VideoLayer>
-}
 
 type EncodeResponse = {
   id: string
@@ -22,7 +18,7 @@ class VideoClip {
   protected _filters: Array<any>
   protected _id: any
   protected _layers: Array<VideoLayer> = []
-  protected _resolution: VideoResolution
+  protected _resolution: Size
   protected _options: ClipRequestOptions
   protected _source: any
   protected _trim: { start: Number, end?: Number }
@@ -61,10 +57,11 @@ class VideoClip {
    * clip.resize('1080x1080')
    * ```
    */
-  setResolution (value: String) {
+  setResolution (value: String): VideoClip {
     let values = value.split('x')
-    if((values.length < 2)) return
+    if((values.length < 2)) throw 'Invalid video resolution'
     this._resolution = { width: parseInt(values[0]), height: parseInt(values[1]) }
+    return this
   }
   resize (value: String) { this.setResolution(value) }
 
@@ -75,15 +72,16 @@ class VideoClip {
    * 
    * ```
    * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
-   * newVideo.setVolume(.9)
-   * newVideo.volume(.5)
-   * newVideo.mute()
+   * clip.setVolume(.9)
+   * clip.volume(.5)
+   * clip.mute()
    * ```
    */
-  setVolume (value: Number) {
+  setVolume (value: Number): VideoClip {
     this._volume = value
     if(value > 1) this._volume = 1
     if(value < 1) this._volume = 0
+    return this
   }
   mute () { this.setVolume(0) }
   volume (value: Number) { this.setVolume (value) }
@@ -95,27 +93,29 @@ class VideoClip {
    * 
    * ```
    * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
-   * newVideo.trim(0, 60)
+   * clip.trim(0, 60)
    * ```
    */
-   trim (start: Number, end? : Number) {
+   trim (start: Number, end? : Number): VideoClip {
     this._trim = { start, end }
     if(this._trim['start'] < 0) this._trim['start'] = 0
     if(this._trim['end'] && this._trim['end'] < 0) delete this._trim['end']
+    return this
   }
 
   /**
-   * Trim the video clip
+   * Add a filter to the video clip
    *
    * @example
    * 
    * ```
    * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
-   * newVideo.trim(0, 60)
+   * clip.filter('fadein', { duration: 3, color: 'black' })
    * ```
    */
-  filter (name: string, ...args: any[]): void {
-    this._filters.push({ name, args })
+  filter (name: string, options: object): VideoClip {
+    this._filters.push({ name, options: options || {} })
+    return this
   } 
 
   /**
