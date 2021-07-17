@@ -14,7 +14,7 @@
   "excludeNotExported": true,
   "gaID": "UA-116480461-1",
   "toc": [
-    "Applications", "Editframe", "VideoBuilder", "Videos",
+    "Applications", "Editframe", "VideoBuilder", "VideoClip", "Videos",
     "Application", "AudioLayer", "EditframeConfig", "EncodeResponse", 
     "ImageLayer", "TextLayer", "Video", "VideoLayer", "VideoOptions",
     "WaveformLayer"
