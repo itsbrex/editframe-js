@@ -51,7 +51,7 @@ class Api {
   
     const headers = this._getHeaders()
     const fqurl = `${this._getBaseUrl()}${url}`
-  
+
     const performRequest = () =>
       fetchUtil<T>(fqurl, {
         ...options,
@@ -61,7 +61,11 @@ class Api {
     try {
       return await performRequest()
     } catch (error) {
-      throw error.body
+      if(typeof(error.body) !== 'undefined'){
+        throw error.body
+      } else {
+        throw error
+      }
     } finally {
       
     }

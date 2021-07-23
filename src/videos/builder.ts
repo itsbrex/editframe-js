@@ -151,7 +151,11 @@ class VideoBuilder {
       const response = await this._api.post(`videos`, { body: this._form }, true)
       return response
     } catch (error) {
-      throw(error.message)
+      if(typeof(error.message) !== 'undefined'){
+        throw(error.message)
+      } else {
+        throw(error)
+      }
     }
   }
 
