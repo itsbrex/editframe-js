@@ -1,6 +1,6 @@
 import Api from 'api/api'
 import FetchError from 'api/Error'
-import { sizeForApsectRatio, uuid } from '../shared/utils'
+import { sizeForAspectRatio, uuid } from '../shared/utils'
 import { AudioLayer, ComposableLayer, ImageLayer, TextLayer, VideoLayer, WaveformLayer, Layer, VideoOptions } from '../types/video'
 const FormData = require('form-data')
 
@@ -181,7 +181,7 @@ class VideoBuilder {
     let options = {  ...this._options }
     let dimensions = resolution
     if(typeof(resolution) == 'undefined') 
-      dimensions = sizeForApsectRatio(aspectRatio, hd)
+      dimensions = sizeForAspectRatio(aspectRatio, hd)
     if(typeof (dimensions) == 'string'){
       const values = dimensions.split('x')
       dimensions = { width: parseInt(values[0]), height: parseInt(values[1]) }

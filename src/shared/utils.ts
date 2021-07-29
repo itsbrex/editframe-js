@@ -6,7 +6,7 @@ export function uuid() : string {
   }).slice(0, 6);
 }
 
-export function sizeForApsectRatio(aspectRatio: string, hd: boolean) : object {
+export function sizeForAspectRatio(aspectRatio: string, hd: boolean) : object {
   let size = {}
   if (aspectRatio == '1:1')
     size = hd ? { width: 1024, height: 1024 } : { width: 700, height: 700 }
