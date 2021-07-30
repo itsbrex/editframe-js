@@ -12,6 +12,8 @@ type EditframeConfig = {
 }
 
 class Editframe {
+  public Application: Applications
+  public Video: Videos
   public applications: Applications
   public videos: Videos
   private _clientId: string
@@ -28,6 +30,8 @@ class Editframe {
     this._version = version
     this.applications = new Applications({ clientId, token, version })
     this.videos = new Videos({ clientId, token, version })
+    this.Application = this.applications
+    this.Video = this.videos
   }
 
   public get clientId() : string {

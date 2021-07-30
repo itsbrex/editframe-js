@@ -11,7 +11,6 @@ type EncodeResponse = {
   status: string
   timestamp: number
 }
-
 class VideoClip {
   protected _api: Api
   protected _form: FormData
