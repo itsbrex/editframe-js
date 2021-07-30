@@ -1,5 +1,7 @@
 # editframe-js
 
+[![npm version](https://badge.fury.io/js/%40editframe%2Feditframe-js.svg)](https://badge.fury.io/js/%40editframe%2Feditframe-js)
+
 `editframe-js` is the offical Node client for interacting with the Editframe API.
 
 **This library currently only works in `Node` environments and does not work in a browser. Additionally, this should only be used in server environments to protect your API key.**
@@ -17,8 +19,8 @@ Calls to the Editframe API require a Client ID and an application-specific API t
 ```javascript
 const Editframe = require('@editframe/editframe-js')
 
-const CLIENT_ID = '95c8iVaFny0zyKOqd7QnJZ'
-const TOKEN = '3kVr62bFsulhyKOqd7QnJZ'
+const CLIENT_ID = 'XXXXXXXXXXXXXXXXXXXXXXX'
+const TOKEN = 'XXXXXXXXXXXXXXXXXXXXXXX'
 
 const editframe = new Editframe({ clientId: CLIENT_ID, token: TOKEN })
 ```
