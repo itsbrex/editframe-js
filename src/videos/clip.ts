@@ -82,8 +82,14 @@ class VideoClip {
     if(value < 1) this._volume = 0
     return this
   }
-  mute () { this.setVolume(0) }
-  volume (value: Number) { this.setVolume (value) }
+  mute () { 
+    this.setVolume(0) 
+    return this
+  }
+  volume (value: Number) { 
+    this.setVolume (value) 
+    return this
+  }
 
   /**
    * Trim the video clip
