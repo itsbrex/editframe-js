@@ -15,9 +15,14 @@ type EncodeResponse = {
   timestamp: number
 }
 
+type FilterOptions = {
+
+}
+
 class VideoBuilder {
   protected _api: Api
   protected _form: FormData
+  protected _filters: Array<any> = []
   protected _layers: Array<VideoLayer> = []
   protected _options: any
 
@@ -62,6 +67,22 @@ class VideoBuilder {
     } 
     return this
   }
+
+  /**
+   * Add a filter to the video clip
+   *
+   * @example
+   * 
+   * ```
+   * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
+   * clip.filter('fadein', { duration: 3, color: 'black' })
+   * ```
+   */
+
+  addFilter (name: string, options: FilterOptions = {}) : VideoBuilder {
+    const filter = { name, options } 
+    this._filters.push(filter)
+    return this
   }
 
   /**
