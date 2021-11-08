@@ -2,6 +2,7 @@ import { FetchOptions } from './fetch'
 
 export type ApiOptions = {
   clientId: string
+  host?: string
   token: string
   version?: number
 }
