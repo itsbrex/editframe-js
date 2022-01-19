@@ -25,8 +25,9 @@ class Api {
   }
 
   private _getBaseUrl() {
+    const host = this._options.host
     const version = this._options.version
-    return `https://api.editframe.com/v${version}/`
+    return `${host}/v${version}/`
   }
 
   private _getHeaders(): ApiHeaders {

@@ -15,9 +15,14 @@ type EncodeResponse = {
   timestamp: number
 }
 
+type FilterOptions = {
+
+}
+
 class VideoBuilder {
   protected _api: Api
   protected _form: FormData
+  protected _filters: Array<any> = []
   protected _layers: Array<VideoLayer> = []
   protected _options: any
 
@@ -53,14 +58,31 @@ class VideoBuilder {
    * newVideo.addAudio(fs.createReadStream('./files/audio.mp3'))
    * ```
    */
-  addAudio (file: Blob | string, options: AudioLayer = {}) : Layer {
+  addAudio (file: Blob | string, options: AudioLayer = {}) : VideoBuilder {
     const layer = this.addLayer({ type: 'audio', ...options })
     if(typeof(file) == 'string'){
       this._form.append(`url${layer.id}`, file)
     } else {
       this._form.append(`file${layer.id}`, file)
     } 
-    return layer
+    return this
+  }
+
+  /**
+   * Add a filter to the video clip
+   *
+   * @example
+   * 
+   * ```
+   * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
+   * clip.filter('fadein', { duration: 3, color: 'black' })
+   * ```
+   */
+
+  addFilter (name: string, options: FilterOptions = {}) : VideoBuilder {
+    const filter = { name, options } 
+    this._filters.push(filter)
+    return this
   }
 
   /**
@@ -73,14 +95,14 @@ class VideoBuilder {
    * newVideo.addImage(fs.createReadStream('./files/image.png'), { format: 'fit' })
    * ```
    */
-  addImage (file: Blob | string, options: ImageLayer) : Layer {
+  addImage (file: Blob | string, options: ImageLayer) : VideoBuilder {
     const layer = this.addLayer({ type: 'image', ...options })
     if(typeof(file) == 'string'){
       this._form.append(`url${layer.id}`, file)
     } else {
       this._form.append(`file${layer.id}`, file)
     } 
-    return layer
+    return this
   }
 
   /**
@@ -93,9 +115,9 @@ class VideoBuilder {
    * newVideo.addText('hello world', { x: 20, y: 40, fontFamily: 'Arial', fontSize: 32, color: '#02a4d3'  })
    * ```
    */
-  addText (text: string, options: TextLayer) : Layer {
-    const layer = this.addLayer({ type: 'text', text, ...options })
-    return layer
+  addText (text: string, options: TextLayer) : VideoBuilder {
+    this.addLayer({ type: 'text', text, ...options })
+    return this
   }
 
   /**
@@ -108,14 +130,14 @@ class VideoBuilder {
    * newVideo.addVideo(fs.createReadStream('./files/video.mp4'), { format: 'fit' })
    * ```
    */
-  addVideo (file: Blob | string, options: VideoLayer) : Layer {
+  addVideo (file: Blob | string, options: VideoLayer) : VideoBuilder {
     const layer = this.addLayer({ type: 'video', ...options })
     if(typeof(file) == 'string'){
       this._form.append(`url${layer.id}`, file)
     } else {
       this._form.append(`file${layer.id}`, file)
     } 
-    return layer
+    return this
   }
 
   /**
@@ -128,9 +150,9 @@ class VideoBuilder {
    * video.addWaveform({ style: 'line', height: 100, color: '#be5c5c', backgroundColor: 'transparent', y: 'b:40' })
    * ```
    */
-  addWaveform (options: WaveformLayer) : Layer {
-    const layer = this.addLayer({ type: 'waveform', ...options })
-    return layer
+  addWaveform (options: WaveformLayer) : VideoBuilder {
+    this.addLayer({ type: 'waveform', ...options })
+    return this
   }
 
   /**
