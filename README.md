@@ -40,7 +40,7 @@ await editframe.videos.all()
 Retrieving an encoding/encoded video
 
 ```javascript 
-await editframe.videos.find('yKOqd7QnJZ')
+await editframe.videos.get('yKOqd7QnJZ')
 ```
 
 Constructing a video clip from images and audio :
