@@ -2738,6 +2738,9 @@ img {
 					<a href="videobuilder.html#addaudio" class="tsd-kind-icon">add<wbr>Audio</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
+					<a href="videobuilder.html#addfilter" class="tsd-kind-icon">add<wbr>Filter</a>
+				</li>
+				<li class=" tsd-kind-method tsd-parent-kind-class">
 					<a href="videobuilder.html#addimage" class="tsd-kind-icon">add<wbr>Image</a>
 				</li>
 				<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -2819,6 +2822,7 @@ img {
 						<h3>Methods</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addaudio" class="tsd-kind-icon">add<wbr>Audio</a></li>
+							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addfilter" class="tsd-kind-icon">add<wbr>Filter</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addimage" class="tsd-kind-icon">add<wbr>Image</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addtext" class="tsd-kind-icon">add<wbr>Text</a></li>
 							<li class="tsd-kind-method tsd-parent-kind-class"><a href="videobuilder.html#addvideo" class="tsd-kind-icon">add<wbr>Video</a></li>
@@ -2842,7 +2846,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L36">videos/builder.ts:36</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L41">videos/builder.ts:41</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2861,13 +2865,13 @@ img {
 				<a name="addaudio" class="tsd-anchor"></a>
 				<h3>add<wbr>Audio</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Audio<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../globals.html#audiolayer" class="tsd-signature-type">AudioLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#layer" class="tsd-signature-type">Layer</a></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Audio<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../globals.html#audiolayer" class="tsd-signature-type">AudioLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L56">videos/builder.ts:56</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L61">videos/builder.ts:61</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2889,7 +2893,43 @@ newVideo.addAudio(fs.createReadStream(<span class="hljs-string">&#x27;./files/au
 								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../globals.html#audiolayer" class="tsd-signature-type">AudioLayer</a><span class="tsd-signature-symbol"> = {}</span></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="../globals.html#layer" class="tsd-signature-type">Layer</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+				<a name="addfilter" class="tsd-anchor"></a>
+				<h3>add<wbr>Filter</h3>
+				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Filter<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">?: </span><a href="../globals.html#filteroptions" class="tsd-signature-type">FilterOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L82">videos/builder.ts:82</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Add a filter to the video clip</p>
+							</div>
+							<dl class="tsd-comment-tags">
+								<dt>example</dt>
+								<dd><pre><code>const <span class="hljs-keyword">clip</span> = videos.fromClip(fs.createReadStream(<span class="hljs-string">&#x27;./files/video.mp4&#x27;</span>))
+<span class="hljs-keyword">clip</span>.<span class="hljs-keyword">filter</span>(<span class="hljs-string">&#x27;fadein&#x27;</span>, { duration: <span class="hljs-number">3</span>, <span class="hljs-keyword">color</span>: <span class="hljs-string">&#x27;black&#x27;</span> })</code></pre></dd>
+							</dl>
+						</div>
+						<h4 class="tsd-parameters-title">Parameters</h4>
+						<ul class="tsd-parameters">
+							<li>
+								<h5>name: <span class="tsd-signature-type">string</span></h5>
+							</li>
+							<li>
+								<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../globals.html#filteroptions" class="tsd-signature-type">FilterOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+							</li>
+						</ul>
+						<h4 class="tsd-returns-title">Returns <a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -2897,13 +2937,13 @@ newVideo.addAudio(fs.createReadStream(<span class="hljs-string">&#x27;./files/au
 				<a name="addimage" class="tsd-anchor"></a>
 				<h3>add<wbr>Image</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Image<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../globals.html#imagelayer" class="tsd-signature-type">ImageLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#layer" class="tsd-signature-type">Layer</a></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Image<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../globals.html#imagelayer" class="tsd-signature-type">ImageLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L76">videos/builder.ts:76</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L98">videos/builder.ts:98</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2925,7 +2965,7 @@ newVideo.addImage(fs.createReadStream(<span class="hljs-string">&#x27;./files/im
 								<h5>options: <a href="../globals.html#imagelayer" class="tsd-signature-type">ImageLayer</a></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="../globals.html#layer" class="tsd-signature-type">Layer</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -2933,13 +2973,13 @@ newVideo.addImage(fs.createReadStream(<span class="hljs-string">&#x27;./files/im
 				<a name="addtext" class="tsd-anchor"></a>
 				<h3>add<wbr>Text</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Text<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../globals.html#textlayer" class="tsd-signature-type">TextLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#layer" class="tsd-signature-type">Layer</a></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Text<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../globals.html#textlayer" class="tsd-signature-type">TextLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L96">videos/builder.ts:96</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L118">videos/builder.ts:118</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2961,7 +3001,7 @@ newVideo.addText(<span class="hljs-string">&#x27;hello world&#x27;</span>, { <sp
 								<h5>options: <a href="../globals.html#textlayer" class="tsd-signature-type">TextLayer</a></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="../globals.html#layer" class="tsd-signature-type">Layer</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -2969,13 +3009,13 @@ newVideo.addText(<span class="hljs-string">&#x27;hello world&#x27;</span>, { <sp
 				<a name="addvideo" class="tsd-anchor"></a>
 				<h3>add<wbr>Video</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Video<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../globals.html#videolayer" class="tsd-signature-type">VideoLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#layer" class="tsd-signature-type">Layer</a></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Video<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Blob</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../globals.html#videolayer" class="tsd-signature-type">VideoLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L111">videos/builder.ts:111</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L133">videos/builder.ts:133</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2997,7 +3037,7 @@ newVideo.addVideo(fs.createReadStream(<span class="hljs-string">&#x27;./files/vi
 								<h5>options: <a href="../globals.html#videolayer" class="tsd-signature-type">VideoLayer</a></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="../globals.html#layer" class="tsd-signature-type">Layer</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -3005,13 +3045,13 @@ newVideo.addVideo(fs.createReadStream(<span class="hljs-string">&#x27;./files/vi
 				<a name="addwaveform" class="tsd-anchor"></a>
 				<h3>add<wbr>Waveform</h3>
 				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">add<wbr>Waveform<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../globals.html#waveformlayer" class="tsd-signature-type">WaveformLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../globals.html#layer" class="tsd-signature-type">Layer</a></li>
+					<li class="tsd-signature tsd-kind-icon">add<wbr>Waveform<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../globals.html#waveformlayer" class="tsd-signature-type">WaveformLayer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L131">videos/builder.ts:131</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L153">videos/builder.ts:153</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3030,7 +3070,7 @@ video.addWaveform({ <span class="hljs-attr">style:</span> <span class="hljs-stri
 								<h5>options: <a href="../globals.html#waveformlayer" class="tsd-signature-type">WaveformLayer</a></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <a href="../globals.html#layer" class="tsd-signature-type">Layer</a></h4>
+						<h4 class="tsd-returns-title">Returns <a href="videobuilder.html" class="tsd-signature-type">VideoBuilder</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -3044,7 +3084,7 @@ video.addWaveform({ <span class="hljs-attr">style:</span> <span class="hljs-stri
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L147">videos/builder.ts:147</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L169">videos/builder.ts:169</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3071,7 +3111,7 @@ const response = await videos.encode()</code></pre></dd>
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L169">videos/builder.ts:169</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/d399436/src/videos/builder.ts#L195">videos/builder.ts:195</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
