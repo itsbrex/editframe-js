@@ -2775,12 +2775,52 @@ img {
 			<a href="#editframe-js" id="editframe-js" style="color: inherit; text-decoration: none;">
 				<h1>editframe-js</h1>
 			</a>
+			<p><a href="https://badge.fury.io/js/%40editframe%2Feditframe-js"><img src="https://badge.fury.io/js/%40editframe%2Feditframe-js.svg" alt="npm version"></a></p>
 			<p><code>editframe-js</code> is the offical Node client for interacting with the Editframe API.</p>
 			<p><strong>This library currently only works in <code>Node</code> environments and does not work in a browser. Additionally, this should only be used in server environments to protect your API key.</strong></p>
 			<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 				<h1>Installation</h1>
 			</a>
 			<pre><code><span class="hljs-built_in">npm</span> install @editframe/editframe-js</code></pre>
+			<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+				<h2>Usage</h2>
+			</a>
+			<p>Calls to the Editframe API require a Client ID and an application-specific API token. These keys can be accessed from the Editframe Developer Portal. These library variables can be provided during instantiation as follows:</p>
+			<pre><code class="language-javascript"><span class="hljs-keyword">const</span> Editframe = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;@editframe/editframe-js&#x27;</span>)
+
+<span class="hljs-keyword">const</span> CLIENT_ID = <span class="hljs-string">&#x27;XXXXXXXXXXXXXXXXXXXXXXX&#x27;</span>
+<span class="hljs-keyword">const</span> TOKEN = <span class="hljs-string">&#x27;XXXXXXXXXXXXXXXXXXXXXXX&#x27;</span>
+
+<span class="hljs-keyword">const</span> editframe = <span class="hljs-keyword">new</span> Editframe({ <span class="hljs-attr">clientId</span>: CLIENT_ID, <span class="hljs-attr">token</span>: TOKEN })</code></pre>
+			<p>Retrieving applications registered to user : </p>
+			<pre><code class="language-javascript"><span class="hljs-keyword">await</span> editframe.applications.all()</code></pre>
+			<p>Retrieving videos belonging to an authorized application</p>
+			<pre><code class="language-javascript"><span class="hljs-keyword">await</span> editframe.videos.all()</code></pre>
+			<p>Retrieving an encoding/encoded video</p>
+			<pre><code class="language-javascript"><span class="hljs-keyword">await</span> editframe.videos.find(<span class="hljs-string">&#x27;yKOqd7QnJZ&#x27;</span>)</code></pre>
+			<p>Constructing a video clip from images and audio :</p>
+			<pre><code class="language-javascript"><span class="hljs-keyword">const</span> video = editframe.videos.build({ <span class="hljs-attr">resolution</span>: <span class="hljs-string">&#x27;700x700&#x27;</span>, <span class="hljs-attr">duration</span>: <span class="hljs-number">12</span> })
+<span class="hljs-keyword">const</span> imageOne = <span class="hljs-string">&#x27;https://media0.giphy.com/media/gK99k8iMtKeJ2/giphy.gif?cid=ecf05e47iow5n0ep2sb40lm4bh8kvs7sckmh6af7zwwdurvi&amp;rid=giphy.gif&amp;ct=g&#x27;</span>
+<span class="hljs-keyword">const</span> imageTwo = <span class="hljs-string">&#x27;https://media4.giphy.com/media/52Ywm818WNeuI/giphy.gif?cid=ecf05e4778nj4l3n55qqacjclcj0nf0ux9cqnbv1lsl0d0r2&amp;rid=giphy.gif&amp;ct=g&#x27;</span>
+<span class="hljs-keyword">const</span> imageThree = <span class="hljs-string">&#x27;https://media4.giphy.com/media/2csuIJj6TmuKA/giphy.gif?cid=ecf05e47zc9z0u2nh4skss842n5fiyu07unyxt8derf9ax1u&amp;rid=giphy.gif&amp;ct=g&#x27;</span>
+<span class="hljs-keyword">const</span> logo = fs.createReadStream(path.resolve(<span class="hljs-string">&#x27;./logo.png&#x27;</span>))
+<span class="hljs-keyword">const</span> audioFile = <span class="hljs-string">&#x27;https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_2MG.mp3&#x27;</span>
+
+video.addImage(imageOne, { <span class="hljs-attr">format</span>: <span class="hljs-string">&#x27;fill&#x27;</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">4</span> })
+video.addImage(imageTwo, { <span class="hljs-attr">format</span>: <span class="hljs-string">&#x27;fill&#x27;</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">8</span> })
+video.addImage(imageThree, { <span class="hljs-attr">format</span>: <span class="hljs-string">&#x27;fill&#x27;</span>, <span class="hljs-attr">start</span>: <span class="hljs-number">8</span>, <span class="hljs-attr">end</span>: <span class="hljs-number">12</span> })
+video.addImage(logo, { <span class="hljs-attr">x</span>: <span class="hljs-string">&#x27;center&#x27;</span>, <span class="hljs-attr">y</span>: <span class="hljs-string">&#x27;center&#x27;</span> })
+video.addAudio(audioFile)
+
+<span class="hljs-keyword">await</span> video.encode()</code></pre>
+			<p>Trimming an existing video clip:</p>
+			<pre><code class="language-javascript"><span class="hljs-keyword">const</span> video = editframe.videos.fromClip(fs.createReadStream(path.resolve(<span class="hljs-string">&#x27;./clip.mp4&#x27;</span>)))
+video.trim(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>)
+video.encode()</code></pre>
+			<p>Add a filter to an existing video clip:</p>
+			<pre><code class="language-javascript"><span class="hljs-keyword">const</span> video = editframe.videos.fromClip(fs.createReadStream(path.resolve(<span class="hljs-string">&#x27;./clip.mp4&#x27;</span>)))
+video.mute().filter(<span class="hljs-string">&#x27;grayscale&#x27;</span>).fadein({ <span class="hljs-attr">duration</span>: <span class="hljs-number">3</span> })
+video.encode()</code></pre>
 		</div>
 		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">
@@ -2809,6 +2849,7 @@ img {
 							<li class="tsd-kind-type-alias"><a href="globals.html#editframeconfig" class="tsd-kind-icon">Editframe<wbr>Config</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#encodeconfig" class="tsd-kind-icon">Encode<wbr>Config</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#encoderesponse" class="tsd-kind-icon">Encode<wbr>Response</a></li>
+							<li class="tsd-kind-type-alias"><a href="globals.html#filteroptions" class="tsd-kind-icon">Filter<wbr>Options</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#hashided" class="tsd-kind-icon">Hashided</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#imagelayer" class="tsd-kind-icon">Image<wbr>Layer</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#layer" class="tsd-kind-icon">Layer</a></li>
@@ -2820,6 +2861,7 @@ img {
 							<li class="tsd-kind-type-alias"><a href="globals.html#layertext" class="tsd-kind-icon">Layer<wbr>Text</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#layerverticalalignment" class="tsd-kind-icon">Layer<wbr>Vertical<wbr>Alignment</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#resolution" class="tsd-kind-icon">Resolution</a></li>
+							<li class="tsd-kind-type-alias"><a href="globals.html#size" class="tsd-kind-icon">Size</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#textlayer" class="tsd-kind-icon">Text<wbr>Layer</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#timestamped" class="tsd-kind-icon">Timestamped</a></li>
 							<li class="tsd-kind-type-alias"><a href="globals.html#video" class="tsd-kind-icon">Video</a></li>
@@ -2846,7 +2888,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Application<span class="tsd-signature-symbol">:</span> <a href="globals.html#hashided" class="tsd-signature-type">Hashided</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#timestamped" class="tsd-signature-type">Timestamped</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>is_live<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/application.ts#L4">types/application.ts:4</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/application.ts#L4">types/application.ts:4</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2856,7 +2898,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Audio<wbr>Layer<span class="tsd-signature-symbol">:</span> <a href="globals.html#baselayer" class="tsd-signature-type">BaseLayer</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L57">types/video.ts:57</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L55">types/video.ts:55</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2866,7 +2908,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Base<wbr>Layer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>end<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>start<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L24">types/video.ts:24</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L24">types/video.ts:24</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -2887,7 +2929,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Clip<wbr>Encode<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="globals.html#cliprequestoptions" class="tsd-signature-type">ClipRequestOptions</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>clip<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>resolution<span class="tsd-signature-symbol">?: </span><a href="globals.html#resolution" class="tsd-signature-type">Resolution</a><span class="tsd-signature-symbol">; </span>volume<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>layers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#videolayer" class="tsd-signature-type">VideoLayer</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/clip.ts#L11">types/clip.ts:11</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/clip.ts#L11">types/clip.ts:11</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2897,7 +2939,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Clip<wbr>Request<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>metadata<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">; </span>share<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>title<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">String</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/clip.ts#L5">types/clip.ts:5</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/clip.ts#L5">types/clip.ts:5</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -2921,17 +2963,17 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Composable<wbr>Layer<span class="tsd-signature-symbol">:</span> <a href="globals.html#audiolayer" class="tsd-signature-type">AudioLayer</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#imagelayer" class="tsd-signature-type">ImageLayer</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#textlayer" class="tsd-signature-type">TextLayer</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#videolayer" class="tsd-signature-type">VideoLayer</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><a href="globals.html#waveformlayer" class="tsd-signature-type">WaveformLayer</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L66">types/video.ts:66</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L64">types/video.ts:64</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="editframeconfig" class="tsd-anchor"></a>
 				<h3>Editframe<wbr>Config</h3>
-				<div class="tsd-signature tsd-kind-icon">Editframe<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>log<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>version<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
+				<div class="tsd-signature tsd-kind-icon">Editframe<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>host<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>log<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>version<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/index.ts#L7">index.ts:7</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L7">index.ts:7</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2944,6 +2986,9 @@ img {
 					<ul class="tsd-parameters">
 						<li class="tsd-parameter">
 							<h5>client<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5><span class="tsd-flag ts-flagOptional">Optional</span> host<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
 						</li>
 						<li class="tsd-parameter">
 							<h5><span class="tsd-flag ts-flagOptional">Optional</span> log<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span></h5>
@@ -2963,7 +3008,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Encode<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="globals.html#videooptions" class="tsd-signature-type">VideoOptions</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>dimensions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>layers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#videolayer" class="tsd-signature-type">VideoLayer</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L7">videos/builder.ts:7</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/videos/builder.ts#L7">videos/builder.ts:7</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2973,8 +3018,8 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Encode<wbr>Response<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>status<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>timestamp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L12">videos/builder.ts:12</a></li>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L9">videos/clip.ts:9</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/videos/builder.ts#L12">videos/builder.ts:12</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/videos/clip.ts#L9">videos/clip.ts:9</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -2993,12 +3038,27 @@ img {
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
+				<a name="filteroptions" class="tsd-anchor"></a>
+				<h3>Filter<wbr>Options</h3>
+				<div class="tsd-signature tsd-kind-icon">Filter<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/videos/builder.ts#L18">videos/builder.ts:18</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<ul class="tsd-parameters">
+					</ul>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="hashided" class="tsd-anchor"></a>
 				<h3>Hashided</h3>
 				<div class="tsd-signature tsd-kind-icon">Hashided<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/common.ts#L2">types/common.ts:2</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/common.ts#L2">types/common.ts:2</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -3016,7 +3076,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Image<wbr>Layer<span class="tsd-signature-symbol">:</span> <a href="globals.html#baselayer" class="tsd-signature-type">BaseLayer</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#layershape" class="tsd-signature-type">LayerShape</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L58">types/video.ts:58</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L56">types/video.ts:56</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3026,7 +3086,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Layer<span class="tsd-signature-symbol">:</span> <a href="globals.html#composablelayer" class="tsd-signature-type">ComposableLayer</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L70">types/video.ts:70</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L68">types/video.ts:68</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3036,7 +3096,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Layer<wbr>Alignment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>horizontalAlignment<span class="tsd-signature-symbol">?: </span><a href="globals.html#layerhorizontalalignment" class="tsd-signature-type">LayerHorizontalAlignment</a><span class="tsd-signature-symbol">; </span>verticalAlignment<span class="tsd-signature-symbol">?: </span><a href="globals.html#layerverticalalignment" class="tsd-signature-type">LayerVerticalAlignment</a><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L29">types/video.ts:29</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L29">types/video.ts:29</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -3057,7 +3117,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Layer<wbr>Colors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>backgroundColor<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L34">types/video.ts:34</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L34">types/video.ts:34</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -3078,7 +3138,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Layer<wbr>Format<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"fill"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"fit"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"stretch"</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L21">types/video.ts:21</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L21">types/video.ts:21</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3088,39 +3148,19 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Layer<wbr>Horizontal<wbr>Alignment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"left"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"center"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"right"</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L19">types/video.ts:19</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L19">types/video.ts:19</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="layershape" class="tsd-anchor"></a>
 				<h3>Layer<wbr>Shape</h3>
-				<div class="tsd-signature tsd-kind-icon">Layer<wbr>Shape<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>format<span class="tsd-signature-symbol">?: </span><a href="globals.html#layerformat" class="tsd-signature-type">LayerFormat</a><span class="tsd-signature-symbol">; </span>height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>x<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>y<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
+				<div class="tsd-signature tsd-kind-icon">Layer<wbr>Shape<span class="tsd-signature-symbol">:</span> <a href="globals.html#size" class="tsd-signature-type">Size</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>format<span class="tsd-signature-symbol">?: </span><a href="globals.html#layerformat" class="tsd-signature-type">LayerFormat</a><span class="tsd-signature-symbol">; </span>x<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>y<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L39">types/video.ts:39</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L39">types/video.ts:39</a></li>
 					</ul>
 				</aside>
-				<div class="tsd-type-declaration">
-					<h4>Type declaration</h4>
-					<ul class="tsd-parameters">
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagOptional">Optional</span> format<span class="tsd-signature-symbol">?: </span><a href="globals.html#layerformat" class="tsd-signature-type">LayerFormat</a></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagOptional">Optional</span> height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagOptional">Optional</span> width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagOptional">Optional</span> x<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span></h5>
-						</li>
-						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagOptional">Optional</span> y<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-						</li>
-					</ul>
-				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="layertext" class="tsd-anchor"></a>
@@ -3128,7 +3168,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Layer<wbr>Text<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>fontFamily<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>fontSize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>maxFontSize<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>maxHeight<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>maxWidth<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>textAlignment<span class="tsd-signature-symbol">?: </span><a href="globals.html#layerhorizontalalignment" class="tsd-signature-type">LayerHorizontalAlignment</a><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L47">types/video.ts:47</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L45">types/video.ts:45</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -3164,22 +3204,38 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Layer<wbr>Vertical<wbr>Alignment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"top"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"middle"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"bottom"</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L20">types/video.ts:20</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L20">types/video.ts:20</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="resolution" class="tsd-anchor"></a>
 				<h3>Resolution</h3>
-				<div class="tsd-signature tsd-kind-icon">Resolution<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
+				<div class="tsd-signature tsd-kind-icon">Resolution<span class="tsd-signature-symbol">:</span> <a href="globals.html#size" class="tsd-signature-type">Size</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/common.ts#L11">types/common.ts:11</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/common.ts#L16">types/common.ts:16</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias">
+				<a name="size" class="tsd-anchor"></a>
+				<h3>Size</h3>
+				<div class="tsd-signature tsd-kind-icon">Size<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Number</span><span class="tsd-signature-symbol">; </span>width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Number</span><span class="tsd-signature-symbol"> }</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/common.ts#L11">types/common.ts:11</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
 					<h4>Type declaration</h4>
 					<ul class="tsd-parameters">
+						<li class="tsd-parameter">
+							<h5><span class="tsd-flag ts-flagOptional">Optional</span> height<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Number</span></h5>
+						</li>
+						<li class="tsd-parameter">
+							<h5><span class="tsd-flag ts-flagOptional">Optional</span> width<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Number</span></h5>
+						</li>
 					</ul>
 				</div>
 			</section>
@@ -3189,7 +3245,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Text<wbr>Layer<span class="tsd-signature-symbol">:</span> <a href="globals.html#baselayer" class="tsd-signature-type">BaseLayer</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#layeralignment" class="tsd-signature-type">LayerAlignment</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#layershape" class="tsd-signature-type">LayerShape</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#layertext" class="tsd-signature-type">LayerText</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L59">types/video.ts:59</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L57">types/video.ts:57</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3199,7 +3255,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Timestamped<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>created_at<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>updated_at<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/common.ts#L6">types/common.ts:6</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/common.ts#L6">types/common.ts:6</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -3220,7 +3276,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Video<span class="tsd-signature-symbol">:</span> <a href="globals.html#hashided" class="tsd-signature-type">Hashided</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#timestamped" class="tsd-signature-type">Timestamped</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L4">types/video.ts:4</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L4">types/video.ts:4</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3230,17 +3286,17 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Video<wbr>Layer<span class="tsd-signature-symbol">:</span> <a href="globals.html#baselayer" class="tsd-signature-type">BaseLayer</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#layershape" class="tsd-signature-type">LayerShape</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L60">types/video.ts:60</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L58">types/video.ts:58</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-type-alias">
 				<a name="videooptions" class="tsd-anchor"></a>
 				<h3>Video<wbr>Options</h3>
-				<div class="tsd-signature tsd-kind-icon">Video<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>aspectRatio<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>backgroundColor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>description<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>duration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>hd<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>metadata<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">; </span>resolution<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="globals.html#resolution" class="tsd-signature-type">Resolution</a><span class="tsd-signature-symbol">; </span>title<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
+				<div class="tsd-signature tsd-kind-icon">Video<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>aspectRatio<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>backgroundColor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>description<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>duration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>hd<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>metadata<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">; </span>resolution<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="globals.html#size" class="tsd-signature-type">Size</a><span class="tsd-signature-symbol">; </span>title<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L8">types/video.ts:8</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L8">types/video.ts:8</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-type-declaration">
@@ -3265,7 +3321,7 @@ img {
 							<h5><span class="tsd-flag ts-flagOptional">Optional</span> metadata<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span></h5>
 						</li>
 						<li class="tsd-parameter">
-							<h5><span class="tsd-flag ts-flagOptional">Optional</span> resolution<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="globals.html#resolution" class="tsd-signature-type">Resolution</a></h5>
+							<h5><span class="tsd-flag ts-flagOptional">Optional</span> resolution<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="globals.html#size" class="tsd-signature-type">Size</a></h5>
 						</li>
 						<li class="tsd-parameter">
 							<h5><span class="tsd-flag ts-flagOptional">Optional</span> title<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span></h5>
@@ -3279,7 +3335,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Waveform<wbr>Layer<span class="tsd-signature-symbol">:</span> <a href="globals.html#layercolors" class="tsd-signature-type">LayerColors</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#layershape" class="tsd-signature-type">LayerShape</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>style<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L62">types/video.ts:62</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L60">types/video.ts:60</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3289,7 +3345,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Waveform<wbr>Layer<wbr>Style<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"wave"</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">"line"</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/types/video.ts#L22">types/video.ts:22</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/types/video.ts#L22">types/video.ts:22</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -3302,8 +3358,8 @@ img {
 				<div class="tsd-signature tsd-kind-icon">Form<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = require(&#x27;form-data&#x27;)</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/builder.ts#L5">videos/builder.ts:5</a></li>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/videos/clip.ts#L7">videos/clip.ts:7</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/videos/builder.ts#L5">videos/builder.ts:5</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/videos/clip.ts#L7">videos/clip.ts:7</a></li>
 					</ul>
 				</aside>
 			</section>

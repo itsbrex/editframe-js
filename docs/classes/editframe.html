@@ -2732,6 +2732,12 @@ img {
 					<a href="editframe.html#constructor" class="tsd-kind-icon">constructor</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="editframe.html#application" class="tsd-kind-icon">Application</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
+					<a href="editframe.html#video" class="tsd-kind-icon">Video</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class">
 					<a href="editframe.html#applications" class="tsd-kind-icon">applications</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class">
@@ -2741,13 +2747,13 @@ img {
 					<a href="editframe.html#clientid" class="tsd-kind-icon">client<wbr>Id</a>
 				</li>
 				<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+					<a href="editframe.html#host" class="tsd-kind-icon">host</a>
+				</li>
+				<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 					<a href="editframe.html#token" class="tsd-kind-icon">token</a>
 				</li>
 				<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 					<a href="editframe.html#version" class="tsd-kind-icon">version</a>
-				</li>
-				<li class=" tsd-kind-method tsd-parent-kind-class">
-					<a href="editframe.html#initialize" class="tsd-kind-icon">initialize</a>
 				</li>
 			</ul>
 		</li>
@@ -2815,6 +2821,8 @@ img {
 					<section class="tsd-index-section ">
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="editframe.html#application" class="tsd-kind-icon">Application</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class"><a href="editframe.html#video" class="tsd-kind-icon">Video</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="editframe.html#applications" class="tsd-kind-icon">applications</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class"><a href="editframe.html#videos" class="tsd-kind-icon">videos</a></li>
 						</ul>
@@ -2823,14 +2831,9 @@ img {
 						<h3>Accessors</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="editframe.html#clientid" class="tsd-kind-icon">client<wbr>Id</a></li>
+							<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="editframe.html#host" class="tsd-kind-icon">host</a></li>
 							<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="editframe.html#token" class="tsd-kind-icon">token</a></li>
 							<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="editframe.html#version" class="tsd-kind-icon">version</a></li>
-						</ul>
-					</section>
-					<section class="tsd-index-section ">
-						<h3>Methods</h3>
-						<ul class="tsd-index-list">
-							<li class="tsd-kind-method tsd-parent-kind-class"><a href="editframe.html#initialize" class="tsd-kind-icon">initialize</a></li>
 						</ul>
 					</section>
 				</div>
@@ -2842,13 +2845,13 @@ img {
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Editframe<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="editframe.html" class="tsd-signature-type">Editframe</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Editframe<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>host<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="editframe.html" class="tsd-signature-type">Editframe</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/index.ts#L19">index.ts:19</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L23">index.ts:23</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2859,10 +2862,13 @@ img {
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></h5>
+								<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>host<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></h5>
 								<ul class="tsd-parameters">
 									<li class="tsd-parameter">
 										<h5>client<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+									</li>
+									<li class="tsd-parameter">
+										<h5>host<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 									</li>
 									<li class="tsd-parameter">
 										<h5>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
@@ -2881,12 +2887,32 @@ img {
 		<section class="tsd-panel-group tsd-member-group ">
 			<h2>Properties</h2>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="application" class="tsd-anchor"></a>
+				<h3>Application</h3>
+				<div class="tsd-signature tsd-kind-icon">Application<span class="tsd-signature-symbol">:</span> <a href="applications.html" class="tsd-signature-type">Applications</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L16">index.ts:16</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+				<a name="video" class="tsd-anchor"></a>
+				<h3>Video</h3>
+				<div class="tsd-signature tsd-kind-icon">Video<span class="tsd-signature-symbol">:</span> <a href="videos.html" class="tsd-signature-type">Videos</a></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L17">index.ts:17</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 				<a name="applications" class="tsd-anchor"></a>
 				<h3>applications</h3>
 				<div class="tsd-signature tsd-kind-icon">applications<span class="tsd-signature-symbol">:</span> <a href="applications.html" class="tsd-signature-type">Applications</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/index.ts#L15">index.ts:15</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L18">index.ts:18</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2896,7 +2922,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">videos<span class="tsd-signature-symbol">:</span> <a href="videos.html" class="tsd-signature-type">Videos</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/index.ts#L16">index.ts:16</a></li>
+						<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L19">index.ts:19</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2913,7 +2939,24 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/index.ts#L33">index.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L40">index.ts:40</a></li>
+							</ul>
+						</aside>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+				<a name="host" class="tsd-anchor"></a>
+				<h3>host</h3>
+				<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+					<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> host<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L44">index.ts:44</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -2930,7 +2973,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/index.ts#L37">index.ts:37</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L48">index.ts:48</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -2947,47 +2990,10 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/index.ts#L41">index.ts:41</a></li>
+								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/aa0d1cf/src/index.ts#L52">index.ts:52</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-					</li>
-				</ul>
-			</section>
-		</section>
-		<section class="tsd-panel-group tsd-member-group ">
-			<h2>Methods</h2>
-			<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-				<a name="initialize" class="tsd-anchor"></a>
-				<h3>initialize</h3>
-				<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">initialize<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-							<ul>
-								<li>Defined in <a href="https://github.com/editframe/editframe-js/blob/eb696eb/src/index.ts#L45">index.ts:45</a></li>
-							</ul>
-						</aside>
-						<h4 class="tsd-parameters-title">Parameters</h4>
-						<ul class="tsd-parameters">
-							<li>
-								<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span></h5>
-								<ul class="tsd-parameters">
-									<li class="tsd-parameter">
-										<h5>client<wbr>Id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-									<li class="tsd-parameter">
-										<h5>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-									</li>
-									<li class="tsd-parameter">
-										<h5>version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 					</li>
 				</ul>
 			</section>
