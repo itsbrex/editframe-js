@@ -193,8 +193,8 @@ class VideoBuilder {
   * 
   */
   setOptions(options: Partial<VideoOptions>) : VideoBuilder {
-    const { aspectRatio, backgroundColor, description, duration, hd, metadata, resolution, title } = options
-    this._options = { aspectRatio, backgroundColor, description, duration, hd, metadata, resolution, title }
+    const { aspectRatio, backgroundColor, duration, hd, metadata, resolution } = options
+    this._options = { aspectRatio, backgroundColor, duration, hd, metadata, resolution }
     return this
   }
 
