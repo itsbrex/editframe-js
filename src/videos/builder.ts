@@ -1,10 +1,12 @@
 import Api from 'api/api'
 import FetchError from 'api/Error'
+import { LottieAnimationData } from 'types/lottie'
 import { sizeForAspectRatio, uuid } from '../shared/utils'
 import {
   AudioLayer,
   ComposableLayer,
   ImageLayer,
+  LottieLayer,
   TextLayer,
   VideoLayer,
   WaveformLayer,
@@ -109,6 +111,21 @@ class VideoBuilder {
     } else {
       this._form.append(`file${layer.id}`, file)
     }
+    return this
+  }
+
+  /**
+   * Add a Lottie animation layer to your video composition
+   *
+   * @example
+   * 
+   * ```
+   * const newVideo = await videos.build({ resolution: '700x700' })
+   * newVideo.addLottie(lottieAnimationData)
+   * ```
+   */
+   addLottie (animationData: LottieAnimationData, options: LottieLayer) : VideoBuilder {
+    this.addLayer({ data: JSON.stringify(animationData), type: 'lottie', ...options })
     return this
   }
 

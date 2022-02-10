@@ -41,6 +41,11 @@ export type LayerColors = {
   backgroundColor?: string
 }
 
+export type LayerCoordinates = {
+  x?: number
+  y?: number
+}
+
 export type LayerShape = Size & {
   x?: number
   y?: number | string
@@ -59,6 +64,7 @@ export type LayerText = {
 
 export type AudioLayer = BaseLayer
 export type ImageLayer = BaseLayer & LayerShape
+export type LottieLayer = BaseLayer & Size & LayerCoordinates
 export type TextLayer = BaseLayer & LayerAlignment & LayerShape & LayerText
 export type VideoLayer = BaseLayer & LayerShape
 
@@ -70,9 +76,11 @@ export type WaveformLayer = LayerColors &
 export type ComposableLayer =
   | AudioLayer
   | ImageLayer
+  | LottieLayer
   | TextLayer
   | VideoLayer
   | (WaveformLayer & {
+      data?: string
       type: string
     })
 
