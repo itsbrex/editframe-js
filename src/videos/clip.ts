@@ -20,13 +20,13 @@ class VideoClip {
   protected _resolution: Size
   protected _options: ClipRequestOptions
   protected _source: any
-  protected _trim: { start: Number, end?: Number }
-  protected _volume: Number
+  protected _trim: { start: number; end?: number }
+  protected _volume: number
 
   /**
-  * @ignore
-  */
-  constructor(source: Blob | string, options: ClipRequestOptions, api: Api){
+   * @ignore
+   */
+  constructor(source: Blob | string, options: ClipRequestOptions, api: Api) {
     this._api = api
     this._filters = []
     this._form = new FormData()
@@ -38,37 +38,43 @@ class VideoClip {
 
   protected _configureSource(source: Blob | string) {
     this._source = source
-    if(typeof(source) == 'string'){
+    if (typeof source === 'string') {
       this._form.append(`url${this._id}`, source)
     } else {
       this._form.append(`file${this._id}`, source)
-    } 
+    }
   }
 
   /**
    * Set the resolution of the video clip
    *
    * @example
-   * 
+   *
    * ```
    * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
    * clip.setResolution('1080x1080')
    * clip.resize('1080x1080')
    * ```
    */
-  setResolution (value: String): VideoClip {
-    let values = value.split('x')
-    if((values.length < 2)) throw 'Invalid video resolution'
-    this._resolution = { width: parseInt(values[0]), height: parseInt(values[1]) }
+  setResolution(value: string): VideoClip {
+    const values = value.split('x')
+    if (values.length < 2) throw 'Invalid video resolution'
+    this._resolution = {
+      width: parseInt(values[0]),
+      height: parseInt(values[1])
+    }
     return this
   }
-  resize (value: String) { this.setResolution(value) }
+
+  resize(value: string) {
+    this.setResolution(value)
+  }
 
   /**
    * Set the volume of the video clip
    *
    * @example
-   * 
+   *
    * ```
    * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
    * clip.setVolume(.9)
@@ -76,18 +82,20 @@ class VideoClip {
    * clip.mute()
    * ```
    */
-  setVolume (value: Number): VideoClip {
+  setVolume(value: number): VideoClip {
     this._volume = value
-    if(value > 1) this._volume = 1
-    if(value < 1) this._volume = 0
+    if (value > 1) this._volume = 1
+    if (value < 1) this._volume = 0
     return this
   }
-  mute () { 
-    this.setVolume(0) 
+
+  mute() {
+    this.setVolume(0)
     return this
   }
-  volume (value: Number) { 
-    this.setVolume (value) 
+
+  volume(value: number) {
+    this.setVolume(value)
     return this
   }
 
@@ -95,16 +103,16 @@ class VideoClip {
    * Trim the video clip
    *
    * @example
-   * 
+   *
    * ```
    * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
    * clip.trim(0, 60)
    * ```
    */
-   trim (start: Number, end? : Number): VideoClip {
+  trim(start: number, end?: number): VideoClip {
     this._trim = { start, end }
-    if(this._trim['start'] < 0) this._trim['start'] = 0
-    if(this._trim['end'] && this._trim['end'] < 0) delete this._trim['end']
+    if (this._trim.start < 0) this._trim.start = 0
+    if (this._trim.end && this._trim.end < 0) delete this._trim.end
     return this
   }
 
@@ -112,47 +120,51 @@ class VideoClip {
    * Add a filter to the video clip
    *
    * @example
-   * 
+   *
    * ```
    * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
    * clip.filter('fadein', { duration: 3, color: 'black' })
    * ```
    */
-  filter (name: string, options: object): VideoClip {
+  filter(name: string, options: object): VideoClip {
     this._filters.push({ name, options: options || {} })
     return this
-  } 
+  }
 
   /**
-  * Send your video clip to the API to be encoded
-  *
-  * @example
-  * 
-  * ```
-  * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
-  * const response = await clip.encode()
-  * ```
-  * 
-  */
-  async encode (): Promise<EncodeResponse | FetchError> {
-    let config = this.generateConfig()
+   * Send your video clip to the API to be encoded
+   *
+   * @example
+   *
+   * ```
+   * const clip = videos.fromClip(fs.createReadStream('./files/video.mp4'))
+   * const response = await clip.encode()
+   * ```
+   *
+   */
+  async encode(): Promise<EncodeResponse | FetchError> {
+    const config = this.generateConfig()
     this._form.append('config', JSON.stringify(config))
     try {
-      const response = await this._api.post(`videos/clip`, { body: this._form }, true)
+      const response = await this._api.post(
+        'videos/clip',
+        { body: this._form },
+        true
+      )
       return response
     } catch (error) {
-      throw(error.message)
+      throw error.message
     }
   }
 
-  protected generateConfig () : ClipEncodeConfig { 
-    let clip = { id: this._id, filters: this._filters }
-    let options = {  ...this._options }
-    if(this._trim) clip['trim'] = this._trim
-    if(this._resolution) clip['resolution'] = this._resolution
-    clip['volume'] = this._volume
-    const config : ClipEncodeConfig = { ...options, layers: this._layers, clip  }
-    return config 
+  protected generateConfig(): ClipEncodeConfig {
+    const clip = { id: this._id, filters: this._filters }
+    const options = { ...this._options }
+    if (this._trim) clip.trim = this._trim
+    if (this._resolution) clip.resolution = this._resolution
+    clip.volume = this._volume
+    const config: ClipEncodeConfig = { ...options, layers: this._layers, clip }
+    return config
   }
 }
 

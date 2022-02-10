@@ -26,7 +26,12 @@ class Editframe {
    * Constructs a new instance of an Editframe client.
    * @param configuration options
    */
-  constructor({ clientId, host = "https://api.editframe.com", token, version = 2 }: EditframeConfig) {
+  constructor({
+    clientId,
+    host = 'https://api.editframe.com',
+    token,
+    version = 2
+  }: EditframeConfig) {
     this._clientId = clientId
     this._host = host
     this._token = token
@@ -37,19 +42,19 @@ class Editframe {
     this.Video = this.videos
   }
 
-  public get clientId() : string {
+  public get clientId(): string {
     return this._clientId
   }
 
-  public get host() : string {
+  public get host(): string {
     return this._host
   }
 
-  public get token() : string {
+  public get token(): string {
     return this._token
   }
 
-  public get version() : number {
+  public get version(): number {
     return this._version
   }
 }

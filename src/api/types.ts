@@ -10,7 +10,7 @@ export type ApiOptions = {
 export enum ApiReadyStates {
   'NOT_READY',
   'READY',
-  'INITIALIZED',
+  'INITIALIZED'
 }
 
 export type ApiHeaders = Record<string, string> & {
