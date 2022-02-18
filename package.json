@@ -1,6 +1,6 @@
 {
   "name": "@editframe/editframe-js",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Node library for interacting with the Editframe API.",
   "repository": {
     "type": "git",
