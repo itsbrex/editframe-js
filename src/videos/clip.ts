@@ -1,8 +1,8 @@
 import Api from 'api/api'
 import FetchError from 'api/Error'
 import { uuid } from 'shared/utils'
-import { ClipRequestOptions, ClipEncodeConfig } from 'types/clip'
-import { Size } from 'types/common'
+import { ClipObject, ClipRequestOptions, ClipEncodeConfig } from 'types/clip'
+import { Size, Timing } from 'types/common'
 import { VideoLayer } from 'types/video'
 const FormData = require('form-data')
 
@@ -20,7 +20,7 @@ class VideoClip {
   protected _resolution: Size
   protected _options: ClipRequestOptions
   protected _source: any
-  protected _trim: { start: number; end?: number }
+  protected _trim: Timing
   protected _volume: number
 
   /**
@@ -158,7 +158,7 @@ class VideoClip {
   }
 
   protected generateConfig(): ClipEncodeConfig {
-    const clip = { id: this._id, filters: this._filters }
+    const clip : ClipObject = { id: this._id, filters: this._filters }
     const options = { ...this._options }
     if (this._trim) clip.trim = this._trim
     if (this._resolution) clip.resolution = this._resolution

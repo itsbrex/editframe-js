@@ -1,4 +1,4 @@
-import { Resolution } from './common'
+import { Resolution, Timing } from './common'
 import { VideoLayer } from './video'
 
 /* eslint-disable camelcase */
@@ -8,8 +8,16 @@ export type ClipRequestOptions = {
   title?: string
 }
 
+export type ClipObject = {
+  id: string
+  filters: any[]
+  resolution?: Resolution
+  trim?: Timing
+  volume?: number
+}
+
 export type ClipEncodeConfig = ClipRequestOptions & {
-  clip: { id: any; resolution?: Resolution; volume?: number }
+  clip: ClipObject
   layers: Array<VideoLayer>
 }
 /* eslint-enable camelcase */

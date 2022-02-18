@@ -13,5 +13,10 @@ export type Size = {
   height?: number
 }
 
+export type Timing = {
+  start?: number
+  end?: number
+}
+
 export type Resolution = Size
 /* eslint-enable camelcase */

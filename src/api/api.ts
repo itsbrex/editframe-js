@@ -45,7 +45,7 @@ class Api {
 
   private _getHeaders(): ApiHeaders {
     const { clientId, token } = this._options
-    const headers = {
+    const headers : ApiHeaders = {
       'User-Agent': 'editframe.js/1.0'
     }
     if (clientId) {
