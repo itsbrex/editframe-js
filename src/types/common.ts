@@ -9,8 +9,13 @@ export type Timestamped = {
 }
 
 export type Size = {
-  width?: Number
-  height?: Number
+  width?: number
+  height?: number
+}
+
+export type Timing = {
+  start?: number
+  end?: number
 }
 
 export type Resolution = Size

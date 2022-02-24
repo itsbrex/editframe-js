@@ -1,6 +1,5 @@
 # dependencies
 node_modules
-example/node_modules
 
 # builds
 build
@@ -20,5 +19,4 @@ yarn-debug.log*
 yarn-error.log*
 
 *.tgz
-example/files
-example/dev
+dev

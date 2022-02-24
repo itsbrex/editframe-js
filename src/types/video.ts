@@ -1,19 +1,24 @@
 /* eslint-disable camelcase */
 import { Hashided, Size, Timestamped } from './common'
 
-export type Video = Hashided & Timestamped & {
-  title: string
-}
+export type Video = Hashided &
+  Timestamped & {
+    duration?: number
+    download_url?: string
+    is_ready: boolean
+    metadata: object
+    stream_url?: string
+    thumbnail_url?: string
+    timestamp: number
+  }
 
 export type VideoOptions = {
   aspectRatio?: string
-  backgroundColor: string
-  description?: string
+  backgroundColor?: string
   resolution?: string | Size
-  duration: number | string 
+  duration: number | string
   hd?: boolean
   metadata?: object
-  title?: string
 }
 
 export type LayerHorizontalAlignment = 'left' | 'center' | 'right'
@@ -22,7 +27,7 @@ export type LayerFormat = 'fill' | 'fit' | 'stretch'
 export type WaveformLayerStyle = 'wave' | 'line'
 
 export type BaseLayer = {
-  start?: number 
+  start?: number
   end?: number
 }
 
@@ -32,12 +37,17 @@ export type LayerAlignment = {
 }
 
 export type LayerColors = {
-  color?: string 
+  color?: string
   backgroundColor?: string
 }
 
+export type LayerCoordinates = {
+  x?: number
+  y?: number
+}
+
 export type LayerShape = Size & {
-  x?: number 
+  x?: number
   y?: number | string
   format?: LayerFormat
 }
@@ -52,18 +62,27 @@ export type LayerText = {
   textAlignment?: LayerHorizontalAlignment
 }
 
-export type AudioLayer = BaseLayer 
+export type AudioLayer = BaseLayer
 export type ImageLayer = BaseLayer & LayerShape
+export type LottieLayer = BaseLayer & Size & LayerCoordinates
 export type TextLayer = BaseLayer & LayerAlignment & LayerShape & LayerText
 export type VideoLayer = BaseLayer & LayerShape
 
-export type WaveformLayer = LayerColors & LayerShape & {
-  style? : string
-}
+export type WaveformLayer = LayerColors &
+  LayerShape & {
+    style?: string
+  }
 
-export type ComposableLayer = AudioLayer | ImageLayer | TextLayer | VideoLayer | WaveformLayer & {
-  type: string
-}
+export type ComposableLayer =
+  | AudioLayer
+  | ImageLayer
+  | LottieLayer
+  | TextLayer
+  | VideoLayer
+  | (WaveformLayer & {
+      data?: string
+      type: string
+    })
 
 export type Layer = ComposableLayer & {
   id: string

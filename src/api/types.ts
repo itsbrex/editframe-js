@@ -2,6 +2,7 @@ import { FetchOptions } from './fetch'
 
 export type ApiOptions = {
   clientId: string
+  host?: string
   token: string
   version?: number
 }
@@ -9,7 +10,7 @@ export type ApiOptions = {
 export enum ApiReadyStates {
   'NOT_READY',
   'READY',
-  'INITIALIZED',
+  'INITIALIZED'
 }
 
 export type ApiHeaders = Record<string, string> & {
