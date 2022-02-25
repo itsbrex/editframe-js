@@ -15,7 +15,7 @@ export class Media {
     return this._id
   }
 
-  setTrim<T extends typeof Media>(this: T, trim: Trim): InstanceType<T> {
+  setTrim(trim: Trim): this {
     const error = validatePresenceOf({
       errorMessage: ValidationErrorText.REQUIRED_FIELD(LayerAttribute.start),
       value: trim.start,
@@ -28,7 +28,7 @@ export class Media {
     const { end } = trim
     const start = trim.start < 0 ? 0 : trim.start
 
-    this._updateAttribute<T>(LayerAttribute.start, start)
+    this._updateAttribute(LayerAttribute.start, start)
 
     if (end) {
       this._updateAttribute(LayerAttribute.end, end)
@@ -37,11 +37,7 @@ export class Media {
     return this
   }
 
-  _updateAttribute<T extends typeof Media>(
-    this: T,
-    layerAttribute: LayerAttribute,
-    value: LayerAttributeValue
-  ): InstanceType<T> {
+  _updateAttribute(layerAttribute: LayerAttribute, value: LayerAttributeValue): this {
     this._composition.updateLayerAttribute(this._id, layerAttribute, value)
 
     return this

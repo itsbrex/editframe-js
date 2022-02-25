@@ -12,6 +12,7 @@ import {
   ImageLayer,
   Layer,
   LayerAttribute,
+  LayerAttributeValue,
   LayerType,
   Routes,
   TextLayer,
@@ -94,7 +95,7 @@ export class Composition implements CompositionInterface {
     return this
   }
 
-  public addImage(file: Blob | string, options: ImageLayer): Composition {
+  public addImage(file: Blob | string, options: ImageLayer): Video {
     const error = validatePresenceOf({ errorMessage: MediaErrorText.invalidFileSource, value: file })
 
     if (error) {
@@ -105,7 +106,7 @@ export class Composition implements CompositionInterface {
 
     this._files.push({ file, id: layer.id })
 
-    return this
+    return new Video({ composition: this, id: layer.id })
   }
 
   public addText(options: TextLayer): Composition {
@@ -193,7 +194,7 @@ export class Composition implements CompositionInterface {
     return newLayer
   }
 
-  updateLayerAttribute(id: string, layerAttribute: LayerAttribute, value: number | string): void {
+  updateLayerAttribute(id: string, layerAttribute: LayerAttribute, value: LayerAttributeValue): void {
     const newLayer = { ...this.layer(id) }
 
     newLayer[layerAttribute] = value

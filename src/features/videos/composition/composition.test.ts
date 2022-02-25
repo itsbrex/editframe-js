@@ -170,6 +170,12 @@ describe('Composition', () => {
         ...imageOptions,
       })
     })
+
+    it('returns a `Video` object', () => {
+      const image = composition.addImage(filenames.image, imageOptions)
+
+      expect(image instanceof Video).toBe(true)
+    })
   })
 
   describe('addText', () => {

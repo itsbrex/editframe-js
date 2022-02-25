@@ -1,43 +1,14 @@
-import { CompositionInterface, LayerAttribute, LayerAttributeValue, Trim } from 'constant'
+import { CompositionInterface, LayerAttribute } from 'constant'
+import { Media } from 'features/videos/media'
 import { ValidationErrorText } from 'strings'
 import { validatePresenceOf } from 'utils'
 
-export class Audio {
-  private _composition: CompositionInterface
-  private _id: string
-
+export class Audio extends Media {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
-    this._composition = composition
-    this._id = id
+    super({ composition, id })
   }
 
-  get id(): string {
-    return this._id
-  }
-
-  setTrim(trim: Trim): Audio {
-    const error = validatePresenceOf({
-      errorMessage: ValidationErrorText.REQUIRED_FIELD(LayerAttribute.start),
-      value: trim.start,
-    })
-
-    if (error) {
-      throw new Error(error)
-    }
-
-    const { end } = trim
-    const start = trim.start < 0 ? 0 : trim.start
-
-    this._updateAttribute(LayerAttribute.start, start)
-
-    if (end) {
-      this._updateAttribute(LayerAttribute.end, end)
-    }
-
-    return this
-  }
-
-  setVolume(volume: number): Audio {
+  setVolume(volume: number): this {
     const error = validatePresenceOf({
       errorMessage: ValidationErrorText.REQUIRED_FIELD(LayerAttribute.volume),
       value: volume,
@@ -58,13 +29,7 @@ export class Audio {
     return this._updateAttribute(LayerAttribute.volume, newVolume)
   }
 
-  setMuted(): Audio {
+  setMuted(): this {
     return this._updateAttribute(LayerAttribute.volume, 0)
-  }
-
-  _updateAttribute(layerAttribute: LayerAttribute, value: LayerAttributeValue): Audio {
-    this._composition.updateLayerAttribute(this._id, layerAttribute, value)
-
-    return this
   }
 }

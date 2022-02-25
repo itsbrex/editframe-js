@@ -31,37 +31,6 @@ describe('Audio', () => {
     expect(audio.id).toEqual(id)
   })
 
-  describe('setTrim', () => {
-    const start = 10
-    const end = 20
-
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validatePresenceOfSpy.mockReturnValue(error)
-      })
-
-      it('throws an error', () => {
-        expect(() => audio.setTrim({ end })).toThrow(error)
-      })
-    })
-
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      audio.setTrim({ start })
-
-      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.start, start)
-      expect(compositionMock.updateLayerAttribute).not.toHaveBeenCalledWith(id, LayerAttribute.end)
-    })
-
-    describe('when an `end` argument is provided', () => {
-      it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-        audio.setTrim({ end, start })
-
-        expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.start, start)
-        expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.end, end)
-      })
-    })
-  })
-
   describe('setVolume', () => {
     describe('when `validatePresenceOf` returns an error', () => {
       beforeEach(() => {
