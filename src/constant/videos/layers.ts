@@ -1,4 +1,4 @@
-import { Filter } from 'constant/filters'
+import { Filter } from 'constant/videos/filters'
 
 export enum LayerAttribute {
   backgroundColor = 'backgroundColor',

@@ -8,6 +8,7 @@ import {
   LayerType,
   Routes,
 } from 'constant'
+import { Audio } from 'features/videos/audio'
 import { Video } from 'features/videos/video'
 import { mockApi } from 'mocks'
 import { VideoErrorText } from 'strings'
@@ -100,6 +101,12 @@ describe('Composition', () => {
         type: LayerType.audio,
         ...audioOptions,
       })
+    })
+
+    it('returns an `Audio` object', () => {
+      const audio = composition.addAudio(filenames.audio, videoOptions)
+
+      expect(audio instanceof Audio).toBe(true)
     })
   })
 

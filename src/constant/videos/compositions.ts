@@ -1,5 +1,5 @@
-import { Filter } from 'constant/filters'
-import { Layer, LayerAttribute, Size } from 'constant/layers'
+import { Filter } from 'constant/videos/filters'
+import { Layer, LayerAttribute, Size } from 'constant/videos/layers'
 
 export type LayerAttributeValue = number | string | Filter
 

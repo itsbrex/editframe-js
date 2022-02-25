@@ -18,6 +18,7 @@ import {
   VideoLayer,
   WaveformLayer,
 } from 'constant'
+import { Audio } from 'features/videos/audio'
 import { Video } from 'features/videos/video'
 import { MediaErrorText, VideoErrorText } from 'strings'
 import { formDataKey, isEncodeResponse, uuid, validateFilter, validatePresenceOf } from 'utils'
@@ -61,7 +62,7 @@ export class Composition implements CompositionInterface {
     return this._layers.find((layer) => layer.id && layer.id === id)
   }
 
-  public addAudio(file: Blob | string, options: AudioLayer = {}): Composition {
+  public addAudio(file: Blob | string, options: AudioLayer = {}): Audio {
     const error = validatePresenceOf({ errorMessage: MediaErrorText.invalidFileSource, value: file })
 
     if (error) {
@@ -72,7 +73,7 @@ export class Composition implements CompositionInterface {
 
     this._files.push({ file, id: layer.id })
 
-    return this
+    return new Audio({ composition: this, id: layer.id })
   }
 
   public addFilter<FilterName extends keyof FilterOptions>({

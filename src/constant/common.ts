@@ -3,6 +3,10 @@ export enum PrimitiveType {
   undefined = 'undefined',
 }
 
+export enum MimeType {
+  json = 'application/json',
+}
+
 export type Hashided = {
   id: string
 }
