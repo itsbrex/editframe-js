@@ -1,7 +1,7 @@
 import FormData from 'form-data'
 
-import { Routes, Video } from 'constant'
-import * as VideoBuilderModule from 'features/videos/videoBuilder'
+import { ApiVideo, Routes } from 'constant'
+import * as CompositionModule from 'features/videos/composition'
 import { mockApi, mockVideo } from 'mocks'
 import { VideoErrorText } from 'strings'
 import { generatePath } from 'utils'
@@ -10,12 +10,12 @@ import { Videos } from './'
 
 describe('Videos', () => {
   const videoMock = mockVideo()
-  const videosMock: Video[] = [videoMock]
-  const videoBuilderMock = {}
+  const videosMock: ApiVideo[] = [videoMock]
+  const compositionMock = {}
 
   let apiMock = mockApi({ get: jest.fn().mockReturnValue(videosMock), post: jest.fn(), put: jest.fn() })
   let videos: Videos
-  let videoBuilderSpy: jest.SpyInstance
+  let compositionSpy: jest.SpyInstance
   let consoleErrorSpy: jest.SpyInstance
 
   beforeEach(() => {
@@ -91,24 +91,24 @@ describe('Videos', () => {
     })
   })
 
-  describe('build', () => {
+  describe('new', () => {
     beforeEach(() => {
-      videoBuilderSpy = jest
-        .spyOn(VideoBuilderModule, 'VideoBuilder')
-        .mockReturnValue(videoBuilderMock as VideoBuilderModule.VideoBuilder)
+      compositionSpy = jest
+        .spyOn(CompositionModule, 'Composition')
+        .mockReturnValue(compositionMock as CompositionModule.Composition)
 
       videos = new Videos(apiMock)
     })
 
-    it('returns an `VideoBuilder` instance instantiated with the correct arguments', () => {
+    it('returns an `Composition` instance instantiated with the correct arguments', () => {
       const options = {
         dimensions: { height: 100, width: 200 },
         duration: 100,
       }
 
-      videos.build(options)
+      videos.new(options)
 
-      expect(videoBuilderSpy).toHaveBeenCalledWith({ api: apiMock, formData: new FormData(), options })
+      expect(compositionSpy).toHaveBeenCalledWith({ api: apiMock, formData: new FormData(), options })
     })
   })
 })

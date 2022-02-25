@@ -1,6 +1,6 @@
-import { Application } from 'constant'
+import { ApiApplication } from 'constant'
 
-export const mockApplication = (): Application => ({
+export const mockApplication = (): ApiApplication => ({
   createdAt: 'created-at',
   description: 'description',
   id: 'id',

@@ -1,10 +1,14 @@
 import { Blob } from 'node:buffer'
 
-import { ValidationErrorText } from 'strings'
-
-export const validatePresenceOf = (value?: string | number | Blob, errorMessage?: string): string | undefined => {
+export const validatePresenceOf = ({
+  errorMessage,
+  value,
+}: {
+  errorMessage: string
+  value?: string | number | Blob
+}): string | undefined => {
   if (!value) {
-    return errorMessage || ValidationErrorText.REQUIRED_FIELD
+    return errorMessage || errorMessage
   }
 
   return undefined

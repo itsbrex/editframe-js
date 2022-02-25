@@ -1,6 +1,6 @@
-import { Video } from 'constant'
+import { ApiVideo } from 'constant'
 
-export const mockVideo = (): Video => ({
+export const mockVideo = (): ApiVideo => ({
   createdAt: 'createdAt',
   downloadUrl: 'download-url',
   duration: 100,

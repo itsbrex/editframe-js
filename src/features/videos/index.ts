@@ -1,10 +1,10 @@
 import FormData from 'form-data'
 
-import { ApiInterface, Routes, Video, VideoOptions } from 'constant'
+import { ApiInterface, ApiVideo, CompositionOptions, Routes } from 'constant'
 import { VideoErrorText } from 'strings'
 import { generatePath, isVideo, isVideos } from 'utils'
 
-import { VideoBuilder } from './videoBuilder'
+import { Composition } from './composition'
 
 export class Videos {
   private _api: ApiInterface
@@ -13,7 +13,7 @@ export class Videos {
     this._api = api
   }
 
-  public async all(): Promise<Video[]> {
+  public async all(): Promise<ApiVideo[]> {
     try {
       const videos = await this._api.get({ url: Routes.videos.all })
 
@@ -29,7 +29,7 @@ export class Videos {
     return []
   }
 
-  public async get(id: string): Promise<Video | undefined> {
+  public async get(id: string): Promise<ApiVideo | undefined> {
     try {
       const video = await this._api.get({ url: generatePath(Routes.videos.get, { id }) })
 
@@ -45,7 +45,7 @@ export class Videos {
     return undefined
   }
 
-  public build(options: VideoOptions): VideoBuilder {
-    return new VideoBuilder({ api: this._api, formData: new FormData(), options })
+  public new(options: CompositionOptions): Composition {
+    return new Composition({ api: this._api, formData: new FormData(), options })
   }
 }

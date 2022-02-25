@@ -48,3 +48,8 @@ export interface FilterOptions {
   [FilterName.sobel]: undefined
   [FilterName.vintage]: undefined
 }
+
+export type Filter = {
+  filterName: FilterName
+  options: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation | undefined
+}

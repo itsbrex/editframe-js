@@ -1,5 +1,6 @@
 import { mockApi } from './api'
-import { mockApplication } from './applications'
-import { mockVideo } from './videos'
+import { mockApplication } from './api/applications'
+import { mockVideo } from './api/videos'
+import { mockComposition } from './composition'
 
-export { mockApi, mockApplication, mockVideo }
+export { mockApi, mockComposition, mockApplication, mockVideo }

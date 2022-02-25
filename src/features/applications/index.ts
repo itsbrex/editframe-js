@@ -1,4 +1,4 @@
-import { ApiInterface, Application, Routes } from 'constant'
+import { ApiApplication, ApiInterface, Routes } from 'constant'
 import { ApplicationErrorText } from 'strings'
 import { generatePath, isApplication, isApplications } from 'utils'
 
@@ -9,7 +9,7 @@ export class Applications {
     this._api = api
   }
 
-  async all(): Promise<Application[]> {
+  async all(): Promise<ApiApplication[]> {
     try {
       const applications = await this._api.get({ url: Routes.applications.all })
 
@@ -25,7 +25,7 @@ export class Applications {
     return []
   }
 
-  async get(id: string): Promise<Application | undefined> {
+  async get(id: string): Promise<ApiApplication | undefined> {
     try {
       const application = await this._api.get({ url: generatePath(Routes.applications.get, { id }) })
 

@@ -1,4 +1,4 @@
-import { ApiInterface, Application, Routes } from 'constant'
+import { ApiApplication, ApiInterface, Routes } from 'constant'
 import { mockApplication } from 'mocks'
 import { ApplicationErrorText } from 'strings'
 import { generatePath } from 'utils'
@@ -7,7 +7,7 @@ import { Applications } from './'
 
 describe('Applications', () => {
   const applicationMock = mockApplication()
-  const applicationsMock: Application[] = [applicationMock]
+  const applicationsMock: ApiApplication[] = [applicationMock]
 
   let apiMock: ApiInterface = {
     get: jest.fn().mockReturnValue(applicationsMock),
