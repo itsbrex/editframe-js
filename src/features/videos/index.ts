@@ -2,7 +2,7 @@ import FormData from 'form-data'
 
 import { ApiInterface, ApiVideo, CompositionOptions, Routes } from 'constant'
 import { VideoErrorText } from 'strings'
-import { generatePath, isVideo, isVideos } from 'utils'
+import { generatePath, isVideo, isVideos, validateApiData } from 'utils'
 
 import { Composition } from './composition'
 
@@ -15,13 +15,12 @@ export class Videos {
 
   public async all(): Promise<ApiVideo[]> {
     try {
-      const videos = await this._api.get({ url: Routes.videos.all })
+      const data = await this._api.get({ url: Routes.videos.all })
 
-      if (videos && isVideos(videos)) {
-        return videos
-      }
-
-      throw new Error(VideoErrorText.malformedResponse)
+      return validateApiData<ApiVideo[]>(data, {
+        invalidDataError: VideoErrorText.malformedResponse,
+        validate: isVideos,
+      })
     } catch (error) {
       console.error(VideoErrorText.get(error.message))
     }
@@ -31,13 +30,12 @@ export class Videos {
 
   public async get(id: string): Promise<ApiVideo | undefined> {
     try {
-      const video = await this._api.get({ url: generatePath(Routes.videos.get, { id }) })
+      const data = await this._api.get({ url: generatePath(Routes.videos.get, { id }) })
 
-      if (video && isVideo(video)) {
-        return video
-      }
-
-      throw new Error(VideoErrorText.malformedResponse)
+      return validateApiData<ApiVideo>(data, {
+        invalidDataError: VideoErrorText.malformedResponse,
+        validate: isVideo,
+      })
     } catch (error) {
       console.error(VideoErrorText.get(error.message))
     }

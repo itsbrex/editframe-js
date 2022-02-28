@@ -1,6 +1,6 @@
 import { ApiApplication, ApiInterface, Routes } from 'constant'
 import { ApplicationErrorText } from 'strings'
-import { generatePath, isApplication, isApplications } from 'utils'
+import { generatePath, isApplication, isApplications, validateApiData } from 'utils'
 
 export class Applications {
   private _api: ApiInterface
@@ -11,13 +11,12 @@ export class Applications {
 
   async all(): Promise<ApiApplication[]> {
     try {
-      const applications = await this._api.get({ url: Routes.applications.all })
+      const data = await this._api.get({ url: Routes.applications.all })
 
-      if (applications && isApplications(applications)) {
-        return applications
-      }
-
-      throw new Error(ApplicationErrorText.malformedResponse)
+      return validateApiData<ApiApplication[]>(data, {
+        invalidDataError: ApplicationErrorText.malformedResponse,
+        validate: isApplications,
+      })
     } catch (error) {
       console.error(ApplicationErrorText.get(error.message))
     }
@@ -27,13 +26,12 @@ export class Applications {
 
   async get(id: string): Promise<ApiApplication | undefined> {
     try {
-      const application = await this._api.get({ url: generatePath(Routes.applications.get, { id }) })
+      const data = await this._api.get({ url: generatePath(Routes.applications.get, { id }) })
 
-      if (application && isApplication(application)) {
-        return application
-      }
-
-      throw new Error(ApplicationErrorText.malformedResponse)
+      return validateApiData<ApiApplication>(data, {
+        invalidDataError: ApplicationErrorText.malformedResponse,
+        validate: isApplication,
+      })
     } catch (error) {
       console.error(ApplicationErrorText.get(error.message))
     }

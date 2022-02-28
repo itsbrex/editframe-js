@@ -22,7 +22,7 @@ import {
 import { Audio } from 'features/videos/audio'
 import { Video } from 'features/videos/video'
 import { MediaErrorText, VideoErrorText } from 'strings'
-import { formDataKey, isEncodeResponse, uuid, validateFilter, validatePresenceOf } from 'utils'
+import { formDataKey, isEncodeResponse, uuid, validateApiData, validateFilter, validatePresenceOf } from 'utils'
 
 export class Composition implements CompositionInterface {
   private _api: ApiInterface
@@ -145,13 +145,12 @@ export class Composition implements CompositionInterface {
     this._generateConfig()
 
     try {
-      const encodeResponse = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
+      const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
-      if (encodeResponse && isEncodeResponse(encodeResponse)) {
-        return encodeResponse
-      }
-
-      throw new Error(VideoErrorText.malformedEncodingResponse)
+      return validateApiData<EncodeResponse>(data, {
+        invalidDataError: VideoErrorText.malformedEncodingResponse,
+        validate: isEncodeResponse,
+      })
     } catch (error) {
       console.error(VideoErrorText.errorEncoding(error.message))
 

@@ -4,7 +4,7 @@ import { validateFilter } from './filters'
 import { urlOrFile } from './forms'
 import { generatePath } from './paths'
 import { uuid } from './strings'
-import { validatePresenceOf } from './validation'
+import { validateApiData, validatePresenceOf } from './validation'
 import { formDataKey, isEncodeResponse, isVideo, isVideos } from './videos'
 
 export {
@@ -20,6 +20,7 @@ export {
   makeHeaders,
   urlOrFile,
   uuid,
+  validateApiData,
   validateFilter,
   validatePresenceOf,
 }
