@@ -22,7 +22,7 @@ export class Videos {
         validate: isVideos,
       })
     } catch (error) {
-      console.error(VideoErrorText.get(error.message))
+      console.error(VideoErrorText.all(error.message))
     }
 
     return []

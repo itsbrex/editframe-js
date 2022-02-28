@@ -11,7 +11,7 @@ import {
 import { Audio } from 'features/videos/audio'
 import { Video } from 'features/videos/video'
 import { mockApi } from 'mocks'
-import { VideoErrorText } from 'strings'
+import { CompositionErrorText } from 'strings'
 import { formDataKey } from 'utils'
 import * as FilterUtilsModule from 'utils/filters'
 import * as StringsUtilsModule from 'utils/strings'
@@ -75,6 +75,34 @@ describe('Composition', () => {
     jest.spyOn(StringsUtilsModule, 'uuid').mockReturnValue(uuidMock)
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateFilterSpy = jest.spyOn(FilterUtilsModule, 'validateFilter')
+  })
+
+  describe('initialization', () => {
+    it('throws an error if `duration` or `dimensions` are not provided', () => {
+      expect(() => new Composition({ api: apiMock, formData: formDataMock, options: {} as any })).toThrow(
+        new Error(
+          CompositionErrorText.validationOptionsError(
+            `${CompositionErrorText.dimensionsRequired}, ${CompositionErrorText.durationRequired}`
+          )
+        )
+      )
+    })
+
+    describe('when a `videoFile` is provided in the options', () => {
+      it('creates a video layer from the provided `videoFile`', () => {
+        const composition = new Composition({
+          api: apiMock,
+          formData: formDataMock,
+          options: {
+            dimensions: { height: 1080, width: 1920 },
+            duration: 10,
+            videoFile: filenames[LayerType.video],
+          } as any,
+        })
+
+        expect(composition.layers).toEqual([{ id: uuidMock, type: LayerType.video }])
+      })
+    })
   })
 
   describe('addAudio', () => {
@@ -268,7 +296,7 @@ describe('Composition', () => {
         await composition.encode()
 
         expect(consoleErrorSpy).toHaveBeenCalledWith(
-          VideoErrorText.errorEncoding(VideoErrorText.malformedEncodingResponse)
+          CompositionErrorText.errorEncoding(CompositionErrorText.malformedEncodingResponse)
         )
       })
     })

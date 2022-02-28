@@ -1,6 +1,4 @@
-import { Blob } from 'node:buffer'
+import { CompositionFile, PrimitiveType } from 'constant'
 
-import { PrimitiveType } from 'constant'
-
-export const urlOrFile = (eitherBlobOrString: Blob | string): string =>
+export const urlOrFile = (eitherBlobOrString: CompositionFile): string =>
   typeof eitherBlobOrString === PrimitiveType.string ? 'url' : 'file'

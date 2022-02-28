@@ -1,9 +1,5 @@
 export const VideoErrorText = {
-  aspectRatioDimensionsRequired: 'Either `aspectRatio` or `dimensions` must be provided',
-  durationRequired: '`duration` must be provided',
-  errorEncoding: (error: string): string => `Error encoding video: ${error}`,
-  get: (message: string): string => `Error getting videos: ${message}`,
-  malformedEncodingResponse: 'malformed `encoding` response',
+  all: (message: string): string => `Error getting videos: ${message}`,
+  get: (message: string): string => `Error getting video: ${message}`,
   malformedResponse: 'malformed `videos` response',
-  textRequired: '`text` field required',
 }

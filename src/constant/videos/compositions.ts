@@ -1,3 +1,5 @@
+import { Blob } from 'node:buffer'
+
 import { Filter } from 'constant/videos/filters'
 import { Layer, LayerAttribute, Size } from 'constant/videos/layers'
 
@@ -9,13 +11,14 @@ export interface CompositionInterface {
   updateLayerAttribute: (id: string, layerAttribute: LayerAttribute, value: LayerAttributeValue) => void
 }
 
+export type CompositionFile = Blob | string
+
 export type CompositionOptions = {
-  aspectRatio?: Size
   backgroundColor?: string
-  dimensions?: Size
+  dimensions: Size
   duration: number
-  isHD?: boolean
   metadata?: Record<string, unknown>
+  videoFile?: CompositionFile
 }
 
 export type EncodeConfig = CompositionOptions & {

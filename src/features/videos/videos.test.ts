@@ -46,7 +46,7 @@ describe('Videos', () => {
 
       it('logs the correct error to the console', async () => {
         await videos.all()
-        expect(consoleErrorSpy).toHaveBeenCalledWith(VideoErrorText.get(VideoErrorText.malformedResponse))
+        expect(consoleErrorSpy).toHaveBeenCalledWith(VideoErrorText.all(VideoErrorText.malformedResponse))
       })
 
       it('returns an empty array', async () => {

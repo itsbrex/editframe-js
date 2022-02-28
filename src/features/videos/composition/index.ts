@@ -1,9 +1,8 @@
-import { Blob } from 'node:buffer'
-
 import {
   ApiInterface,
   AudioLayer,
   ComposableLayer,
+  CompositionFile,
   CompositionInterface,
   CompositionOptions,
   EncodeResponse,
@@ -21,13 +20,13 @@ import {
 } from 'constant'
 import { Audio } from 'features/videos/audio'
 import { Video } from 'features/videos/video'
-import { MediaErrorText, VideoErrorText } from 'strings'
+import { CompositionErrorText, MediaErrorText } from 'strings'
 import { formDataKey, isEncodeResponse, uuid, validateApiData, validateFilter, validatePresenceOf } from 'utils'
 
 export class Composition implements CompositionInterface {
   private _api: ApiInterface
   private _files: {
-    file: string | Blob
+    file: CompositionFile
     id: string
   }[]
   private _formData: FormDataInterface
@@ -51,7 +50,11 @@ export class Composition implements CompositionInterface {
     const errors = this._validateOptions()
 
     if (errors.length > 0) {
-      throw new Error(`Error: ${errors.join(', ')}`)
+      throw new Error(CompositionErrorText.validationOptionsError(errors.join(', ')))
+    }
+
+    if (this._options.videoFile) {
+      this.addVideo(this._options.videoFile)
     }
   }
 
@@ -63,7 +66,7 @@ export class Composition implements CompositionInterface {
     return this._layers.find((layer) => layer.id && layer.id === id)
   }
 
-  public addAudio(file: Blob | string, options: AudioLayer = {}): Audio {
+  public addAudio(file: CompositionFile, options: AudioLayer = {}): Audio {
     const error = validatePresenceOf({ errorMessage: MediaErrorText.invalidFileSource, value: file })
 
     if (error) {
@@ -95,7 +98,7 @@ export class Composition implements CompositionInterface {
     return this
   }
 
-  public addImage(file: Blob | string, options: ImageLayer): Video {
+  public addImage(file: CompositionFile, options: ImageLayer): Video {
     const error = validatePresenceOf({ errorMessage: MediaErrorText.invalidFileSource, value: file })
 
     if (error) {
@@ -110,7 +113,7 @@ export class Composition implements CompositionInterface {
   }
 
   public addText(options: TextLayer): Composition {
-    const error = validatePresenceOf({ errorMessage: VideoErrorText.textRequired, value: options.text })
+    const error = validatePresenceOf({ errorMessage: CompositionErrorText.textRequired, value: options.text })
 
     if (error) {
       throw new Error(error)
@@ -121,7 +124,7 @@ export class Composition implements CompositionInterface {
     return this
   }
 
-  public addVideo(file: Blob | string, options: VideoLayer): Video {
+  public addVideo(file: CompositionFile, options: VideoLayer = {}): Video {
     const error = validatePresenceOf({ errorMessage: MediaErrorText.invalidFileSource, value: file })
 
     if (error) {
@@ -148,27 +151,27 @@ export class Composition implements CompositionInterface {
       const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
       return validateApiData<EncodeResponse>(data, {
-        invalidDataError: VideoErrorText.malformedEncodingResponse,
+        invalidDataError: CompositionErrorText.malformedEncodingResponse,
         validate: isEncodeResponse,
       })
     } catch (error) {
-      console.error(VideoErrorText.errorEncoding(error.message))
+      console.error(CompositionErrorText.errorEncoding(error.message))
 
       return undefined
     }
   }
 
   private _validateOptions(): string[] {
-    const { aspectRatio, dimensions, duration } = this._options
+    const { dimensions, duration } = this._options
 
     const errors = []
 
-    if (!aspectRatio && !dimensions) {
-      errors.push(VideoErrorText.aspectRatioDimensionsRequired)
+    if (!dimensions) {
+      errors.push(CompositionErrorText.dimensionsRequired)
     }
 
     if (!duration) {
-      errors.push(VideoErrorText.durationRequired)
+      errors.push(CompositionErrorText.durationRequired)
     }
 
     return errors

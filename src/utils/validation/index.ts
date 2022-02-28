@@ -1,6 +1,4 @@
-import { Blob } from 'node:buffer'
-
-import { ApiDataValidator } from 'constant'
+import { ApiDataValidator, CompositionFile } from 'constant'
 
 export const validateApiData = <DataType>(data: unknown, validator: ApiDataValidator<DataType>): DataType => {
   if (data && validator.validate(data)) {
@@ -15,7 +13,7 @@ export const validatePresenceOf = ({
   value,
 }: {
   errorMessage: string
-  value?: string | number | Blob
+  value?: string | number | CompositionFile
 }): string | undefined => {
   if (!value) {
     return errorMessage || errorMessage
