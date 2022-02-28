@@ -1,3 +1,4 @@
+import { ApiErrorText } from './api'
 import { ApplicationErrorText } from './applications'
 import { CompositionErrorText } from './compositions'
 import { EditframeErrorText } from './editframe'
@@ -7,6 +8,7 @@ import { ValidationErrorText } from './validation'
 import { VideoErrorText } from './videos'
 
 export {
+  ApiErrorText,
   ApplicationErrorText,
   CompositionErrorText,
   EditframeErrorText,

@@ -26,7 +26,7 @@ export interface ApiInterface {
 
 export type ApiOptions = {
   clientId: string
-  fetch: MakeRequest
+  fetch: FetchFunction
   host?: string
   token: string
   version?: number
@@ -62,7 +62,7 @@ export interface FormDataInterface {
   append: (key: string, value: any, options?: FormData.AppendOptions | string) => void
 }
 
-export type FetchOptions = Omit<RequestInit, 'headers'> & HeaderOption
+export type FetchOptions = Omit<RequestInit, 'headers'> & HeaderOption & { url: string }
 
 export enum HTTPMethod {
   delete = 'delete',
@@ -71,9 +71,13 @@ export enum HTTPMethod {
   put = 'put',
 }
 
-export type MakeRequest = (args: {
+export type Fetcher = (options?: FetchOptions) => Promise<Response>
+
+export type FetchFunction = (args: {
   data?: any
   headers?: ApiHeaders
   method?: HTTPMethod
   url: string
 }) => Promise<unknown>
+
+export type MakeFetchFunction = (fetcher: Fetcher) => FetchFunction

@@ -1,5 +1,5 @@
 import * as ApiModule from 'api'
-import { MakeRequest } from 'constant'
+import { FetchFunction } from 'constant'
 import * as ApplicationsModule from 'features/applications'
 import * as VideosModule from 'features/videos'
 import { EditframeErrorText } from 'strings'
@@ -35,7 +35,7 @@ describe('Editframe', () => {
 
     beforeEach(() => {
       apiSpy = jest.spyOn(ApiModule, 'Api').mockReturnValue(apiMock as ApiModule.Api)
-      initializeFetchSpy = jest.spyOn(ApiUtilsModule, 'initializeFetchUtil').mockReturnValue(fetchMock as MakeRequest)
+      initializeFetchSpy = jest.spyOn(ApiUtilsModule, 'initializeFetchUtil').mockReturnValue(fetchMock as FetchFunction)
       applicationsSpy = jest.spyOn(ApplicationsModule, 'Applications')
       videosSpy = jest.spyOn(VideosModule, 'Videos')
       editframe = new Editframe({ clientId, host, token, version })

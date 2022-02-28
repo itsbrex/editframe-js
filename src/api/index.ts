@@ -1,11 +1,11 @@
 import FormData from 'form-data'
 
-import { ApiInterface, ApiOptions, HTTPMethod, MakeRequest } from 'constant'
+import { ApiInterface, ApiOptions, FetchFunction, HTTPMethod } from 'constant'
 import { makeHeaders } from 'utils'
 
 export class Api implements ApiInterface {
   private _options: ApiOptions
-  private _fetch: MakeRequest
+  private _fetch: FetchFunction
 
   constructor(options: ApiOptions) {
     this._options = { ...options }

@@ -1,18 +1,27 @@
 import camelCaseKeys from 'camelcase-keys'
 import fetch from 'cross-fetch'
 
-import { ApiHeaderKey, ApiHeaderValue, ApiHeaders, FetchOptions, HTTPMethod, MakeRequest, MimeType } from 'constant'
+import { ApiHeaderKey, ApiHeaderValue, ApiHeaders, FetchFunction, Fetcher, MakeFetchFunction, MimeType } from 'constant'
+import { ApiErrorText } from 'strings'
 
 import { version } from '../../../package.json'
 
-export const initializeFetchUtil = (baseURL: string): MakeRequest => {
-  const fetchMethods = makeFetchMethods({ baseURL })
+export const baseURL = (host: string, version: number): string => `${host}/v${version}`
 
-  return async ({ data, headers, method = HTTPMethod.get, url }): Promise<unknown> => {
-    const response = await fetchMethods[method]({ body: data, headers, url })
+export const initializeFetchUtil = (baseUrl: string): FetchFunction => makeRequest(makeFetcher(baseUrl))
+
+const makeFetcher =
+  (baseUrl: string): Fetcher =>
+  (options) =>
+    options.url.startsWith('/') ? fetch(`${baseUrl}${options.url}`, options) : fetch(options.url, options)
+
+export const makeRequest: MakeFetchFunction =
+  (fetcher) =>
+  async ({ data, headers, method, url }) => {
+    const response = await fetcher({ body: data, headers, method, url })
 
     if (!response.ok) {
-      throw new Error(`${response.url} - ${response.statusText}`)
+      throw new Error(ApiErrorText.requestUnsuccessful(response.url, response.statusText))
     }
 
     const json = await response.json()
@@ -24,24 +33,6 @@ export const initializeFetchUtil = (baseURL: string): MakeRequest => {
 
     return camelCasedJson
   }
-}
-
-const makeFetchMethods = ({
-  baseURL,
-}: {
-  baseURL: string
-}): Record<string, (args: { body?: any; headers?: ApiHeaders; url: string }) => Promise<Response>> => {
-  const fetcher = (url: string, options?: FetchOptions) =>
-    url.startsWith('/') ? fetch(`${baseURL}${url}`, options) : fetch(url, options)
-
-  return {
-    [HTTPMethod.get]: async ({ headers, url }) => fetcher(url, { headers }),
-    [HTTPMethod.post]: async ({ body, headers, url }) => fetcher(url, { body, headers, method: HTTPMethod.post }),
-    [HTTPMethod.put]: async ({ body, headers, url }) => fetcher(url, { body, headers, method: HTTPMethod.put }),
-  }
-}
-
-export const baseURL = (host: string, version: number): string => `${host}/v${version}`
 
 export const makeHeaders = ({
   clientId,
