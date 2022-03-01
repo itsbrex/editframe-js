@@ -1,11 +1,11 @@
 import { AudioMethod, CompositionInterface, IdentifiedLayer, LayerAttribute, PrimitiveType } from 'constant'
 import { mockComposition } from 'mocks'
+import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
 
 import { Audio } from './'
 
 describe('Audio', () => {
-  const error = 'error'
   const id = 'id'
   const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
@@ -30,22 +30,28 @@ describe('Audio', () => {
   })
 
   describe('setVolume', () => {
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validatePresenceOfSpy.mockReturnValue(error)
-      })
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      const volume = 1
 
-      it('throws an error', () => {
-        expect(() => audio.setVolume(undefined)).toThrow(error)
-      })
+      audio.setVolume(volume)
+
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(
+        volume,
+        ValidationErrorText.REQUIRED_FIELD(LayerAttribute.volume)
+      )
     })
 
-    it('calls the `validateValueIsOfType` function', () => {
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
       const volume = 5
 
       audio.setVolume(volume)
 
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(AudioMethod.setVolume, volume, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        AudioMethod.setVolume,
+        LayerAttribute.volume,
+        volume,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {

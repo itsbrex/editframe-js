@@ -36,7 +36,12 @@ describe('Layer', () => {
 
       layer.setStart(start)
 
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(LayerMethod.setStart, start, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        LayerMethod.setStart,
+        LayerAttribute.start,
+        start,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -54,7 +59,12 @@ describe('Layer', () => {
 
       layer.setLength(length)
 
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(LayerMethod.setLength, length, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        LayerMethod.setLength,
+        LayerAttribute.length,
+        length,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {

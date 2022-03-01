@@ -5,7 +5,15 @@ import { generatePath } from './paths'
 import { uuid } from './strings'
 import { validatePresenceOf, validateValueIsOfType } from './validation'
 import { validateLayerFormat, validateTextAligment } from './video'
-import { formDataKey } from './video/compositions'
+import {
+  formDataKey,
+  validateAddAudio,
+  validateAddFilter,
+  validateAddImage,
+  validateAddText,
+  validateAddVideo,
+  validateAddWaveform,
+} from './video/compositions'
 import { validateFilter } from './video/filters'
 import { isEncodeResponse, isVideo, isVideos } from './videos'
 
@@ -22,6 +30,12 @@ export {
   makeHeaders,
   urlOrFile,
   uuid,
+  validateAddAudio,
+  validateAddFilter,
+  validateAddImage,
+  validateAddText,
+  validateAddVideo,
+  validateAddWaveform,
   validateApiData,
   validateFilter,
   validateLayerFormat,

@@ -5,10 +5,28 @@ import { IdentifiedLayer, LayerAttribute, Size } from 'constant/video/layers'
 
 export type LayerAttributeValue = number | string | Filter
 
+export enum CompositionMethod {
+  addAudio = 'addAudio',
+  addFilter = 'addFilter',
+  addImage = 'addImage',
+  addText = 'addText',
+  addVideo = 'addVideo',
+  addWaveform = 'addWaveform',
+  encode = 'encode',
+  layer = 'layer',
+  layers = 'layers',
+  setLayer = 'setLayer',
+  updateLayerAttribute = 'updateLayerAttribute',
+}
+
 export interface CompositionInterface {
-  layer: (id: string) => IdentifiedLayer
-  layers: IdentifiedLayer[]
-  updateLayerAttribute: (id: string, layerAttribute: LayerAttribute, value: LayerAttributeValue) => void
+  [CompositionMethod.layer]: (id: string) => IdentifiedLayer
+  [CompositionMethod.layers]: IdentifiedLayer[]
+  [CompositionMethod.updateLayerAttribute]: (
+    id: string,
+    layerAttribute: LayerAttribute,
+    value: LayerAttributeValue
+  ) => void
 }
 
 export type CompositionFile = Blob | string

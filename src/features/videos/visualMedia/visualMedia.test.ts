@@ -13,7 +13,6 @@ import * as VideoUtilsModule from 'utils/video'
 import { VisualMedia } from './'
 
 describe('VisualMedia', () => {
-  const error = 'error'
   const id = 'id'
   const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
@@ -47,6 +46,7 @@ describe('VisualMedia', () => {
     it('calls the `validateValueIsOfType` function', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         VisualMediaMethod.setBackgroundColor,
+        LayerAttribute.backgroundColor,
         backgroundColor,
         PrimitiveType.string
       )
@@ -69,7 +69,12 @@ describe('VisualMedia', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setColor, color, PrimitiveType.string)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        VisualMediaMethod.setColor,
+        LayerAttribute.color,
+        color,
+        PrimitiveType.string
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -82,19 +87,15 @@ describe('VisualMedia', () => {
   describe('setFormat', () => {
     const format = LayerFormatValue.fill
 
-    describe('when `validateLayerFormat` returns an error', () => {
-      beforeEach(() => {
-        validateLayerFormatSpy.mockReturnValue(error)
-      })
+    beforeEach(() => {
+      visualMedia.setFormat(format)
+    })
 
-      it('throws an error', () => {
-        expect(() => visualMedia.setFormat(format)).toThrow(error)
-      })
+    it('calls the `validateLayerFormat` function with the correct arguments', () => {
+      expect(validateLayerFormatSpy).toHaveBeenCalledWith(format)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      visualMedia.setFormat(format)
-
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.format, format)
     })
   })
@@ -107,7 +108,12 @@ describe('VisualMedia', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setHeight, height, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        VisualMediaMethod.setHeight,
+        LayerAttribute.height,
+        height,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -123,7 +129,12 @@ describe('VisualMedia', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setWidth, width, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        VisualMediaMethod.setWidth,
+        LayerAttribute.width,
+        width,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -139,7 +150,12 @@ describe('VisualMedia', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setX, x, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        VisualMediaMethod.setX,
+        LayerAttribute.x,
+        x,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -155,7 +171,12 @@ describe('VisualMedia', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setY, y, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        VisualMediaMethod.setY,
+        LayerAttribute.y,
+        y,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {

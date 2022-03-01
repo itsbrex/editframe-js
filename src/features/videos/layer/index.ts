@@ -16,7 +16,7 @@ export class Layer {
 
   public [LayerMethod.setStart](start?: number): this {
     if (start) {
-      validateValueIsOfType(LayerMethod.setStart, start, PrimitiveType.number)
+      validateValueIsOfType(LayerMethod.setStart, LayerAttribute.start, start, PrimitiveType.number)
     }
 
     return this._updateAttribute(LayerAttribute.start, start)
@@ -24,7 +24,7 @@ export class Layer {
 
   public [LayerMethod.setLength](length?: number): this {
     if (length) {
-      validateValueIsOfType(LayerMethod.setLength, length, PrimitiveType.number)
+      validateValueIsOfType(LayerMethod.setLength, LayerAttribute.length, length, PrimitiveType.number)
     }
 
     return this._updateAttribute(LayerAttribute.length, length)

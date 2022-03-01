@@ -9,51 +9,43 @@ export class Text extends VisualMedia {
   }
 
   public [TextMethod.setFontFamily](fontFamily?: string): this {
-    validateValueIsOfType(TextMethod.setFontFamily, fontFamily, PrimitiveType.string)
+    validateValueIsOfType(TextMethod.setFontFamily, LayerAttribute.fontFamily, fontFamily, PrimitiveType.string)
 
     return this._updateAttribute(LayerAttribute.fontFamily, fontFamily)
   }
 
   public [TextMethod.setFontSize](fontSize?: number): this {
-    validateValueIsOfType(TextMethod.setFontSize, fontSize, PrimitiveType.number)
+    validateValueIsOfType(TextMethod.setFontSize, LayerAttribute.fontSize, fontSize, PrimitiveType.number)
 
     return this._updateAttribute(LayerAttribute.fontSize, fontSize)
   }
 
   public [TextMethod.setMaxFontSize](maxFontSize?: number): this {
-    validateValueIsOfType(TextMethod.setMaxFontSize, maxFontSize, PrimitiveType.number)
+    validateValueIsOfType(TextMethod.setMaxFontSize, LayerAttribute.maxFontSize, maxFontSize, PrimitiveType.number)
 
     return this._updateAttribute(LayerAttribute.maxFontSize, maxFontSize)
   }
 
   public [TextMethod.setMaxHeight](maxHeight?: number): this {
-    validateValueIsOfType(TextMethod.setMaxHeight, maxHeight, PrimitiveType.number)
+    validateValueIsOfType(TextMethod.setMaxHeight, LayerAttribute.maxHeight, maxHeight, PrimitiveType.number)
 
     return this._updateAttribute(LayerAttribute.maxHeight, maxHeight)
   }
 
   public [TextMethod.setMaxWidth](maxWidth?: number): this {
-    validateValueIsOfType(TextMethod.setMaxWidth, maxWidth, PrimitiveType.number)
+    validateValueIsOfType(TextMethod.setMaxWidth, LayerAttribute.maxWidth, maxWidth, PrimitiveType.number)
 
     return this._updateAttribute(LayerAttribute.maxWidth, maxWidth)
   }
 
   public [TextMethod.setText](text: string): this {
-    const error = validatePresenceOf({ errorMessage: CompositionErrorText.textRequired, value: text })
-
-    if (error) {
-      throw new Error(error)
-    }
+    validatePresenceOf(text, CompositionErrorText.textRequired)
 
     return this._updateAttribute(LayerAttribute.text, text)
   }
 
   public [TextMethod.setTextAlignment](textAlignment?: LayerHorizontalAlignment): this {
-    const error = validateTextAligment(textAlignment)
-
-    if (error) {
-      throw new Error(error)
-    }
+    validateTextAligment(textAlignment)
 
     return this._updateAttribute(LayerAttribute.textAlignment, textAlignment)
   }

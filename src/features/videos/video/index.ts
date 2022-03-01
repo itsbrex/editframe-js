@@ -12,16 +12,8 @@ export class Video extends Mixin(Audio, VisualMedia) {
   }
 
   setDimensions({ height, width }: Size): Video {
-    let error = validatePresenceOf({
-      errorMessage: ValidationErrorText.REQUIRED_FIELD(LayerAttribute.height),
-      value: height,
-    })
-
-    error = validatePresenceOf({ errorMessage: ValidationErrorText.REQUIRED_FIELD(LayerAttribute.width), value: width })
-
-    if (error) {
-      throw new Error(error)
-    }
+    validatePresenceOf(height, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.height))
+    validatePresenceOf(width, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.width))
 
     this._updateAttribute(LayerAttribute.height, height)
 
@@ -35,11 +27,7 @@ export class Video extends Mixin(Audio, VisualMedia) {
     filterName: FilterName
     options: FilterOptions[FilterName]
   }): Video {
-    const error = validateFilter(filterName, options)
-
-    if (error) {
-      throw new Error(error)
-    }
+    validateFilter(filterName, options)
 
     return this._updateAttribute(LayerAttribute.filter, {
       filterName,

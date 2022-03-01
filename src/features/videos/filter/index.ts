@@ -14,11 +14,7 @@ export class Filter extends Layer {
     name: FilterName
     options: FilterOptions[FilterName]
   }): this {
-    const error = validateFilter(name, options)
-
-    if (error) {
-      throw new Error(error)
-    }
+    validateFilter(name, options)
 
     return this._updateAttribute(LayerAttribute.filter, { filterName: name, options })
   }

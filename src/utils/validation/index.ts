@@ -1,26 +1,22 @@
 import { CompositionFile, PrimitiveType } from 'constant'
 import { ValidationErrorText } from 'strings'
 
-export const validatePresenceOf = ({
-  errorMessage,
-  value,
-}: {
+export const validatePresenceOf = (
+  value: string | number | CompositionFile | undefined,
   errorMessage: string
-  value?: string | number | CompositionFile
-}): string | undefined => {
+): void => {
   if (!value) {
-    return errorMessage || errorMessage
+    throw new Error(errorMessage)
   }
-
-  return undefined
 }
 
 export const validateValueIsOfType = (
+  caller: string,
   fieldName: string,
   value: number | string | undefined,
   type: PrimitiveType
 ): void => {
-  if (typeof value !== type) {
-    throw new Error(ValidationErrorText.MUST_BE_TYPE(fieldName, value, type))
+  if (value && typeof value !== type) {
+    throw new Error(ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, type))
   }
 }

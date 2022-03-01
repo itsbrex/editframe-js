@@ -18,6 +18,7 @@ export enum LayerAttribute {
   style = 'style',
   text = 'text',
   textAlignment = 'textAlignment',
+  trim = 'trim',
   type = 'type',
   verticalAlignment = 'verticalAlignment',
   volume = 'volume',
@@ -76,9 +77,13 @@ export type LayerBase = {
   [LayerAttribute.length]?: number
 }
 
-export type LayerTrim = {
+export type Trim = {
   [LayerAttribute.end]?: number
-  [LayerAttribute.start]?: number
+  [LayerAttribute.start]: number
+}
+
+export type LayerTrim = {
+  [LayerAttribute.trim]?: Trim
 }
 
 export type LayerAlignment = {

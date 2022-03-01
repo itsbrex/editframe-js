@@ -14,7 +14,7 @@ import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { mockApi } from 'mocks'
-import { CompositionErrorText } from 'strings'
+import { CompositionErrorText, MediaErrorText } from 'strings'
 import { formDataKey } from 'utils'
 import * as StringsUtilsModule from 'utils/strings'
 import * as ValidationUtilsModule from 'utils/validation'
@@ -29,7 +29,6 @@ describe('Composition', () => {
     [EncodeResponseAttribute.status]: 'encode-status',
     [EncodeResponseAttribute.timestamp]: 'encode-timestamp',
   }
-  const error = 'error'
   const filenames = {
     [LayerType.audio]: 'audio-filename',
     [LayerType.image]: 'image-filename',
@@ -109,21 +108,14 @@ describe('Composition', () => {
   })
 
   describe('addAudio', () => {
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validatePresenceOfSpy.mockReturnValue(error)
-        composition = new Composition({ api: apiMock, formData: formDataMock, options })
-      })
-
-      it('throws an error', () => {
-        expect(() => composition.addAudio(filenames.audio, audioOptions)).toThrow(error)
-      })
-    })
-
     beforeEach(() => {
       composition = new Composition({ api: apiMock, formData: formDataMock, options })
 
       composition.addAudio(filenames.audio, audioOptions)
+    })
+
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.audio, MediaErrorText.invalidFileSource)
     })
 
     it('adds an `audio` layer with the correct attributes', () => {
@@ -142,18 +134,6 @@ describe('Composition', () => {
   })
 
   describe('addFilter', () => {
-    describe('when `validateFilter` returns an error', () => {
-      beforeEach(() => {
-        validateFilterSpy.mockReturnValue(error)
-      })
-
-      composition = new Composition({ api: apiMock, formData: formDataMock, options })
-
-      it('throws an error', () => {
-        expect(() => composition.addFilter({ name: filterName, options: filterOptions })).toThrow(error)
-      })
-    })
-
     beforeEach(() => {
       composition = new Composition({ api: apiMock, formData: formDataMock, options })
 
@@ -183,21 +163,14 @@ describe('Composition', () => {
   })
 
   describe('addImage', () => {
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validatePresenceOfSpy.mockReturnValue(error)
-        composition = new Composition({ api: apiMock, formData: formDataMock, options })
-      })
-
-      it('throws an error', () => {
-        expect(() => composition.addImage(filenames.image, imageOptions)).toThrow(error)
-      })
-    })
-
     beforeEach(() => {
       composition = new Composition({ api: apiMock, formData: formDataMock, options })
 
       composition.addImage(filenames.image, imageOptions)
+    })
+
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.image, MediaErrorText.invalidFileSource)
     })
 
     it('adds an `image` layer with the correct attributes', () => {
@@ -216,22 +189,17 @@ describe('Composition', () => {
   })
 
   describe('addText', () => {
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validatePresenceOfSpy.mockReturnValue(error)
-        composition = new Composition({ api: apiMock, formData: formDataMock, options })
-      })
-
-      it('throws an error', () => {
-        expect(() => composition.addText(textOptions)).toThrow(error)
-      })
-    })
-
-    it('adds a `text` layer with the correct attributes', () => {
+    beforeEach(() => {
       composition = new Composition({ api: apiMock, formData: formDataMock, options })
 
       composition.addText(textOptions)
+    })
 
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(textOptions.text, CompositionErrorText.textRequired)
+    })
+
+    it('adds a `text` layer with the correct attributes', () => {
       expect(composition.layers[0]).toEqual({
         id: uuidMock,
         type: LayerType.text,
@@ -247,21 +215,14 @@ describe('Composition', () => {
   })
 
   describe('addVideo', () => {
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validatePresenceOfSpy.mockReturnValue(error)
-        composition = new Composition({ api: apiMock, formData: formDataMock, options })
-      })
-
-      it('throws an error', () => {
-        expect(() => composition.addVideo(filenames.video, videoOptions)).toThrow(error)
-      })
-    })
-
     beforeEach(() => {
       composition = new Composition({ api: apiMock, formData: formDataMock, options })
 
       composition.addVideo(filenames.video, videoOptions)
+    })
+
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.video, MediaErrorText.invalidFileSource)
     })
 
     it('adds a `video` layer with the correct attributes', () => {

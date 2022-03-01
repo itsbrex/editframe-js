@@ -23,12 +23,12 @@ const filterValidators = {
 export const validateFilter = (
   name: FilterName,
   options: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation
-): string | undefined => {
+): void => {
   if (!Object.values(FilterName).includes(name)) {
-    return FilterErrorText.invalidFilterName(name)
+    throw new Error(FilterErrorText.invalidFilterName(name))
   }
 
-  return filterValidators[name](options)
-    ? undefined
-    : FilterErrorText.invalidFilterOptions(name, JSON.stringify(options))
+  if (!filterValidators[name](options)) {
+    throw new Error(FilterErrorText.invalidFilterOptions(name, JSON.stringify(options)))
+  }
 }

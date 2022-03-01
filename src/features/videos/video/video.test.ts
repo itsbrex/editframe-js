@@ -1,12 +1,12 @@
 import { CompositionInterface, FilterName, IdentifiedLayer, LayerAttribute } from 'constant'
 import { mockComposition } from 'mocks'
+import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as FilterUtilsModule from 'utils/video/filters'
 
 import { Video } from './'
 
 describe('Video', () => {
-  const error = 'error'
   const id = 'id'
   const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
@@ -34,19 +34,22 @@ describe('Video', () => {
     const height = 10
     const width = 20
 
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validatePresenceOfSpy.mockReturnValue(error)
-      })
+    beforeEach(() => {
+      video.setDimensions({ height, width })
+    })
 
-      it('throws an error', () => {
-        expect(() => video.setDimensions({ height })).toThrow(error)
-      })
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(
+        height,
+        ValidationErrorText.REQUIRED_FIELD(LayerAttribute.height)
+      )
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(
+        width,
+        ValidationErrorText.REQUIRED_FIELD(LayerAttribute.width)
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      video.setDimensions({ height, width })
-
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.height, height)
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.width, width)
     })
@@ -57,19 +60,15 @@ describe('Video', () => {
     const options = { brightness: 10 }
     const filter = { filterName, options }
 
-    describe('when `validateFilter` returns an error', () => {
-      beforeEach(() => {
-        validateFilterSpy.mockReturnValue(error)
-      })
+    beforeEach(() => {
+      video.setFilter(filter)
+    })
 
-      it('throws an error', () => {
-        expect(() => video.setFilter(filter)).toThrow(error)
-      })
+    it('calls the `validateFilter` function with the correct arguments', () => {
+      expect(validateFilterSpy).toHaveBeenCalledWith(filterName, options)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      video.setFilter(filter)
-
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.filter, filter)
     })
   })

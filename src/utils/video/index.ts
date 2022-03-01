@@ -1,18 +1,14 @@
 import { LayerFormat, LayerFormatValue, LayerHorizontalAlignment, LayerHorizontalAlignmentValue } from 'constant'
 import { TextErrorText, VisualMediaErrorText } from 'strings'
 
-export const validateLayerFormat = (format: LayerFormat): string | undefined => {
-  if (Object.values(LayerFormatValue).includes(format)) {
-    return undefined
+export const validateLayerFormat = (format: LayerFormat): void => {
+  if (!Object.values(LayerFormatValue).includes(format)) {
+    throw new Error(VisualMediaErrorText.invalidLayerFormat(format))
   }
-
-  return VisualMediaErrorText.invalidLayerFormat(format)
 }
 
-export const validateTextAligment = (textAlignment: LayerHorizontalAlignment): string | undefined => {
-  if (Object.values(LayerHorizontalAlignmentValue).includes(textAlignment)) {
-    return undefined
+export const validateTextAligment = (textAlignment: LayerHorizontalAlignment): void => {
+  if (!Object.values(LayerHorizontalAlignmentValue).includes(textAlignment)) {
+    throw new Error(TextErrorText.invalidTextAlignment(textAlignment))
   }
-
-  return TextErrorText.invalidTextAlignment(textAlignment)
 }

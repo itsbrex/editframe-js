@@ -9,16 +9,8 @@ export class Audio extends Media {
   }
 
   [AudioMethod.setVolume](volume: number): this {
-    const error = validatePresenceOf({
-      errorMessage: ValidationErrorText.REQUIRED_FIELD(LayerAttribute.volume),
-      value: volume,
-    })
-
-    if (error) {
-      throw new Error(error)
-    }
-
-    validateValueIsOfType(AudioMethod.setVolume, volume, PrimitiveType.number)
+    validatePresenceOf(volume, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.volume))
+    validateValueIsOfType(AudioMethod.setVolume, LayerAttribute.volume, volume, PrimitiveType.number)
 
     let newVolume = volume
 

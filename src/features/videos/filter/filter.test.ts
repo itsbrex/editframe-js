@@ -5,7 +5,6 @@ import * as ValidateFilterModule from 'utils/video/filters'
 import { Filter } from './'
 
 describe('Filter', () => {
-  const error = 'error'
   const id = 'id'
   const layers: IdentifiedLayer[] = []
   const filterName = FilterName.brightness
@@ -29,16 +28,6 @@ describe('Filter', () => {
   })
 
   describe('setFilter', () => {
-    describe('when `validateFilter` returns an error', () => {
-      beforeEach(() => {
-        validateFilterSpy.mockReturnValue(error)
-      })
-
-      it('throws an error', () => {
-        expect(() => filter.setFilter({ name: filterName, options: filterOptions })).toThrow(error)
-      })
-    })
-
     beforeEach(() => {
       filter.setFilter({ name: filterName, options: filterOptions })
     })

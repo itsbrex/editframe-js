@@ -7,13 +7,13 @@ import {
   TextMethod,
 } from 'constant'
 import { mockComposition } from 'mocks'
+import { CompositionErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as VideoUtilsModule from 'utils/video'
 
 import { Text } from './'
 
 describe('Text', () => {
-  const error = 'error'
   const id = 'id'
   const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
@@ -47,7 +47,12 @@ describe('Text', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(TextMethod.setFontFamily, fontFamily, PrimitiveType.string)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setFontFamily,
+        LayerAttribute.fontFamily,
+        fontFamily,
+        PrimitiveType.string
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -65,7 +70,12 @@ describe('Text', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(TextMethod.setFontSize, fontSize, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setFontSize,
+        LayerAttribute.fontSize,
+        fontSize,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -83,6 +93,7 @@ describe('Text', () => {
     it('calls the `validateValueIsOfType` function', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         TextMethod.setMaxFontSize,
+        LayerAttribute.maxFontSize,
         maxFontSize,
         PrimitiveType.number
       )
@@ -101,7 +112,12 @@ describe('Text', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(TextMethod.setMaxHeight, maxHeight, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setMaxHeight,
+        LayerAttribute.maxHeight,
+        maxHeight,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -117,7 +133,12 @@ describe('Text', () => {
     })
 
     it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(TextMethod.setMaxWidth, maxWidth, PrimitiveType.number)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setMaxWidth,
+        LayerAttribute.maxWidth,
+        maxWidth,
+        PrimitiveType.number
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -128,19 +149,15 @@ describe('Text', () => {
   describe('setText', () => {
     const textValue = 'text'
 
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validatePresenceOfSpy.mockReturnValue(error)
-      })
+    beforeEach(() => {
+      text.setText(textValue)
+    })
 
-      it('throws an error', () => {
-        expect(() => text.setText(textValue)).toThrow(error)
-      })
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(textValue, CompositionErrorText.textRequired)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      text.setText(textValue)
-
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.text, textValue)
     })
   })
@@ -148,19 +165,15 @@ describe('Text', () => {
   describe('setTextAlignment', () => {
     const textAlignment = LayerHorizontalAlignmentValue.center
 
-    describe('when `validatePresenceOf` returns an error', () => {
-      beforeEach(() => {
-        validateTextAligmentSpy.mockReturnValue(error)
-      })
+    beforeEach(() => {
+      text.setTextAlignment(textAlignment)
+    })
 
-      it('throws an error', () => {
-        expect(() => text.setTextAlignment(textAlignment)).toThrow(error)
-      })
+    it('calls the `vaidateTextAlignment` function with the correct arguments', () => {
+      expect(validateTextAligmentSpy).toHaveBeenCalledWith(textAlignment)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      text.setTextAlignment(textAlignment)
-
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.textAlignment, textAlignment)
     })
   })
