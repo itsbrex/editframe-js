@@ -48,7 +48,8 @@ describe('VisualMedia', () => {
         VisualMediaMethod.setBackgroundColor,
         LayerAttribute.backgroundColor,
         backgroundColor,
-        PrimitiveType.string
+        PrimitiveType.string,
+        true
       )
     })
 
@@ -73,7 +74,8 @@ describe('VisualMedia', () => {
         VisualMediaMethod.setColor,
         LayerAttribute.color,
         color,
-        PrimitiveType.string
+        PrimitiveType.string,
+        true
       )
     })
 
@@ -112,7 +114,8 @@ describe('VisualMedia', () => {
         VisualMediaMethod.setHeight,
         LayerAttribute.height,
         height,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 
@@ -133,7 +136,8 @@ describe('VisualMedia', () => {
         VisualMediaMethod.setWidth,
         LayerAttribute.width,
         width,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 
@@ -154,7 +158,8 @@ describe('VisualMedia', () => {
         VisualMediaMethod.setX,
         LayerAttribute.x,
         x,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 
@@ -175,7 +180,8 @@ describe('VisualMedia', () => {
         VisualMediaMethod.setY,
         LayerAttribute.y,
         y,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 

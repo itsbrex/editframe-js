@@ -50,7 +50,8 @@ describe('Audio', () => {
         AudioMethod.setVolume,
         LayerAttribute.volume,
         volume,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 

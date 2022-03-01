@@ -28,7 +28,7 @@ describe('validations', () => {
     const start = 5
 
     it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-      validateLayerBase(callerName, { length, start })
+      const finalErrors = validateLayerBase(callerName, { length, start })
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(2)
 
@@ -45,6 +45,8 @@ describe('validations', () => {
         length,
         PrimitiveType.number
       )
+
+      expect(finalErrors).toEqual([])
     })
   })
 
@@ -107,17 +109,15 @@ describe('validations', () => {
   describe('validateHorizontalAlignment', () => {
     const horizontalAlignment = 'invalid-horizontal-alignment'
 
-    it('throws an error if the provided `horizontalAlignment` is invalid', () => {
-      expect(() =>
+    it('returns an error if the provided `horizontalAlignment` is invalid', () => {
+      expect(
         validateHorizontalAlignment(callerName, LayerAttribute.horizontalAlignment, horizontalAlignment as any)
-      ).toThrow(
-        new Error(
-          ValidationErrorText.MUST_BE_TYPE(
-            callerName,
-            LayerAttribute.horizontalAlignment,
-            horizontalAlignment,
-            Object.values(LayerHorizontalAlignmentValue).join(', ')
-          )
+      ).toEqual(
+        ValidationErrorText.MUST_BE_TYPE(
+          callerName,
+          LayerAttribute.horizontalAlignment,
+          horizontalAlignment,
+          Object.values(LayerHorizontalAlignmentValue).join(', ')
         )
       )
     })
@@ -127,35 +127,31 @@ describe('validations', () => {
     const horizontalAlignment = 'invalid-horizontal-alignment'
     const verticalAlignment = 'invalid-vertical-alignment'
 
-    it('throws an error if the provided `horizontalAlignment` is invalid', () => {
-      expect(() => validateLayerAlignment(callerName, { horizontalAlignment: horizontalAlignment as any })).toThrow(
-        new Error(
-          ValidationErrorText.MUST_BE_TYPE(
-            callerName,
-            LayerAttribute.horizontalAlignment,
-            horizontalAlignment,
-            Object.values(LayerHorizontalAlignmentValue).join(', ')
-          )
-        )
-      )
+    it('returns an error if the provided `horizontalAlignment` is invalid', () => {
+      expect(validateLayerAlignment(callerName, { horizontalAlignment: horizontalAlignment as any })).toEqual([
+        ValidationErrorText.MUST_BE_TYPE(
+          callerName,
+          LayerAttribute.horizontalAlignment,
+          horizontalAlignment,
+          Object.values(LayerHorizontalAlignmentValue).join(', ')
+        ),
+      ])
     })
 
-    it('throws an error if the provided `verticalAlignment` is invalid', () => {
-      expect(() =>
+    it('returns an error if the provided `verticalAlignment` is invalid', () => {
+      expect(
         validateLayerAlignment(callerName, {
           horizontalAlignment: LayerHorizontalAlignmentValue.center,
           verticalAlignment: verticalAlignment as any,
         })
-      ).toThrow(
-        new Error(
-          ValidationErrorText.MUST_BE_TYPE(
-            callerName,
-            LayerAttribute.verticalAlignment,
-            verticalAlignment,
-            Object.values(LayerVerticalAlignmentValue).join(', ')
-          )
-        )
-      )
+      ).toEqual([
+        ValidationErrorText.MUST_BE_TYPE(
+          callerName,
+          LayerAttribute.verticalAlignment,
+          verticalAlignment,
+          Object.values(LayerVerticalAlignmentValue).join(', ')
+        ),
+      ])
     })
   })
 
@@ -219,8 +215,8 @@ describe('validations', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(callerName, LayerAttribute.text, text, PrimitiveType.string)
     })
 
-    it('throws an error if the provided `textAlignment` is invalid', () => {
-      expect(() =>
+    it('returns an error if the provided `textAlignment` is invalid', () => {
+      expect(
         validateLayerText(callerName, {
           fontFamily,
           fontSize,
@@ -230,16 +226,14 @@ describe('validations', () => {
           text,
           textAlignment: textAlignment as any,
         })
-      ).toThrow(
-        new Error(
-          ValidationErrorText.MUST_BE_TYPE(
-            callerName,
-            LayerAttribute.textAlignment,
-            textAlignment,
-            Object.values(LayerHorizontalAlignmentValue).join(', ')
-          )
-        )
-      )
+      ).toEqual([
+        ValidationErrorText.MUST_BE_TYPE(
+          callerName,
+          LayerAttribute.textAlignment,
+          textAlignment,
+          Object.values(LayerHorizontalAlignmentValue).join(', ')
+        ),
+      ])
     })
   })
 })

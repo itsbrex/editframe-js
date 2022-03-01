@@ -40,7 +40,8 @@ describe('Layer', () => {
         LayerMethod.setStart,
         LayerAttribute.start,
         start,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 
@@ -63,7 +64,8 @@ describe('Layer', () => {
         LayerMethod.setLength,
         LayerAttribute.length,
         length,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 

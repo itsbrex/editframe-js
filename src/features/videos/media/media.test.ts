@@ -49,7 +49,8 @@ describe('Media', () => {
         MediaMethod.setTrim,
         LayerAttribute.start,
         start,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 
@@ -68,7 +69,8 @@ describe('Media', () => {
           MediaMethod.setTrim,
           LayerAttribute.end,
           end,
-          PrimitiveType.number
+          PrimitiveType.number,
+          true
         )
       })
 

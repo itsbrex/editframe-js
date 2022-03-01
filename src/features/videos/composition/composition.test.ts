@@ -17,9 +17,9 @@ import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { mockApi } from 'mocks'
 import { CompositionErrorText, MediaErrorText } from 'strings'
-import { formDataKey } from 'utils'
 import * as StringsUtilsModule from 'utils/strings'
 import * as ValidationUtilsModule from 'utils/validation'
+import * as CompositionUtilsModule from 'utils/video/compositions'
 import * as FilterUtilsModule from 'utils/video/filters'
 
 import { Composition } from './'
@@ -63,6 +63,7 @@ describe('Composition', () => {
   let apiMock: ApiInterface
   let consoleErrorSpy: jest.SpyInstance
   let postMock: jest.Mock
+  let validateCompositionOptionsSpy: jest.SpyInstance
   let validateFilterSpy: jest.SpyInstance
   let validatePresenceOfSpy: jest.SpyInstance
   let composition: Composition
@@ -77,19 +78,25 @@ describe('Composition', () => {
     apiMock = mockApi({ get: jest.fn(), post: postMock, put: jest.fn() })
     formDataMock = { append: jest.fn() }
     jest.spyOn(StringsUtilsModule, 'uuid').mockReturnValue(uuidMock)
+    validateCompositionOptionsSpy = jest.spyOn(CompositionUtilsModule, 'validateCompositionOptions')
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateFilterSpy = jest.spyOn(FilterUtilsModule, 'validateFilter')
   })
 
   describe('initialization', () => {
-    it('throws an error if `duration` or `dimensions` are not provided', () => {
-      expect(() => new Composition({ api: apiMock, formData: formDataMock, options: {} as any })).toThrow(
-        new Error(
-          CompositionErrorText.validationOptionsError(
-            `${CompositionErrorText.dimensionsRequired}, ${CompositionErrorText.durationRequired}`
-          )
-        )
-      )
+    it('calls the `validateCompositionOptions` function with the correct arguments', () => {
+      const options = {
+        dimensions: { height: 1080, width: 1920 },
+        duration: 10,
+      }
+
+      new Composition({
+        api: apiMock,
+        formData: formDataMock,
+        options,
+      })
+
+      expect(validateCompositionOptionsSpy).toHaveBeenCalledWith(options)
     })
 
     describe('when a `videoFile` is provided in the options', () => {
@@ -308,9 +315,18 @@ describe('Composition', () => {
     it('calls the `append` method on the private `formData` attribute with the correct arguments', async () => {
       await composition.encode()
 
-      expect(formDataMock.append).toHaveBeenCalledWith(formDataKey(filenames.audio, uuidMock), filenames.audio)
-      expect(formDataMock.append).toHaveBeenCalledWith(formDataKey(filenames.image, uuidMock), filenames.image)
-      expect(formDataMock.append).toHaveBeenCalledWith(formDataKey(filenames.video, uuidMock), filenames.video)
+      expect(formDataMock.append).toHaveBeenCalledWith(
+        CompositionUtilsModule.formDataKey(filenames.audio, uuidMock),
+        filenames.audio
+      )
+      expect(formDataMock.append).toHaveBeenCalledWith(
+        CompositionUtilsModule.formDataKey(filenames.image, uuidMock),
+        filenames.image
+      )
+      expect(formDataMock.append).toHaveBeenCalledWith(
+        CompositionUtilsModule.formDataKey(filenames.video, uuidMock),
+        filenames.video
+      )
       expect(formDataMock.append).toHaveBeenCalledWith(
         'config',
         JSON.stringify({

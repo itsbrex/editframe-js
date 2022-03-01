@@ -1,5 +1,5 @@
 import { CompositionInterface, LayerAttribute, LayerAttributeValue, LayerMethod, PrimitiveType } from 'constant'
-import { validateValueIsOfType } from 'utils'
+import { logValidationError, validateValueIsOfType } from 'utils'
 
 export class Layer {
   protected _composition: CompositionInterface
@@ -14,20 +14,28 @@ export class Layer {
     return this._id
   }
 
-  public [LayerMethod.setStart](start?: number): this {
-    if (start) {
-      validateValueIsOfType(LayerMethod.setStart, LayerAttribute.start, start, PrimitiveType.number)
-    }
+  public [LayerMethod.setStart](start?: number): this | void {
+    try {
+      if (start) {
+        validateValueIsOfType(LayerMethod.setStart, LayerAttribute.start, start, PrimitiveType.number, true)
+      }
 
-    return this._updateAttribute(LayerAttribute.start, start)
+      return this._updateAttribute(LayerAttribute.start, start)
+    } catch ({ stack }) {
+      logValidationError(stack)
+    }
   }
 
-  public [LayerMethod.setLength](length?: number): this {
-    if (length) {
-      validateValueIsOfType(LayerMethod.setLength, LayerAttribute.length, length, PrimitiveType.number)
-    }
+  public [LayerMethod.setLength](length?: number): this | void {
+    try {
+      if (length) {
+        validateValueIsOfType(LayerMethod.setLength, LayerAttribute.length, length, PrimitiveType.number, true)
+      }
 
-    return this._updateAttribute(LayerAttribute.length, length)
+      return this._updateAttribute(LayerAttribute.length, length)
+    } catch ({ stack }) {
+      logValidationError(stack)
+    }
   }
 
   _updateAttribute(layerAttribute: LayerAttribute, value: LayerAttributeValue): this {

@@ -33,10 +33,15 @@ describe('Filter', () => {
     })
 
     it('calls `validateFilter` with the correct arguments', () => {
-      expect(validateFilterSpy).toHaveBeenCalledWith(FilterMethod.setFilter, LayerAttribute.filter, {
-        filterName,
-        options: filterOptions,
-      })
+      expect(validateFilterSpy).toHaveBeenCalledWith(
+        FilterMethod.setFilter,
+        LayerAttribute.filter,
+        {
+          filterName,
+          options: filterOptions,
+        },
+        true
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {

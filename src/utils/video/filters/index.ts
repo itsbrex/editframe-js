@@ -6,6 +6,7 @@ import {
   FilterFadeIn,
   FilterKey,
   FilterName,
+  FilterOptionTypes,
   FilterSaturation,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
@@ -29,26 +30,45 @@ const filterValidators = {
   [FilterName.saturation]: isFilterSaturation,
 }
 
-export const validateFilter = (callerName: string, fieldName: string, { filterName, options }: Filter): void => {
-  if (!Object.values(FilterName).includes(filterName)) {
-    throw new Error(
-      ValidationErrorText.MUST_BE_TYPE(
-        callerName,
-        ValidationErrorText.SUB_FIELD(fieldName, FilterAttribute.filterName),
-        filterName,
-        `${Object.values(FilterName).join(', ')}`
-      )
+export const validateFilter = (
+  callerName: string,
+  fieldName: string,
+  { filterName, options }: Filter,
+  shouldThrow = false
+): string[] => {
+  const errors = []
+
+  const isFilterNameValid = Object.values(FilterName).includes(filterName)
+
+  if (!isFilterNameValid) {
+    const message = ValidationErrorText.MUST_BE_TYPE(
+      callerName,
+      ValidationErrorText.SUB_FIELD(fieldName, FilterAttribute.filterName),
+      filterName,
+      `${Object.values(FilterName).join(', ')}`
     )
+
+    if (shouldThrow) {
+      throw new TypeError(message)
+    } else {
+      errors.push(message)
+    }
   }
 
-  if (!filterValidators[filterName](options)) {
-    throw new Error(
-      ValidationErrorText.MUST_BE_TYPE(
-        callerName,
-        ValidationErrorText.SUB_FIELD(fieldName, FilterAttribute.options),
-        options,
-        JSON.stringify(options)
-      )
+  if (isFilterNameValid && !filterValidators[filterName](options)) {
+    const message = ValidationErrorText.MUST_BE_TYPE(
+      callerName,
+      ValidationErrorText.SUB_FIELD(fieldName, FilterAttribute.options),
+      options,
+      JSON.stringify(FilterOptionTypes[filterName])
     )
+
+    if (shouldThrow) {
+      throw new TypeError(message)
+    } else {
+      errors.push(message)
+    }
   }
+
+  return errors
 }

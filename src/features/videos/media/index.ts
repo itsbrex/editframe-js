@@ -1,26 +1,31 @@
 import { CompositionInterface, LayerAttribute, MediaMethod, PrimitiveType, Trim } from 'constant'
 import { Layer } from 'features/videos/layer'
 import { ValidationErrorText } from 'strings'
-import { validatePresenceOf, validateValueIsOfType } from 'utils'
+import { logValidationError, validatePresenceOf, validateValueIsOfType } from 'utils'
 
 export class Media extends Layer {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }
 
-  [MediaMethod.setTrim](trim: Trim): this {
-    validatePresenceOf(trim.start, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.start))
-    validateValueIsOfType(MediaMethod.setTrim, LayerAttribute.start, trim.start, PrimitiveType.number)
+  [MediaMethod.setTrim](trim: Trim): this | void {
+    try {
+      validatePresenceOf(trim.start, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.start))
+      validateValueIsOfType(MediaMethod.setTrim, LayerAttribute.start, trim.start, PrimitiveType.number, true)
 
-    const start = trim.start < 0 ? 0 : trim.start
+      const { end } = trim
+      const start = trim.start < 0 ? 0 : trim.start
 
-    this._updateAttribute(LayerAttribute.start, start)
+      this._updateAttribute(LayerAttribute.start, start)
 
-    if (trim.end) {
-      validateValueIsOfType(MediaMethod.setTrim, LayerAttribute.end, trim.end, PrimitiveType.number)
-      this._updateAttribute(LayerAttribute.end, trim.end)
+      if (end) {
+        validateValueIsOfType(MediaMethod.setTrim, LayerAttribute.end, end, PrimitiveType.number, true)
+        this._updateAttribute(LayerAttribute.end, end)
+      }
+
+      return this
+    } catch ({ stack }) {
+      logValidationError(stack)
     }
-
-    return this
   }
 }

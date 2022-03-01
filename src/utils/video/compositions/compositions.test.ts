@@ -1,5 +1,7 @@
 import {
+  ApiVideoMethod,
   CompositionMethod,
+  CompositionOptionAttribute,
   FilterName,
   LayerAttribute,
   LayerFormatValue,
@@ -8,6 +10,7 @@ import {
   PrimitiveType,
   WaveformStyle,
 } from 'constant'
+import { CompositionErrorText, ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as LayerUtilsModule from 'utils/video/layers'
 
@@ -19,6 +22,7 @@ import {
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
+  validateCompositionOptions,
 } from './'
 
 describe('formDataKey', () => {
@@ -45,6 +49,7 @@ describe('validations', () => {
   let validateLayerTextSpy: jest.SpyInstance
   let validateLayerTrimSpy: jest.SpyInstance
   let validateLayerVisualMediaSpy: jest.SpyInstance
+  let validatePresenceOfSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
   afterEach(() => {
@@ -59,14 +64,77 @@ describe('validations', () => {
     validateLayerTextSpy = jest.spyOn(LayerUtilsModule, 'validateLayerText')
     validateLayerTrimSpy = jest.spyOn(LayerUtilsModule, 'validateLayerTrim')
     validateLayerVisualMediaSpy = jest.spyOn(LayerUtilsModule, 'validateLayerVisualMedia')
+    validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
   })
 
+  describe('validateCompositionOptions', () => {
+    const backgroundColor = 'background-color'
+    const dimensions = {
+      height: 10,
+      width: 20,
+    }
+    const duration = 100
+
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      validateCompositionOptions({ backgroundColor, dimensions, duration })
+
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(duration, CompositionErrorText.durationRequired)
+    })
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      validateCompositionOptions({ backgroundColor, dimensions, duration })
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        ApiVideoMethod.new,
+        ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.height),
+        dimensions.height,
+        PrimitiveType.number
+      )
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        ApiVideoMethod.new,
+        ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.height),
+        dimensions.width,
+        PrimitiveType.number
+      )
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        ApiVideoMethod.new,
+        CompositionOptionAttribute.backgroundColor,
+        backgroundColor,
+        PrimitiveType.string
+      )
+    })
+
+    describe('when any of the validator functions return an error message', () => {
+      it('throws the error messages', () => {
+        const options = { backgroundColor: 123, dimensions: { height: '10', width: 20 }, duration: 'abc' }
+
+        expect(() => validateCompositionOptions(options as any)).toThrow(
+          new TypeError(
+            `${ValidationErrorText.MUST_BE_TYPE(
+              ApiVideoMethod.new,
+              ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.height),
+              options.dimensions.height,
+              PrimitiveType.number
+            )}\n${ValidationErrorText.MUST_BE_TYPE(
+              ApiVideoMethod.new,
+              CompositionOptionAttribute.backgroundColor,
+              options.backgroundColor,
+              PrimitiveType.string
+            )}`
+          )
+        )
+      })
+    })
+  })
+
   describe('validateAddAudio', () => {
-    const options = { length: 10, start: 5, trim: { end: 10, start: 5 }, volume: 10 }
+    const options = { length: 10, start: 5, trim: { end: 10, start: 5 }, volume: 1 }
 
     beforeEach(() => {
-      validateAddAudio(options)
+      validateAddAudio(options as any)
     })
 
     it('calls the `validateLayerBase` function with the correct arguments', () => {

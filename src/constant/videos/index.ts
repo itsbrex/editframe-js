@@ -20,3 +20,9 @@ export type ApiVideo = Hashided &
     [ApiVideoAttribute.thumbnailUrl]?: string
     [ApiVideoAttribute.timestamp]: number
   }
+
+export enum ApiVideoMethod {
+  all = 'all',
+  get = 'get',
+  new = 'new',
+}

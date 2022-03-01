@@ -1,3 +1,5 @@
+import { PrimitiveType } from 'constant/common'
+
 export enum FilterName {
   brightness = 'brightness',
   contrast = 'contrast',
@@ -17,6 +19,22 @@ export enum FilterKey {
   contrast = 'contrast',
   duration = 'duration',
   saturation = 'saturation',
+}
+
+export const FilterOptionTypes = {
+  [FilterName.brightness]: {
+    [FilterKey.brightness]: PrimitiveType.number,
+  },
+  [FilterName.contrast]: {
+    [FilterKey.contrast]: PrimitiveType.number,
+  },
+  [FilterName.fadeIn]: {
+    [FilterKey.color]: PrimitiveType.string,
+    [FilterKey.duration]: PrimitiveType.number,
+  },
+  [FilterName.saturation]: {
+    [FilterKey.saturation]: PrimitiveType.number,
+  },
 }
 
 export interface FilterBrightness {

@@ -28,6 +28,7 @@ import { CompositionErrorText, MediaErrorText } from 'strings'
 import {
   formDataKey,
   isEncodeResponse,
+  logValidationError,
   uuid,
   validateAddAudio,
   validateAddImage,
@@ -35,6 +36,7 @@ import {
   validateAddVideo,
   validateAddWaveform,
   validateApiData,
+  validateCompositionOptions,
   validateFilter,
   validatePresenceOf,
 } from 'utils'
@@ -63,14 +65,14 @@ export class Composition implements CompositionInterface {
     this._formData = formData
     this._options = options || {}
 
-    const errors = this._validateOptions()
+    try {
+      validateCompositionOptions(this._options)
 
-    if (errors.length > 0) {
-      throw new Error(CompositionErrorText.validationOptionsError(errors.join(', ')))
-    }
-
-    if (this._options.videoFile) {
-      this.addVideo(this._options.videoFile)
+      if (this._options.videoFile) {
+        this.addVideo(this._options.videoFile)
+      }
+    } catch ({ stack }) {
+      logValidationError(stack)
     }
   }
 
@@ -82,15 +84,19 @@ export class Composition implements CompositionInterface {
     return this._layers.find((layer) => layer.id && layer.id === id)
   }
 
-  public [CompositionMethod.addAudio](file: CompositionFile, options: AudioLayer = {}): Audio {
-    validatePresenceOf(file, MediaErrorText.invalidFileSource)
-    validateAddAudio(options)
+  public [CompositionMethod.addAudio](file: CompositionFile, options: AudioLayer = {}): Audio | void {
+    try {
+      validatePresenceOf(file, MediaErrorText.invalidFileSource)
+      validateAddAudio(options)
 
-    const layer = this._addLayer({ type: LayerType.audio, ...options })
+      const layer = this._addLayer({ type: LayerType.audio, ...options })
 
-    this._files.push({ file, id: layer.id })
+      this._files.push({ file, id: layer.id })
 
-    return new Audio({ composition: this, id: layer.id })
+      return new Audio({ composition: this, id: layer.id })
+    } catch ({ stack }) {
+      logValidationError(stack)
+    }
   }
 
   public [CompositionMethod.addFilter]<FilterName extends keyof FilterOptions>({
@@ -99,51 +105,71 @@ export class Composition implements CompositionInterface {
   }: {
     filterName: FilterName
     options: FilterOptions[FilterName]
-  }): Filter {
-    validateFilter(CompositionMethod.addFilter, LayerAttribute.filter, { filterName, options })
+  }): Filter | void {
+    try {
+      validateFilter(CompositionMethod.addFilter, LayerAttribute.filter, { filterName, options })
 
-    const layer = this._addLayer({ filter: { filterName, options }, type: LayerType.filter })
+      const layer = this._addLayer({ filter: { filterName, options }, type: LayerType.filter })
 
-    return new Filter({ composition: this, id: layer.id })
+      return new Filter({ composition: this, id: layer.id })
+    } catch ({ stack }) {
+      logValidationError(stack)
+    }
   }
 
-  public [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video {
-    validatePresenceOf(file, MediaErrorText.invalidFileSource)
-    validateAddImage(options)
+  public [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video | void {
+    try {
+      validatePresenceOf(file, MediaErrorText.invalidFileSource)
+      validateAddImage(options)
 
-    const layer = this._addLayer({ type: LayerType.image, ...options })
+      const layer = this._addLayer({ type: LayerType.image, ...options })
 
-    this._files.push({ file, id: layer.id })
+      this._files.push({ file, id: layer.id })
 
-    return new Video({ composition: this, id: layer.id })
+      return new Video({ composition: this, id: layer.id })
+    } catch ({ stack }) {
+      logValidationError(stack)
+    }
   }
 
-  public [CompositionMethod.addText](options: TextLayer): Text {
-    validatePresenceOf(options.text, CompositionErrorText.textRequired)
-    validateAddText(options)
+  public [CompositionMethod.addText](options: TextLayer): Text | void {
+    try {
+      validatePresenceOf(options.text, CompositionErrorText.textRequired)
+      validateAddText(options)
 
-    const layer = this._addLayer({ type: LayerType.text, ...options })
+      const layer = this._addLayer({ type: LayerType.text, ...options })
 
-    return new Text({ composition: this, id: layer.id })
+      return new Text({ composition: this, id: layer.id })
+    } catch ({ stack }) {
+      logValidationError(stack)
+    }
   }
 
-  public [CompositionMethod.addVideo](file: CompositionFile, options: VideoLayer = {}): Video {
-    validatePresenceOf(file, MediaErrorText.invalidFileSource)
-    validateAddVideo(options)
+  public [CompositionMethod.addVideo](file: CompositionFile, options: VideoLayer = {}): Video | void {
+    try {
+      validatePresenceOf(file, MediaErrorText.invalidFileSource)
+      validateAddVideo(options)
 
-    const layer = this._addLayer({ type: LayerType.video, ...options })
+      const layer = this._addLayer({ type: LayerType.video, ...options })
 
-    this._files.push({ file, id: layer.id })
+      this._files.push({ file, id: layer.id })
 
-    return new Video({ composition: this, id: layer.id })
+      return new Video({ composition: this, id: layer.id })
+    } catch ({ stack }) {
+      logValidationError(stack)
+    }
   }
 
-  public [CompositionMethod.addWaveform](options: WaveformLayer): VisualMedia {
-    validateAddWaveform(options)
+  public [CompositionMethod.addWaveform](options: WaveformLayer): VisualMedia | void {
+    try {
+      validateAddWaveform(options)
 
-    const layer = this._addLayer({ type: LayerType.waveform, ...options })
+      const layer = this._addLayer({ type: LayerType.waveform, ...options })
 
-    return new VisualMedia({ composition: this, id: layer.id })
+      return new VisualMedia({ composition: this, id: layer.id })
+    } catch ({ stack }) {
+      logValidationError(stack)
+    }
   }
 
   public async [CompositionMethod.encode](): Promise<EncodeResponse> {
@@ -161,22 +187,6 @@ export class Composition implements CompositionInterface {
 
       return undefined
     }
-  }
-
-  private _validateOptions(): string[] {
-    const { dimensions, duration } = this._options
-
-    const errors = []
-
-    if (!dimensions) {
-      errors.push(CompositionErrorText.dimensionsRequired)
-    }
-
-    if (!duration) {
-      errors.push(CompositionErrorText.durationRequired)
-    }
-
-    return errors
   }
 
   private _generateConfig(): void {

@@ -31,12 +31,19 @@ export interface CompositionInterface {
 
 export type CompositionFile = Blob | string
 
+export enum CompositionOptionAttribute {
+  backgroundColor = 'backgroundColor',
+  dimensions = 'dimensions',
+  duration = 'duration',
+  metadata = 'metadata',
+  videoFile = 'videoFile',
+}
 export type CompositionOptions = {
-  backgroundColor?: string
-  dimensions: Size
-  duration: number
-  metadata?: Record<string, unknown>
-  videoFile?: CompositionFile
+  [CompositionOptionAttribute.backgroundColor]?: string
+  [CompositionOptionAttribute.dimensions]: Size
+  [CompositionOptionAttribute.duration]: number
+  [CompositionOptionAttribute.metadata]?: Record<string, unknown>
+  [CompositionOptionAttribute.videoFile]?: CompositionFile
 }
 
 export type EncodeConfig = CompositionOptions & {

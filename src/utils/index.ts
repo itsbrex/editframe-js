@@ -3,7 +3,7 @@ import { isApplication, isApplications } from './applications'
 import { urlOrFile } from './forms'
 import { generatePath } from './paths'
 import { uuid } from './strings'
-import { validatePresenceOf, validateValueIsOfType } from './validation'
+import { logValidationError, validatePresenceOf, validateValueIsOfType } from './validation'
 import { validateLayerFormat, validateTextAligment } from './video'
 import {
   formDataKey,
@@ -13,6 +13,8 @@ import {
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
+  validateCompositionOptions,
+  validateLayerMethod,
 } from './video/compositions'
 import { validateFilter } from './video/filters'
 import {
@@ -37,6 +39,7 @@ export {
   isEncodeResponse,
   isVideo,
   isVideos,
+  logValidationError,
   makeHeaders,
   urlOrFile,
   uuid,
@@ -47,6 +50,7 @@ export {
   validateAddVideo,
   validateAddWaveform,
   validateApiData,
+  validateCompositionOptions,
   validateFilter,
   validateHorizontalAlignment,
   validateLayerAlignment,
@@ -54,6 +58,7 @@ export {
   validateLayerBase,
   validateLayerFilter,
   validateLayerFormat,
+  validateLayerMethod,
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,

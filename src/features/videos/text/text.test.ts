@@ -51,7 +51,8 @@ describe('Text', () => {
         TextMethod.setFontFamily,
         LayerAttribute.fontFamily,
         fontFamily,
-        PrimitiveType.string
+        PrimitiveType.string,
+        true
       )
     })
 
@@ -74,7 +75,8 @@ describe('Text', () => {
         TextMethod.setFontSize,
         LayerAttribute.fontSize,
         fontSize,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 
@@ -95,7 +97,8 @@ describe('Text', () => {
         TextMethod.setMaxFontSize,
         LayerAttribute.maxFontSize,
         maxFontSize,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 
@@ -116,7 +119,8 @@ describe('Text', () => {
         TextMethod.setMaxHeight,
         LayerAttribute.maxHeight,
         maxHeight,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 
@@ -137,7 +141,8 @@ describe('Text', () => {
         TextMethod.setMaxWidth,
         LayerAttribute.maxWidth,
         maxWidth,
-        PrimitiveType.number
+        PrimitiveType.number,
+        true
       )
     })
 

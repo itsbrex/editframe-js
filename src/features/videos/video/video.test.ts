@@ -65,10 +65,15 @@ describe('Video', () => {
     })
 
     it('calls the `validateFilter` function with the correct arguments', () => {
-      expect(validateFilterSpy).toHaveBeenCalledWith(VideoMethod.setFilter, LayerAttribute.filter, {
-        filterName,
-        options,
-      })
+      expect(validateFilterSpy).toHaveBeenCalledWith(
+        VideoMethod.setFilter,
+        LayerAttribute.filter,
+        {
+          filterName,
+          options,
+        },
+        true
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
