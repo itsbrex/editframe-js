@@ -1,4 +1,5 @@
 export enum PrimitiveType {
+  number = 'number',
   string = 'string',
   undefined = 'undefined',
 }

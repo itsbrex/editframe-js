@@ -3,7 +3,7 @@ import { isApplication, isApplications } from './applications'
 import { urlOrFile } from './forms'
 import { generatePath } from './paths'
 import { uuid } from './strings'
-import { validatePresenceOf } from './validation'
+import { validatePresenceOf, validateValueIsOfType } from './validation'
 import { validateLayerFormat, validateTextAligment } from './video'
 import { formDataKey } from './video/compositions'
 import { validateFilter } from './video/filters'
@@ -27,4 +27,5 @@ export {
   validateLayerFormat,
   validatePresenceOf,
   validateTextAligment,
+  validateValueIsOfType,
 }

@@ -1,4 +1,11 @@
-import { CompositionInterface, IdentifiedLayer, LayerAttribute, LayerHorizontalAlignmentValue } from 'constant'
+import {
+  CompositionInterface,
+  IdentifiedLayer,
+  LayerAttribute,
+  LayerHorizontalAlignmentValue,
+  PrimitiveType,
+  TextMethod,
+} from 'constant'
 import { mockComposition } from 'mocks'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as VideoUtilsModule from 'utils/video'
@@ -13,6 +20,7 @@ describe('Text', () => {
   let text: Text
   let validatePresenceOfSpy: jest.SpyInstance
   let validateTextAligmentSpy: jest.SpyInstance
+  let validateValueIsOfTypeSpy: jest.SpyInstance
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -21,6 +29,7 @@ describe('Text', () => {
   beforeEach(() => {
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateTextAligmentSpy = jest.spyOn(VideoUtilsModule, 'validateTextAligment')
+    validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
       layer: jest.fn(),
       layers,
@@ -33,6 +42,14 @@ describe('Text', () => {
   describe('setFontFamily', () => {
     const fontFamily = 'Arial'
 
+    beforeEach(() => {
+      text.setFontFamily(fontFamily)
+    })
+
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(TextMethod.setFontFamily, fontFamily, PrimitiveType.string)
+    })
+
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       text.setFontFamily(fontFamily)
 
@@ -43,9 +60,15 @@ describe('Text', () => {
   describe('setFontSize', () => {
     const fontSize = 20
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       text.setFontSize(fontSize)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(TextMethod.setFontSize, fontSize, PrimitiveType.number)
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.fontSize, fontSize)
     })
   })
@@ -53,9 +76,19 @@ describe('Text', () => {
   describe('setMaxFontSize', () => {
     const maxFontSize = 20
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       text.setMaxFontSize(maxFontSize)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setMaxFontSize,
+        maxFontSize,
+        PrimitiveType.number
+      )
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.maxFontSize, maxFontSize)
     })
   })
@@ -63,9 +96,15 @@ describe('Text', () => {
   describe('setMaxHeight', () => {
     const maxHeight = 20
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       text.setMaxHeight(maxHeight)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(TextMethod.setMaxHeight, maxHeight, PrimitiveType.number)
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.maxHeight, maxHeight)
     })
   })
@@ -73,9 +112,15 @@ describe('Text', () => {
   describe('setMaxWidth', () => {
     const maxWidth = 20
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       text.setMaxWidth(maxWidth)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(TextMethod.setMaxWidth, maxWidth, PrimitiveType.number)
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.maxWidth, maxWidth)
     })
   })

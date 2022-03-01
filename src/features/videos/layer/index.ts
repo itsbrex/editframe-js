@@ -1,4 +1,5 @@
-import { CompositionInterface, LayerAttribute, LayerAttributeValue } from 'constant'
+import { CompositionInterface, LayerAttribute, LayerAttributeValue, LayerMethod, PrimitiveType } from 'constant'
+import { validateValueIsOfType } from 'utils'
 
 export class Layer {
   protected _composition: CompositionInterface
@@ -13,11 +14,19 @@ export class Layer {
     return this._id
   }
 
-  public setStart(start?: number): this {
+  public [LayerMethod.setStart](start?: number): this {
+    if (start) {
+      validateValueIsOfType(LayerMethod.setStart, start, PrimitiveType.number)
+    }
+
     return this._updateAttribute(LayerAttribute.start, start)
   }
 
-  public setLength(length?: number): this {
+  public [LayerMethod.setLength](length?: number): this {
+    if (length) {
+      validateValueIsOfType(LayerMethod.setLength, length, PrimitiveType.number)
+    }
+
     return this._updateAttribute(LayerAttribute.length, length)
   }
 

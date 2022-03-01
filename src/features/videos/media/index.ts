@@ -1,4 +1,4 @@
-import { CompositionInterface, LayerAttribute, LayerTrim } from 'constant'
+import { CompositionInterface, LayerAttribute, LayerTrim, MediaMethod } from 'constant'
 import { Layer } from 'features/videos/layer'
 import { ValidationErrorText } from 'strings'
 import { validatePresenceOf } from 'utils'
@@ -8,7 +8,7 @@ export class Media extends Layer {
     super({ composition, id })
   }
 
-  setTrim(trim: LayerTrim): this {
+  [MediaMethod.setTrim](trim: LayerTrim): this {
     const error = validatePresenceOf({
       errorMessage: ValidationErrorText.REQUIRED_FIELD(LayerAttribute.start),
       value: trim.start,

@@ -1,34 +1,44 @@
-import { CompositionInterface, LayerAttribute, LayerHorizontalAlignment } from 'constant'
+import { CompositionInterface, LayerAttribute, LayerHorizontalAlignment, PrimitiveType, TextMethod } from 'constant'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { CompositionErrorText } from 'strings'
-import { validatePresenceOf, validateTextAligment } from 'utils'
+import { validatePresenceOf, validateTextAligment, validateValueIsOfType } from 'utils'
 
 export class Text extends VisualMedia {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }
 
-  public setFontFamily(fontFamily?: string): this {
+  public [TextMethod.setFontFamily](fontFamily?: string): this {
+    validateValueIsOfType(TextMethod.setFontFamily, fontFamily, PrimitiveType.string)
+
     return this._updateAttribute(LayerAttribute.fontFamily, fontFamily)
   }
 
-  public setFontSize(fontSize?: number): this {
+  public [TextMethod.setFontSize](fontSize?: number): this {
+    validateValueIsOfType(TextMethod.setFontSize, fontSize, PrimitiveType.number)
+
     return this._updateAttribute(LayerAttribute.fontSize, fontSize)
   }
 
-  public setMaxFontSize(maxFontSize?: number): this {
+  public [TextMethod.setMaxFontSize](maxFontSize?: number): this {
+    validateValueIsOfType(TextMethod.setMaxFontSize, maxFontSize, PrimitiveType.number)
+
     return this._updateAttribute(LayerAttribute.maxFontSize, maxFontSize)
   }
 
-  public setMaxHeight(maxHeight?: number): this {
+  public [TextMethod.setMaxHeight](maxHeight?: number): this {
+    validateValueIsOfType(TextMethod.setMaxHeight, maxHeight, PrimitiveType.number)
+
     return this._updateAttribute(LayerAttribute.maxHeight, maxHeight)
   }
 
-  public setMaxWidth(maxWidth?: number): this {
+  public [TextMethod.setMaxWidth](maxWidth?: number): this {
+    validateValueIsOfType(TextMethod.setMaxWidth, maxWidth, PrimitiveType.number)
+
     return this._updateAttribute(LayerAttribute.maxWidth, maxWidth)
   }
 
-  public setText(text: string): this {
+  public [TextMethod.setText](text: string): this {
     const error = validatePresenceOf({ errorMessage: CompositionErrorText.textRequired, value: text })
 
     if (error) {
@@ -38,7 +48,7 @@ export class Text extends VisualMedia {
     return this._updateAttribute(LayerAttribute.text, text)
   }
 
-  public setTextAlignment(textAlignment?: LayerHorizontalAlignment): this {
+  public [TextMethod.setTextAlignment](textAlignment?: LayerHorizontalAlignment): this {
     const error = validateTextAligment(textAlignment)
 
     if (error) {

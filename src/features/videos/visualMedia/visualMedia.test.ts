@@ -1,5 +1,13 @@
-import { CompositionInterface, IdentifiedLayer, LayerAttribute, LayerFormatValue } from 'constant'
+import {
+  CompositionInterface,
+  IdentifiedLayer,
+  LayerAttribute,
+  LayerFormatValue,
+  PrimitiveType,
+  VisualMediaMethod,
+} from 'constant'
 import { mockComposition } from 'mocks'
+import * as ValidationUtilsModule from 'utils/validation'
 import * as VideoUtilsModule from 'utils/video'
 
 import { VisualMedia } from './'
@@ -11,6 +19,7 @@ describe('VisualMedia', () => {
   let compositionMock: CompositionInterface
   let visualMedia: VisualMedia
   let validateLayerFormatSpy: jest.SpyInstance
+  let validateValueIsOfTypeSpy: jest.SpyInstance
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -18,6 +27,7 @@ describe('VisualMedia', () => {
 
   beforeEach(() => {
     validateLayerFormatSpy = jest.spyOn(VideoUtilsModule, 'validateLayerFormat')
+    validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
       layer: jest.fn(),
       layers,
@@ -30,9 +40,19 @@ describe('VisualMedia', () => {
   describe('setBackgroundColor', () => {
     const backgroundColor = 'background-color'
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       visualMedia.setBackgroundColor(backgroundColor)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        VisualMediaMethod.setBackgroundColor,
+        backgroundColor,
+        PrimitiveType.string
+      )
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(
         id,
         LayerAttribute.backgroundColor,
@@ -43,6 +63,14 @@ describe('VisualMedia', () => {
 
   describe('setColor', () => {
     const color = 'color'
+
+    beforeEach(() => {
+      visualMedia.setColor(color)
+    })
+
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setColor, color, PrimitiveType.string)
+    })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       visualMedia.setColor(color)
@@ -74,9 +102,15 @@ describe('VisualMedia', () => {
   describe('setHeight', () => {
     const height = 100
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       visualMedia.setHeight(height)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setHeight, height, PrimitiveType.number)
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.height, height)
     })
   })
@@ -84,9 +118,15 @@ describe('VisualMedia', () => {
   describe('setWidth', () => {
     const width = 200
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       visualMedia.setWidth(width)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setWidth, width, PrimitiveType.number)
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.width, width)
     })
   })
@@ -94,9 +134,15 @@ describe('VisualMedia', () => {
   describe('setX', () => {
     const x = 20
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       visualMedia.setX(x)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setX, x, PrimitiveType.number)
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.x, x)
     })
   })
@@ -104,9 +150,15 @@ describe('VisualMedia', () => {
   describe('setY', () => {
     const y = 20
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+    beforeEach(() => {
       visualMedia.setY(y)
+    })
 
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(VisualMediaMethod.setY, y, PrimitiveType.number)
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.y, y)
     })
   })
