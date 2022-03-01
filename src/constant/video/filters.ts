@@ -49,7 +49,16 @@ export interface FilterOptions {
   [FilterName.vintage]: undefined
 }
 
+export enum FilterAttribute {
+  filterName = 'filterName',
+  options = 'options',
+}
+
 export type Filter = {
-  filterName: FilterName
-  options: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation | undefined
+  [FilterAttribute.filterName]: FilterName
+  [FilterAttribute.options]: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation | undefined
+}
+
+export enum FilterMethod {
+  setFilter = 'setFilter',
 }

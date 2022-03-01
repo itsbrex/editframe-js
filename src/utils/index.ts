@@ -15,6 +15,16 @@ import {
   validateAddWaveform,
 } from './video/compositions'
 import { validateFilter } from './video/filters'
+import {
+  validateHorizontalAlignment,
+  validateLayerAlignment,
+  validateLayerAudio,
+  validateLayerBase,
+  validateLayerFilter,
+  validateLayerText,
+  validateLayerTrim,
+  validateLayerVisualMedia,
+} from './video/layers'
 import { isEncodeResponse, isVideo, isVideos } from './videos'
 
 export {
@@ -38,7 +48,15 @@ export {
   validateAddWaveform,
   validateApiData,
   validateFilter,
+  validateHorizontalAlignment,
+  validateLayerAlignment,
+  validateLayerAudio,
+  validateLayerBase,
+  validateLayerFilter,
   validateLayerFormat,
+  validateLayerText,
+  validateLayerTrim,
+  validateLayerVisualMedia,
   validatePresenceOf,
   validateTextAligment,
   validateValueIsOfType,

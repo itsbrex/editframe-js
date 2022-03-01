@@ -1,4 +1,4 @@
-import { CompositionInterface, FilterName, IdentifiedLayer, LayerAttribute } from 'constant'
+import { CompositionInterface, FilterName, IdentifiedLayer, LayerAttribute, VideoMethod } from 'constant'
 import { mockComposition } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
@@ -65,7 +65,10 @@ describe('Video', () => {
     })
 
     it('calls the `validateFilter` function with the correct arguments', () => {
-      expect(validateFilterSpy).toHaveBeenCalledWith(filterName, options)
+      expect(validateFilterSpy).toHaveBeenCalledWith(VideoMethod.setFilter, LayerAttribute.filter, {
+        filterName,
+        options,
+      })
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {

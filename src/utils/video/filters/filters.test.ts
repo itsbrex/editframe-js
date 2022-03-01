@@ -1,23 +1,42 @@
-import { FilterName } from 'constant'
-import { FilterErrorText } from 'strings'
+import { FilterAttribute, FilterName } from 'constant'
+import { ValidationErrorText } from 'strings'
 
 import { validateFilter } from './'
 
 describe('validateFilter', () => {
-  it('throws the correct error string when an invalid filter `name` is provided', () => {
-    const name = 'fake-filter'
+  const callerName = 'caller-name'
+  const fieldName = 'field-name'
 
-    expect(() => validateFilter(name as any, {} as any)).toThrow(new Error(FilterErrorText.invalidFilterName(name)))
+  it('throws the correct error string when an invalid filter `filterName` is provided', () => {
+    const filterName = 'fake-filter'
+
+    expect(() => validateFilter(callerName, fieldName, { filterName: filterName as any, options: {} as any })).toThrow(
+      new Error(
+        ValidationErrorText.MUST_BE_TYPE(
+          callerName,
+          ValidationErrorText.SUB_FIELD(fieldName, FilterAttribute.filterName),
+          filterName,
+          `${Object.values(FilterName).join(', ')}`
+        )
+      )
+    )
   })
 
-  describe('when a valid filter `name` is provided', () => {
-    const name = FilterName.brightness
+  describe('when a valid filter `filterName` is provided', () => {
+    const filterName = FilterName.brightness
 
     it('throws the correct error string when invalid filter `options` are provided', () => {
       const options = {}
 
-      expect(() => validateFilter(name, options as any)).toThrow(
-        new Error(FilterErrorText.invalidFilterOptions(name, JSON.stringify(options)))
+      expect(() => validateFilter(callerName, fieldName, { filterName, options: options as any })).toThrow(
+        new Error(
+          ValidationErrorText.MUST_BE_TYPE(
+            callerName,
+            ValidationErrorText.SUB_FIELD(fieldName, FilterAttribute.options),
+            options,
+            JSON.stringify(options)
+          )
+        )
       )
     })
   })

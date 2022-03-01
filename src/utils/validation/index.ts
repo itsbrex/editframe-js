@@ -17,6 +17,6 @@ export const validateValueIsOfType = (
   type: PrimitiveType
 ): void => {
   if (value && typeof value !== type) {
-    throw new Error(ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, type))
+    throw new TypeError(ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, type))
   }
 }

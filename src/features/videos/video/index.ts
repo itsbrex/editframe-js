@@ -1,6 +1,6 @@
 import { Mixin } from 'ts-mixer'
 
-import { CompositionInterface, FilterOptions, LayerAttribute, Size } from 'constant'
+import { CompositionInterface, FilterOptions, LayerAttribute, Size, VideoMethod } from 'constant'
 import { Audio } from 'features/videos/audio'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { ValidationErrorText } from 'strings'
@@ -11,7 +11,7 @@ export class Video extends Mixin(Audio, VisualMedia) {
     super({ composition, id })
   }
 
-  setDimensions({ height, width }: Size): Video {
+  [VideoMethod.setDimensions]({ height, width }: Size): Video {
     validatePresenceOf(height, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.height))
     validatePresenceOf(width, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.width))
 
@@ -20,14 +20,14 @@ export class Video extends Mixin(Audio, VisualMedia) {
     return this._updateAttribute(LayerAttribute.width, width)
   }
 
-  setFilter<FilterName extends keyof FilterOptions>({
+  [VideoMethod.setFilter]<FilterName extends keyof FilterOptions>({
     filterName,
     options,
   }: {
     filterName: FilterName
     options: FilterOptions[FilterName]
   }): Video {
-    validateFilter(filterName, options)
+    validateFilter(VideoMethod.setFilter, LayerAttribute.filter, { filterName, options })
 
     return this._updateAttribute(LayerAttribute.filter, {
       filterName,

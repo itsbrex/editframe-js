@@ -1,5 +1,6 @@
 import {
   AudioLayer,
+  FilterLayer,
   LayerAlignment,
   LayerAttribute,
   LayerBase,
@@ -13,20 +14,29 @@ import {
 } from 'constant'
 import { ValidationErrorText } from 'strings'
 import { validateValueIsOfType } from 'utils/validation'
+import { validateFilter } from 'utils/video/filters'
 
 export const validateLayerBase = (callerName: string, { length, start }: LayerBase): void => {
   validateValueIsOfType(callerName, LayerAttribute.start, start, PrimitiveType.number)
   validateValueIsOfType(callerName, LayerAttribute.length, length, PrimitiveType.number)
 }
 
+export const validateLayerFilter = (callerName: string, { filter }: FilterLayer): void =>
+  validateFilter(callerName, LayerAttribute.filter, filter)
+
 export const validateLayerTrim = (callerName: string, { trim }: LayerTrim): void => {
   validateValueIsOfType(
     callerName,
-    `${LayerAttribute.trim}: ${LayerAttribute.start}`,
+    ValidationErrorText.SUB_FIELD(LayerAttribute.trim, LayerAttribute.start),
     trim?.start,
     PrimitiveType.number
   )
-  validateValueIsOfType(callerName, `${LayerAttribute.trim}: ${LayerAttribute.end}`, trim?.end, PrimitiveType.number)
+  validateValueIsOfType(
+    callerName,
+    ValidationErrorText.SUB_FIELD(LayerAttribute.trim, LayerAttribute.end),
+    trim?.end,
+    PrimitiveType.number
+  )
 }
 
 export const validateLayerVisualMedia = (

@@ -6,9 +6,9 @@ import {
   LayerHorizontalAlignmentValue,
   LayerVerticalAlignmentValue,
   PrimitiveType,
+  WaveformStyle,
 } from 'constant'
 import * as ValidationUtilsModule from 'utils/validation'
-import * as FilterUtilsModule from 'utils/video/filters'
 import * as LayerUtilsModule from 'utils/video/layers'
 
 import {
@@ -38,10 +38,10 @@ describe('formDataKey', () => {
 })
 
 describe('validations', () => {
-  let validateFilterSpy: jest.SpyInstance
   let validateLayerAlignmentSpy: jest.SpyInstance
   let validateLayerAudioSpy: jest.SpyInstance
   let validateLayerBaseSpy: jest.SpyInstance
+  let validateLayerFilterSpy: jest.SpyInstance
   let validateLayerTextSpy: jest.SpyInstance
   let validateLayerTrimSpy: jest.SpyInstance
   let validateLayerVisualMediaSpy: jest.SpyInstance
@@ -52,10 +52,10 @@ describe('validations', () => {
   })
 
   beforeEach(() => {
-    validateFilterSpy = jest.spyOn(FilterUtilsModule, 'validateFilter')
     validateLayerAlignmentSpy = jest.spyOn(LayerUtilsModule, 'validateLayerAlignment')
     validateLayerAudioSpy = jest.spyOn(LayerUtilsModule, 'validateLayerAudio')
     validateLayerBaseSpy = jest.spyOn(LayerUtilsModule, 'validateLayerBase')
+    validateLayerFilterSpy = jest.spyOn(LayerUtilsModule, 'validateLayerFilter')
     validateLayerTextSpy = jest.spyOn(LayerUtilsModule, 'validateLayerText')
     validateLayerTrimSpy = jest.spyOn(LayerUtilsModule, 'validateLayerTrim')
     validateLayerVisualMediaSpy = jest.spyOn(LayerUtilsModule, 'validateLayerVisualMedia')
@@ -202,7 +202,7 @@ describe('validations', () => {
     })
 
     it('calls the `validateFilter` function with the correct arguments', () => {
-      expect(validateFilterSpy).toHaveBeenCalledWith(options.filter.filterName, options.filter.options)
+      expect(validateLayerFilterSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, options)
     })
   })
 
@@ -212,7 +212,7 @@ describe('validations', () => {
       color: 'color',
       length: 10,
       start: 5,
-      style: 'bars',
+      style: WaveformStyle.bars,
       volume: 1,
       x: 10,
       y: 20,

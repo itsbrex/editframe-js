@@ -1,8 +1,10 @@
 import {
   ApiInterface,
+  CompositionMethod,
   EncodeResponseAttribute,
   FilterName,
   FormDataInterface,
+  LayerAttribute,
   LayerFormatValue,
   LayerHorizontalAlignmentValue,
   LayerType,
@@ -137,11 +139,14 @@ describe('Composition', () => {
     beforeEach(() => {
       composition = new Composition({ api: apiMock, formData: formDataMock, options })
 
-      composition.addFilter({ name: filterName, options: filterOptions })
+      composition.addFilter({ filterName, options: filterOptions })
     })
 
     it('calls `validateFilter` with the correct arguments', () => {
-      expect(validateFilterSpy).toHaveBeenCalledWith(filterName, filterOptions)
+      expect(validateFilterSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, LayerAttribute.filter, {
+        filterName,
+        options: filterOptions,
+      })
     })
 
     it('adds a `filter` layer with the correct attributes', () => {
@@ -156,7 +161,7 @@ describe('Composition', () => {
     })
 
     it('returns a `Filter` object', () => {
-      const filter = composition.addFilter({ name: filterName, options: filterOptions })
+      const filter = composition.addFilter({ filterName, options: filterOptions })
 
       expect(filter instanceof Filter).toBe(true)
     })
@@ -293,7 +298,7 @@ describe('Composition', () => {
       composition = new Composition({ api: apiMock, formData: formDataMock, options })
 
       composition.addAudio(filenames.audio, audioOptions)
-      composition.addFilter({ name: filterName, options: filterOptions })
+      composition.addFilter({ filterName, options: filterOptions })
       composition.addImage(filenames.image, imageOptions)
       composition.addText(textOptions)
       composition.addVideo(filenames.video, videoOptions)

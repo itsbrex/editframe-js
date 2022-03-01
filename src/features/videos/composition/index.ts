@@ -94,15 +94,15 @@ export class Composition implements CompositionInterface {
   }
 
   public [CompositionMethod.addFilter]<FilterName extends keyof FilterOptions>({
-    name,
+    filterName,
     options,
   }: {
-    name: FilterName
+    filterName: FilterName
     options: FilterOptions[FilterName]
   }): Filter {
-    validateFilter(name, options)
+    validateFilter(CompositionMethod.addFilter, LayerAttribute.filter, { filterName, options })
 
-    const layer = this._addLayer({ filter: { filterName: name, options }, type: LayerType.filter })
+    const layer = this._addLayer({ filter: { filterName, options }, type: LayerType.filter })
 
     return new Filter({ composition: this, id: layer.id })
   }

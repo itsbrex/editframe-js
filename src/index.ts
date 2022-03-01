@@ -1,15 +1,8 @@
 import { Api } from 'api'
+import { EditframeOptions } from 'constant'
 import { Applications, Videos } from 'features'
 import { EditframeErrorText } from 'strings'
 import { baseURL, initializeFetchUtil } from 'utils'
-
-interface EditframeConfig {
-  clientId: string
-  host?: string
-  log?: boolean
-  token: string
-  version?: number
-}
 
 export class Editframe {
   public applications: Applications
@@ -20,7 +13,7 @@ export class Editframe {
   private _token: string
   private _version: number
 
-  constructor({ clientId, host = 'https://api.editframe.com', token, version = 2 }: EditframeConfig) {
+  constructor({ clientId, host = 'https://api.editframe.com', token, version = 2 }: EditframeOptions) {
     if (!clientId || !token) {
       throw new Error(EditframeErrorText.clientIdAndTokenRequired)
     }

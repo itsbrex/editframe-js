@@ -59,14 +59,14 @@ describe('validations', () => {
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         callerName,
-        `${LayerAttribute.trim}: ${LayerAttribute.start}`,
+        ValidationErrorText.SUB_FIELD(LayerAttribute.trim, LayerAttribute.start),
         start,
         PrimitiveType.number
       )
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         callerName,
-        `${LayerAttribute.trim}: ${LayerAttribute.end}`,
+        ValidationErrorText.SUB_FIELD(LayerAttribute.trim, LayerAttribute.end),
         end,
         PrimitiveType.number
       )

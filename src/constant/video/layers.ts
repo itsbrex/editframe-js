@@ -119,9 +119,14 @@ export type VideoLayer = LayerBase & LayerTrim & AudioLayer & LayerVisualMedia
 export type FilterLayer = LayerBase & {
   [LayerAttribute.filter]: Filter
 }
+
+export enum WaveformStyle {
+  bars = 'bars',
+  line = 'line',
+}
 export type WaveformLayer = LayerBase &
   LayerVisualMedia & {
-    [LayerAttribute.style]?: string
+    [LayerAttribute.style]?: WaveformStyle
   }
 
 export type ComposableLayer =

@@ -1,4 +1,4 @@
-import { CompositionInterface, FilterOptions, LayerAttribute } from 'constant'
+import { CompositionInterface, FilterMethod, FilterOptions, LayerAttribute } from 'constant'
 import { Layer } from 'features/videos/layer'
 import { validateFilter } from 'utils'
 
@@ -7,15 +7,15 @@ export class Filter extends Layer {
     super({ composition, id })
   }
 
-  public setFilter<FilterName extends keyof FilterOptions>({
-    name,
+  public [FilterMethod.setFilter]<FilterName extends keyof FilterOptions>({
+    filterName,
     options,
   }: {
-    name: FilterName
+    filterName: FilterName
     options: FilterOptions[FilterName]
   }): this {
-    validateFilter(name, options)
+    validateFilter(FilterMethod.setFilter, LayerAttribute.filter, { filterName, options })
 
-    return this._updateAttribute(LayerAttribute.filter, { filterName: name, options })
+    return this._updateAttribute(LayerAttribute.filter, { filterName, options })
   }
 }
