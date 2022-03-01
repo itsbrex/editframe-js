@@ -1,7 +1,16 @@
 import camelCaseKeys from 'camelcase-keys'
 import fetch from 'cross-fetch'
 
-import { ApiHeaderKey, ApiHeaderValue, ApiHeaders, FetchFunction, Fetcher, MakeFetchFunction, MimeType } from 'constant'
+import {
+  ApiDataValidator,
+  ApiHeaderKey,
+  ApiHeaderValue,
+  ApiHeaders,
+  FetchFunction,
+  Fetcher,
+  MakeFetchFunction,
+  MimeType,
+} from 'constant'
 import { ApiErrorText } from 'strings'
 
 import { version } from '../../../package.json'
@@ -57,4 +66,12 @@ export const makeHeaders = ({
   }
 
   return headers
+}
+
+export const validateApiData = <DataType>(data: unknown, validator: ApiDataValidator<DataType>): DataType => {
+  if (data && validator.validate(data)) {
+    return data
+  }
+
+  throw new Error(validator.invalidDataError)
 }

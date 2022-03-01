@@ -1,4 +1,4 @@
-import { CompositionInterface, Layer, LayerAttribute } from 'constant'
+import { CompositionInterface, IdentifiedLayer, LayerAttribute } from 'constant'
 import { mockComposition } from 'mocks'
 import * as ValidationUtilsModule from 'utils/validation'
 
@@ -7,7 +7,7 @@ import { Media } from './'
 describe('Media', () => {
   const error = 'error'
   const id = 'id'
-  const layers: Layer[] = []
+  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let media: Media
   let validatePresenceOfSpy: jest.SpyInstance
@@ -25,10 +25,6 @@ describe('Media', () => {
     })
 
     media = new Media({ composition: compositionMock, id })
-  })
-
-  it('sets the `id` property to the value passed into the constructor', () => {
-    expect(media.id).toEqual(id)
   })
 
   describe('setTrim', () => {

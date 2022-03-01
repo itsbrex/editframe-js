@@ -1,9 +1,9 @@
 import fetchMock from 'jest-fetch-mock'
 
-import { ApiHeaderKey, ApiHeaderValue, FetchFunction, HTTPMethod, MimeType } from 'constant'
+import { ApiDataValidator, ApiHeaderKey, ApiHeaderValue, FetchFunction, HTTPMethod, MimeType } from 'constant'
 import { ApiErrorText } from 'strings'
 
-import { baseURL, initializeFetchUtil, makeHeaders, makeRequest } from './'
+import { baseURL, initializeFetchUtil, makeHeaders, makeRequest, validateApiData } from './'
 
 describe('baseURL', () => {
   it('returns a well-formed `baseURL`', () => {
@@ -154,5 +154,34 @@ describe('makeHeaders', () => {
       expect(headers[ApiHeaderKey.xRequestedWith]).toBeUndefined()
       expect(headers[ApiHeaderKey.contentType]).toEqual(MimeType.json)
     })
+  })
+})
+
+describe('validateApiData', () => {
+  enum DataTypeAttributes {
+    field = 'field',
+  }
+
+  interface DataType {
+    field: string
+  }
+
+  const invalidDataError = 'error'
+  const validate = (data: any): data is DataType => DataTypeAttributes.field in data
+  const validator: ApiDataValidator<DataType> = {
+    invalidDataError,
+    validate,
+  }
+
+  describe('when the provided data is malformed', () => {
+    it('throws the provided error', () => {
+      expect(() => validateApiData<DataType>({}, validator)).toThrow(new Error(invalidDataError))
+    })
+  })
+
+  it('returns the provided data', () => {
+    const validData = { field: 'value' }
+
+    expect(validateApiData<DataType>(validData, validator)).toEqual(validData)
   })
 })

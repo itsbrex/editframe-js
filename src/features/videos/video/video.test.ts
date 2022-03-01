@@ -1,14 +1,14 @@
-import { CompositionInterface, FilterName, Layer, LayerAttribute } from 'constant'
+import { CompositionInterface, FilterName, IdentifiedLayer, LayerAttribute } from 'constant'
 import { mockComposition } from 'mocks'
-import * as FilterUtilsModule from 'utils/filters'
 import * as ValidationUtilsModule from 'utils/validation'
+import * as FilterUtilsModule from 'utils/video/filters'
 
 import { Video } from './'
 
 describe('Video', () => {
   const error = 'error'
   const id = 'id'
-  const layers: Layer[] = []
+  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let video: Video
   let validateFilterSpy: jest.SpyInstance
@@ -28,10 +28,6 @@ describe('Video', () => {
     })
 
     video = new Video({ composition: compositionMock, id })
-  })
-
-  it('sets the `id` property to the value passed into the constructor', () => {
-    expect(video.id).toEqual(id)
   })
 
   describe('setDimensions', () => {

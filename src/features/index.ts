@@ -1,4 +1,4 @@
-import { Applications } from "./applications";
-import { Videos } from "./videos";
+import { Applications } from './applications'
+import { Videos } from './videos'
 
-export { Applications, Videos };
+export { Applications, Videos }

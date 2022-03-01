@@ -8,8 +8,8 @@ import {
   EncodeResponse,
   FilterOptions,
   FormDataInterface,
+  IdentifiedLayer,
   ImageLayer,
-  Layer,
   LayerAttribute,
   LayerAttributeValue,
   LayerType,
@@ -19,7 +19,10 @@ import {
   WaveformLayer,
 } from 'constant'
 import { Audio } from 'features/videos/audio'
+import { Filter } from 'features/videos/filter'
+import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
+import { VisualMedia } from 'features/videos/visualMedia'
 import { CompositionErrorText, MediaErrorText } from 'strings'
 import { formDataKey, isEncodeResponse, uuid, validateApiData, validateFilter, validatePresenceOf } from 'utils'
 
@@ -30,7 +33,7 @@ export class Composition implements CompositionInterface {
     id: string
   }[]
   private _formData: FormDataInterface
-  private _layers: Layer[] = []
+  private _layers: IdentifiedLayer[] = []
   private _options: any
 
   constructor({
@@ -58,11 +61,11 @@ export class Composition implements CompositionInterface {
     }
   }
 
-  get layers(): Layer[] {
+  get layers(): IdentifiedLayer[] {
     return this._layers
   }
 
-  public layer(id: string): Layer {
+  public layer(id: string): IdentifiedLayer {
     return this._layers.find((layer) => layer.id && layer.id === id)
   }
 
@@ -86,16 +89,16 @@ export class Composition implements CompositionInterface {
   }: {
     name: FilterName
     options: FilterOptions[FilterName]
-  }): Composition {
+  }): Filter {
     const error = validateFilter(name, options)
 
     if (error) {
       throw new Error(error)
     }
 
-    this._addLayer({ filter: { filterName: name, options }, type: LayerType.filter })
+    const layer = this._addLayer({ filter: { filterName: name, options }, type: LayerType.filter })
 
-    return this
+    return new Filter({ composition: this, id: layer.id })
   }
 
   public addImage(file: CompositionFile, options: ImageLayer): Video {
@@ -112,16 +115,16 @@ export class Composition implements CompositionInterface {
     return new Video({ composition: this, id: layer.id })
   }
 
-  public addText(options: TextLayer): Composition {
+  public addText(options: TextLayer): Text {
     const error = validatePresenceOf({ errorMessage: CompositionErrorText.textRequired, value: options.text })
 
     if (error) {
       throw new Error(error)
     }
 
-    this._addLayer({ type: LayerType.text, ...options })
+    const layer = this._addLayer({ type: LayerType.text, ...options })
 
-    return this
+    return new Text({ composition: this, id: layer.id })
   }
 
   public addVideo(file: CompositionFile, options: VideoLayer = {}): Video {
@@ -138,10 +141,10 @@ export class Composition implements CompositionInterface {
     return new Video({ composition: this, id: layer.id })
   }
 
-  public addWaveform(options: WaveformLayer): Composition {
-    this._addLayer({ type: LayerType.waveform, ...options })
+  public addWaveform(options: WaveformLayer): VisualMedia {
+    const layer = this._addLayer({ type: LayerType.waveform, ...options })
 
-    return this
+    return new VisualMedia({ composition: this, id: layer.id })
   }
 
   public async encode(): Promise<EncodeResponse> {
@@ -188,8 +191,8 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  private _addLayer(options: ComposableLayer): Layer {
-    const newLayer: Layer = { id: uuid(), ...options }
+  private _addLayer(options: ComposableLayer): IdentifiedLayer {
+    const newLayer: IdentifiedLayer = { id: uuid(), ...options }
 
     this._layers.push(newLayer)
 
@@ -204,7 +207,7 @@ export class Composition implements CompositionInterface {
     this.setLayer(id, newLayer)
   }
 
-  private setLayer(id: string, newLayer: Layer): void {
+  private setLayer(id: string, newLayer: IdentifiedLayer): void {
     const newLayers = [...this.layers]
     const layerIndex = newLayers.findIndex((layer) => layer.id === id)
 

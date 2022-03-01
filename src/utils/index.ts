@@ -1,11 +1,13 @@
-import { baseURL, initializeFetchUtil, makeHeaders } from './api'
+import { baseURL, initializeFetchUtil, makeHeaders, validateApiData } from './api'
 import { isApplication, isApplications } from './applications'
-import { validateFilter } from './filters'
 import { urlOrFile } from './forms'
 import { generatePath } from './paths'
 import { uuid } from './strings'
-import { validateApiData, validatePresenceOf } from './validation'
-import { formDataKey, isEncodeResponse, isVideo, isVideos } from './videos'
+import { validatePresenceOf } from './validation'
+import { validateLayerFormat, validateTextAligment } from './video'
+import { formDataKey } from './video/compositions'
+import { validateFilter } from './video/filters'
+import { isEncodeResponse, isVideo, isVideos } from './videos'
 
 export {
   baseURL,
@@ -22,5 +24,7 @@ export {
   uuid,
   validateApiData,
   validateFilter,
+  validateLayerFormat,
   validatePresenceOf,
+  validateTextAligment,
 }

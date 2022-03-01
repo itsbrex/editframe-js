@@ -1,4 +1,4 @@
-import { Filter } from 'constant/videos/filters'
+import { Filter } from 'constant/video/filters'
 
 export enum LayerAttribute {
   backgroundColor = 'backgroundColor',
@@ -10,6 +10,7 @@ export enum LayerAttribute {
   format = 'format',
   height = 'height',
   horizontalAlignment = 'horizontalAlignment',
+  length = 'length',
   maxFontSize = 'maxFontSize',
   maxHeight = 'maxHeight',
   maxWidth = 'maxWidth',
@@ -70,7 +71,12 @@ export enum WaveformLayerStyleValue {
 }
 export type WaveformLayerStyle = WaveformLayerStyleValue.wave | WaveformLayerStyleValue.line
 
-export type Trim = {
+export type LayerBase = {
+  [LayerAttribute.start]?: number
+  [LayerAttribute.length]?: number
+}
+
+export type LayerTrim = {
   [LayerAttribute.end]?: number
   [LayerAttribute.start]?: number
 }
@@ -80,12 +86,9 @@ export type LayerAlignment = {
   [LayerAttribute.verticalAlignment]?: LayerVerticalAlignment
 }
 
-export type LayerColors = {
+export type LayerVisualMedia = Size & {
   [LayerAttribute.backgroundColor]?: string
   [LayerAttribute.color]?: string
-}
-
-export type LayerShape = Size & {
   [LayerAttribute.format]?: LayerFormat
   [LayerAttribute.x]?: number
   [LayerAttribute.y]?: number
@@ -101,18 +104,18 @@ export type LayerText = {
   [LayerAttribute.textAlignment]?: LayerHorizontalAlignment
 }
 
-export type AudioLayer = Trim & {
-  [LayerAttribute.volume]?: number
-}
-export type ImageLayer = Trim & LayerShape
-export type TextLayer = Trim & LayerAlignment & LayerShape & LayerText
-export type VideoLayer = Trim & LayerShape & AudioLayer
-export type FilterLayer = Trim & {
+export type AudioLayer = LayerBase &
+  LayerTrim & {
+    [LayerAttribute.volume]?: number
+  }
+export type ImageLayer = LayerBase & LayerVisualMedia
+export type TextLayer = LayerBase & LayerAlignment & LayerText & LayerVisualMedia
+export type VideoLayer = LayerBase & LayerTrim & AudioLayer & LayerVisualMedia
+export type FilterLayer = LayerBase & {
   [LayerAttribute.filter]: Filter
 }
-
-export type WaveformLayer = LayerColors &
-  LayerShape & {
+export type WaveformLayer = LayerBase &
+  LayerVisualMedia & {
     [LayerAttribute.style]?: string
   }
 
@@ -126,6 +129,6 @@ export type ComposableLayer =
     })
   | FilterLayer
 
-export type Layer = ComposableLayer & {
+export type IdentifiedLayer = ComposableLayer & {
   id: string
 }

@@ -1,21 +1,14 @@
-import { CompositionInterface, LayerAttribute, LayerAttributeValue, Trim } from 'constant'
+import { CompositionInterface, LayerAttribute, LayerTrim } from 'constant'
+import { Layer } from 'features/videos/layer'
 import { ValidationErrorText } from 'strings'
 import { validatePresenceOf } from 'utils'
 
-export class Media {
-  protected _composition: CompositionInterface
-  private _id: string
-
+export class Media extends Layer {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
-    this._composition = composition
-    this._id = id
+    super({ composition, id })
   }
 
-  get id(): string {
-    return this._id
-  }
-
-  setTrim(trim: Trim): this {
+  setTrim(trim: LayerTrim): this {
     const error = validatePresenceOf({
       errorMessage: ValidationErrorText.REQUIRED_FIELD(LayerAttribute.start),
       value: trim.start,
@@ -33,12 +26,6 @@ export class Media {
     if (end) {
       this._updateAttribute(LayerAttribute.end, end)
     }
-
-    return this
-  }
-
-  _updateAttribute(layerAttribute: LayerAttribute, value: LayerAttributeValue): this {
-    this._composition.updateLayerAttribute(this._id, layerAttribute, value)
 
     return this
   }

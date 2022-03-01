@@ -9,13 +9,16 @@ import {
   Routes,
 } from 'constant'
 import { Audio } from 'features/videos/audio'
+import { Filter } from 'features/videos/filter'
+import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
+import { VisualMedia } from 'features/videos/visualMedia'
 import { mockApi } from 'mocks'
 import { CompositionErrorText } from 'strings'
 import { formDataKey } from 'utils'
-import * as FilterUtilsModule from 'utils/filters'
 import * as StringsUtilsModule from 'utils/strings'
 import * as ValidationUtilsModule from 'utils/validation'
+import * as FilterUtilsModule from 'utils/video/filters'
 
 import { Composition } from './'
 
@@ -171,6 +174,12 @@ describe('Composition', () => {
         type: LayerType.filter,
       })
     })
+
+    it('returns a `Filter` object', () => {
+      const filter = composition.addFilter({ name: filterName, options: filterOptions })
+
+      expect(filter instanceof Filter).toBe(true)
+    })
   })
 
   describe('addImage', () => {
@@ -229,6 +238,12 @@ describe('Composition', () => {
         ...textOptions,
       })
     })
+
+    it('returns a `Text` object', () => {
+      const text = composition.addText(textOptions)
+
+      expect(text instanceof Text).toBe(true)
+    })
   })
 
   describe('addVideo', () => {
@@ -275,6 +290,12 @@ describe('Composition', () => {
         type: LayerType.waveform,
         ...waveformOptions,
       })
+    })
+
+    it('returns a `VisualMedia` object', () => {
+      const waveform = composition.addWaveform(waveformOptions)
+
+      expect(waveform instanceof VisualMedia).toBe(true)
     })
   })
 

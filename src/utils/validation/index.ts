@@ -1,12 +1,4 @@
-import { ApiDataValidator, CompositionFile } from 'constant'
-
-export const validateApiData = <DataType>(data: unknown, validator: ApiDataValidator<DataType>): DataType => {
-  if (data && validator.validate(data)) {
-    return data
-  }
-
-  throw new Error(validator.invalidDataError)
-}
+import { CompositionFile } from 'constant'
 
 export const validatePresenceOf = ({
   errorMessage,

@@ -1,13 +1,13 @@
 import { Blob } from 'node:buffer'
 
-import { Filter } from 'constant/videos/filters'
-import { Layer, LayerAttribute, Size } from 'constant/videos/layers'
+import { Filter } from 'constant/video/filters'
+import { IdentifiedLayer, LayerAttribute, Size } from 'constant/video/layers'
 
 export type LayerAttributeValue = number | string | Filter
 
 export interface CompositionInterface {
-  layer: (id: string) => Layer
-  layers: Layer[]
+  layer: (id: string) => IdentifiedLayer
+  layers: IdentifiedLayer[]
   updateLayerAttribute: (id: string, layerAttribute: LayerAttribute, value: LayerAttributeValue) => void
 }
 
@@ -23,7 +23,7 @@ export type CompositionOptions = {
 
 export type EncodeConfig = CompositionOptions & {
   dimensions: { height: number; width: number }
-  layers: Layer[]
+  layers: IdentifiedLayer[]
 }
 
 export enum EncodeResponseAttribute {

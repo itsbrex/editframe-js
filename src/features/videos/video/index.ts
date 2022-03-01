@@ -1,9 +1,12 @@
+import { Mixin } from 'ts-mixer'
+
 import { CompositionInterface, FilterOptions, LayerAttribute, Size } from 'constant'
 import { Audio } from 'features/videos/audio'
+import { VisualMedia } from 'features/videos/visualMedia'
 import { ValidationErrorText } from 'strings'
 import { validateFilter, validatePresenceOf } from 'utils'
 
-export class Video extends Audio {
+export class Video extends Mixin(Audio, VisualMedia) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }

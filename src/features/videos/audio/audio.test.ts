@@ -1,4 +1,4 @@
-import { CompositionInterface, Layer, LayerAttribute } from 'constant'
+import { CompositionInterface, IdentifiedLayer, LayerAttribute } from 'constant'
 import { mockComposition } from 'mocks'
 import * as ValidationUtilsModule from 'utils/validation'
 
@@ -7,7 +7,7 @@ import { Audio } from './'
 describe('Audio', () => {
   const error = 'error'
   const id = 'id'
-  const layers: Layer[] = []
+  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let audio: Audio
   let validatePresenceOfSpy: jest.SpyInstance
@@ -25,10 +25,6 @@ describe('Audio', () => {
     })
 
     audio = new Audio({ composition: compositionMock, id })
-  })
-
-  it('sets the `id` property to the value passed into the constructor', () => {
-    expect(audio.id).toEqual(id)
   })
 
   describe('setVolume', () => {
