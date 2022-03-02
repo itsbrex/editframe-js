@@ -28,10 +28,17 @@ export const mockComposition = ({
 })
 
 export const mockCompositionOptions = (
-  { dimensions, duration }: CompositionOptions = { dimensions: { height: 100, width: 200 }, duration: 10 }
+  { backgroundColor, dimensions, duration, metadata }: CompositionOptions = {
+    backgroundColor: '#ffffff',
+    dimensions: { height: 100, width: 200 },
+    duration: 10,
+    metadata: { key: 'value' },
+  }
 ): CompositionOptions => ({
+  backgroundColor,
   dimensions,
   duration,
+  metadata,
 })
 
 export const mockAudioLayer = (

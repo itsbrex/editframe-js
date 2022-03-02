@@ -11,10 +11,12 @@ import {
   mockVideoLayer,
   mockWaveformLayer,
 } from './composition'
-import { mockVideo } from './videos'
+import { mockApiVideo, mockApiVideoMetadata } from './videos'
 
 export {
   mockApi,
+  mockApiVideo,
+  mockApiVideoMetadata,
   mockAudioLayer,
   mockComposition,
   mockCompositionOptions,
@@ -23,7 +25,6 @@ export {
   mockFilterLayer,
   mockImageLayer,
   mockTextLayer,
-  mockVideo,
   mockVideoLayer,
   mockWaveformLayer,
 }

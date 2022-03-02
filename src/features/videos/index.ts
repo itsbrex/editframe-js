@@ -1,8 +1,31 @@
 import FormData from 'form-data'
+import { Readable } from 'stream'
 
-import { ApiInterface, ApiVideo, ApiVideoMethod, CompositionOptions, Routes } from 'constant'
+import {
+  ApiInterface,
+  ApiVideo,
+  ApiVideoMetadata,
+  ApiVideoMetadataFormDataKey,
+  ApiVideoMetadataType,
+  ApiVideoMethod,
+  CompositionFile,
+  Routes,
+  VideoOptions,
+} from 'constant'
 import { VideoErrorText } from 'strings'
-import { generatePath, isVideo, isVideos, validateApiData } from 'utils'
+import {
+  createReadStream,
+  downloadFile,
+  generatePath,
+  isApiVideo,
+  isApiVideoMetadata,
+  isApiVideos,
+  isValidUrl,
+  prepareFormData,
+  removeDirectory,
+  urlOrFile,
+  validateApiData,
+} from 'utils'
 
 import { Composition } from './composition'
 
@@ -19,7 +42,7 @@ export class Videos {
 
       return validateApiData<ApiVideo[]>(data, {
         invalidDataError: VideoErrorText.malformedResponse,
-        validate: isVideos,
+        validate: isApiVideos,
       })
     } catch (error) {
       console.error(VideoErrorText.all(error.message))
@@ -34,7 +57,7 @@ export class Videos {
 
       return validateApiData<ApiVideo>(data, {
         invalidDataError: VideoErrorText.malformedResponse,
-        validate: isVideo,
+        validate: isApiVideo,
       })
     } catch (error) {
       console.error(VideoErrorText.get(error.message))
@@ -43,7 +66,71 @@ export class Videos {
     return undefined
   }
 
-  public [ApiVideoMethod.new](options: CompositionOptions): Composition {
-    return new Composition({ api: this._api, formData: new FormData(), options })
+  public async [ApiVideoMethod.new](options: VideoOptions, videoPath?: string): Promise<Composition> {
+    try {
+      let composition: Composition
+
+      if (videoPath) {
+        let metadataStream: Readable
+        let encodeStream: Readable
+        let tempFileDirectory: string
+
+        if (isValidUrl(videoPath)) {
+          const { temporaryFileDirectory, temporaryFilePath } = await downloadFile(videoPath)
+
+          tempFileDirectory = temporaryFileDirectory
+
+          metadataStream = createReadStream(temporaryFilePath)
+          encodeStream = createReadStream(temporaryFilePath)
+        } else {
+          metadataStream = createReadStream(videoPath)
+          encodeStream = createReadStream(videoPath)
+        }
+
+        const { duration, height, width } = await this._getMetadata(metadataStream)
+
+        composition = new Composition({
+          api: this._api,
+          formData: new FormData(),
+          options: { ...options, dimensions: { height, width }, duration },
+        })
+
+        composition.addVideo(encodeStream)
+        removeDirectory(tempFileDirectory)
+      } else {
+        const { backgroundColor, dimensions, duration, metadata } = options
+
+        composition = new Composition({
+          api: this._api,
+          formData: new FormData(),
+          options: {
+            backgroundColor,
+            dimensions,
+            duration,
+            metadata,
+          },
+        })
+      }
+
+      return composition
+    } catch (error) {
+      console.error(VideoErrorText.new(error.message))
+    }
+
+    return undefined
+  }
+
+  private async [ApiVideoMethod.getMetadata](videoFile: CompositionFile): Promise<ApiVideoMetadata> {
+    const formData = prepareFormData([
+      [urlOrFile(videoFile), videoFile],
+      [ApiVideoMetadataFormDataKey.type, ApiVideoMetadataType.video],
+    ])
+
+    const data = await this._api.post({ data: formData, isForm: true, url: Routes.metadata })
+
+    return validateApiData<ApiVideoMetadata>(data, {
+      invalidDataError: VideoErrorText.malformedResponse,
+      validate: isApiVideoMetadata,
+    })
   }
 }

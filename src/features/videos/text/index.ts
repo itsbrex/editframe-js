@@ -1,7 +1,7 @@
 import { CompositionInterface, LayerAttribute, LayerHorizontalAlignment, PrimitiveType, TextMethod } from 'constant'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { CompositionErrorText } from 'strings'
-import { logValidationError, validatePresenceOf, validateTextAlignment, validateValueIsOfType } from 'utils'
+import { validatePresenceOf, validateTextAlignment, validateValueIsOfType, withValidation } from 'utils'
 
 export class Text extends VisualMedia {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
@@ -9,79 +9,71 @@ export class Text extends VisualMedia {
   }
 
   public [TextMethod.setFontFamily](fontFamily?: string): this | void {
-    try {
-      validateValueIsOfType(TextMethod.setFontFamily, LayerAttribute.fontFamily, fontFamily, PrimitiveType.string, true)
-
-      return this._updateAttribute(LayerAttribute.fontFamily, fontFamily)
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setFontFamily,
+          LayerAttribute.fontFamily,
+          fontFamily,
+          PrimitiveType.string,
+          true
+        ),
+      () => this._updateAttribute(LayerAttribute.fontFamily, fontFamily)
+    )
   }
 
   public [TextMethod.setFontSize](fontSize?: number): this | void {
-    try {
-      validateValueIsOfType(TextMethod.setFontSize, LayerAttribute.fontSize, fontSize, PrimitiveType.number, true)
-
-      return this._updateAttribute(LayerAttribute.fontSize, fontSize)
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(TextMethod.setFontSize, LayerAttribute.fontSize, fontSize, PrimitiveType.number, true),
+      () => this._updateAttribute(LayerAttribute.fontSize, fontSize)
+    )
   }
 
   public [TextMethod.setMaxFontSize](maxFontSize?: number): this | void {
-    try {
-      validateValueIsOfType(
-        TextMethod.setMaxFontSize,
-        LayerAttribute.maxFontSize,
-        maxFontSize,
-        PrimitiveType.number,
-        true
-      )
-
-      return this._updateAttribute(LayerAttribute.maxFontSize, maxFontSize)
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+    withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setMaxFontSize,
+          LayerAttribute.maxFontSize,
+          maxFontSize,
+          PrimitiveType.number,
+          true
+        ),
+      () => this._updateAttribute(LayerAttribute.maxFontSize, maxFontSize)
+    )
   }
 
   public [TextMethod.setMaxHeight](maxHeight?: number): this | void {
-    try {
-      validateValueIsOfType(TextMethod.setMaxHeight, LayerAttribute.maxHeight, maxHeight, PrimitiveType.number, true)
-
-      return this._updateAttribute(LayerAttribute.maxHeight, maxHeight)
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+    withValidation<this>(
+      () =>
+        validateValueIsOfType(TextMethod.setMaxHeight, LayerAttribute.maxHeight, maxHeight, PrimitiveType.number, true),
+      () => this._updateAttribute(LayerAttribute.maxHeight, maxHeight)
+    )
   }
 
   public [TextMethod.setMaxWidth](maxWidth?: number): this | void {
-    try {
-      validateValueIsOfType(TextMethod.setMaxWidth, LayerAttribute.maxWidth, maxWidth, PrimitiveType.number, true)
-
-      return this._updateAttribute(LayerAttribute.maxWidth, maxWidth)
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+    withValidation<this>(
+      () =>
+        validateValueIsOfType(TextMethod.setMaxWidth, LayerAttribute.maxWidth, maxWidth, PrimitiveType.number, true),
+      () => this._updateAttribute(LayerAttribute.maxWidth, maxWidth)
+    )
   }
 
   public [TextMethod.setText](text: string): this | void {
-    try {
-      validatePresenceOf(text, CompositionErrorText.textRequired)
-      validateValueIsOfType(TextMethod.setText, LayerAttribute.text, text, PrimitiveType.string, true)
-
-      return this._updateAttribute(LayerAttribute.text, text)
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+    withValidation<this>(
+      () => {
+        validatePresenceOf(text, CompositionErrorText.textRequired)
+        validateValueIsOfType(TextMethod.setText, LayerAttribute.text, text, PrimitiveType.string, true)
+      },
+      () => this._updateAttribute(LayerAttribute.text, text)
+    )
   }
 
   public [TextMethod.setTextAlignment](textAlignment?: LayerHorizontalAlignment): this | void {
-    try {
-      validateTextAlignment(textAlignment)
-
-      return this._updateAttribute(LayerAttribute.textAlignment, textAlignment)
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+    withValidation<this>(
+      () => validateTextAlignment(textAlignment),
+      () => this._updateAttribute(LayerAttribute.textAlignment, textAlignment)
+    )
   }
 }

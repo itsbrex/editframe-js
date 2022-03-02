@@ -51,11 +51,11 @@ describe('Composition', () => {
   let validatePresenceOfSpy: jest.SpyInstance
   let composition: Composition
 
-  const makeComposition = ({ withVideo }: { withVideo: boolean } = { withVideo: false }) =>
+  const makeComposition = () =>
     new Composition({
       api: apiMock,
       formData: formDataMock,
-      options: { ...options, videoFile: withVideo ? filenames[LayerType.video] : undefined },
+      options: { ...options },
     })
 
   afterEach(() => {
@@ -84,13 +84,37 @@ describe('Composition', () => {
 
       expect(validateCompositionOptionsSpy).toHaveBeenCalledWith(options)
     })
+  })
 
-    describe('when a `videoFile` is provided in the options', () => {
-      it('creates a video layer from the provided `videoFile`', () => {
-        const composition = makeComposition({ withVideo: true })
+  describe('backgroundColor', () => {
+    it('returns the correct `backgroundColor`', () => {
+      const composition = makeComposition()
 
-        expect(composition.layers).toEqual([{ id: uuidMock, type: LayerType.video }])
-      })
+      expect(composition.backgroundColor).toEqual(options.backgroundColor)
+    })
+  })
+
+  describe('dimensions', () => {
+    it('returns the correct `dimensions`', () => {
+      const composition = makeComposition()
+
+      expect(composition.dimensions).toEqual(options.dimensions)
+    })
+  })
+
+  describe('duration', () => {
+    it('returns the correct `duration`', () => {
+      const composition = makeComposition()
+
+      expect(composition.duration).toEqual(options.duration)
+    })
+  })
+
+  describe('metadata', () => {
+    it('returns the correct `metadata`', () => {
+      const composition = makeComposition()
+
+      expect(composition.metadata).toEqual(options.metadata)
     })
   })
 
@@ -139,6 +163,10 @@ describe('Composition', () => {
       composition = makeComposition()
 
       composition.addFilter(filterOptions)
+    })
+
+    it('calls `validatePresenceOf` with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(filterOptions.filter, CompositionErrorText.filterRequired)
     })
 
     it('calls `validateAddFilter` with the correct arguments', () => {

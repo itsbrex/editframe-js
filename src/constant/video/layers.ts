@@ -143,6 +143,10 @@ export type ComposableLayer =
     })
   | FilterLayer
 
-export type IdentifiedLayer = ComposableLayer & {
+export type TypedLayer = ComposableLayer & {
+  type: LayerType
+}
+
+export type IdentifiedLayer = TypedLayer & {
   id: string
 }

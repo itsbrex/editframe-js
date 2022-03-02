@@ -1,11 +1,12 @@
 export const Routes = {
   applications: {
-    all: "/applications",
-    get: "/applications/:id",
+    all: '/applications',
+    get: '/applications/:id',
   },
+  metadata: '/metadata',
   videos: {
-    all: "/videos",
-    create: "/videos",
-    get: "/video/:id",
+    all: '/videos',
+    create: '/videos',
+    get: '/video/:id',
   },
-};
+}
