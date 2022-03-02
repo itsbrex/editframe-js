@@ -7,7 +7,7 @@ import {
   CompositionMethod,
   CompositionOptions,
   EncodeResponse,
-  FilterOptions,
+  FilterLayer,
   FormDataInterface,
   IdentifiedLayer,
   ImageLayer,
@@ -31,13 +31,13 @@ import {
   logValidationError,
   uuid,
   validateAddAudio,
+  validateAddFilter,
   validateAddImage,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
   validateApiData,
   validateCompositionOptions,
-  validateFilter,
   validatePresenceOf,
 } from 'utils'
 
@@ -84,91 +84,97 @@ export class Composition implements CompositionInterface {
     return this._layers.find((layer) => layer.id && layer.id === id)
   }
 
-  public [CompositionMethod.addAudio](file: CompositionFile, options: AudioLayer = {}): Audio | void {
+  public [CompositionMethod.addAudio](file: CompositionFile, options: AudioLayer = {}): Audio | undefined {
     try {
       validatePresenceOf(file, MediaErrorText.invalidFileSource)
       validateAddAudio(options)
 
-      const layer = this._addLayer({ type: LayerType.audio, ...options })
+      const { id } = this._addLayer({ type: LayerType.audio, ...options })
 
-      this._files.push({ file, id: layer.id })
+      this._files.push({ file, id })
 
-      return new Audio({ composition: this, id: layer.id })
+      return new Audio({ composition: this, id })
     } catch ({ stack }) {
       logValidationError(stack)
+
+      return undefined
     }
   }
 
-  public [CompositionMethod.addFilter]<FilterName extends keyof FilterOptions>({
-    filterName,
-    options,
-  }: {
-    filterName: FilterName
-    options: FilterOptions[FilterName]
-  }): Filter | void {
+  public [CompositionMethod.addFilter](options: FilterLayer): Filter | undefined {
     try {
-      validateFilter(CompositionMethod.addFilter, LayerAttribute.filter, { filterName, options })
+      validateAddFilter(options)
 
-      const layer = this._addLayer({ filter: { filterName, options }, type: LayerType.filter })
+      const { id } = this._addLayer({ ...options, type: LayerType.filter })
 
-      return new Filter({ composition: this, id: layer.id })
+      return new Filter({ composition: this, id })
     } catch ({ stack }) {
       logValidationError(stack)
+
+      return undefined
     }
   }
 
-  public [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video | void {
+  public [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video | undefined {
     try {
       validatePresenceOf(file, MediaErrorText.invalidFileSource)
       validateAddImage(options)
 
-      const layer = this._addLayer({ type: LayerType.image, ...options })
+      const { id } = this._addLayer({ type: LayerType.image, ...options })
 
-      this._files.push({ file, id: layer.id })
+      this._files.push({ file, id })
 
-      return new Video({ composition: this, id: layer.id })
+      return new Video({ composition: this, id })
     } catch ({ stack }) {
       logValidationError(stack)
+
+      return undefined
     }
   }
 
-  public [CompositionMethod.addText](options: TextLayer): Text | void {
+  public [CompositionMethod.addText](options: TextLayer): Text | undefined {
     try {
       validatePresenceOf(options.text, CompositionErrorText.textRequired)
       validateAddText(options)
 
-      const layer = this._addLayer({ type: LayerType.text, ...options })
+      const { id } = this._addLayer({ type: LayerType.text, ...options })
 
-      return new Text({ composition: this, id: layer.id })
+      return new Text({ composition: this, id })
     } catch ({ stack }) {
       logValidationError(stack)
+
+      return undefined
     }
   }
 
-  public [CompositionMethod.addVideo](file: CompositionFile, options: VideoLayer = {}): Video | void {
+  public [CompositionMethod.addVideo](file: CompositionFile, options: VideoLayer = {}): Video | undefined {
     try {
       validatePresenceOf(file, MediaErrorText.invalidFileSource)
       validateAddVideo(options)
 
-      const layer = this._addLayer({ type: LayerType.video, ...options })
+      const { id } = this._addLayer({ type: LayerType.video, ...options })
 
-      this._files.push({ file, id: layer.id })
+      this._files.push({ file, id })
 
-      return new Video({ composition: this, id: layer.id })
+      return new Video({ composition: this, id })
     } catch ({ stack }) {
       logValidationError(stack)
+
+      return undefined
     }
   }
 
-  public [CompositionMethod.addWaveform](options: WaveformLayer): VisualMedia | void {
+  public [CompositionMethod.addWaveform](options: WaveformLayer): VisualMedia | undefined {
     try {
       validateAddWaveform(options)
 
-      const layer = this._addLayer({ type: LayerType.waveform, ...options })
+      const { id } = this._addLayer({ type: LayerType.waveform, ...options })
 
-      return new VisualMedia({ composition: this, id: layer.id })
+      return new VisualMedia({ composition: this, id })
     } catch ({ stack }) {
       logValidationError(stack)
+
+      return undefined
     }
   }
 

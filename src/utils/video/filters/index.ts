@@ -4,24 +4,27 @@ import {
   FilterBrightness,
   FilterContrast,
   FilterFadeIn,
-  FilterKey,
   FilterName,
+  FilterOptionKey,
   FilterOptionTypes,
   FilterSaturation,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
 
 const isFilterBrightness = (options: any): options is FilterBrightness =>
-  options && Object.keys(options).length === 1 && FilterKey.brightness in options
+  options && Object.keys(options).length === 1 && FilterOptionKey.brightness in options
 
 const isFilterContrast = (options: any): options is FilterContrast =>
-  options && Object.keys(options).length === 1 && FilterKey.contrast in options
+  options && Object.keys(options).length === 1 && FilterOptionKey.contrast in options
 
 const isFilterFadeIn = (options: any): options is FilterFadeIn =>
-  options && Object.keys(options).length === 2 && FilterKey.color in options && FilterKey.duration in options
+  options &&
+  Object.keys(options).length === 2 &&
+  FilterOptionKey.color in options &&
+  FilterOptionKey.duration in options
 
 const isFilterSaturation = (options: any): options is FilterSaturation =>
-  options && Object.keys(options).length === 1 && FilterKey.saturation in options
+  options && Object.keys(options).length === 1 && FilterOptionKey.saturation in options
 
 const filterValidators = {
   [FilterName.brightness]: isFilterBrightness,

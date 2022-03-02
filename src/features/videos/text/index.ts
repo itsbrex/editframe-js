@@ -67,6 +67,7 @@ export class Text extends VisualMedia {
   public [TextMethod.setText](text: string): this | void {
     try {
       validatePresenceOf(text, CompositionErrorText.textRequired)
+      validateValueIsOfType(TextMethod.setText, LayerAttribute.text, text, PrimitiveType.string, true)
 
       return this._updateAttribute(LayerAttribute.text, text)
     } catch ({ stack }) {

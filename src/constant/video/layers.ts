@@ -109,14 +109,11 @@ export type LayerText = {
   [LayerAttribute.textAlignment]?: LayerHorizontalAlignment
 }
 
-export type AudioLayer = LayerBase &
-  LayerTrim & {
-    [LayerAttribute.volume]?: number
-  }
-export type ImageLayer = LayerBase & LayerVisualMedia
-export type TextLayer = LayerBase & LayerAlignment & LayerText & LayerVisualMedia
-export type VideoLayer = LayerBase & LayerTrim & AudioLayer & LayerVisualMedia
-export type FilterLayer = LayerBase & {
+export type LayerAudio = {
+  [LayerAttribute.volume]?: number
+}
+
+export type LayerFilter = {
   [LayerAttribute.filter]: Filter
 }
 
@@ -124,10 +121,17 @@ export enum WaveformStyle {
   bars = 'bars',
   line = 'line',
 }
-export type WaveformLayer = LayerBase &
-  LayerVisualMedia & {
-    [LayerAttribute.style]?: WaveformStyle
-  }
+export type LayerWaveform = {
+  [LayerAttribute.style]?: WaveformStyle
+}
+
+export type AudioLayer = LayerBase & LayerTrim & LayerAudio
+export type ImageLayer = LayerBase & LayerVisualMedia
+export type TextLayer = LayerBase & LayerAlignment & LayerText & LayerVisualMedia
+export type VideoLayer = LayerBase & LayerTrim & AudioLayer & LayerVisualMedia
+export type FilterLayer = LayerBase & LayerFilter
+
+export type WaveformLayer = LayerBase & LayerVisualMedia & LayerWaveform
 
 export type ComposableLayer =
   | AudioLayer

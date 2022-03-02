@@ -46,7 +46,7 @@ describe('Text', () => {
       text.setFontFamily(fontFamily)
     })
 
-    it('calls the `validateValueIsOfType` function', () => {
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         TextMethod.setFontFamily,
         LayerAttribute.fontFamily,
@@ -70,7 +70,7 @@ describe('Text', () => {
       text.setFontSize(fontSize)
     })
 
-    it('calls the `validateValueIsOfType` function', () => {
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         TextMethod.setFontSize,
         LayerAttribute.fontSize,
@@ -92,7 +92,7 @@ describe('Text', () => {
       text.setMaxFontSize(maxFontSize)
     })
 
-    it('calls the `validateValueIsOfType` function', () => {
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         TextMethod.setMaxFontSize,
         LayerAttribute.maxFontSize,
@@ -114,7 +114,7 @@ describe('Text', () => {
       text.setMaxHeight(maxHeight)
     })
 
-    it('calls the `validateValueIsOfType` function', () => {
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         TextMethod.setMaxHeight,
         LayerAttribute.maxHeight,
@@ -136,7 +136,7 @@ describe('Text', () => {
       text.setMaxWidth(maxWidth)
     })
 
-    it('calls the `validateValueIsOfType` function', () => {
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         TextMethod.setMaxWidth,
         LayerAttribute.maxWidth,
@@ -160,6 +160,16 @@ describe('Text', () => {
 
     it('calls the `validatePresenceOf` function with the correct arguments', () => {
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(textValue, CompositionErrorText.textRequired)
+    })
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setText,
+        LayerAttribute.text,
+        textValue,
+        PrimitiveType.string,
+        true
+      )
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {

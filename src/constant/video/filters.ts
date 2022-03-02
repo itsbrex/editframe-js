@@ -13,7 +13,7 @@ export enum FilterName {
   vintage = 'vintage',
 }
 
-export enum FilterKey {
+export enum FilterOptionKey {
   brightness = 'brightness',
   color = 'color',
   contrast = 'contrast',
@@ -23,35 +23,35 @@ export enum FilterKey {
 
 export const FilterOptionTypes = {
   [FilterName.brightness]: {
-    [FilterKey.brightness]: PrimitiveType.number,
+    [FilterOptionKey.brightness]: PrimitiveType.number,
   },
   [FilterName.contrast]: {
-    [FilterKey.contrast]: PrimitiveType.number,
+    [FilterOptionKey.contrast]: PrimitiveType.number,
   },
   [FilterName.fadeIn]: {
-    [FilterKey.color]: PrimitiveType.string,
-    [FilterKey.duration]: PrimitiveType.number,
+    [FilterOptionKey.color]: PrimitiveType.string,
+    [FilterOptionKey.duration]: PrimitiveType.number,
   },
   [FilterName.saturation]: {
-    [FilterKey.saturation]: PrimitiveType.number,
+    [FilterOptionKey.saturation]: PrimitiveType.number,
   },
 }
 
 export interface FilterBrightness {
-  [FilterKey.brightness]: number
+  [FilterOptionKey.brightness]: number
 }
 
 export interface FilterContrast {
-  [FilterKey.contrast]: number
+  [FilterOptionKey.contrast]: number
 }
 
 export interface FilterFadeIn {
-  [FilterKey.color]: string
-  [FilterKey.duration]: number
+  [FilterOptionKey.color]: string
+  [FilterOptionKey.duration]: number
 }
 
 export interface FilterSaturation {
-  [FilterKey.saturation]: number
+  [FilterOptionKey.saturation]: number
 }
 
 export interface FilterOptions {

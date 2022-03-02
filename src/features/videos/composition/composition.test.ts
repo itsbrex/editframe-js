@@ -1,72 +1,62 @@
-import {
-  ApiInterface,
-  CompositionMethod,
-  EncodeResponseAttribute,
-  FilterName,
-  FormDataInterface,
-  LayerAttribute,
-  LayerFormatValue,
-  LayerHorizontalAlignmentValue,
-  LayerType,
-  Routes,
-} from 'constant'
+import { ApiInterface, FormDataInterface, LayerAttribute, LayerType, Routes } from 'constant'
 import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
-import { mockApi } from 'mocks'
+import {
+  mockApi,
+  mockAudioLayer,
+  mockCompositionOptions,
+  mockEncodeResponse,
+  mockFilterLayer,
+  mockImageLayer,
+  mockTextLayer,
+  mockVideoLayer,
+  mockWaveformLayer,
+} from 'mocks'
 import { CompositionErrorText, MediaErrorText } from 'strings'
 import * as StringsUtilsModule from 'utils/strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as CompositionUtilsModule from 'utils/video/compositions'
-import * as FilterUtilsModule from 'utils/video/filters'
 
 import { Composition } from './'
 
 describe('Composition', () => {
-  const audioOptions = { end: 20, start: 10 }
-  const encodeResponse = {
-    [EncodeResponseAttribute.id]: 'encode-id',
-    [EncodeResponseAttribute.status]: 'encode-status',
-    [EncodeResponseAttribute.timestamp]: 'encode-timestamp',
-  }
   const filenames = {
     [LayerType.audio]: 'audio-filename',
     [LayerType.image]: 'image-filename',
     [LayerType.video]: 'video-filename',
   }
-  const filterName = FilterName.brightness
-  const filterOptions = { brightness: 10 }
   let formDataMock: FormDataInterface
-  const imageOptions = { end: 20, format: LayerFormatValue.fill, height: 100, start: 10, width: 200, x: 10, y: 20 }
-  const options = { dimensions: { height: 100, width: 200 }, duration: 10 }
-  const textOptions = {
-    end: 20,
-    fontFamily: 'Arial',
-    fontSize: 20,
-    format: LayerFormatValue.fill,
-    height: 100,
-    maxFontSize: 25,
-    maxHeight: 400,
-    maxWidth: 800,
-    start: 10,
-    text: 'text',
-    textAlignment: LayerHorizontalAlignmentValue.center,
-    width: 200,
-    x: 10,
-    y: 20,
-  }
+  const audioOptions = mockAudioLayer()
+  const encodeResponse = mockEncodeResponse()
+  const filterOptions = mockFilterLayer()
+  const imageOptions = mockImageLayer()
+  const options = mockCompositionOptions()
+  const textOptions = mockTextLayer()
+  const videoOptions = mockVideoLayer()
+  const waveformOptions = mockWaveformLayer()
   const uuidMock = '123456'
-  const videoOptions = { end: 20, format: LayerFormatValue.fill, height: 100, start: 10, width: 200, x: 10, y: 20 }
-  const waveformOptions = { backgroundColor: '#ffffff', color: '#000000', format: LayerFormatValue.fill, x: 10, y: 20 }
   let apiMock: ApiInterface
   let consoleErrorSpy: jest.SpyInstance
   let postMock: jest.Mock
+  let validateAddAudioSpy: jest.SpyInstance
+  let validateAddFilterSpy: jest.SpyInstance
+  let validateAddImageSpy: jest.SpyInstance
+  let validateAddTextSpy: jest.SpyInstance
+  let validateAddVideoSpy: jest.SpyInstance
+  let validateAddWaveformSpy: jest.SpyInstance
   let validateCompositionOptionsSpy: jest.SpyInstance
-  let validateFilterSpy: jest.SpyInstance
   let validatePresenceOfSpy: jest.SpyInstance
   let composition: Composition
+
+  const makeComposition = ({ withVideo }: { withVideo: boolean } = { withVideo: false }) =>
+    new Composition({
+      api: apiMock,
+      formData: formDataMock,
+      options: { ...options, videoFile: withVideo ? filenames[LayerType.video] : undefined },
+    })
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -78,53 +68,55 @@ describe('Composition', () => {
     apiMock = mockApi({ get: jest.fn(), post: postMock, put: jest.fn() })
     formDataMock = { append: jest.fn() }
     jest.spyOn(StringsUtilsModule, 'uuid').mockReturnValue(uuidMock)
+    validateAddAudioSpy = jest.spyOn(CompositionUtilsModule, 'validateAddAudio')
+    validateAddFilterSpy = jest.spyOn(CompositionUtilsModule, 'validateAddFilter')
+    validateAddImageSpy = jest.spyOn(CompositionUtilsModule, 'validateAddImage')
+    validateAddTextSpy = jest.spyOn(CompositionUtilsModule, 'validateAddText')
+    validateAddVideoSpy = jest.spyOn(CompositionUtilsModule, 'validateAddVideo')
+    validateAddWaveformSpy = jest.spyOn(CompositionUtilsModule, 'validateAddWaveform')
     validateCompositionOptionsSpy = jest.spyOn(CompositionUtilsModule, 'validateCompositionOptions')
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
-    validateFilterSpy = jest.spyOn(FilterUtilsModule, 'validateFilter')
   })
 
   describe('initialization', () => {
     it('calls the `validateCompositionOptions` function with the correct arguments', () => {
-      const options = {
-        dimensions: { height: 1080, width: 1920 },
-        duration: 10,
-      }
-
-      new Composition({
-        api: apiMock,
-        formData: formDataMock,
-        options,
-      })
+      makeComposition()
 
       expect(validateCompositionOptionsSpy).toHaveBeenCalledWith(options)
     })
 
     describe('when a `videoFile` is provided in the options', () => {
       it('creates a video layer from the provided `videoFile`', () => {
-        const composition = new Composition({
-          api: apiMock,
-          formData: formDataMock,
-          options: {
-            dimensions: { height: 1080, width: 1920 },
-            duration: 10,
-            videoFile: filenames[LayerType.video],
-          } as any,
-        })
+        const composition = makeComposition({ withVideo: true })
 
         expect(composition.layers).toEqual([{ id: uuidMock, type: LayerType.video }])
       })
     })
   })
 
+  describe('layer', () => {
+    it('returns a layer given an id', () => {
+      const composition = makeComposition()
+      const text = 'text'
+      const layer = composition.addText({ text })
+
+      expect(composition.layer(layer?.id)).toEqual({ id: uuidMock, text, type: LayerType.text })
+    })
+  })
+
   describe('addAudio', () => {
     beforeEach(() => {
-      composition = new Composition({ api: apiMock, formData: formDataMock, options })
+      composition = makeComposition()
 
       composition.addAudio(filenames.audio, audioOptions)
     })
 
     it('calls the `validatePresenceOf` function with the correct arguments', () => {
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.audio, MediaErrorText.invalidFileSource)
+    })
+
+    it('calls the `validateAddAudio` function with the correct arguments', () => {
+      expect(validateAddAudioSpy).toHaveBeenCalledWith(audioOptions)
     })
 
     it('adds an `audio` layer with the correct attributes', () => {
@@ -144,31 +136,25 @@ describe('Composition', () => {
 
   describe('addFilter', () => {
     beforeEach(() => {
-      composition = new Composition({ api: apiMock, formData: formDataMock, options })
+      composition = makeComposition()
 
-      composition.addFilter({ filterName, options: filterOptions })
+      composition.addFilter(filterOptions)
     })
 
-    it('calls `validateFilter` with the correct arguments', () => {
-      expect(validateFilterSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, LayerAttribute.filter, {
-        filterName,
-        options: filterOptions,
-      })
+    it('calls `validateAddFilter` with the correct arguments', () => {
+      expect(validateAddFilterSpy).toHaveBeenCalledWith(filterOptions)
     })
 
     it('adds a `filter` layer with the correct attributes', () => {
       expect(composition.layers[0]).toEqual({
-        filter: {
-          filterName,
-          options: filterOptions,
-        },
+        ...filterOptions,
         id: uuidMock,
         type: LayerType.filter,
       })
     })
 
     it('returns a `Filter` object', () => {
-      const filter = composition.addFilter({ filterName, options: filterOptions })
+      const filter = composition.addFilter(filterOptions)
 
       expect(filter instanceof Filter).toBe(true)
     })
@@ -176,13 +162,17 @@ describe('Composition', () => {
 
   describe('addImage', () => {
     beforeEach(() => {
-      composition = new Composition({ api: apiMock, formData: formDataMock, options })
+      composition = makeComposition()
 
       composition.addImage(filenames.image, imageOptions)
     })
 
     it('calls the `validatePresenceOf` function with the correct arguments', () => {
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.image, MediaErrorText.invalidFileSource)
+    })
+
+    it('calls the `validateAddImage` function with the correct arguments', () => {
+      expect(validateAddImageSpy).toHaveBeenCalledWith(imageOptions)
     })
 
     it('adds an `image` layer with the correct attributes', () => {
@@ -202,13 +192,17 @@ describe('Composition', () => {
 
   describe('addText', () => {
     beforeEach(() => {
-      composition = new Composition({ api: apiMock, formData: formDataMock, options })
+      composition = makeComposition()
 
       composition.addText(textOptions)
     })
 
     it('calls the `validatePresenceOf` function with the correct arguments', () => {
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(textOptions.text, CompositionErrorText.textRequired)
+    })
+
+    it('calls the `validateAddText` function with the correct arguments', () => {
+      expect(validateAddTextSpy).toHaveBeenCalledWith(textOptions)
     })
 
     it('adds a `text` layer with the correct attributes', () => {
@@ -228,13 +222,17 @@ describe('Composition', () => {
 
   describe('addVideo', () => {
     beforeEach(() => {
-      composition = new Composition({ api: apiMock, formData: formDataMock, options })
+      composition = makeComposition()
 
       composition.addVideo(filenames.video, videoOptions)
     })
 
     it('calls the `validatePresenceOf` function with the correct arguments', () => {
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.video, MediaErrorText.invalidFileSource)
+    })
+
+    it('calls the `validateAddVideo` function with the correct arguments', () => {
+      expect(validateAddVideoSpy).toHaveBeenCalledWith(videoOptions)
     })
 
     it('adds a `video` layer with the correct attributes', () => {
@@ -253,11 +251,17 @@ describe('Composition', () => {
   })
 
   describe('addWaveform', () => {
-    it('adds a `waveform` layer with the correct attributes', () => {
-      composition = new Composition({ api: apiMock, formData: formDataMock, options })
+    beforeEach(() => {
+      composition = makeComposition()
 
       composition.addWaveform(waveformOptions)
+    })
 
+    it('calls the `validateAddWaveform` function with the correct arguments', () => {
+      expect(validateAddWaveformSpy).toHaveBeenCalledWith(waveformOptions)
+    })
+
+    it('adds a `waveform` layer with the correct attributes', () => {
       expect(composition.layers[0]).toEqual({
         id: uuidMock,
         type: LayerType.waveform,
@@ -281,7 +285,7 @@ describe('Composition', () => {
           post: postMock,
           put: jest.fn(),
         })
-        composition = new Composition({ api: apiMock, formData: formDataMock, options })
+        composition = makeComposition()
       })
 
       it('logs the error to the console', async () => {
@@ -302,10 +306,10 @@ describe('Composition', () => {
         post: postMock,
         put: jest.fn(),
       })
-      composition = new Composition({ api: apiMock, formData: formDataMock, options })
+      composition = makeComposition()
 
       composition.addAudio(filenames.audio, audioOptions)
-      composition.addFilter({ filterName, options: filterOptions })
+      composition.addFilter(filterOptions)
       composition.addImage(filenames.image, imageOptions)
       composition.addText(textOptions)
       composition.addVideo(filenames.video, videoOptions)
@@ -349,6 +353,20 @@ describe('Composition', () => {
       const response = await composition.encode()
 
       expect(response).toEqual(encodeResponse)
+    })
+  })
+
+  describe('updateLayerAttribute', () => {
+    it('updates an attribute on a given layer', () => {
+      const composition = makeComposition()
+
+      const text = 'text'
+      const layer = composition.addText({ text })
+      const newText = 'new-text'
+
+      composition.updateLayerAttribute(layer.id, LayerAttribute.text, newText)
+
+      expect(composition.layer(layer.id)).toEqual({ id: uuidMock, text: newText, type: LayerType.text })
     })
   })
 })
