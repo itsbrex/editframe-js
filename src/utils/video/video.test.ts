@@ -1,6 +1,6 @@
 import { TextErrorText, VisualMediaErrorText } from 'strings'
 
-import { validateLayerFormat, validateTextAligment } from './'
+import { validateLayerFormat, validateTextAlignment } from './'
 
 describe('validateLayerFormat', () => {
   it('throws the correct error text when the provided `layerFormat` is invalid', () => {
@@ -12,11 +12,11 @@ describe('validateLayerFormat', () => {
   })
 })
 
-describe('validateTextAligment', () => {
+describe('validateTextAlignment', () => {
   it('throws the correct error text when the provided `textAlignment` is invalid', () => {
     const invalidTextAlignment = 'invalid-text-alignment'
 
-    expect(() => validateTextAligment(invalidTextAlignment as any)).toThrow(
+    expect(() => validateTextAlignment(invalidTextAlignment as any)).toThrow(
       new Error(TextErrorText.invalidTextAlignment(invalidTextAlignment))
     )
   })

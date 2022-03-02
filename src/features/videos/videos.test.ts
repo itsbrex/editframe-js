@@ -2,7 +2,7 @@ import FormData from 'form-data'
 
 import { ApiVideo, Routes } from 'constant'
 import * as CompositionModule from 'features/videos/composition'
-import { mockApi, mockVideo } from 'mocks'
+import { mockApi, mockCompositionOptions, mockVideo } from 'mocks'
 import { VideoErrorText } from 'strings'
 import { generatePath } from 'utils'
 
@@ -101,10 +101,7 @@ describe('Videos', () => {
     })
 
     it('returns an `Composition` instance instantiated with the correct arguments', () => {
-      const options = {
-        dimensions: { height: 100, width: 200 },
-        duration: 100,
-      }
+      const options = mockCompositionOptions()
 
       videos.new(options)
 

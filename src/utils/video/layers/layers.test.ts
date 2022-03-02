@@ -124,15 +124,15 @@ describe('validations', () => {
   })
 
   describe('validateLayerAlignment', () => {
-    const horizontalAlignment = 'invalid-horizontal-alignment'
-    const verticalAlignment = 'invalid-vertical-alignment'
+    const invalidHorizontalAlignment = 'invalid-horizontal-alignment'
+    const invalidVerticalAlignment = 'invalid-vertical-alignment'
 
     it('returns an error if the provided `horizontalAlignment` is invalid', () => {
-      expect(validateLayerAlignment(callerName, { horizontalAlignment: horizontalAlignment as any })).toEqual([
+      expect(validateLayerAlignment(callerName, { horizontalAlignment: invalidHorizontalAlignment as any })).toEqual([
         ValidationErrorText.MUST_BE_TYPE(
           callerName,
           LayerAttribute.horizontalAlignment,
-          horizontalAlignment,
+          invalidHorizontalAlignment,
           Object.values(LayerHorizontalAlignmentValue).join(', ')
         ),
       ])
@@ -142,13 +142,13 @@ describe('validations', () => {
       expect(
         validateLayerAlignment(callerName, {
           horizontalAlignment: LayerHorizontalAlignmentValue.center,
-          verticalAlignment: verticalAlignment as any,
+          verticalAlignment: invalidVerticalAlignment as any,
         })
       ).toEqual([
         ValidationErrorText.MUST_BE_TYPE(
           callerName,
           LayerAttribute.verticalAlignment,
-          verticalAlignment,
+          invalidVerticalAlignment,
           Object.values(LayerVerticalAlignmentValue).join(', ')
         ),
       ])

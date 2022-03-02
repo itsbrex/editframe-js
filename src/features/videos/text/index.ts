@@ -1,7 +1,7 @@
 import { CompositionInterface, LayerAttribute, LayerHorizontalAlignment, PrimitiveType, TextMethod } from 'constant'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { CompositionErrorText } from 'strings'
-import { logValidationError, validatePresenceOf, validateTextAligment, validateValueIsOfType } from 'utils'
+import { logValidationError, validatePresenceOf, validateTextAlignment, validateValueIsOfType } from 'utils'
 
 export class Text extends VisualMedia {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
@@ -77,7 +77,7 @@ export class Text extends VisualMedia {
 
   public [TextMethod.setTextAlignment](textAlignment?: LayerHorizontalAlignment): this | void {
     try {
-      validateTextAligment(textAlignment)
+      validateTextAlignment(textAlignment)
 
       return this._updateAttribute(LayerAttribute.textAlignment, textAlignment)
     } catch ({ stack }) {

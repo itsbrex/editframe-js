@@ -19,7 +19,7 @@ describe('Text', () => {
   let compositionMock: CompositionInterface
   let text: Text
   let validatePresenceOfSpy: jest.SpyInstance
-  let validateTextAligmentSpy: jest.SpyInstance
+  let validateTextAlignmentSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
   afterEach(() => {
@@ -28,7 +28,7 @@ describe('Text', () => {
 
   beforeEach(() => {
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
-    validateTextAligmentSpy = jest.spyOn(VideoUtilsModule, 'validateTextAligment')
+    validateTextAlignmentSpy = jest.spyOn(VideoUtilsModule, 'validateTextAlignment')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
       layer: jest.fn(),
@@ -185,7 +185,7 @@ describe('Text', () => {
     })
 
     it('calls the `vaidateTextAlignment` function with the correct arguments', () => {
-      expect(validateTextAligmentSpy).toHaveBeenCalledWith(textAlignment)
+      expect(validateTextAlignmentSpy).toHaveBeenCalledWith(textAlignment)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {

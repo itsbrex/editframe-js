@@ -4,7 +4,7 @@ import { urlOrFile } from './forms'
 import { generatePath } from './paths'
 import { uuid } from './strings'
 import { logValidationError, validatePresenceOf, validateValueIsOfType } from './validation'
-import { validateLayerFormat, validateTextAligment } from './video'
+import { validateLayerFormat, validateTextAlignment } from './video'
 import {
   formDataKey,
   validateAddAudio,
@@ -63,6 +63,6 @@ export {
   validateLayerTrim,
   validateLayerVisualMedia,
   validatePresenceOf,
-  validateTextAligment,
+  validateTextAlignment,
   validateValueIsOfType,
 }

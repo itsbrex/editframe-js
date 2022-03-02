@@ -1,15 +1,13 @@
+import { ApiVideoMethod, CompositionMethod, CompositionOptionAttribute, LayerAttribute, PrimitiveType } from 'constant'
 import {
-  ApiVideoMethod,
-  CompositionMethod,
-  CompositionOptionAttribute,
-  FilterName,
-  LayerAttribute,
-  LayerFormatValue,
-  LayerHorizontalAlignmentValue,
-  LayerVerticalAlignmentValue,
-  PrimitiveType,
-  WaveformStyle,
-} from 'constant'
+  mockAudioLayer,
+  mockCompositionOptions,
+  mockFilterLayer,
+  mockImageLayer,
+  mockTextLayer,
+  mockVideoLayer,
+  mockWaveformLayer,
+} from 'mocks'
 import { CompositionErrorText, ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as LayerUtilsModule from 'utils/video/layers'
@@ -69,21 +67,17 @@ describe('validations', () => {
   })
 
   describe('validateCompositionOptions', () => {
-    const backgroundColor = 'background-color'
-    const dimensions = {
-      height: 10,
-      width: 20,
-    }
-    const duration = 100
+    const compositionOptions = mockCompositionOptions()
+    const { backgroundColor, dimensions, duration } = compositionOptions
 
     it('calls the `validatePresenceOf` function with the correct arguments', () => {
-      validateCompositionOptions({ backgroundColor, dimensions, duration })
+      validateCompositionOptions(compositionOptions)
 
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(duration, CompositionErrorText.durationRequired)
     })
 
     it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-      validateCompositionOptions({ backgroundColor, dimensions, duration })
+      validateCompositionOptions(compositionOptions)
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         ApiVideoMethod.new,
@@ -109,19 +103,19 @@ describe('validations', () => {
 
     describe('when any of the validator functions return an error message', () => {
       it('throws the error messages', () => {
-        const options = { backgroundColor: 123, dimensions: { height: '10', width: 20 }, duration: 'abc' }
+        const invalidOptions = { backgroundColor: 123, dimensions: { height: '10', width: 20 }, duration: 'abc' }
 
-        expect(() => validateCompositionOptions(options as any)).toThrow(
+        expect(() => validateCompositionOptions(invalidOptions as any)).toThrow(
           new TypeError(
             `${ValidationErrorText.MUST_BE_TYPE(
               ApiVideoMethod.new,
               ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.height),
-              options.dimensions.height,
+              invalidOptions.dimensions.height,
               PrimitiveType.number
             )}\n${ValidationErrorText.MUST_BE_TYPE(
               ApiVideoMethod.new,
               CompositionOptionAttribute.backgroundColor,
-              options.backgroundColor,
+              invalidOptions.backgroundColor,
               PrimitiveType.string
             )}`
           )
@@ -131,178 +125,125 @@ describe('validations', () => {
   })
 
   describe('validateAddAudio', () => {
-    const options = { length: 10, start: 5, trim: { end: 10, start: 5 }, volume: 1 }
+    const audioOptions = mockAudioLayer()
 
     beforeEach(() => {
-      validateAddAudio(options as any)
+      validateAddAudio(audioOptions)
     })
 
     it('calls the `validateLayerBase` function with the correct arguments', () => {
-      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addAudio, options)
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addAudio, audioOptions)
     })
 
     it('calls the `validateLayerTrim` function with the correct arguments', () => {
-      expect(validateLayerTrimSpy).toHaveBeenCalledWith(CompositionMethod.addAudio, options)
+      expect(validateLayerTrimSpy).toHaveBeenCalledWith(CompositionMethod.addAudio, audioOptions)
     })
 
     it('calls the `validateLayerAudio` function with the correct arguments', () => {
-      expect(validateLayerAudioSpy).toHaveBeenCalledWith(CompositionMethod.addAudio, options)
+      expect(validateLayerAudioSpy).toHaveBeenCalledWith(CompositionMethod.addAudio, audioOptions)
     })
   })
 
   describe('validateAddImage', () => {
-    const options = {
-      backgroundColor: 'background-color',
-      color: 'color',
-      format: LayerFormatValue.fill,
-      height: 10,
-      length: 10,
-      start: 5,
-      width: 20,
-      x: 10,
-      y: 20,
-    }
+    const imageOptions = mockImageLayer()
 
     beforeEach(() => {
-      validateAddImage(options)
+      validateAddImage(imageOptions)
     })
 
     it('calls the `validateLayerBase` function with the correct arguments', () => {
-      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addImage, options)
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addImage, imageOptions)
     })
 
     it('calls the `validateLayerVisualMedia` function with the correct arguments', () => {
-      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addImage, options)
+      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addImage, imageOptions)
     })
   })
 
   describe('validateAddText', () => {
-    const options = {
-      backgroundColor: 'background-color',
-      color: 'color',
-      fontFamily: 'font-family',
-      fontSize: 20,
-      format: LayerFormatValue.fill,
-      height: 10,
-      horizontalAlignment: LayerHorizontalAlignmentValue.center,
-      length: 10,
-      maxFontSize: 30,
-      maxHeight: 40,
-      maxWidth: 50,
-      start: 5,
-      text: 'text',
-      textAlignment: LayerHorizontalAlignmentValue.center,
-      verticalAlignment: LayerVerticalAlignmentValue.top,
-      width: 20,
-      x: 10,
-      y: 20,
-    }
+    const textOptions = mockTextLayer()
 
     beforeEach(() => {
-      validateAddText(options)
+      validateAddText(textOptions)
     })
 
     it('calls the `validateLayerBase` function with the correct arguments', () => {
-      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addText, options)
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addText, textOptions)
     })
 
     it('calls the `validateLayerVisualMedia` function with the correct arguments', () => {
-      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addText, options)
+      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addText, textOptions)
     })
 
     it('calls the `validateLayerAlignment` function with the correct arguments', () => {
-      expect(validateLayerAlignmentSpy).toHaveBeenCalledWith(CompositionMethod.addText, options)
+      expect(validateLayerAlignmentSpy).toHaveBeenCalledWith(CompositionMethod.addText, textOptions)
     })
 
     it('calls the `validateLayerText` function with the correct arguments', () => {
-      expect(validateLayerTextSpy).toHaveBeenCalledWith(CompositionMethod.addText, options)
+      expect(validateLayerTextSpy).toHaveBeenCalledWith(CompositionMethod.addText, textOptions)
     })
   })
 
   describe('validateAddVideo', () => {
-    const options = {
-      backgroundColor: 'background-color',
-      color: 'color',
-      height: 10,
-      length: 10,
-      start: 5,
-      volume: 1,
-      width: 20,
-    }
+    const videoOptions = mockVideoLayer()
 
     beforeEach(() => {
-      validateAddVideo(options)
+      validateAddVideo(videoOptions)
     })
 
     it('calls the `validateLayerBase` function with the correct arguments', () => {
-      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addVideo, options)
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addVideo, videoOptions)
     })
 
     it('calls the `validateLayerTrim` function with the correct arguments', () => {
-      expect(validateLayerTrimSpy).toHaveBeenCalledWith(CompositionMethod.addVideo, options)
+      expect(validateLayerTrimSpy).toHaveBeenCalledWith(CompositionMethod.addVideo, videoOptions)
     })
 
     it('calls the `validateLayerAudio` function with the correct arguments', () => {
-      expect(validateLayerAudioSpy).toHaveBeenCalledWith(CompositionMethod.addVideo, options)
+      expect(validateLayerAudioSpy).toHaveBeenCalledWith(CompositionMethod.addVideo, videoOptions)
     })
 
     it('calls the `validateLayerVisualMedia` function with the correct arguments', () => {
-      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addVideo, options)
+      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addVideo, videoOptions)
     })
   })
 
   describe('validateAddFilter', () => {
-    const options = {
-      filter: {
-        filterName: FilterName.brightness,
-        options: { brightness: 10 },
-      },
-      length: 10,
-      start: 5,
-    }
+    const filterOptions = mockFilterLayer()
 
     beforeEach(() => {
-      validateAddFilter(options)
+      validateAddFilter(filterOptions)
     })
 
     it('calls the `validateLayerBase` function with the correct arguments', () => {
-      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, options)
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, filterOptions)
     })
 
     it('calls the `validateFilter` function with the correct arguments', () => {
-      expect(validateLayerFilterSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, options)
+      expect(validateLayerFilterSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, filterOptions)
     })
   })
 
   describe('validateAddWaveform', () => {
-    const options = {
-      backgroundColor: 'background-color',
-      color: 'color',
-      length: 10,
-      start: 5,
-      style: WaveformStyle.bars,
-      volume: 1,
-      x: 10,
-      y: 20,
-    }
+    const waveformOptions = mockWaveformLayer()
 
     beforeEach(() => {
-      validateAddWaveform(options)
+      validateAddWaveform(waveformOptions)
     })
 
     it('calls the `validateLayerBase` function with the correct arguments', () => {
-      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addWaveform, options)
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addWaveform, waveformOptions)
     })
 
     it('calls the `validateLayerVisualMedia` function with the correct arguments', () => {
-      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addWaveform, options)
+      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addWaveform, waveformOptions)
     })
 
     it('calls the `validateValueIsOfType` funciton with the correct arguments', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         CompositionMethod.addWaveform,
         LayerAttribute.style,
-        options.style,
+        waveformOptions.style,
         PrimitiveType.string
       )
     })
