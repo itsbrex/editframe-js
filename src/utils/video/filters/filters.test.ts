@@ -29,6 +29,19 @@ describe('validateFilter', () => {
     describe('when a valid filter `filterName` is provided', () => {
       const filterName = FilterName.brightness
 
+      it('throws the correct error string when no filter `options` are provided', () => {
+        expect(() => validateFilter(callerName, fieldName, { filterName, options: undefined }, true)).toThrow(
+          new Error(
+            ValidationErrorText.MUST_BE_TYPE(
+              callerName,
+              ValidationErrorText.SUB_FIELD(fieldName, FilterAttribute.options),
+              undefined,
+              JSON.stringify(FilterOptionTypes[filterName])
+            )
+          )
+        )
+      })
+
       it('throws the correct error string when invalid filter `options` are provided', () => {
         expect(() => validateFilter(callerName, fieldName, { filterName, options: options as any }, true)).toThrow(
           new Error(
@@ -40,6 +53,12 @@ describe('validateFilter', () => {
             )
           )
         )
+      })
+
+      it('does not throw an error when no options are passed for a filter that does not require options', () => {
+        const filterName = FilterName.fadeOut
+
+        expect(() => validateFilter(callerName, fieldName, { filterName, options: undefined }, true)).not.toThrow()
       })
     })
   })

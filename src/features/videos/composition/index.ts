@@ -101,7 +101,7 @@ export class Composition implements CompositionInterface {
     }
   }
 
-  public [CompositionMethod.addFilter](options: FilterLayer): Filter | undefined {
+  public [CompositionMethod.addFilter](options?: FilterLayer): Filter | undefined {
     try {
       validateAddFilter(options)
 

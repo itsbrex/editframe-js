@@ -58,7 +58,7 @@ export const validateFilter = (
     }
   }
 
-  if (isFilterNameValid && !filterValidators[filterName](options)) {
+  if (isFilterNameValid && filterName in FilterOptionTypes && !filterValidators[filterName](options)) {
     const message = ValidationErrorText.MUST_BE_TYPE(
       callerName,
       ValidationErrorText.SUB_FIELD(fieldName, FilterAttribute.options),
