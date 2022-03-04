@@ -1,45 +1,36 @@
-import Applications from './applications'
-import Videos from './videos'
+import { Api } from 'api'
+import { EditframeOptions } from 'constant'
+import { Applications, Videos } from 'features'
+import { EditframeErrorText } from 'strings'
+import { baseURL, initializeFetchUtil } from 'utils'
 
-/**
- * Configuration options for `Editframe` class constructor.
- */
-type EditframeConfig = {
-  clientId: string
-  host?: string
-  log?: boolean
-  token: string
-  version?: number
-}
-
-class Editframe {
-  public Application: Applications
-  public Video: Videos
+export class Editframe {
   public applications: Applications
   public videos: Videos
+  private _api: Api
   private _clientId: string
   private _host: string
   private _token: string
   private _version: number
 
-  /**
-   * Constructs a new instance of an Editframe client.
-   * @param configuration options
-   */
-  constructor({
-    clientId,
-    host = 'https://api.editframe.com',
-    token,
-    version = 2
-  }: EditframeConfig) {
+  constructor({ clientId, host = 'https://api.editframe.com', token, version = 2 }: EditframeOptions) {
+    if (!clientId || !token) {
+      throw new Error(EditframeErrorText.clientIdAndTokenRequired)
+    }
+
+    this._api = new Api({
+      clientId,
+      fetch: initializeFetchUtil(baseURL(host, version)),
+      host,
+      token,
+      version,
+    })
     this._clientId = clientId
     this._host = host
     this._token = token
     this._version = version
-    this.applications = new Applications({ clientId, host, token, version })
-    this.videos = new Videos({ clientId, host, token, version })
-    this.Application = this.applications
-    this.Video = this.videos
+    this.applications = new Applications(this._api)
+    this.videos = new Videos(this._api)
   }
 
   public get clientId(): string {
@@ -58,5 +49,3 @@ class Editframe {
     return this._version
   }
 }
-
-export default Editframe

@@ -1,33 +1,32 @@
-import rollupTypescript from 'rollup-plugin-typescript2'
-import typescript from 'typescript'
-import commonjs from 'rollup-plugin-commonjs'
-import external from 'rollup-plugin-peer-deps-external'
-import url from 'rollup-plugin-url'
 import json from '@rollup/plugin-json'
 import resolve from '@rollup/plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
+import includePaths from 'rollup-plugin-includepaths'
+import external from 'rollup-plugin-peer-deps-external'
+import typescript from 'rollup-plugin-typescript2'
+import url from 'rollup-plugin-url'
 
-import pkg from './package.json'
+import packageJson from './package.json'
 
 export default {
+  external: [],
   input: 'src/index.ts',
   output: [
     {
-      file: pkg.main,
+      file: packageJson.main,
       format: 'cjs',
       sourcemap: true,
-    }
+    },
   ],
-  external: [],
   plugins: [
     external(),
     url(),
     json(),
-    rollupTypescript({
-      rollupCommonJSResolveHack: true,
-      clean: true,
-      typescript,
+    typescript(),
+    includePaths({
+      paths: ['src'],
     }),
     resolve(),
     commonjs(),
-  ]
+  ],
 }
