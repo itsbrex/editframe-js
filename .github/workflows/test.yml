@@ -7,16 +7,29 @@ on:
     branches: [ dev ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-        cache: 'yarn'
-    - run: yarn install
-    - run: yarn build
-    - run: yarn test
+      - uses: act10ns/slack@v1
+        with:
+          status: starting
+          channel: '#ci-cd'
+          config: .github/config/slack.yml
+        if: always()
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn build
+      - run: yarn test
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#ci-cd'
+          config: .github/config/slack.yml
+        if: always()
