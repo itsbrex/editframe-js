@@ -29,7 +29,7 @@ export class Video extends Mixin(Audio, VisualMedia) {
     options,
   }: {
     filterName: FilterName
-    options: FilterOptions[FilterName]
+    options?: FilterOptions[FilterName]
   }): Video | void {
     try {
       validateFilter(VideoMethod.setFilter, LayerAttribute.filter, { filterName, options }, true)
