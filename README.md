@@ -17,6 +17,49 @@ or
 yarn add @editframe/editframe-js
 ```
 
+## Commit Messages and Semantic Release
+
+The `semantic-release` package is used for issuing git tags and releases, as well as publishing the NPM package. It
+determines the next version number automatically by checking the commit messages for special tags that you must include.
+
+### Release Types
+
+- `patch`: 1.0 -> 1.0.1
+- `minor`: 1.0 -> 1.1
+- `breaking`: 1.0 -> 2.0
+
+### Semantic Release Tags
+
+- `build`: patch
+- `chore`: none
+- `ci`: patch
+- `docs`: minor
+- `feat`: minor
+- `fix` patch
+- `perf`: patch
+- `refactor`: patch
+- `revert`: patch
+- `style`: patch
+- `test`: patch
+- `BREAKING CHANGE`: breaking
+
+When you are committing a change that breaks the current public API of the package, you must add an additional line
+below the main commit message with an explanation of the breaking changes, prefixed with the `BREAKING CHANGE: ` tag.
+
+### Example commit
+
+```
+feat: adds new feature
+```
+
+### Example breaking commit
+
+```
+feat: makes xy change
+
+BREAKING CHANGE: this changes the x parameter of type y
+```
+
 ## Usage
 
 Calls to the Editframe API require a Client ID and an application-specific API token. These keys can be accessed from
