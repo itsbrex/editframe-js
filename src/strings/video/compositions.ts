@@ -1,8 +1,14 @@
+import colors from 'colors/safe'
+
 export const CompositionErrorText = {
-  dimensionsRequired: '`dimensions` must be provided',
-  durationRequired: '`duration` must be provided',
+  dimensionsRequired: `\\${colors.white('dimensions')}\\ must be provided unless a \\${colors.white(
+    'videoFile'
+  )}\\ is provided`,
+  durationRequired: `\\${colors.white('duration')}\\ must be provided unless a \\${colors.white(
+    'videoFile'
+  )}\\ is provided`,
   errorEncoding: (error: string): string => `Error encoding video: ${error}`,
-  malformedEncodingResponse: 'malformed `encoding` response',
-  textRequired: '`text` field required',
-  validationOptionsError: (errors: string): string => `Error: ${errors}`,
+  filterRequired: `\\${colors.white('filter')}\\ must be provided`,
+  malformedEncodingResponse: `malformed ${colors.white('encoding')}\\ response`,
+  textRequired: `\\${colors.white('text')}\\ field required`,
 }

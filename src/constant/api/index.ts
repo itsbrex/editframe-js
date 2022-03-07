@@ -1,7 +1,5 @@
 import FormData from 'form-data'
 
-export const defaultHost = 'https://api.editframe.com'
-
 export interface ApiInterface {
   get: ({ url }: { url: string }) => Promise<unknown>
   post: ({

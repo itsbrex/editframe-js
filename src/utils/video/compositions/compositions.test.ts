@@ -21,6 +21,7 @@ import {
   validateAddVideo,
   validateAddWaveform,
   validateCompositionOptions,
+  validateVideoOptions,
 } from './'
 
 describe('formDataKey', () => {
@@ -66,6 +67,68 @@ describe('validations', () => {
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
   })
 
+  describe('validateVideoOptions', () => {
+    const compositionOptions = mockCompositionOptions()
+    const { backgroundColor, dimensions, duration } = compositionOptions
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      validateVideoOptions(compositionOptions)
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        ApiVideoMethod.new,
+        ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.height),
+        dimensions.height,
+        PrimitiveType.number
+      )
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        ApiVideoMethod.new,
+        ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.width),
+        dimensions.width,
+        PrimitiveType.number
+      )
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        ApiVideoMethod.new,
+        CompositionOptionAttribute.duration,
+        duration,
+        PrimitiveType.number
+      )
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        ApiVideoMethod.new,
+        CompositionOptionAttribute.backgroundColor,
+        backgroundColor,
+        PrimitiveType.string
+      )
+    })
+
+    describe('when any of the validator functions return an error message', () => {
+      it('throws the error messages', () => {
+        const invalidOptions = { backgroundColor: 123, dimensions: { height: '10', width: 20 }, duration: 'abc' }
+
+        expect(() => validateVideoOptions(invalidOptions as any)).toThrow(
+          new TypeError(
+            `${ValidationErrorText.MUST_BE_TYPE(
+              ApiVideoMethod.new,
+              ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.height),
+              invalidOptions.dimensions.height,
+              PrimitiveType.number
+            )}\n${ValidationErrorText.MUST_BE_TYPE(
+              ApiVideoMethod.new,
+              CompositionOptionAttribute.duration,
+              invalidOptions.duration,
+              PrimitiveType.number
+            )}\n${ValidationErrorText.MUST_BE_TYPE(
+              ApiVideoMethod.new,
+              CompositionOptionAttribute.backgroundColor,
+              invalidOptions.backgroundColor,
+              PrimitiveType.string
+            )}`
+          )
+        )
+      })
+    })
+  })
   describe('validateCompositionOptions', () => {
     const compositionOptions = mockCompositionOptions()
     const { backgroundColor, dimensions, duration } = compositionOptions
@@ -88,7 +151,7 @@ describe('validations', () => {
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         ApiVideoMethod.new,
-        ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.height),
+        ValidationErrorText.SUB_FIELD(CompositionOptionAttribute.dimensions, LayerAttribute.width),
         dimensions.width,
         PrimitiveType.number
       )

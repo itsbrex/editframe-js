@@ -1,4 +1,5 @@
 import { Blob } from 'node:buffer'
+import { Readable } from 'stream'
 
 import { Filter } from 'constant/video/filters'
 import { IdentifiedLayer, LayerAttribute, Size } from 'constant/video/layers'
@@ -12,9 +13,13 @@ export enum CompositionMethod {
   addText = 'addText',
   addVideo = 'addVideo',
   addWaveform = 'addWaveform',
+  backgroundColor = 'backgroundColor',
+  dimensions = 'dimensions',
+  duration = 'duration',
   encode = 'encode',
   layer = 'layer',
   layers = 'layers',
+  metadata = 'metadata',
   setLayer = 'setLayer',
   updateLayerAttribute = 'updateLayerAttribute',
 }
@@ -29,21 +34,29 @@ export interface CompositionInterface {
   ) => void
 }
 
-export type CompositionFile = Blob | string
+export type CompositionFile = Readable | Blob | string
 
 export enum CompositionOptionAttribute {
   backgroundColor = 'backgroundColor',
   dimensions = 'dimensions',
   duration = 'duration',
   metadata = 'metadata',
-  videoFile = 'videoFile',
 }
+
+export type Metadata = Record<string, string>
+
+export type VideoOptions = {
+  [CompositionOptionAttribute.backgroundColor]?: string
+  [CompositionOptionAttribute.dimensions]?: Size
+  [CompositionOptionAttribute.duration]?: number
+  [CompositionOptionAttribute.metadata]?: Metadata
+}
+
 export type CompositionOptions = {
   [CompositionOptionAttribute.backgroundColor]?: string
   [CompositionOptionAttribute.dimensions]: Size
   [CompositionOptionAttribute.duration]: number
-  [CompositionOptionAttribute.metadata]?: Record<string, unknown>
-  [CompositionOptionAttribute.videoFile]?: CompositionFile
+  [CompositionOptionAttribute.metadata]?: Metadata
 }
 
 export type EncodeConfig = CompositionOptions & {

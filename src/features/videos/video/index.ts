@@ -4,7 +4,7 @@ import { CompositionInterface, FilterOptions, LayerAttribute, Size, VideoMethod 
 import { Audio } from 'features/videos/audio'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { ValidationErrorText } from 'strings'
-import { logValidationError, validateFilter, validatePresenceOf } from 'utils'
+import { validateFilter, validatePresenceOf, withValidation } from 'utils'
 
 export class Video extends Mixin(Audio, VisualMedia) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
@@ -12,16 +12,17 @@ export class Video extends Mixin(Audio, VisualMedia) {
   }
 
   [VideoMethod.setDimensions]({ height, width }: Size): Video | void {
-    try {
-      validatePresenceOf(height, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.height))
-      validatePresenceOf(width, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.width))
+    withValidation<Video>(
+      () => {
+        validatePresenceOf(height, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.height))
+        validatePresenceOf(width, ValidationErrorText.REQUIRED_FIELD(LayerAttribute.width))
+      },
+      () => {
+        this._updateAttribute(LayerAttribute.height, height)
 
-      this._updateAttribute(LayerAttribute.height, height)
-
-      return this._updateAttribute(LayerAttribute.width, width)
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+        return this._updateAttribute(LayerAttribute.width, width)
+      }
+    )
   }
 
   [VideoMethod.setFilter]<FilterName extends keyof FilterOptions>({
@@ -31,15 +32,13 @@ export class Video extends Mixin(Audio, VisualMedia) {
     filterName: FilterName
     options?: FilterOptions[FilterName]
   }): Video | void {
-    try {
-      validateFilter(VideoMethod.setFilter, LayerAttribute.filter, { filterName, options }, true)
-
-      return this._updateAttribute(LayerAttribute.filter, {
-        filterName,
-        options,
-      })
-    } catch ({ stack }) {
-      logValidationError(stack)
-    }
+    withValidation<Video>(
+      () => validateFilter(VideoMethod.setFilter, LayerAttribute.filter, { filterName, options }, true),
+      () =>
+        this._updateAttribute(LayerAttribute.filter, {
+          filterName,
+          options,
+        })
+    )
   }
 }

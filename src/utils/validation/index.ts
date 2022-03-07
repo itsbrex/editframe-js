@@ -1,12 +1,27 @@
-import colors from 'colors/safe'
-
-import { CompositionFile, PrimitiveType } from 'constant'
+import { CompositionFile, Filter, PrimitiveType, Size } from 'constant'
 import { ValidationErrorText } from 'strings'
+import { logError } from 'utils'
 
-export const logValidationError = (message: string): void => console.error(colors.yellow(message))
+export const isValidUrl = (url: string): boolean => {
+  try {
+    validateURL(url)
+
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
+export const validateURL = (url: string): void => {
+  try {
+    new URL(url)
+  } catch (error) {
+    throw new TypeError(ValidationErrorText.INVALID_URL(url))
+  }
+}
 
 export const validatePresenceOf = (
-  value: string | number | CompositionFile | undefined,
+  value: string | number | CompositionFile | Filter | Size | undefined,
   errorMessage: string
 ): void => {
   if (!value) {
@@ -32,4 +47,19 @@ export const validateValueIsOfType = (
   }
 
   return undefined
+}
+export const withValidation = <T>(validate: () => void, callback?: () => T | undefined): T => {
+  try {
+    validate()
+
+    if (callback) {
+      return callback()
+    }
+
+    return undefined
+  } catch ({ name, stack }) {
+    logError(stack)
+
+    return undefined
+  }
 }
