@@ -77,7 +77,7 @@
   "name": "@editframe/editframe-js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/editframe/editframe.js"
+    "url": "git+https://github.com/editframe/editframe-js"
   },
   "scripts": {
     "build": "rollup -c",
