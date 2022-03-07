@@ -13,6 +13,7 @@ import {
   LayerAttribute,
   LayerAttributeValue,
   LayerType,
+  LottieLayer,
   Metadata,
   Routes,
   Size,
@@ -23,6 +24,7 @@ import {
 } from 'constant'
 import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
+import { Lottie } from 'features/videos/lottie'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
@@ -34,6 +36,7 @@ import {
   validateAddAudio,
   validateAddFilter,
   validateAddImage,
+  validateAddLottie,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
@@ -98,6 +101,7 @@ export class Composition implements CompositionInterface {
     return withValidation<Audio>(
       () => {
         validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validateAddAudio(options)
       },
       () => {
@@ -113,6 +117,7 @@ export class Composition implements CompositionInterface {
   public [CompositionMethod.addFilter](options: FilterLayer): Filter | undefined {
     return withValidation<Filter>(
       () => {
+        validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validatePresenceOf(options.filter, CompositionErrorText.filterRequired)
         validateAddFilter(options)
       },
@@ -128,6 +133,7 @@ export class Composition implements CompositionInterface {
     return withValidation<Video>(
       () => {
         validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validateAddImage(options)
       },
       () => {
@@ -140,9 +146,25 @@ export class Composition implements CompositionInterface {
     )
   }
 
+  public [CompositionMethod.addLottie](options: LottieLayer): Lottie | undefined {
+    return withValidation<Lottie>(
+      () => {
+        validatePresenceOf(options, CompositionErrorText.optionsRequired)
+        validatePresenceOf(options.data, CompositionErrorText.dataRequired)
+        validateAddLottie(options)
+      },
+      () => {
+        const { id } = this._addLayer({ type: LayerType.lottie, ...options })
+
+        return new Lottie({ composition: this, id })
+      }
+    )
+  }
+
   public [CompositionMethod.addText](options: TextLayer): Text | undefined {
     return withValidation<Text>(
       () => {
+        validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validatePresenceOf(options.text, CompositionErrorText.textRequired)
         validateAddText(options)
       },
@@ -158,6 +180,7 @@ export class Composition implements CompositionInterface {
     return withValidation<Video>(
       () => {
         validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validateAddVideo(options)
       },
       () => {
@@ -172,7 +195,10 @@ export class Composition implements CompositionInterface {
 
   public [CompositionMethod.addWaveform](options: WaveformLayer = {}): VisualMedia | undefined {
     return withValidation<VisualMedia>(
-      () => validateAddWaveform(options),
+      () => {
+        validatePresenceOf(options, CompositionErrorText.optionsRequired)
+        validateAddWaveform(options)
+      },
       () => {
         const { id } = this._addLayer({ type: LayerType.waveform, ...options })
 

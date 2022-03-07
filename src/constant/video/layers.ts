@@ -1,8 +1,10 @@
 import { Filter } from 'constant/video/filters'
+import { LottieAnimationData } from 'constant/video/lottie'
 
 export enum LayerAttribute {
   backgroundColor = 'backgroundColor',
   color = 'color',
+  data = 'data',
   end = 'end',
   filter = 'filter',
   fontFamily = 'fontFamily',
@@ -34,6 +36,7 @@ export enum LayerType {
   audio = 'audio',
   filter = 'filter',
   image = 'image',
+  lottie = 'lottie',
   text = 'text',
   video = 'video',
   waveform = 'waveform',
@@ -117,6 +120,10 @@ export type LayerFilter = {
   [LayerAttribute.filter]: Filter
 }
 
+export type LayerLottie = {
+  [LayerAttribute.data]?: LottieAnimationData
+}
+
 export enum WaveformStyle {
   bars = 'bars',
   line = 'line',
@@ -126,16 +133,19 @@ export type LayerWaveform = {
 }
 
 export type AudioLayer = LayerBase & LayerTrim & LayerAudio
+export type FilterLayer = LayerBase & LayerFilter
 export type ImageLayer = LayerBase & LayerVisualMedia
+export type LottieLayer = LayerBase & LayerLottie
 export type TextLayer = LayerBase & LayerAlignment & LayerText & LayerVisualMedia
 export type VideoLayer = LayerBase & LayerTrim & AudioLayer & LayerVisualMedia
-export type FilterLayer = LayerBase & LayerFilter
 
 export type WaveformLayer = LayerBase & LayerVisualMedia & LayerWaveform
 
 export type ComposableLayer =
   | AudioLayer
+  | FilterLayer
   | ImageLayer
+  | LottieLayer
   | TextLayer
   | VideoLayer
   | (WaveformLayer & {

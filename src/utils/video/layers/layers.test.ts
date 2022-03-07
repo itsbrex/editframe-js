@@ -1,4 +1,5 @@
 import { LayerAttribute, LayerHorizontalAlignmentValue, LayerVerticalAlignmentValue, PrimitiveType } from 'constant'
+import { mockLottieLayer } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
 
@@ -6,6 +7,7 @@ import {
   validateHorizontalAlignment,
   validateLayerAlignment,
   validateLayerBase,
+  validateLayerLottie,
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
@@ -13,6 +15,7 @@ import {
 
 describe('validations', () => {
   const callerName = 'callerName'
+  const { data } = mockLottieLayer()
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
   afterEach(() => {
@@ -45,6 +48,18 @@ describe('validations', () => {
         length,
         PrimitiveType.number
       )
+
+      expect(finalErrors).toEqual([])
+    })
+  })
+
+  describe('validateLayerLottie', () => {
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      const finalErrors = validateLayerLottie(callerName, { data })
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(1)
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(callerName, LayerAttribute.data, data, PrimitiveType.object)
 
       expect(finalErrors).toEqual([])
     })

@@ -5,6 +5,6 @@ export const ValidationErrorText = {
     `\n  \\${colors.white(fieldName)}\\ attribute in \\${colors.white(caller)}\\ must be of type \\${colors.white(
       type
     )}\\. Got: \\${colors.white(JSON.stringify(value))}\\`,
-  REQUIRED_FIELD: (name: string): string => `\\${name}\\ field is required`,
+  REQUIRED_FIELD: (name: string): string => `\\${colors.white(name)}\\ field is required`,
   SUB_FIELD: (parent: string, child: string): string => `${parent}: { ${child} }`,
 }
