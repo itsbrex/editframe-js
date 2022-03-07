@@ -55,7 +55,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn build
-      - run: yarn semantic-release
+      - run: HUSKY=0 yarn semantic-release
       - uses: act10ns/slack@v1
         with:
           status: ${{ job.status }}

@@ -69,7 +69,8 @@
     "npm": ">=5"
   },
   "files": [
-    "dist"
+    "dist/**",
+    "README.md"
   ],
   "homepage": "https://github.com/editframe/editframe-js",
   "license": "Apache-2.0",
