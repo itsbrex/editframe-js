@@ -9,6 +9,12 @@ only be used in server environments to protect your API key.**
 
 # Installation
 
+Set your npm access token in your shell or installation will fail when trying to install `@editframe/shared-types`.
+
+```
+export NPM_TOKEN=your-token-goes-here
+```
+
 ```
 npm install @editframe/editframe-js
 

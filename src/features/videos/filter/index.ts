@@ -1,4 +1,6 @@
-import { CompositionInterface, FilterMethod, FilterOptions, LayerAttribute } from 'constant'
+import { FilterOptions } from '@editframe/shared-types'
+
+import { CompositionInterface, FilterMethod, LayerAttribute } from 'constant'
 import { Layer } from 'features/videos/layer'
 import { validateFilter, withValidation } from 'utils'
 

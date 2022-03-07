@@ -1,10 +1,11 @@
+import { FilterName } from '@editframe/shared-types'
+
 import {
   AudioLayer,
   CompositionInterface,
   CompositionOptions,
   EncodeResponse,
   FilterLayer,
-  FilterName,
   ImageLayer,
   LayerFormatValue,
   LayerHorizontalAlignmentValue,

@@ -1,14 +1,13 @@
 import {
-  Filter,
-  FilterAttribute,
   FilterBrightness,
   FilterContrast,
   FilterFadeIn,
   FilterName,
   FilterOptionKey,
-  FilterOptionTypes,
   FilterSaturation,
-} from 'constant'
+} from '@editframe/shared-types'
+
+import { Filter, FilterAttribute, FilterOptionTypes } from 'constant'
 import { ValidationErrorText } from 'strings'
 
 const isFilterBrightness = (options: any): options is FilterBrightness =>
