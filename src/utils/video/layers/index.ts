@@ -6,6 +6,7 @@ import {
   LayerBase,
   LayerHorizontalAlignment,
   LayerHorizontalAlignmentValue,
+  LayerLottie,
   LayerText,
   LayerTrim,
   LayerVerticalAlignmentValue,
@@ -23,6 +24,14 @@ export const validateLayerBase = (callerName: string, { length, start }: LayerBa
 
   errors.push(validateValueIsOfType(callerName, LayerAttribute.start, start, PrimitiveType.number))
   errors.push(validateValueIsOfType(callerName, LayerAttribute.length, length, PrimitiveType.number))
+
+  return errors.filter(filterUndefined)
+}
+
+export const validateLayerLottie = (callerName: string, { data }: LayerLottie): string[] => {
+  const errors: string[] = []
+
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.data, data, PrimitiveType.object))
 
   return errors.filter(filterUndefined)
 }

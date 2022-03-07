@@ -8,6 +8,7 @@ import {
   ImageLayer,
   LayerFormatValue,
   LayerHorizontalAlignmentValue,
+  LottieLayer,
   TextLayer,
   VideoLayer,
   WaveformLayer,
@@ -83,6 +84,18 @@ export const mockImageLayer = (
   width,
   x,
   y,
+})
+
+export const mockLottieLayer = (
+  { data, length, start }: LottieLayer = {
+    data: { assets: [], ddd: 10, fr: 20, h: 30, ip: 40, layers: [], nm: 'nm', op: 50, v: 'v', w: 60 },
+    length: 20,
+    start: 10,
+  }
+): LottieLayer => ({
+  data,
+  length,
+  start,
 })
 
 export const mockTextLayer = (

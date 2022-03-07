@@ -4,6 +4,7 @@ import {
   mockCompositionOptions,
   mockFilterLayer,
   mockImageLayer,
+  mockLottieLayer,
   mockTextLayer,
   mockVideoLayer,
   mockWaveformLayer,
@@ -17,6 +18,7 @@ import {
   validateAddAudio,
   validateAddFilter,
   validateAddImage,
+  validateAddLottie,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
@@ -45,6 +47,7 @@ describe('validations', () => {
   let validateLayerAudioSpy: jest.SpyInstance
   let validateLayerBaseSpy: jest.SpyInstance
   let validateLayerFilterSpy: jest.SpyInstance
+  let validateLayerLottieSpy: jest.SpyInstance
   let validateLayerTextSpy: jest.SpyInstance
   let validateLayerTrimSpy: jest.SpyInstance
   let validateLayerVisualMediaSpy: jest.SpyInstance
@@ -60,6 +63,7 @@ describe('validations', () => {
     validateLayerAudioSpy = jest.spyOn(LayerUtilsModule, 'validateLayerAudio')
     validateLayerBaseSpy = jest.spyOn(LayerUtilsModule, 'validateLayerBase')
     validateLayerFilterSpy = jest.spyOn(LayerUtilsModule, 'validateLayerFilter')
+    validateLayerLottieSpy = jest.spyOn(LayerUtilsModule, 'validateLayerLottie')
     validateLayerTextSpy = jest.spyOn(LayerUtilsModule, 'validateLayerText')
     validateLayerTrimSpy = jest.spyOn(LayerUtilsModule, 'validateLayerTrim')
     validateLayerVisualMediaSpy = jest.spyOn(LayerUtilsModule, 'validateLayerVisualMedia')
@@ -220,6 +224,26 @@ describe('validations', () => {
 
     it('calls the `validateLayerVisualMedia` function with the correct arguments', () => {
       expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addImage, imageOptions)
+    })
+  })
+
+  describe('validateAddLottie', () => {
+    const lottieOptions = mockLottieLayer()
+
+    beforeEach(() => {
+      validateAddLottie(lottieOptions)
+    })
+
+    it('calls the `validateLayerBase` function with the correct arguments', () => {
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addLottie, lottieOptions)
+    })
+
+    it('calls the `validateLayerVisualMedia` function with the correct arguments', () => {
+      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addLottie, lottieOptions)
+    })
+
+    it('calls the `validateLayerLottie` function with the correct arguments', () => {
+      expect(validateLayerLottieSpy).toHaveBeenCalledWith(CompositionMethod.addLottie, lottieOptions)
     })
   })
 

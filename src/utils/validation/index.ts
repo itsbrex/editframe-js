@@ -1,4 +1,3 @@
-import { CompositionFile, Filter, PrimitiveType, Size } from 'constant'
 import { ValidationErrorText } from 'strings'
 import { logError } from 'utils'
 
@@ -20,10 +19,8 @@ export const validateURL = (url: string): void => {
   }
 }
 
-export const validatePresenceOf = (
-  value: string | number | CompositionFile | Filter | Size | undefined,
-  errorMessage: string
-): void => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const validatePresenceOf = (value: any, errorMessage: string): void => {
   if (!value) {
     throw new Error(errorMessage)
   }
@@ -32,8 +29,8 @@ export const validatePresenceOf = (
 export const validateValueIsOfType = (
   caller: string,
   fieldName: string,
-  value: number | string | undefined,
-  type: PrimitiveType,
+  value: number | string | Record<string, any> | undefined,
+  type: string,
   shouldThrow = false
 ): string | undefined => {
   if (value && typeof value !== type) {

@@ -1,6 +1,7 @@
 import { ApiInterface, FormDataInterface, LayerAttribute, LayerType, Routes } from 'constant'
 import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
+import { Lottie } from 'features/videos/lottie'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
@@ -11,6 +12,7 @@ import {
   mockEncodeResponse,
   mockFilterLayer,
   mockImageLayer,
+  mockLottieLayer,
   mockTextLayer,
   mockVideoLayer,
   mockWaveformLayer,
@@ -33,6 +35,7 @@ describe('Composition', () => {
   const encodeResponse = mockEncodeResponse()
   const filterOptions = mockFilterLayer()
   const imageOptions = mockImageLayer()
+  const lottieOptions = mockLottieLayer()
   const options = mockCompositionOptions()
   const textOptions = mockTextLayer()
   const videoOptions = mockVideoLayer()
@@ -44,6 +47,7 @@ describe('Composition', () => {
   let validateAddAudioSpy: jest.SpyInstance
   let validateAddFilterSpy: jest.SpyInstance
   let validateAddImageSpy: jest.SpyInstance
+  let validateAddLottieSpy: jest.SpyInstance
   let validateAddTextSpy: jest.SpyInstance
   let validateAddVideoSpy: jest.SpyInstance
   let validateAddWaveformSpy: jest.SpyInstance
@@ -71,6 +75,7 @@ describe('Composition', () => {
     validateAddAudioSpy = jest.spyOn(CompositionUtilsModule, 'validateAddAudio')
     validateAddFilterSpy = jest.spyOn(CompositionUtilsModule, 'validateAddFilter')
     validateAddImageSpy = jest.spyOn(CompositionUtilsModule, 'validateAddImage')
+    validateAddLottieSpy = jest.spyOn(CompositionUtilsModule, 'validateAddLottie')
     validateAddTextSpy = jest.spyOn(CompositionUtilsModule, 'validateAddText')
     validateAddVideoSpy = jest.spyOn(CompositionUtilsModule, 'validateAddVideo')
     validateAddWaveformSpy = jest.spyOn(CompositionUtilsModule, 'validateAddWaveform')
@@ -137,6 +142,7 @@ describe('Composition', () => {
 
     it('calls the `validatePresenceOf` function with the correct arguments', () => {
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.audio, MediaErrorText.invalidFileSource)
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(audioOptions, CompositionErrorText.optionsRequired)
     })
 
     it('calls the `validateAddAudio` function with the correct arguments', () => {
@@ -166,6 +172,7 @@ describe('Composition', () => {
     })
 
     it('calls `validatePresenceOf` with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(filterOptions, CompositionErrorText.optionsRequired)
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(filterOptions.filter, CompositionErrorText.filterRequired)
     })
 
@@ -218,6 +225,37 @@ describe('Composition', () => {
     })
   })
 
+  describe('addLottie', () => {
+    beforeEach(() => {
+      composition = makeComposition()
+
+      composition.addLottie(lottieOptions)
+    })
+
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(lottieOptions, CompositionErrorText.optionsRequired)
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(lottieOptions.data, CompositionErrorText.dataRequired)
+    })
+
+    it('calls the `validateAddLottie` function with the correct arguments', () => {
+      expect(validateAddLottieSpy).toHaveBeenCalledWith(lottieOptions)
+    })
+
+    it('adds a `lottie` layer with the correct attributes', () => {
+      expect(composition.layers[0]).toEqual({
+        id: uuidMock,
+        type: LayerType.lottie,
+        ...lottieOptions,
+      })
+    })
+
+    it('returns a `Lottie` object', () => {
+      const lottie = composition.addLottie(lottieOptions)
+
+      expect(lottie instanceof Lottie).toBe(true)
+    })
+  })
+
   describe('addText', () => {
     beforeEach(() => {
       composition = makeComposition()
@@ -257,6 +295,7 @@ describe('Composition', () => {
 
     it('calls the `validatePresenceOf` function with the correct arguments', () => {
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.video, MediaErrorText.invalidFileSource)
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(videoOptions, CompositionErrorText.optionsRequired)
     })
 
     it('calls the `validateAddVideo` function with the correct arguments', () => {

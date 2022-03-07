@@ -3,13 +3,15 @@ import { Readable } from 'stream'
 
 import { Filter } from 'constant/video/filters'
 import { IdentifiedLayer, LayerAttribute, Size } from 'constant/video/layers'
+import { LottieAnimationData } from 'constant/video/lottie'
 
-export type LayerAttributeValue = number | string | Filter
+export type LayerAttributeValue = number | string | Filter | LottieAnimationData
 
 export enum CompositionMethod {
   addAudio = 'addAudio',
   addFilter = 'addFilter',
   addImage = 'addImage',
+  addLottie = 'addLottie',
   addText = 'addText',
   addVideo = 'addVideo',
   addWaveform = 'addWaveform',
