@@ -1,5 +1,5 @@
 import { ValidationErrorText } from 'strings'
-import { logError } from 'utils'
+import { logError } from 'utils/errors'
 
 export const isValidUrl = (url: string): boolean => {
   try {
