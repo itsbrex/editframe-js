@@ -2,14 +2,15 @@ import json from '@rollup/plugin-json'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import includePaths from 'rollup-plugin-includepaths'
-import external from 'rollup-plugin-peer-deps-external'
-import typescript from 'rollup-plugin-typescript2'
+import { terser } from 'rollup-plugin-terser'
 import url from 'rollup-plugin-url'
+import { visualizer } from 'rollup-plugin-visualizer'
+import ts from 'rollup-plugin-ts'
 
 import packageJson from './package.json'
 
 export default {
-  external: [],
+  external: [...Object.keys(packageJson.dependencies)],
   input: 'src/index.ts',
   output: [
     {
@@ -17,16 +18,22 @@ export default {
       format: 'cjs',
       sourcemap: true,
     },
+    {
+      file: packageJson.module,
+      format: 'es',
+      sourcemap: true,
+    },
   ],
   plugins: [
-    external(),
-    url(),
-    json(),
-    typescript(),
     includePaths({
       paths: ['src'],
     }),
+    url(),
     resolve(),
     commonjs(),
+    json(),
+    ts({}),
+    visualizer(),
+    terser(),
   ],
 }
