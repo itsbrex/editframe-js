@@ -1,5 +1,5 @@
 import { Api } from 'api'
-import { EditframeOptions, defaultHost } from 'constant'
+import { CommonResolution, EditframeOptions, defaultHost } from 'constant'
 import { Applications, Videos } from 'features'
 import { EditframeErrorText } from 'strings'
 import { baseURL, initializeFetchUtil } from 'utils'
@@ -49,3 +49,5 @@ export class Editframe {
     return this._version
   }
 }
+
+export const CommonResolutions = CommonResolution
