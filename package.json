@@ -19,6 +19,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",
+    "@editframe/shared-types": "^1.0.2",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^7.1.3",
     "@semantic-release/changelog": "^6.0.1",
@@ -51,17 +52,21 @@
     "jest-fetch-mock": "^3.0.3",
     "prettier": "2.5.1",
     "rollup": "^2.37.0",
+    "rollup-plugin-analyzer": "^4.0.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-includepaths": "^0.2.4",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-ts": "^2.0.5",
     "rollup-plugin-url": "^2.2.2",
+    "rollup-plugin-visualizer": "^5.6.0",
     "semantic-release": "^19.0.2",
     "ts-jest": "^27.1.3",
+    "ts-node": "8.0.2",
     "tsc-alias": "^1.6.0",
     "tslib": "^2.3.1",
+    "ttypescript": "^1.5.13",
     "typescript": "^4.5.5"
   },
   "engines": {
@@ -69,20 +74,21 @@
     "npm": ">=5"
   },
   "files": [
-    "dist/**",
+    "dist",
     "README.md"
   ],
   "homepage": "https://github.com/editframe/editframe-js",
   "license": "Apache-2.0",
-  "main": "./dist/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
   "name": "@editframe/editframe-js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/editframe/editframe-js"
   },
   "scripts": {
-    "build": "rollup -c",
-    "build:watch": "tsc -w & tsc-alias -w",
+    "build": "rollup -c && tsc-alias",
+    "build:watch": "rollup -w & tsc-alias -w",
     "format": "prettier --write '**/*.{js, ts}' --loglevel error",
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --ext .ts . --fix",
@@ -91,5 +97,6 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "types": "dist/index.d.ts",
   "version": "0.2.4"
 }

@@ -2,10 +2,15 @@
 node_modules
 coverage
 
+# yalc
+.yalc
+yalc.lock
+
 # builds
 build
 dist
 .rpt2_cache
+stats.html
 
 # misc
 .DS_Store
