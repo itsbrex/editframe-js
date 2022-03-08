@@ -28,6 +28,7 @@ import {
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
+  validateLayerWaveform,
 } from 'utils/video/layers'
 
 export const formDataKey = (file: CompositionFile, id: string): string => `${urlOrFile(file)}${id}`
@@ -160,7 +161,11 @@ export const validateAddFilter = (options: FilterLayer): void =>
   validateLayerMethod([validateLayerBase, validateLayerFilter], CompositionMethod.addFilter, options)
 
 export const validateAddWaveform = (options: WaveformLayer): void => {
-  validateLayerMethod([validateLayerBase, validateLayerVisualMedia], CompositionMethod.addWaveform, options)
+  validateLayerMethod(
+    [validateLayerBase, validateLayerVisualMedia, validateLayerWaveform],
+    CompositionMethod.addWaveform,
+    options
+  )
 
   const error = validateValueIsOfType(
     CompositionMethod.addWaveform,
