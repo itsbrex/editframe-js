@@ -40,9 +40,12 @@ describe('validateValueIsOfType', () => {
 })
 
 describe('withValidation', () => {
+  const typeError = new TypeError('error')
+  const error = new Error('error')
   let validator: jest.Mock
   let callback: jest.Mock
   let consoleErrorSpy: jest.SpyInstance
+  let processExitSpy: jest.SpyInstance
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -52,6 +55,7 @@ describe('withValidation', () => {
     validator = jest.fn()
     callback = jest.fn()
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+    processExitSpy = jest.spyOn(process, 'exit').mockImplementation(() => undefined as never)
     withValidation(validator, callback)
   })
 
@@ -68,30 +72,35 @@ describe('withValidation', () => {
   })
 
   describe('when the validator function throws an error', () => {
-    it('logs the error to the console', () => {
-      const error = new TypeError('error')
-
+    beforeEach(() => {
       validator.mockImplementation(() => {
-        throw error
+        throw typeError
       })
-
       withValidation(validator, callback)
+    })
+    it('logs the error to the console', () => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(typeError.stack))
+    })
 
-      expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(error.stack))
+    it('exits the process', () => {
+      expect(processExitSpy).toHaveBeenCalledWith(1)
     })
   })
 
   describe('when the callback function throws an error', () => {
-    it('logs the error to the console', () => {
-      const error = new Error('error')
-
+    beforeEach(() => {
       callback.mockImplementation(() => {
         throw error
       })
 
       withValidation(validator, callback)
-
+    })
+    it('logs the error to the console', () => {
       expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(error.stack))
+    })
+
+    it('exits the process', () => {
+      expect(processExitSpy).toHaveBeenCalledWith(1)
     })
   })
 })

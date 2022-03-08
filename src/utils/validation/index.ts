@@ -57,6 +57,6 @@ export const withValidation = <T>(validate: () => void, callback?: () => T | und
   } catch ({ name, stack }) {
     logError(stack)
 
-    return undefined
+    process.exit(1)
   }
 }
