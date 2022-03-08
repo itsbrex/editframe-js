@@ -1,4 +1,4 @@
-import { FilterName } from '@editframe/shared-types'
+import { Color, FilterName } from '@editframe/shared-types'
 
 import {
   AudioLayer,
@@ -31,7 +31,7 @@ export const mockComposition = ({
 
 export const mockCompositionOptions = (
   { backgroundColor, dimensions, duration, metadata }: CompositionOptions = {
-    backgroundColor: '#ffffff',
+    backgroundColor: Color.white,
     dimensions: { height: 100, width: 200 },
     duration: 10,
     metadata: { key: 'value' },
@@ -170,8 +170,8 @@ export const mockVideoLayer = (
 
 export const mockWaveformLayer = (
   { backgroundColor, color, format, x, y }: WaveformLayer = {
-    backgroundColor: '#ffffff',
-    color: '#000000',
+    backgroundColor: Color.white,
+    color: Color.black,
     format: LayerFormatValue.fill,
     x: 10,
     y: 20,

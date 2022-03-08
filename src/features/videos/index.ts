@@ -1,3 +1,4 @@
+import { Color } from '@editframe/shared-types'
 import FormData from 'form-data'
 import { Readable } from 'stream'
 
@@ -66,7 +67,10 @@ export class Videos {
     return undefined
   }
 
-  public async [ApiVideoMethod.new](options: VideoOptions, videoPath?: string): Promise<Composition> {
+  public async [ApiVideoMethod.new](
+    options: VideoOptions = { backgroundColor: Color.black },
+    videoPath?: string
+  ): Promise<Composition> {
     try {
       let composition: Composition
 
