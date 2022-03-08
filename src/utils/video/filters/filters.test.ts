@@ -1,4 +1,6 @@
-import { FilterAttribute, FilterName, FilterOptionTypes } from 'constant'
+import { FilterName } from '@editframe/shared-types'
+
+import { FilterAttribute, FilterOptionTypes } from 'constant'
 import { ValidationErrorText } from 'strings'
 
 import { validateFilter } from './'
