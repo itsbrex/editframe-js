@@ -72,7 +72,9 @@ Calls to the Editframe API require a Client ID and an application-specific API t
 the Editframe Developer Portal. These library variables can be provided during instantiation as follows:
 
 ```javascript
-const Editframe = require('@editframe/editframe-js')
+const { Editframe } = require('@editframe/editframe-js')
+// or
+import { Editframe } from '@editframe/editframe-js'
 
 const CLIENT_ID = 'XXXXXXXXXXXXXXXXXXXXXXX'
 const TOKEN = 'XXXXXXXXXXXXXXXXXXXXXXX'

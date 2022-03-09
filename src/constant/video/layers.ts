@@ -42,25 +42,27 @@ export enum LayerType {
   waveform = 'waveform',
 }
 
-export enum LayerHorizontalAlignmentValue {
-  center = 'center',
-  left = 'left',
-  right = 'right',
-}
-export type LayerHorizontalAlignment =
-  | LayerHorizontalAlignmentValue.left
-  | LayerHorizontalAlignmentValue.center
-  | LayerHorizontalAlignmentValue.right
+const center = 'center'
+const left = 'left'
+const right = 'right'
 
-export enum LayerVerticalAlignmentValue {
-  bottom = 'bottom',
-  middle = 'middle',
-  top = 'top',
+export const LayerHorizontalAlignmentValue: Record<string, LayerHorizontalAlignment> = {
+  center,
+  left,
+  right,
 }
-export type LayerVerticalAlignment =
-  | LayerVerticalAlignmentValue.bottom
-  | LayerVerticalAlignmentValue.middle
-  | LayerVerticalAlignmentValue.top
+export type LayerHorizontalAlignment = typeof center | typeof left | typeof right
+
+const bottom = 'bottom'
+const middle = 'middle'
+const top = 'top'
+
+export const LayerVerticalAlignmentValue: Record<string, LayerVerticalAlignment> = {
+  bottom,
+  middle,
+  top,
+}
+export type LayerVerticalAlignment = typeof bottom | typeof middle | typeof top
 
 export enum LayerFormatValue {
   fill = 'fill',
@@ -68,12 +70,6 @@ export enum LayerFormatValue {
   stretch = 'stretch',
 }
 export type LayerFormat = LayerFormatValue.fill | LayerFormatValue.fit | LayerFormatValue.stretch
-
-export enum WaveformLayerStyleValue {
-  line = 'line',
-  wave = 'wave',
-}
-export type WaveformLayerStyle = WaveformLayerStyleValue.wave | WaveformLayerStyleValue.line
 
 export type LayerBase = {
   [LayerAttribute.start]?: number
@@ -124,10 +120,15 @@ export type LayerLottie = {
   [LayerAttribute.data]?: LottieAnimationData
 }
 
-export enum WaveformStyle {
-  bars = 'bars',
-  line = 'line',
+const bars = 'bars'
+const line = 'line'
+
+export const WaveformStyleValue: Record<string, WaveformStyle> = {
+  bars,
+  line,
 }
+export type WaveformStyle = typeof bars | typeof line
+
 export type LayerWaveform = {
   [LayerAttribute.style]?: WaveformStyle
 }

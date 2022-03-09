@@ -11,13 +11,46 @@ import {
   LayerTrim,
   LayerVerticalAlignmentValue,
   LayerVisualMedia,
+  LayerWaveform,
   PrimitiveType,
+  WaveformStyleValue,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
 import { validateValueIsOfType } from 'utils/validation'
 import { validateFilter } from 'utils/video/filters'
 
 const filterUndefined = (maybeUndefined: unknown) => maybeUndefined !== undefined
+
+export const validateLayerAlignment = (
+  callerName: string,
+  { horizontalAlignment, verticalAlignment }: LayerAlignment
+): string[] => {
+  const errors: string[] = []
+  const acceptedVerticalValues = Object.values(LayerVerticalAlignmentValue)
+
+  errors.push(validateHorizontalAlignment(callerName, LayerAttribute.horizontalAlignment, horizontalAlignment))
+
+  if (verticalAlignment && !acceptedVerticalValues.includes(verticalAlignment)) {
+    errors.push(
+      ValidationErrorText.MUST_BE_TYPE(
+        callerName,
+        LayerAttribute.verticalAlignment,
+        verticalAlignment,
+        acceptedVerticalValues.join(', ')
+      )
+    )
+  }
+
+  return errors.filter(filterUndefined)
+}
+
+export const validateLayerAudio = (callerName: string, options: AudioLayer): string[] => {
+  const errors: string[] = []
+
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.volume, options.volume, PrimitiveType.number))
+
+  return errors.filter(filterUndefined)
+}
 
 export const validateLayerBase = (callerName: string, { length, start }: LayerBase): string[] => {
   const errors: string[] = []
@@ -28,6 +61,33 @@ export const validateLayerBase = (callerName: string, { length, start }: LayerBa
   return errors.filter(filterUndefined)
 }
 
+export const validateLayerFilter = (callerName: string, { filter }: FilterLayer): string[] => {
+  const errors: string[] = []
+
+  validateFilter(callerName, LayerAttribute.filter, filter).forEach((error) => errors.push(error))
+
+  return errors.filter(filterUndefined)
+}
+
+export const validateHorizontalAlignment = (
+  callerName: string,
+  layerAttribute: string,
+  horizontalAlignment: LayerHorizontalAlignment
+): string | undefined => {
+  const acceptedHorizontalValues = Object.values(LayerHorizontalAlignmentValue)
+
+  if (horizontalAlignment && !acceptedHorizontalValues.includes(horizontalAlignment)) {
+    return ValidationErrorText.MUST_BE_TYPE(
+      callerName,
+      layerAttribute,
+      horizontalAlignment,
+      acceptedHorizontalValues.join(', ')
+    )
+  }
+
+  return undefined
+}
+
 export const validateLayerLottie = (callerName: string, { data }: LayerLottie): string[] => {
   const errors: string[] = []
 
@@ -36,10 +96,19 @@ export const validateLayerLottie = (callerName: string, { data }: LayerLottie): 
   return errors.filter(filterUndefined)
 }
 
-export const validateLayerFilter = (callerName: string, { filter }: FilterLayer): string[] => {
+export const validateLayerText = (
+  callerName: string,
+  { fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlignment }: LayerText
+): string[] => {
   const errors: string[] = []
 
-  validateFilter(callerName, LayerAttribute.filter, filter).forEach((error) => errors.push(error))
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.fontFamily, fontFamily, PrimitiveType.string))
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.fontSize, fontSize, PrimitiveType.number))
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.maxFontSize, maxFontSize, PrimitiveType.number))
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.maxHeight, maxHeight, PrimitiveType.number))
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.maxWidth, maxWidth, PrimitiveType.number))
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.text, text, PrimitiveType.string))
+  errors.push(validateHorizontalAlignment(callerName, LayerAttribute.textAlignment, textAlignment))
 
   return errors.filter(filterUndefined)
 }
@@ -82,69 +151,18 @@ export const validateLayerVisualMedia = (
   return errors.filter(filterUndefined)
 }
 
-export const validateLayerAudio = (callerName: string, options: AudioLayer): string[] => {
+export const validateLayerWaveform = (callerName: string, { style }: LayerWaveform): string[] => {
   const errors: string[] = []
 
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.volume, options.volume, PrimitiveType.number))
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.style, style, PrimitiveType.string))
 
-  return errors.filter(filterUndefined)
-}
+  const acceptedWaveformStyles = Object.values(WaveformStyleValue)
 
-export const validateHorizontalAlignment = (
-  callerName: string,
-  layerAttribute: string,
-  horizontalAlignment: LayerHorizontalAlignment
-): string | undefined => {
-  const acceptedHorizontalValues = Object.values(LayerHorizontalAlignmentValue)
-
-  if (horizontalAlignment && !acceptedHorizontalValues.includes(horizontalAlignment)) {
-    return ValidationErrorText.MUST_BE_TYPE(
-      callerName,
-      layerAttribute,
-      horizontalAlignment,
-      acceptedHorizontalValues.join(', ')
-    )
-  }
-
-  return undefined
-}
-
-export const validateLayerAlignment = (
-  callerName: string,
-  { horizontalAlignment, verticalAlignment }: LayerAlignment
-): string[] => {
-  const errors: string[] = []
-  const acceptedVerticalValues = Object.values(LayerVerticalAlignmentValue)
-
-  errors.push(validateHorizontalAlignment(callerName, LayerAttribute.horizontalAlignment, horizontalAlignment))
-
-  if (verticalAlignment && !acceptedVerticalValues.includes(verticalAlignment)) {
+  if (style && !acceptedWaveformStyles.includes(style)) {
     errors.push(
-      ValidationErrorText.MUST_BE_TYPE(
-        callerName,
-        LayerAttribute.verticalAlignment,
-        verticalAlignment,
-        acceptedVerticalValues.join(', ')
-      )
+      ValidationErrorText.MUST_BE_TYPE(callerName, LayerAttribute.style, style, acceptedWaveformStyles.join(', '))
     )
   }
-
-  return errors.filter(filterUndefined)
-}
-
-export const validateLayerText = (
-  callerName: string,
-  { fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlignment }: LayerText
-): string[] => {
-  const errors: string[] = []
-
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.fontFamily, fontFamily, PrimitiveType.string))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.fontSize, fontSize, PrimitiveType.number))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.maxFontSize, maxFontSize, PrimitiveType.number))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.maxHeight, maxHeight, PrimitiveType.number))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.maxWidth, maxWidth, PrimitiveType.number))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.text, text, PrimitiveType.string))
-  errors.push(validateHorizontalAlignment(callerName, LayerAttribute.textAlignment, textAlignment))
 
   return errors.filter(filterUndefined)
 }
