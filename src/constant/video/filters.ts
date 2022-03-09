@@ -32,7 +32,7 @@ export enum FilterAttribute {
 
 export type Filter = {
   [FilterAttribute.filterName]: FilterName
-  [FilterAttribute.options]: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation | undefined
+  [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation
 }
 
 export enum FilterMethod {

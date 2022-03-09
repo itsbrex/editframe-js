@@ -125,17 +125,16 @@ await composition.encode()
 Trimming an existing video clip:
 
 ```javascript
-const composition = editframe.videos.new({ dimensions: { height: 700, width: 700 }, duration: 12 })
-const video = composition.addVideo(fs.createReadStream(path.resolve('./clip.mp4')))
-video.setTrim({ start: 0, end: 10 })
+const composition = await editframe.videos.new({ backgroundColor: '#ffffff' }, './clip.mp4')
+composition.setTrim({ start: 0, end: 10 })
 composition.encode()
 ```
 
 Add a filter to an existing video clip:
 
 ```javascript
-const composition = editframe.videos.new({ dimensions: { height: 700, width: 700 }, duration: 12 })
-video.addVideo(fs.createReadStream(path.resolve('./clip.mp4')))
-video.setMuted().setFilter('grayscale').fadein({ duration: 3 })
-video.encode()
+const composition = await editframe.videos.new({ backgroundColor: '#ffffff' }, './clip.mp4')
+composition.addFilter({ filter: { filterName: 'grayscale' } })
+composition.addFilter({ filter: { filterName: 'fadeIn', options: { color: '#d0d0d0', duration: 3 } } })
+composition.encode()
 ```
