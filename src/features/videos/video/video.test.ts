@@ -1,6 +1,4 @@
-import { FilterName } from '@editframe/shared-types'
-
-import { CompositionInterface, IdentifiedLayer, LayerAttribute, VideoMethod } from 'constant'
+import { CompositionInterface, FilterName, IdentifiedLayer, LayerAttribute, VideoMethod } from 'constant'
 import { mockComposition } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'

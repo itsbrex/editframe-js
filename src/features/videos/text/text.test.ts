@@ -21,6 +21,7 @@ describe('Text', () => {
   let validatePresenceOfSpy: jest.SpyInstance
   let validateTextAlignmentSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
+  let validateValueIsOfTypesSpy: jest.SpyInstance
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -30,6 +31,7 @@ describe('Text', () => {
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateTextAlignmentSpy = jest.spyOn(VideoUtilsModule, 'validateTextAlignment')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
+    validateValueIsOfTypesSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfTypes')
     compositionMock = mockComposition({
       layer: jest.fn(),
       layers,
@@ -82,6 +84,50 @@ describe('Text', () => {
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.fontSize, fontSize)
+    })
+  })
+
+  describe('setFontWeight', () => {
+    const fontWeight = 100
+
+    beforeEach(() => {
+      text.setFontWeight(fontWeight)
+    })
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      expect(validateValueIsOfTypesSpy).toHaveBeenCalledWith(
+        TextMethod.setFontWeight,
+        LayerAttribute.fontWeight,
+        fontWeight,
+        [PrimitiveType.number, PrimitiveType.string],
+        true
+      )
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.fontWeight, fontWeight)
+    })
+  })
+
+  describe('setLineHeight', () => {
+    const lineHeight = 20
+
+    beforeEach(() => {
+      text.setLineHeight(lineHeight)
+    })
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setLineHeight,
+        LayerAttribute.lineHeight,
+        lineHeight,
+        PrimitiveType.number,
+        true
+      )
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.lineHeight, lineHeight)
     })
   })
 
