@@ -178,18 +178,18 @@ describe('Text', () => {
   })
 
   describe('setTextAlignment', () => {
-    const textAlignment = LayerHorizontalAlignmentValue.center
+    const textAlign = LayerHorizontalAlignmentValue.center
 
     beforeEach(() => {
-      text.setTextAlignment(textAlignment)
+      text.setTextAlignment(textAlign)
     })
 
     it('calls the `vaidateTextAlignment` function with the correct arguments', () => {
-      expect(validateTextAlignmentSpy).toHaveBeenCalledWith(textAlignment)
+      expect(validateTextAlignmentSpy).toHaveBeenCalledWith(textAlign)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.textAlignment, textAlignment)
+      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.textAlign, textAlign)
     })
   })
 })

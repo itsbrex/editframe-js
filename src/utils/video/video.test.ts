@@ -13,7 +13,7 @@ describe('validateLayerFormat', () => {
 })
 
 describe('validateTextAlignment', () => {
-  it('throws the correct error text when the provided `textAlignment` is invalid', () => {
+  it('throws the correct error text when the provided `textAlign` is invalid', () => {
     const invalidTextAlignment = 'invalid-text-alignment'
 
     expect(() => validateTextAlignment(invalidTextAlignment as any)).toThrow(
