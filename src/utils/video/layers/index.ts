@@ -98,7 +98,7 @@ export const validateLayerLottie = (callerName: string, { data }: LayerLottie): 
 
 export const validateLayerText = (
   callerName: string,
-  { fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlignment }: LayerText
+  { fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlign }: LayerText
 ): string[] => {
   const errors: string[] = []
 
@@ -108,7 +108,7 @@ export const validateLayerText = (
   errors.push(validateValueIsOfType(callerName, LayerAttribute.maxHeight, maxHeight, PrimitiveType.number))
   errors.push(validateValueIsOfType(callerName, LayerAttribute.maxWidth, maxWidth, PrimitiveType.number))
   errors.push(validateValueIsOfType(callerName, LayerAttribute.text, text, PrimitiveType.string))
-  errors.push(validateHorizontalAlignment(callerName, LayerAttribute.textAlignment, textAlignment))
+  errors.push(validateHorizontalAlignment(callerName, LayerAttribute.textAlign, textAlign))
 
   return errors.filter(filterUndefined)
 }

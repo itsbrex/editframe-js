@@ -7,8 +7,8 @@ export const validateLayerFormat = (format: LayerFormat): void => {
   }
 }
 
-export const validateTextAlignment = (textAlignment: LayerHorizontalAlignment): void => {
-  if (!Object.values(LayerHorizontalAlignmentValue).includes(textAlignment)) {
-    throw new TypeError(TextErrorText.invalidTextAlignment(textAlignment))
+export const validateTextAlignment = (textAlign: LayerHorizontalAlignment): void => {
+  if (!Object.values(LayerHorizontalAlignmentValue).includes(textAlign)) {
+    throw new TypeError(TextErrorText.invalidTextAlignment(textAlign))
   }
 }

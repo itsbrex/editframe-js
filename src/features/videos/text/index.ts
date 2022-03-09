@@ -70,10 +70,10 @@ export class Text extends VisualMedia {
     )
   }
 
-  public [TextMethod.setTextAlignment](textAlignment?: LayerHorizontalAlignment): this | void {
+  public [TextMethod.setTextAlignment](textAlign?: LayerHorizontalAlignment): this | void {
     withValidation<this>(
-      () => validateTextAlignment(textAlignment),
-      () => this._updateAttribute(LayerAttribute.textAlignment, textAlignment)
+      () => validateTextAlignment(textAlign),
+      () => this._updateAttribute(LayerAttribute.textAlign, textAlign)
     )
   }
 }

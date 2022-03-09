@@ -19,7 +19,7 @@ export enum LayerAttribute {
   start = 'start',
   style = 'style',
   text = 'text',
-  textAlignment = 'textAlignment',
+  textAlign = 'textAlign',
   trim = 'trim',
   type = 'type',
   verticalAlignment = 'verticalAlignment',
@@ -105,7 +105,7 @@ export type LayerText = {
   [LayerAttribute.maxHeight]?: number
   [LayerAttribute.maxWidth]?: number
   [LayerAttribute.text]: string
-  [LayerAttribute.textAlignment]?: LayerHorizontalAlignment
+  [LayerAttribute.textAlign]?: LayerHorizontalAlignment
 }
 
 export type LayerAudio = {
