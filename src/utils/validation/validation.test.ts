@@ -3,7 +3,7 @@ import colors from 'colors/safe'
 import { PrimitiveType } from 'constant'
 import { ValidationErrorText } from 'strings'
 
-import { validatePresenceOf, validateValueIsOfType, withValidation } from './'
+import { validatePresenceOf, validateValueIsOfType, validateValueIsOfTypes, withValidation } from './'
 
 describe('validatePresenceOf', () => {
   it('throws the provided `errorMessage` when the provided `value` does not exist', () => {
@@ -35,6 +35,32 @@ describe('validateValueIsOfType', () => {
 
     expect(validateValueIsOfType(caller, fieldName, value, type)).toEqual(
       ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, type)
+    )
+  })
+})
+
+describe('validateValueIsOfTypes', () => {
+  describe('when the provided `shouldThrow` argument evaluates to `true`', () => {
+    it('throws an error when the provided `value` does not match the provided `types`', () => {
+      const caller = 'caller'
+      const fieldName = 'field-name'
+      const value = 'invalid-value'
+      const types = [PrimitiveType.number, PrimitiveType.object]
+
+      expect(() => validateValueIsOfTypes(caller, fieldName, value, types, true)).toThrow(
+        new Error(ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, ValidationErrorText.OR(types)))
+      )
+    })
+  })
+
+  it('returns an error when the provided `value` does not match the provided `types`', () => {
+    const caller = 'caller'
+    const fieldName = 'field-name'
+    const value = 'invalid-value'
+    const types = [PrimitiveType.number, PrimitiveType.object]
+
+    expect(validateValueIsOfTypes(caller, fieldName, value, types)).toEqual(
+      ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, ValidationErrorText.OR(types))
     )
   })
 })

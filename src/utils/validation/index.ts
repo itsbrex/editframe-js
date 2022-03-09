@@ -45,6 +45,27 @@ export const validateValueIsOfType = (
 
   return undefined
 }
+
+export const validateValueIsOfTypes = (
+  caller: string,
+  fieldName: string,
+  value: number | string | Record<string, any> | undefined,
+  types: string[],
+  shouldThrow = false
+): string | undefined => {
+  if (value && !types.includes(typeof value)) {
+    const message = ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, ValidationErrorText.OR(types))
+
+    if (shouldThrow) {
+      throw new TypeError(message)
+    } else {
+      return message
+    }
+  }
+
+  return undefined
+}
+
 export const withValidation = <T>(validate: () => void, callback?: () => T | undefined): T => {
   try {
     validate()

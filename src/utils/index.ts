@@ -5,7 +5,14 @@ import { createDirectory, createReadStream, downloadFile, removeDirectory } from
 import { prepareFormData, urlOrFile } from './forms'
 import { generatePath } from './paths'
 import { uuid } from './strings'
-import { isValidUrl, validatePresenceOf, validateURL, validateValueIsOfType, withValidation } from './validation'
+import {
+  isValidUrl,
+  validatePresenceOf,
+  validateURL,
+  validateValueIsOfType,
+  validateValueIsOfTypes,
+  withValidation,
+} from './validation'
 import { validateLayerFormat, validateTextAlignment } from './video'
 import {
   formDataKey,
@@ -80,6 +87,7 @@ export {
   validateTextAlignment,
   validateURL,
   validateValueIsOfType,
+  validateValueIsOfTypes,
   validateVideoOptions,
   withValidation,
 }
