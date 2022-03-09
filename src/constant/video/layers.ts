@@ -1,33 +1,24 @@
+import {
+  LayerAttribute,
+  LayerHorizontalAlignment,
+  LayerHorizontalAlignmentValue,
+  LayerVerticalAlignment,
+  LayerVerticalAlignmentValue,
+  WaveformStyle,
+  WaveformStyleValue,
+} from '@editframe/shared-types'
+
 import { Filter } from 'constant/video/filters'
 import { LottieAnimationData } from 'constant/video/lottie'
 
-export enum LayerAttribute {
-  backgroundColor = 'backgroundColor',
-  color = 'color',
-  data = 'data',
-  end = 'end',
-  filter = 'filter',
-  fontFamily = 'fontFamily',
-  fontSize = 'fontSize',
-  format = 'format',
-  height = 'height',
-  horizontalAlignment = 'horizontalAlignment',
-  length = 'length',
-  maxFontSize = 'maxFontSize',
-  maxHeight = 'maxHeight',
-  maxWidth = 'maxWidth',
-  start = 'start',
-  style = 'style',
-  text = 'text',
-  textAlign = 'textAlign',
-  trim = 'trim',
-  type = 'type',
-  verticalAlignment = 'verticalAlignment',
-  volume = 'volume',
-  width = 'width',
-  x = 'x',
-  y = 'y',
-}
+export { LayerAttribute as LayerAttribute }
+export type { LayerHorizontalAlignment as LayerHorizontalAlignment }
+export { LayerHorizontalAlignmentValue as LayerHorizontalAlignmentValue }
+export type { LayerVerticalAlignment as LayerVerticalAlignment }
+export { LayerVerticalAlignmentValue as LayerVerticalAlignmentValue }
+export type { WaveformStyle as WaveformStyle }
+export { WaveformStyleValue as WaveformStyleValue }
+
 export type Size = {
   [LayerAttribute.height]?: number
   [LayerAttribute.width]?: number
@@ -41,28 +32,6 @@ export enum LayerType {
   video = 'video',
   waveform = 'waveform',
 }
-
-const center = 'center'
-const left = 'left'
-const right = 'right'
-
-export const LayerHorizontalAlignmentValue: Record<string, LayerHorizontalAlignment> = {
-  center,
-  left,
-  right,
-}
-export type LayerHorizontalAlignment = typeof center | typeof left | typeof right
-
-const bottom = 'bottom'
-const middle = 'middle'
-const top = 'top'
-
-export const LayerVerticalAlignmentValue: Record<string, LayerVerticalAlignment> = {
-  bottom,
-  middle,
-  top,
-}
-export type LayerVerticalAlignment = typeof bottom | typeof middle | typeof top
 
 export enum LayerFormatValue {
   fill = 'fill',
@@ -101,6 +70,8 @@ export type LayerVisualMedia = Size & {
 export type LayerText = {
   [LayerAttribute.fontFamily]?: string
   [LayerAttribute.fontSize]?: number
+  [LayerAttribute.fontWeight]?: number | string
+  [LayerAttribute.lineHeight]?: number
   [LayerAttribute.maxFontSize]?: number
   [LayerAttribute.maxHeight]?: number
   [LayerAttribute.maxWidth]?: number
@@ -119,15 +90,6 @@ export type LayerFilter = {
 export type LayerLottie = {
   [LayerAttribute.data]?: LottieAnimationData
 }
-
-const bars = 'bars'
-const line = 'line'
-
-export const WaveformStyleValue: Record<string, WaveformStyle> = {
-  bars,
-  line,
-}
-export type WaveformStyle = typeof bars | typeof line
 
 export type LayerWaveform = {
   [LayerAttribute.style]?: WaveformStyle
@@ -149,9 +111,7 @@ export type ComposableLayer =
   | LottieLayer
   | TextLayer
   | VideoLayer
-  | (WaveformLayer & {
-      [LayerAttribute.type]: string
-    })
+  | WaveformLayer
   | FilterLayer
 
 export type TypedLayer = ComposableLayer & {

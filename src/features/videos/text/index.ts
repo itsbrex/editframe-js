@@ -1,7 +1,13 @@
 import { CompositionInterface, LayerAttribute, LayerHorizontalAlignment, PrimitiveType, TextMethod } from 'constant'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { CompositionErrorText } from 'strings'
-import { validatePresenceOf, validateTextAlignment, validateValueIsOfType, withValidation } from 'utils'
+import {
+  validatePresenceOf,
+  validateTextAlignment,
+  validateValueIsOfType,
+  validateValueIsOfTypes,
+  withValidation,
+} from 'utils'
 
 export class Text extends VisualMedia {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
@@ -27,6 +33,34 @@ export class Text extends VisualMedia {
       () =>
         validateValueIsOfType(TextMethod.setFontSize, LayerAttribute.fontSize, fontSize, PrimitiveType.number, true),
       () => this._updateAttribute(LayerAttribute.fontSize, fontSize)
+    )
+  }
+
+  public [TextMethod.setFontWeight](fontWeight?: number | string): this | void {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfTypes(
+          TextMethod.setFontWeight,
+          LayerAttribute.fontWeight,
+          fontWeight,
+          [PrimitiveType.number, PrimitiveType.string],
+          true
+        ),
+      () => this._updateAttribute(LayerAttribute.fontWeight, fontWeight)
+    )
+  }
+
+  public [TextMethod.setLineHeight](lineHeight?: number): this | void {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setLineHeight,
+          LayerAttribute.lineHeight,
+          lineHeight,
+          PrimitiveType.number,
+          true
+        ),
+      () => this._updateAttribute(LayerAttribute.lineHeight, lineHeight)
     )
   }
 

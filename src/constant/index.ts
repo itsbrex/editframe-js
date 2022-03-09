@@ -1,5 +1,6 @@
 export * from './api'
 export * from './applications'
+export * from './colors'
 export * from './common'
 export * from './editframe'
 export * from './files'

@@ -1,4 +1,3 @@
-import { Color } from '@editframe/shared-types'
 import FormData from 'form-data'
 import { Readable } from 'stream'
 
@@ -9,6 +8,7 @@ import {
   ApiVideoMetadataFormDataKey,
   ApiVideoMetadataType,
   ApiVideoMethod,
+  Color,
   CompositionFile,
   Routes,
   VideoOptions,
