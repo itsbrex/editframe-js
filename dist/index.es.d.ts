@@ -130,18 +130,14 @@ declare enum LayerType {
     video = "video",
     waveform = "waveform"
 }
-declare enum LayerHorizontalAlignmentValue {
-    center = "center",
-    left = "left",
-    right = "right"
-}
-type LayerHorizontalAlignment = LayerHorizontalAlignmentValue.left | LayerHorizontalAlignmentValue.center | LayerHorizontalAlignmentValue.right;
-declare enum LayerVerticalAlignmentValue {
-    bottom = "bottom",
-    middle = "middle",
-    top = "top"
-}
-type LayerVerticalAlignment = LayerVerticalAlignmentValue.bottom | LayerVerticalAlignmentValue.middle | LayerVerticalAlignmentValue.top;
+declare const center = "center";
+declare const left = "left";
+declare const right = "right";
+type LayerHorizontalAlignment = typeof center | typeof left | typeof right;
+declare const bottom = "bottom";
+declare const middle = "middle";
+declare const top = "top";
+type LayerVerticalAlignment = typeof bottom | typeof middle | typeof top;
 declare enum LayerFormatValue {
     fill = "fill",
     fit = "fit",
@@ -188,10 +184,9 @@ type LayerFilter = {
 type LayerLottie = {
     [LayerAttribute.data]?: LottieAnimationData;
 };
-declare enum WaveformStyle {
-    bars = "bars",
-    line = "line"
-}
+declare const bars = "bars";
+declare const line = "line";
+type WaveformStyle = typeof bars | typeof line;
 type LayerWaveform = {
     [LayerAttribute.style]?: WaveformStyle;
 };
@@ -441,7 +436,7 @@ declare class Videos {
     constructor(api: ApiInterface);
     [ApiVideoMethod.all](): Promise<ApiVideo[]>;
     [ApiVideoMethod.get](id: string): Promise<ApiVideo | undefined>;
-    [ApiVideoMethod.new](options: VideoOptions, videoPath?: string): Promise<Composition>;
+    [ApiVideoMethod.new](options?: VideoOptions, videoPath?: string): Promise<Composition>;
     private [ApiVideoMethod.getMetadata];
 }
 declare class Editframe {
