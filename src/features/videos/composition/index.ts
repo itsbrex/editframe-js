@@ -193,7 +193,7 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  public [CompositionMethod.addWaveform](options: WaveformLayer = {}): VisualMedia | undefined {
+  public [CompositionMethod.addWaveform](options: WaveformLayer = {}, file?: CompositionFile): VisualMedia | undefined {
     return withValidation<VisualMedia>(
       () => {
         validatePresenceOf(options, CompositionErrorText.optionsRequired)
@@ -201,6 +201,10 @@ export class Composition implements CompositionInterface {
       },
       () => {
         const { id } = this._addLayer({ type: LayerType.waveform, ...options })
+
+        if (file) {
+          this._files.push({ file, id })
+        }
 
         return new VisualMedia({ composition: this, id })
       }
