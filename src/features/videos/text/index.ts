@@ -1,4 +1,11 @@
-import { CompositionInterface, LayerAttribute, LayerHorizontalAlignment, PrimitiveType, TextMethod } from 'constant'
+import {
+  CompositionInterface,
+  FontWeight,
+  LayerAttribute,
+  LayerHorizontalAlignment,
+  PrimitiveType,
+  TextMethod,
+} from 'constant'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { CompositionErrorText } from 'strings'
 import {
@@ -36,7 +43,7 @@ export class Text extends VisualMedia {
     )
   }
 
-  public [TextMethod.setFontWeight](fontWeight?: number | string): this | void {
+  public [TextMethod.setFontWeight](fontWeight?: FontWeight): this | void {
     return withValidation<this>(
       () =>
         validateValueIsOfTypes(

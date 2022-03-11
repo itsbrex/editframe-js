@@ -3,6 +3,7 @@ import {
   FilterContrast,
   FilterFadeIn,
   FilterName,
+  FilterNames,
   FilterOptionKey,
   FilterOptions,
   FilterSaturation,
@@ -40,7 +41,7 @@ export enum FilterAttribute {
 }
 
 export type Filter = {
-  [FilterAttribute.filterName]: FilterName
+  [FilterAttribute.filterName]: FilterNames
   [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation
 }
 
