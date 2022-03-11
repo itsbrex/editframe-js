@@ -5,8 +5,15 @@ import { createDirectory, createReadStream, downloadFile, removeDirectory } from
 import { prepareFormData, urlOrFile } from './forms'
 import { generatePath } from './paths'
 import { uuid } from './strings'
-import { isValidUrl, validatePresenceOf, validateURL, validateValueIsOfType, withValidation } from './validation'
-import { validateLayerFormat, validateTextAlignment } from './video'
+import {
+  isValidUrl,
+  validatePresenceOf,
+  validateURL,
+  validateValueIsOfType,
+  validateValueIsOfTypes,
+  withValidation,
+} from './validation'
+import { validateLayerFormat } from './video'
 import {
   formDataKey,
   validateAddAudio,
@@ -31,6 +38,7 @@ import {
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
+  validateTextAlignment,
 } from './video/layers'
 import { isApiVideo, isApiVideoMetadata, isApiVideos, isEncodeResponse } from './videos'
 
@@ -80,6 +88,7 @@ export {
   validateTextAlignment,
   validateURL,
   validateValueIsOfType,
+  validateValueIsOfTypes,
   validateVideoOptions,
   withValidation,
 }

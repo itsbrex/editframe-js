@@ -1,4 +1,10 @@
-import { LayerAttribute, LayerHorizontalAlignmentValue, LayerVerticalAlignmentValue, PrimitiveType } from 'constant'
+import {
+  LayerAttribute,
+  LayerHorizontalAlignmentValue,
+  LayerVerticalAlignmentValue,
+  PrimitiveType,
+  TextAlignmentValue,
+} from 'constant'
 import { mockLottieLayer } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
@@ -11,6 +17,7 @@ import {
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
+  validateTextAlignment,
 } from './'
 
 describe('validations', () => {
@@ -138,6 +145,21 @@ describe('validations', () => {
     })
   })
 
+  describe('validateTextAlignment', () => {
+    const textAlign = 'invalid-text-alignment'
+
+    it('returns an error if the provided `textAlign` is invalid', () => {
+      expect(validateTextAlignment(callerName, textAlign as any)).toEqual(
+        ValidationErrorText.MUST_BE_TYPE(
+          callerName,
+          LayerAttribute.textAlign,
+          textAlign,
+          Object.values(TextAlignmentValue).join(', ')
+        )
+      )
+    })
+  })
+
   describe('validateLayerAlignment', () => {
     const invalidHorizontalAlignment = 'invalid-horizontal-alignment'
     const invalidVerticalAlignment = 'invalid-vertical-alignment'
@@ -177,7 +199,7 @@ describe('validations', () => {
     const maxHeight = 30
     const maxWidth = 40
     const text = 'text'
-    const textAlignment = 'invalid-text-alignment'
+    const textAlign = 'invalid-text-alignment'
 
     it('calls the `validateValueIsOfType` function with the correct arguments', () => {
       validateLayerText(callerName, {
@@ -187,7 +209,7 @@ describe('validations', () => {
         maxHeight,
         maxWidth,
         text,
-        textAlignment: LayerHorizontalAlignmentValue.center,
+        textAlign: TextAlignmentValue.center,
       })
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(6)
@@ -230,7 +252,7 @@ describe('validations', () => {
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(callerName, LayerAttribute.text, text, PrimitiveType.string)
     })
 
-    it('returns an error if the provided `textAlignment` is invalid', () => {
+    it('returns an error if the provided `textAlign` is invalid', () => {
       expect(
         validateLayerText(callerName, {
           fontFamily,
@@ -239,14 +261,14 @@ describe('validations', () => {
           maxHeight,
           maxWidth,
           text,
-          textAlignment: textAlignment as any,
+          textAlign: textAlign as any,
         })
       ).toEqual([
         ValidationErrorText.MUST_BE_TYPE(
           callerName,
-          LayerAttribute.textAlignment,
-          textAlignment,
-          Object.values(LayerHorizontalAlignmentValue).join(', ')
+          LayerAttribute.textAlign,
+          textAlign,
+          Object.values(TextAlignmentValue).join(', ')
         ),
       ])
     })

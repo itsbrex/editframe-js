@@ -1,7 +1,6 @@
-import { FilterOptions } from '@editframe/shared-types'
 import { Mixin } from 'ts-mixer'
 
-import { CompositionInterface, LayerAttribute, Size, VideoMethod } from 'constant'
+import { CompositionInterface, FilterOptions, LayerAttribute, Size, VideoMethod } from 'constant'
 import { Audio } from 'features/videos/audio'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { ValidationErrorText } from 'strings'

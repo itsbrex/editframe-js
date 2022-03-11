@@ -13,6 +13,8 @@ import {
   LayerVisualMedia,
   LayerWaveform,
   PrimitiveType,
+  TextAlignment,
+  TextAlignmentValue,
   WaveformStyleValue,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
@@ -88,6 +90,21 @@ export const validateHorizontalAlignment = (
   return undefined
 }
 
+export const validateTextAlignment = (callerName: string, textAlign: TextAlignment): string | undefined => {
+  const acceptedHorizontalValues = Object.values(TextAlignmentValue)
+
+  if (textAlign && !acceptedHorizontalValues.includes(textAlign)) {
+    return ValidationErrorText.MUST_BE_TYPE(
+      callerName,
+      LayerAttribute.textAlign,
+      textAlign,
+      acceptedHorizontalValues.join(', ')
+    )
+  }
+
+  return undefined
+}
+
 export const validateLayerLottie = (callerName: string, { data }: LayerLottie): string[] => {
   const errors: string[] = []
 
@@ -98,7 +115,7 @@ export const validateLayerLottie = (callerName: string, { data }: LayerLottie): 
 
 export const validateLayerText = (
   callerName: string,
-  { fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlignment }: LayerText
+  { fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlign }: LayerText
 ): string[] => {
   const errors: string[] = []
 
@@ -108,7 +125,7 @@ export const validateLayerText = (
   errors.push(validateValueIsOfType(callerName, LayerAttribute.maxHeight, maxHeight, PrimitiveType.number))
   errors.push(validateValueIsOfType(callerName, LayerAttribute.maxWidth, maxWidth, PrimitiveType.number))
   errors.push(validateValueIsOfType(callerName, LayerAttribute.text, text, PrimitiveType.string))
-  errors.push(validateHorizontalAlignment(callerName, LayerAttribute.textAlignment, textAlignment))
+  errors.push(validateTextAlignment(callerName, textAlign))
 
   return errors.filter(filterUndefined)
 }

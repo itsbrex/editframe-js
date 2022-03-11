@@ -380,11 +380,13 @@ describe('Composition', () => {
       composition.addImage(filenames.image, imageOptions)
       composition.addText(textOptions)
       composition.addVideo(filenames.video, videoOptions)
-      composition.addWaveform(waveformOptions)
+      composition.addWaveform(waveformOptions, filenames.audio)
     })
 
     it('calls the `append` method on the private `formData` attribute with the correct arguments', async () => {
       await composition.encode()
+
+      expect(formDataMock.append).toHaveBeenCalledTimes(5)
 
       expect(formDataMock.append).toHaveBeenCalledWith(
         CompositionUtilsModule.formDataKey(filenames.audio, uuidMock),
@@ -398,6 +400,11 @@ describe('Composition', () => {
         CompositionUtilsModule.formDataKey(filenames.video, uuidMock),
         filenames.video
       )
+      expect(formDataMock.append).toHaveBeenCalledWith(
+        CompositionUtilsModule.formDataKey(filenames.audio, uuidMock),
+        filenames.audio
+      )
+
       expect(formDataMock.append).toHaveBeenCalledWith(
         'config',
         JSON.stringify({

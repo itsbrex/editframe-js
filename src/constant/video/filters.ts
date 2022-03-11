@@ -3,11 +3,21 @@ import {
   FilterContrast,
   FilterFadeIn,
   FilterName,
+  FilterNames,
   FilterOptionKey,
+  FilterOptions,
   FilterSaturation,
 } from '@editframe/shared-types'
 
 import { PrimitiveType } from 'constant/common'
+
+export { FilterName as FilterName }
+export { FilterOptionKey as FilterOptionKey }
+export type { FilterOptions as FilterOptions }
+export type { FilterBrightness as FilterBrightness }
+export type { FilterContrast as FilterContrast }
+export type { FilterFadeIn as FilterFadeIn }
+export type { FilterSaturation as FilterSaturation }
 
 export const FilterOptionTypes = {
   [FilterName.brightness]: {
@@ -31,8 +41,8 @@ export enum FilterAttribute {
 }
 
 export type Filter = {
-  [FilterAttribute.filterName]: FilterName
-  [FilterAttribute.options]: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation | undefined
+  [FilterAttribute.filterName]: FilterNames
+  [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation
 }
 
 export enum FilterMethod {
