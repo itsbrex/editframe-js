@@ -2,7 +2,7 @@
 import FormData from "form-data";
 import { Blob } from "node:buffer";
 import { Readable } from "stream";
-import { FilterBrightness, FilterContrast, FilterFadeIn, FilterName, FilterSaturation, FilterOptions } from "@editframe/shared-types";
+import { FilterBrightness, FilterContrast, FilterFadeIn, FilterName, FilterNames, FilterOptions, FilterSaturation, FontWeight, LayerAttribute, LayerHorizontalAlignment, LayerVerticalAlignment, TextAlignment, WaveformStyle } from "@editframe/shared-types";
 interface ApiInterface {
     get: ({ url }: {
         url: string;
@@ -56,8 +56,8 @@ declare enum FilterAttribute {
     options = "options"
 }
 type Filter = {
-    [FilterAttribute.filterName]: FilterName;
-    [FilterAttribute.options]: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation | undefined;
+    [FilterAttribute.filterName]: FilterNames;
+    [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation;
 };
 declare enum FilterMethod {
     setFilter = "setFilter"
@@ -90,33 +90,6 @@ interface LottieAnimationData {
     v: string;
     w: number;
 }
-declare enum LayerAttribute {
-    backgroundColor = "backgroundColor",
-    color = "color",
-    data = "data",
-    end = "end",
-    filter = "filter",
-    fontFamily = "fontFamily",
-    fontSize = "fontSize",
-    format = "format",
-    height = "height",
-    horizontalAlignment = "horizontalAlignment",
-    length = "length",
-    maxFontSize = "maxFontSize",
-    maxHeight = "maxHeight",
-    maxWidth = "maxWidth",
-    start = "start",
-    style = "style",
-    text = "text",
-    textAlignment = "textAlignment",
-    trim = "trim",
-    type = "type",
-    verticalAlignment = "verticalAlignment",
-    volume = "volume",
-    width = "width",
-    x = "x",
-    y = "y"
-}
 type Size = {
     [LayerAttribute.height]?: number;
     [LayerAttribute.width]?: number;
@@ -130,14 +103,6 @@ declare enum LayerType {
     video = "video",
     waveform = "waveform"
 }
-declare const center = "center";
-declare const left = "left";
-declare const right = "right";
-type LayerHorizontalAlignment = typeof center | typeof left | typeof right;
-declare const bottom = "bottom";
-declare const middle = "middle";
-declare const top = "top";
-type LayerVerticalAlignment = typeof bottom | typeof middle | typeof top;
 declare enum LayerFormatValue {
     fill = "fill",
     fit = "fit",
@@ -169,11 +134,13 @@ type LayerVisualMedia = Size & {
 type LayerText = {
     [LayerAttribute.fontFamily]?: string;
     [LayerAttribute.fontSize]?: number;
+    [LayerAttribute.fontWeight]?: FontWeight;
+    [LayerAttribute.lineHeight]?: number;
     [LayerAttribute.maxFontSize]?: number;
     [LayerAttribute.maxHeight]?: number;
     [LayerAttribute.maxWidth]?: number;
     [LayerAttribute.text]: string;
-    [LayerAttribute.textAlignment]?: LayerHorizontalAlignment;
+    [LayerAttribute.textAlign]?: TextAlignment;
 };
 type LayerAudio = {
     [LayerAttribute.volume]?: number;
@@ -184,9 +151,6 @@ type LayerFilter = {
 type LayerLottie = {
     [LayerAttribute.data]?: LottieAnimationData;
 };
-declare const bars = "bars";
-declare const line = "line";
-type WaveformStyle = typeof bars | typeof line;
 type LayerWaveform = {
     [LayerAttribute.style]?: WaveformStyle;
 };
@@ -197,9 +161,7 @@ type LottieLayer = LayerBase & LayerLottie;
 type TextLayer = LayerBase & LayerAlignment & LayerText & LayerVisualMedia;
 type VideoLayer = LayerBase & LayerTrim & AudioLayer & LayerVisualMedia;
 type WaveformLayer = LayerBase & LayerVisualMedia & LayerWaveform;
-type ComposableLayer = AudioLayer | FilterLayer | ImageLayer | LottieLayer | TextLayer | VideoLayer | (WaveformLayer & {
-    [LayerAttribute.type]: string;
-}) | FilterLayer;
+type ComposableLayer = AudioLayer | FilterLayer | ImageLayer | LottieLayer | TextLayer | VideoLayer | WaveformLayer | FilterLayer;
 type TypedLayer = ComposableLayer & {
     type: LayerType;
 };
@@ -270,6 +232,8 @@ declare enum MediaMethod {
 declare enum TextMethod {
     setFontFamily = "setFontFamily",
     setFontSize = "setFontSize",
+    setFontWeight = "setFontWeight",
+    setLineHeight = "setLineHeight",
     setMaxFontSize = "setMaxFontSize",
     setMaxHeight = "setMaxHeight",
     setMaxWidth = "setMaxWidth",
@@ -346,15 +310,13 @@ declare class Audio extends Media {
     [AudioMethod.setVolume](volume: number): this | void;
     [AudioMethod.setMuted](): this;
 }
+type FilterType = Filter;
 declare class Filter$0 extends Layer {
     constructor({ composition, id }: {
         composition: CompositionInterface;
         id: string;
     });
-    [FilterMethod.setFilter]<FilterName extends keyof FilterOptions>({ filterName, options }: {
-        filterName: FilterName;
-        options: FilterOptions[FilterName];
-    }): this | void;
+    [FilterMethod.setFilter]({ filterName, options }: FilterType): this | void;
 }
 declare class VisualMedia extends Media {
     constructor({ composition, id }: {
@@ -383,11 +345,13 @@ declare class Text extends VisualMedia {
     });
     [TextMethod.setFontFamily](fontFamily?: string): this | void;
     [TextMethod.setFontSize](fontSize?: number): this | void;
+    [TextMethod.setFontWeight](fontWeight?: FontWeight): this | void;
+    [TextMethod.setLineHeight](lineHeight?: number): this | void;
     [TextMethod.setMaxFontSize](maxFontSize?: number): this | void;
     [TextMethod.setMaxHeight](maxHeight?: number): this | void;
     [TextMethod.setMaxWidth](maxWidth?: number): this | void;
     [TextMethod.setText](text: string): this | void;
-    [TextMethod.setTextAlignment](textAlignment?: LayerHorizontalAlignment): this | void;
+    [TextMethod.setTextAlignment](textAlign?: TextAlignment): this | void;
 }
 declare const Video_base: import("ts-mixer/dist/types/types").Class<any[], Audio & VisualMedia, typeof Audio & typeof VisualMedia, false>;
 declare class Video extends Video_base {
@@ -424,7 +388,7 @@ declare class Composition implements CompositionInterface {
     [CompositionMethod.addLottie](options: LottieLayer): Lottie | undefined;
     [CompositionMethod.addText](options: TextLayer): Text | undefined;
     [CompositionMethod.addVideo](file: CompositionFile, options?: VideoLayer): Video | undefined;
-    [CompositionMethod.addWaveform](options?: WaveformLayer): VisualMedia | undefined;
+    [CompositionMethod.addWaveform](options?: WaveformLayer, file?: CompositionFile): VisualMedia | undefined;
     [CompositionMethod.encode](): Promise<EncodeResponse>;
     private _generateConfig;
     private _addLayer;
