@@ -1,8 +1,8 @@
 /// <reference types="node" />
 import FormData from "form-data";
+import { FontWeight, LayerAttribute, LayerHorizontalAlignment, LayerVerticalAlignment, TextAlignment, WaveformStyle, FilterBrightness, FilterContrast, FilterFadeIn, FilterName, FilterNames, FilterOptions, FilterSaturation } from "@editframe/shared-types";
 import { Blob } from "node:buffer";
 import { Readable } from "stream";
-import { FilterBrightness, FilterContrast, FilterFadeIn, FilterName, FilterNames, FilterOptions, FilterSaturation, FontWeight, LayerAttribute, LayerHorizontalAlignment, LayerVerticalAlignment, TextAlignment, WaveformStyle } from "@editframe/shared-types";
 interface ApiInterface {
     get: ({ url }: {
         url: string;
@@ -46,10 +46,6 @@ interface EditframeOptions {
     log?: boolean;
     token: string;
     version?: number;
-}
-declare enum AudioMethod {
-    setMuted = "setMuted",
-    setVolume = "setVolume"
 }
 declare enum FilterAttribute {
     filterName = "filterName",
@@ -168,6 +164,10 @@ type TypedLayer = ComposableLayer & {
 type IdentifiedLayer = TypedLayer & {
     id: string;
 };
+declare enum AudioMethod {
+    setMuted = "setMuted",
+    setVolume = "setVolume"
+}
 type LayerAttributeValue = number | string | Filter | LottieAnimationData;
 declare enum CompositionMethod {
     addAudio = "addAudio",
@@ -417,4 +417,5 @@ declare class Editframe {
     get token(): string;
     get version(): number;
 }
-export { Editframe };
+declare const CommonResolutions: Record<string, Size>;
+export { Editframe, CommonResolutions };
