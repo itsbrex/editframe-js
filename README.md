@@ -74,12 +74,16 @@ the Editframe Developer Portal. These library variables can be provided during i
 ```javascript
 const { Editframe } = require('@editframe/editframe-js')
 // or
-import { Editframe } from '@editframe/editframe-js'
+import { Editframe, CommonResolutions } from '@editframe/editframe-js'
 
 const CLIENT_ID = 'XXXXXXXXXXXXXXXXXXXXXXX'
 const TOKEN = 'XXXXXXXXXXXXXXXXXXXXXXX'
 
 const editframe = new Editframe({ clientId: CLIENT_ID, token: TOKEN })
+
+const composition = await editframe.new({ dimensions: CommonResolutions._1080pVertical })
+// or
+const composition = await editframe.new({ dimensions: { height: 1920, width: 1080 } })
 ```
 
 Retrieving applications registered to user :
