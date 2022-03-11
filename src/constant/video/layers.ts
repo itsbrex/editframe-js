@@ -5,6 +5,8 @@ import {
   LayerHorizontalAlignmentValue,
   LayerVerticalAlignment,
   LayerVerticalAlignmentValue,
+  TextAlignment,
+  TextAlignmentValue,
   WaveformStyle,
   WaveformStyleValue,
 } from '@editframe/shared-types'
@@ -18,6 +20,8 @@ export type { LayerHorizontalAlignment as LayerHorizontalAlignment }
 export { LayerHorizontalAlignmentValue as LayerHorizontalAlignmentValue }
 export type { LayerVerticalAlignment as LayerVerticalAlignment }
 export { LayerVerticalAlignmentValue as LayerVerticalAlignmentValue }
+export { TextAlignment as TextAlignment }
+export { TextAlignmentValue as TextAlignmentValue }
 export type { WaveformStyle as WaveformStyle }
 export { WaveformStyleValue as WaveformStyleValue }
 
@@ -78,7 +82,7 @@ export type LayerText = {
   [LayerAttribute.maxHeight]?: number
   [LayerAttribute.maxWidth]?: number
   [LayerAttribute.text]: string
-  [LayerAttribute.textAlign]?: LayerHorizontalAlignment
+  [LayerAttribute.textAlign]?: TextAlignment
 }
 
 export type LayerAudio = {

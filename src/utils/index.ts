@@ -13,7 +13,7 @@ import {
   validateValueIsOfTypes,
   withValidation,
 } from './validation'
-import { validateLayerFormat, validateTextAlignment } from './video'
+import { validateLayerFormat } from './video'
 import {
   formDataKey,
   validateAddAudio,
@@ -38,6 +38,7 @@ import {
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
+  validateTextAlignment,
 } from './video/layers'
 import { isApiVideo, isApiVideoMetadata, isApiVideos, isEncodeResponse } from './videos'
 

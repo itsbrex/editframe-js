@@ -9,7 +9,7 @@ import {
 import { mockComposition } from 'mocks'
 import { CompositionErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
-import * as VideoUtilsModule from 'utils/video'
+import * as LayerUtilsModule from 'utils/video/layers'
 
 import { Text } from './'
 
@@ -29,7 +29,7 @@ describe('Text', () => {
 
   beforeEach(() => {
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
-    validateTextAlignmentSpy = jest.spyOn(VideoUtilsModule, 'validateTextAlignment')
+    validateTextAlignmentSpy = jest.spyOn(LayerUtilsModule, 'validateTextAlignment')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     validateValueIsOfTypesSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfTypes')
     compositionMock = mockComposition({
@@ -231,7 +231,7 @@ describe('Text', () => {
     })
 
     it('calls the `vaidateTextAlignment` function with the correct arguments', () => {
-      expect(validateTextAlignmentSpy).toHaveBeenCalledWith(textAlign)
+      expect(validateTextAlignmentSpy).toHaveBeenCalledWith(TextMethod.setTextAlignment, textAlign)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
