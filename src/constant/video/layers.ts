@@ -1,4 +1,5 @@
 import {
+  FontWeight,
   LayerAttribute,
   LayerHorizontalAlignment,
   LayerHorizontalAlignmentValue,
@@ -11,6 +12,7 @@ import {
 import { Filter } from 'constant/video/filters'
 import { LottieAnimationData } from 'constant/video/lottie'
 
+export type { FontWeight as FontWeight }
 export { LayerAttribute as LayerAttribute }
 export type { LayerHorizontalAlignment as LayerHorizontalAlignment }
 export { LayerHorizontalAlignmentValue as LayerHorizontalAlignmentValue }
@@ -70,7 +72,7 @@ export type LayerVisualMedia = Size & {
 export type LayerText = {
   [LayerAttribute.fontFamily]?: string
   [LayerAttribute.fontSize]?: number
-  [LayerAttribute.fontWeight]?: number | string
+  [LayerAttribute.fontWeight]?: FontWeight
   [LayerAttribute.lineHeight]?: number
   [LayerAttribute.maxFontSize]?: number
   [LayerAttribute.maxHeight]?: number
