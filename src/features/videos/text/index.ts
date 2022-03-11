@@ -1,11 +1,4 @@
-import {
-  CompositionInterface,
-  FontWeight,
-  LayerAttribute,
-  LayerHorizontalAlignment,
-  PrimitiveType,
-  TextMethod,
-} from 'constant'
+import { CompositionInterface, FontWeight, LayerAttribute, PrimitiveType, TextAlignment, TextMethod } from 'constant'
 import { VisualMedia } from 'features/videos/visualMedia'
 import { CompositionErrorText } from 'strings'
 import {
@@ -111,9 +104,9 @@ export class Text extends VisualMedia {
     )
   }
 
-  public [TextMethod.setTextAlignment](textAlign?: LayerHorizontalAlignment): this | void {
+  public [TextMethod.setTextAlignment](textAlign?: TextAlignment): this | void {
     withValidation<this>(
-      () => validateTextAlignment(textAlign),
+      () => validateTextAlignment(TextMethod.setTextAlignment, textAlign),
       () => this._updateAttribute(LayerAttribute.textAlign, textAlign)
     )
   }
