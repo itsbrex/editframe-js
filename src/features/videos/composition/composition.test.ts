@@ -1,6 +1,7 @@
-import { ApiInterface, FormDataInterface, LayerAttribute, LayerType, Routes } from 'constant'
+import { ApiInterface, FormDataInterface, LayerAttribute, LayerHTML, LayerType, Routes } from 'constant'
 import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
+import { HTML } from 'features/videos/html'
 import { Lottie } from 'features/videos/lottie'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
@@ -11,6 +12,7 @@ import {
   mockCompositionOptions,
   mockEncodeResponse,
   mockFilterLayer,
+  mockHTMLLayer,
   mockImageLayer,
   mockLottieLayer,
   mockTextLayer,
@@ -18,6 +20,7 @@ import {
   mockWaveformLayer,
 } from 'mocks'
 import { CompositionErrorText, MediaErrorText } from 'strings'
+import * as SanitizationUtilsModule from 'utils/sanitization'
 import * as StringsUtilsModule from 'utils/strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as CompositionUtilsModule from 'utils/video/compositions'
@@ -40,12 +43,16 @@ describe('Composition', () => {
   const textOptions = mockTextLayer()
   const videoOptions = mockVideoLayer()
   const waveformOptions = mockWaveformLayer()
+  const sanitizedHTMLMock = 'sanitized-html'
   const uuidMock = '123456'
+  let htmlOptions: LayerHTML
   let apiMock: ApiInterface
   let consoleErrorSpy: jest.SpyInstance
+  let sanitizeHTMLSpy: jest.SpyInstance
   let postMock: jest.Mock
   let validateAddAudioSpy: jest.SpyInstance
   let validateAddFilterSpy: jest.SpyInstance
+  let validateAddHTMLSpy: jest.SpyInstance
   let validateAddImageSpy: jest.SpyInstance
   let validateAddLottieSpy: jest.SpyInstance
   let validateAddTextSpy: jest.SpyInstance
@@ -63,17 +70,19 @@ describe('Composition', () => {
     })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
   })
 
   beforeEach(() => {
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
     postMock = jest.fn()
     apiMock = mockApi({ get: jest.fn(), post: postMock, put: jest.fn() })
+    sanitizeHTMLSpy = jest.spyOn(SanitizationUtilsModule, 'sanitizeHTML').mockResolvedValue(sanitizedHTMLMock)
     formDataMock = { append: jest.fn() }
     jest.spyOn(StringsUtilsModule, 'uuid').mockReturnValue(uuidMock)
     validateAddAudioSpy = jest.spyOn(CompositionUtilsModule, 'validateAddAudio')
     validateAddFilterSpy = jest.spyOn(CompositionUtilsModule, 'validateAddFilter')
+    validateAddHTMLSpy = jest.spyOn(CompositionUtilsModule, 'validateAddHTML')
     validateAddImageSpy = jest.spyOn(CompositionUtilsModule, 'validateAddImage')
     validateAddLottieSpy = jest.spyOn(CompositionUtilsModule, 'validateAddLottie')
     validateAddTextSpy = jest.spyOn(CompositionUtilsModule, 'validateAddText')
@@ -192,6 +201,109 @@ describe('Composition', () => {
       const filter = composition.addFilter(filterOptions)
 
       expect(filter instanceof Filter).toBe(true)
+    })
+  })
+
+  describe('addHTML', () => {
+    describe('when a `url` is provided', () => {
+      beforeEach(async () => {
+        htmlOptions = mockHTMLLayer({ withHTML: false, withURL: true })
+        composition = makeComposition()
+
+        await composition.addHTML(htmlOptions)
+      })
+
+      it('does not sanitize html', () => {
+        expect(sanitizeHTMLSpy).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('when an `htmlPage` is provided', () => {
+      beforeEach(async () => {
+        htmlOptions = mockHTMLLayer()
+        composition = makeComposition()
+
+        await composition.addHTML(htmlOptions)
+      })
+
+      it('sanitizes the provided html', () => {
+        expect(sanitizeHTMLSpy).toHaveBeenCalledWith('html')
+      })
+    })
+
+    describe('when no `height` or `width` is provided', () => {
+      beforeEach(async () => {
+        htmlOptions = mockHTMLLayer()
+        composition = makeComposition()
+
+        await composition.addHTML(htmlOptions)
+      })
+
+      it('uses the composition height and width', () => {
+        expect(composition.layers[0]).toEqual({
+          id: uuidMock,
+          type: LayerType.html,
+          ...{ ...htmlOptions, height: options.dimensions.height, width: options.dimensions.width },
+        })
+      })
+    })
+
+    describe('when no `withTransparentBackground` option is provided', () => {
+      beforeEach(async () => {
+        htmlOptions = mockHTMLLayer({
+          height: 10,
+          width: 20,
+          withHTML: true,
+          withTransparentBackground: undefined,
+          withURL: false,
+        })
+        composition = makeComposition()
+
+        await composition.addHTML(htmlOptions)
+      })
+
+      it('defaults `withTransparentBackground` to false', () => {
+        expect(composition.layers[0]).toEqual({
+          id: uuidMock,
+          type: LayerType.html,
+          ...htmlOptions,
+          ...{ html: { ...htmlOptions.html, withTransparentBackground: false } },
+        })
+      })
+    })
+
+    describe('always', () => {
+      const height = 50
+      const width = 100
+
+      beforeEach(async () => {
+        htmlOptions = mockHTMLLayer({ height, width, withHTML: true, withURL: false })
+        composition = makeComposition()
+
+        await composition.addHTML({ ...htmlOptions, height, width })
+      })
+
+      it('calls the `validatePresenceOf` function with the correct arguments', () => {
+        expect(validatePresenceOfSpy).toHaveBeenCalledWith(htmlOptions, CompositionErrorText.optionsRequired)
+      })
+
+      it('calls the `validateAddHTML` function with the correct arguments', () => {
+        expect(validateAddHTMLSpy).toHaveBeenCalledWith(htmlOptions)
+      })
+
+      it('adds an `html` layer with the correct attributes', () => {
+        expect(composition.layers[0]).toEqual({
+          id: uuidMock,
+          type: LayerType.html,
+          ...{ height, width, ...htmlOptions },
+        })
+      })
+
+      it('returns a `HTML` object', async () => {
+        const html = await composition.addHTML(htmlOptions)
+
+        expect(html instanceof HTML).toBe(true)
+      })
     })
   })
 
