@@ -63,7 +63,7 @@ describe('validations', () => {
   })
 
   describe('validateLayerHTML', () => {
-    it('adds the `htmlPageOrURLRequired` error when neither `htmlPage` or `url` is provided', () => {
+    it('adds the `htmlPageOrURLRequired` error when neither `page` or `url` is provided', () => {
       const htmlLayer = mockHTMLLayer({ withHTML: false, withURL: false })
       const finalErrors = validateLayerHTML(callerName, htmlLayer)
 
@@ -74,15 +74,15 @@ describe('validations', () => {
       const htmlLayer = mockHTMLLayer()
       const finalErrors = validateLayerHTML(callerName, htmlLayer)
       const {
-        html: { htmlPage, url, withTransparentBackground },
+        html: { page, url, withTransparentBackground },
       } = htmlLayer
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(3)
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         callerName,
-        ValidationErrorText.SUB_FIELD(LayerAttribute.html, HTMLAttribute.htmlPage),
-        htmlPage,
+        ValidationErrorText.SUB_FIELD(LayerAttribute.html, HTMLAttribute.page),
+        page,
         PrimitiveType.string
       )
 

@@ -218,7 +218,7 @@ describe('Composition', () => {
       })
     })
 
-    describe('when an `htmlPage` is provided', () => {
+    describe('when a `page` is provided', () => {
       beforeEach(async () => {
         htmlOptions = mockHTMLLayer()
         composition = makeComposition()
