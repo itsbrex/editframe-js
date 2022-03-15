@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import FormData from "form-data";
-import { FontWeight, LayerAttribute, LayerHorizontalAlignment, LayerVerticalAlignment, TextAlignment, WaveformStyle, FilterBrightness, FilterContrast, FilterFadeIn, FilterName, FilterNames, FilterOptions, FilterSaturation } from "@editframe/shared-types";
+import { FontWeight, HTMLOptions, LayerAttribute, LayerHorizontalAlignment, LayerVerticalAlignment, TextAlignment, WaveformStyle, FilterBrightness, FilterContrast, FilterFadeIn, FilterName, FilterNames, FilterOptions, FilterSaturation } from "@editframe/shared-types";
 import { Blob } from "node:buffer";
 import { Readable } from "stream";
 interface ApiInterface {
@@ -93,6 +93,7 @@ type Size = {
 declare enum LayerType {
     audio = "audio",
     filter = "filter",
+    html = "html",
     image = "image",
     lottie = "lottie",
     text = "text",
@@ -127,6 +128,9 @@ type LayerVisualMedia = Size & {
     [LayerAttribute.x]?: number;
     [LayerAttribute.y]?: number;
 };
+type LayerHTML = {
+    [LayerAttribute.html]: HTMLOptions;
+};
 type LayerText = {
     [LayerAttribute.fontFamily]?: string;
     [LayerAttribute.fontSize]?: number;
@@ -142,7 +146,7 @@ type LayerAudio = {
     [LayerAttribute.volume]?: number;
 };
 type LayerFilter = {
-    [LayerAttribute.filter]: Filter;
+    [LayerAttribute.filter]?: Filter;
 };
 type LayerLottie = {
     [LayerAttribute.data]?: LottieAnimationData;
@@ -152,12 +156,13 @@ type LayerWaveform = {
 };
 type AudioLayer = LayerBase & LayerTrim & LayerAudio;
 type FilterLayer = LayerBase & LayerFilter;
-type ImageLayer = LayerBase & LayerVisualMedia;
+type HTMLLayer = LayerBase & LayerFilter & LayerVisualMedia & LayerHTML;
+type ImageLayer = LayerBase & LayerVisualMedia & LayerFilter;
 type LottieLayer = LayerBase & LayerLottie;
 type TextLayer = LayerBase & LayerAlignment & LayerText & LayerVisualMedia;
-type VideoLayer = LayerBase & LayerTrim & AudioLayer & LayerVisualMedia;
+type VideoLayer = LayerBase & LayerTrim & LayerAudio & LayerFilter & LayerVisualMedia;
 type WaveformLayer = LayerBase & LayerVisualMedia & LayerWaveform;
-type ComposableLayer = AudioLayer | FilterLayer | ImageLayer | LottieLayer | TextLayer | VideoLayer | WaveformLayer | FilterLayer;
+type ComposableLayer = AudioLayer | FilterLayer | HTMLLayer | ImageLayer | LottieLayer | TextLayer | VideoLayer | WaveformLayer | FilterLayer;
 type TypedLayer = ComposableLayer & {
     type: LayerType;
 };
@@ -168,10 +173,11 @@ declare enum AudioMethod {
     setMuted = "setMuted",
     setVolume = "setVolume"
 }
-type LayerAttributeValue = number | string | Filter | LottieAnimationData;
+type LayerAttributeValue = number | string | Filter | LottieAnimationData | HTMLOptions;
 declare enum CompositionMethod {
     addAudio = "addAudio",
     addFilter = "addFilter",
+    addHTML = "addHTML",
     addImage = "addImage",
     addLottie = "addLottie",
     addText = "addText",
@@ -222,6 +228,9 @@ type EncodeResponse = {
     [EncodeResponseAttribute.status]: string;
     [EncodeResponseAttribute.timestamp]: number;
 };
+declare enum HTMLMethod {
+    setHTMLOptions = "setHTMLOptions"
+}
 declare enum LayerMethod {
     setLength = "setLength",
     setStart = "setStart"
@@ -240,13 +249,11 @@ declare enum TextMethod {
     setText = "setText",
     setTextAlignment = "setTextAlignment"
 }
-declare enum VideoMethod {
-    setDimensions = "setDimensions",
-    setFilter = "setFilter"
-}
 declare enum VisualMediaMethod {
     setBackgroundColor = "setBackgroundColor",
     setColor = "setColor",
+    setDimensions = "setDimensions",
+    setFilter = "setFilter",
     setFormat = "setFormat",
     setHeight = "setHeight",
     setWidth = "setWidth",
@@ -325,11 +332,23 @@ declare class VisualMedia extends Media {
     });
     [VisualMediaMethod.setBackgroundColor](backgroundColor?: string): this | void;
     [VisualMediaMethod.setColor](color?: string): this | void;
+    [VisualMediaMethod.setDimensions]({ height, width }: Size): this | void;
+    [VisualMediaMethod.setFilter]<FilterName extends keyof FilterOptions>({ filterName, options }: {
+        filterName: FilterName;
+        options?: FilterOptions[FilterName];
+    }): this | void;
     [VisualMediaMethod.setFormat](format: LayerFormat): this | void;
     [VisualMediaMethod.setHeight](height?: number): this | void;
     [VisualMediaMethod.setWidth](width?: number): this | void;
     [VisualMediaMethod.setX](x?: number): this | void;
     [VisualMediaMethod.setY](y?: number): this | void;
+}
+declare class HTML extends VisualMedia {
+    constructor({ composition, id }: {
+        composition: CompositionInterface;
+        id: string;
+    });
+    [HTMLMethod.setHTMLOptions](html?: HTMLOptions): this | void;
 }
 declare class Lottie extends VisualMedia {
     constructor({ composition, id }: {
@@ -359,11 +378,6 @@ declare class Video extends Video_base {
         composition: CompositionInterface;
         id: string;
     });
-    [VideoMethod.setDimensions]({ height, width }: Size): Video | void;
-    [VideoMethod.setFilter]<FilterName extends keyof FilterOptions>({ filterName, options }: {
-        filterName: FilterName;
-        options?: FilterOptions[FilterName];
-    }): Video | void;
 }
 declare class Composition implements CompositionInterface {
     private _api;
@@ -384,7 +398,8 @@ declare class Composition implements CompositionInterface {
     [CompositionMethod.layer](id: string): IdentifiedLayer;
     [CompositionMethod.addAudio](file: CompositionFile, options?: AudioLayer): Audio | undefined;
     [CompositionMethod.addFilter](options: FilterLayer): Filter$0 | undefined;
-    [CompositionMethod.addImage](file: CompositionFile, options?: ImageLayer): Video | undefined;
+    [CompositionMethod.addHTML](options: HTMLLayer): Promise<HTML>;
+    [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video | undefined;
     [CompositionMethod.addLottie](options: LottieLayer): Lottie | undefined;
     [CompositionMethod.addText](options: TextLayer): Text | undefined;
     [CompositionMethod.addVideo](file: CompositionFile, options?: VideoLayer): Video | undefined;
