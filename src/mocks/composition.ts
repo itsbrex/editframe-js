@@ -82,7 +82,7 @@ export const mockHTMLLayer = (
 ): HTMLLayer => ({
   height,
   html: {
-    htmlPage: withHTML ? 'html' : undefined,
+    page: withHTML ? 'html' : undefined,
     url: withURL ? 'url' : undefined,
     withTransparentBackground,
   },

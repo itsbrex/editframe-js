@@ -143,13 +143,13 @@ export class Composition implements CompositionInterface {
       async () => {
         const {
           height,
-          html: { htmlPage, withTransparentBackground },
+          html: { page, withTransparentBackground },
           width,
         } = options
         const transformedOptions: HTMLLayer = { ...options }
 
-        if (htmlPage) {
-          transformedOptions.html.htmlPage = await sanitizeHTML(htmlPage)
+        if (page) {
+          transformedOptions.html.page = await sanitizeHTML(page)
         }
 
         if (!height) {
