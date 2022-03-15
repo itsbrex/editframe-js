@@ -3,7 +3,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'ts'],
   moduleDirectories: ['node_modules', 'src'],
   setupFilesAfterEnv: ['<rootDir>/setupTests.js'],
-  testEnvironment: 'jsdom',
+  testEnvironment: '<rootDir>/custom-test-env.js',
   transform: {
     '^.+\\.(ts)?$': 'ts-jest',
     '^.+\\.(js)$': 'babel-jest',

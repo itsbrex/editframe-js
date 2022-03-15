@@ -29,7 +29,7 @@ export const validatePresenceOf = (value: any, errorMessage: string): void => {
 export const validateValueIsOfType = (
   caller: string,
   fieldName: string,
-  value: number | string | Record<string, any> | undefined,
+  value: boolean | number | string | Record<string, any> | undefined,
   type: string,
   shouldThrow = false
 ): string | undefined => {
@@ -72,6 +72,22 @@ export const withValidation = <T>(validate: () => void, callback?: () => T | und
 
     if (callback) {
       return callback()
+    }
+
+    return undefined
+  } catch ({ name, stack }) {
+    logError(stack)
+
+    process.exit(1)
+  }
+}
+
+export const withValidationAsync = async <T>(validate: () => void, callback?: () => Promise<T>): Promise<T> => {
+  try {
+    validate()
+
+    if (callback) {
+      return await callback()
     }
 
     return undefined
