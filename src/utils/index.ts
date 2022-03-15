@@ -4,6 +4,7 @@ import { logError } from './errors'
 import { createDirectory, createReadStream, downloadFile, removeDirectory } from './files'
 import { prepareFormData, urlOrFile } from './forms'
 import { generatePath } from './paths'
+import { sanitizeHTML } from './sanitization'
 import { uuid } from './strings'
 import {
   isValidUrl,
@@ -12,12 +13,14 @@ import {
   validateValueIsOfType,
   validateValueIsOfTypes,
   withValidation,
+  withValidationAsync,
 } from './validation'
 import { validateLayerFormat } from './video'
 import {
   formDataKey,
   validateAddAudio,
   validateAddFilter,
+  validateAddHTML,
   validateAddImage,
   validateAddLottie,
   validateAddText,
@@ -34,6 +37,7 @@ import {
   validateLayerAudio,
   validateLayerBase,
   validateLayerFilter,
+  validateLayerHTML,
   validateLayerLottie,
   validateLayerText,
   validateLayerTrim,
@@ -61,10 +65,12 @@ export {
   makeHeaders,
   prepareFormData,
   removeDirectory,
+  sanitizeHTML,
   urlOrFile,
   uuid,
   validateAddAudio,
   validateAddFilter,
+  validateAddHTML,
   validateAddImage,
   validateAddLottie,
   validateAddText,
@@ -78,6 +84,7 @@ export {
   validateLayerAudio,
   validateLayerBase,
   validateLayerFilter,
+  validateLayerHTML,
   validateLayerFormat,
   validateLayerLottie,
   validateLayerMethod,
@@ -91,4 +98,5 @@ export {
   validateValueIsOfTypes,
   validateVideoOptions,
   withValidation,
+  withValidationAsync,
 }

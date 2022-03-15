@@ -3,7 +3,13 @@ import colors from 'colors/safe'
 import { PrimitiveType } from 'constant'
 import { ValidationErrorText } from 'strings'
 
-import { validatePresenceOf, validateValueIsOfType, validateValueIsOfTypes, withValidation } from './'
+import {
+  validatePresenceOf,
+  validateValueIsOfType,
+  validateValueIsOfTypes,
+  withValidation,
+  withValidationAsync,
+} from './'
 
 describe('validatePresenceOf', () => {
   it('throws the provided `errorMessage` when the provided `value` does not exist', () => {
@@ -121,6 +127,74 @@ describe('withValidation', () => {
 
       withValidation(validator, callback)
     })
+    it('logs the error to the console', () => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(error.stack))
+    })
+
+    it('exits the process', () => {
+      expect(processExitSpy).toHaveBeenCalledWith(1)
+    })
+  })
+})
+
+describe('withValidationAsync', () => {
+  const typeError = new TypeError('error')
+  const error = new Error('error')
+  let validator: jest.Mock
+  let callback: jest.Mock
+  let consoleErrorSpy: jest.SpyInstance
+  let processExitSpy: jest.SpyInstance
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
+  beforeEach(async () => {
+    validator = jest.fn()
+    callback = jest.fn()
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+    processExitSpy = jest.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+    await withValidationAsync(validator, callback)
+  })
+
+  it('calls the provided `validation` function', () => {
+    withValidation(validator, callback)
+
+    expect(validator).toHaveBeenCalledWith()
+  })
+
+  it('calls the provided `callback` function', () => {
+    withValidation(validator, callback)
+
+    expect(callback).toHaveBeenCalledWith()
+  })
+
+  describe('when the validator function throws an error', () => {
+    beforeEach(async () => {
+      validator.mockImplementation(() => {
+        throw typeError
+      })
+
+      await withValidationAsync(validator, callback)
+    })
+    it('logs the error to the console', () => {
+      expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(typeError.stack))
+    })
+
+    it('exits the process', () => {
+      expect(processExitSpy).toHaveBeenCalledWith(1)
+    })
+  })
+
+  describe('when the callback function throws an error', () => {
+    beforeEach(async () => {
+      callback.mockImplementation(() => {
+        throw error
+      })
+
+      await withValidationAsync(validator, callback)
+    })
+
     it('logs the error to the console', () => {
       expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(error.stack))
     })

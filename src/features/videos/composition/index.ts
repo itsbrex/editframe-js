@@ -8,6 +8,7 @@ import {
   EncodeResponse,
   FilterLayer,
   FormDataInterface,
+  HTMLLayer,
   IdentifiedLayer,
   ImageLayer,
   LayerAttribute,
@@ -24,6 +25,7 @@ import {
 } from 'constant'
 import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
+import { HTML } from 'features/videos/html'
 import { Lottie } from 'features/videos/lottie'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
@@ -32,9 +34,11 @@ import { CompositionErrorText, MediaErrorText } from 'strings'
 import {
   formDataKey,
   isEncodeResponse,
+  sanitizeHTML,
   uuid,
   validateAddAudio,
   validateAddFilter,
+  validateAddHTML,
   validateAddImage,
   validateAddLottie,
   validateAddText,
@@ -44,6 +48,7 @@ import {
   validateCompositionOptions,
   validatePresenceOf,
   withValidation,
+  withValidationAsync,
 } from 'utils'
 
 export class Composition implements CompositionInterface {
@@ -129,7 +134,44 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  public [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer = {}): Video | undefined {
+  public async [CompositionMethod.addHTML](options: HTMLLayer): Promise<HTML> {
+    return await withValidationAsync<HTML>(
+      () => {
+        validatePresenceOf(options, CompositionErrorText.optionsRequired)
+        validateAddHTML(options)
+      },
+      async () => {
+        const {
+          height,
+          html: { htmlPage, withTransparentBackground },
+          width,
+        } = options
+        const transformedOptions: HTMLLayer = { ...options }
+
+        if (htmlPage) {
+          transformedOptions.html.htmlPage = await sanitizeHTML(htmlPage)
+        }
+
+        if (!height) {
+          transformedOptions.height = this._options.dimensions.height
+        }
+
+        if (!width) {
+          transformedOptions.width = this._options.dimensions.width
+        }
+
+        if (withTransparentBackground === undefined) {
+          transformedOptions.html.withTransparentBackground = false
+        }
+
+        const { id } = this._addLayer({ ...transformedOptions, type: LayerType.html })
+
+        return new HTML({ composition: this, id })
+      }
+    )
+  }
+
+  public [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video | undefined {
     return withValidation<Video>(
       () => {
         validatePresenceOf(file, MediaErrorText.invalidFileSource)
