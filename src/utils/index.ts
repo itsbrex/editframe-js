@@ -1,7 +1,7 @@
 import { baseURL, initializeFetchUtil, makeHeaders, validateApiData } from './api'
 import { isApplication, isApplications } from './applications'
 import { logError } from './errors'
-import { createDirectory, createReadStream, downloadFile, removeDirectory } from './files'
+import { createDirectory, createReadStream, downloadFile, fileExists, removeDirectory, saveFile } from './files'
 import { prepareFormData, urlOrFile } from './forms'
 import { isPaginated } from './pagination'
 import { generatePath, withPaginationQueryParams, withQueryParams } from './paths'
@@ -46,6 +46,7 @@ import {
   validateLayerVisualMedia,
   validateTextAlignment,
 } from './video/layers'
+import { preparePreview } from './video/preview'
 import { isApiVideo, isApiVideoMetadata, isApiVideos, isEncodeResponse } from './videos'
 
 export {
@@ -54,6 +55,7 @@ export {
   createDirectory,
   createReadStream,
   downloadFile,
+  fileExists,
   formDataKey,
   generatePath,
   initializeFetchUtil,
@@ -68,8 +70,10 @@ export {
   logError,
   makeHeaders,
   prepareFormData,
+  preparePreview,
   removeDirectory,
   sanitizeHTML,
+  saveFile,
   urlOrFile,
   uuid,
   validateAddAudio,
