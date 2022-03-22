@@ -1,7 +1,7 @@
 import {
   FilterBrightness,
   FilterContrast,
-  FilterFadeIn,
+  FilterFade,
   FilterName,
   FilterNames,
   FilterOptionKey,
@@ -16,7 +16,7 @@ export { FilterOptionKey as FilterOptionKey }
 export type { FilterOptions as FilterOptions }
 export type { FilterBrightness as FilterBrightness }
 export type { FilterContrast as FilterContrast }
-export type { FilterFadeIn as FilterFadeIn }
+export type { FilterFade as FilterFade }
 export type { FilterSaturation as FilterSaturation }
 
 export const FilterOptionTypes = {
@@ -42,7 +42,7 @@ export enum FilterAttribute {
 
 export type Filter = {
   [FilterAttribute.filterName]: FilterNames
-  [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation
+  [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFade | FilterSaturation
 }
 
 export enum FilterMethod {
