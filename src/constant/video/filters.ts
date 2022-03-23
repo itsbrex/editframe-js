@@ -29,6 +29,12 @@ export const FilterOptionTypes = {
   [FilterName.fadeIn]: {
     [FilterOptionKey.color]: PrimitiveType.string,
     [FilterOptionKey.duration]: PrimitiveType.number,
+    [FilterOptionKey.startTime]: PrimitiveType.number,
+  },
+  [FilterName.fadeOut]: {
+    [FilterOptionKey.color]: PrimitiveType.string,
+    [FilterOptionKey.duration]: PrimitiveType.number,
+    [FilterOptionKey.startTime]: PrimitiveType.number,
   },
   [FilterName.saturation]: {
     [FilterOptionKey.saturation]: PrimitiveType.number,

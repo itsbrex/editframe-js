@@ -3,7 +3,7 @@ import {
   FilterAttribute,
   FilterBrightness,
   FilterContrast,
-  FilterFadeIn,
+  FilterFade,
   FilterName,
   FilterOptionKey,
   FilterOptionTypes,
@@ -17,11 +17,12 @@ const isFilterBrightness = (options: any): options is FilterBrightness =>
 const isFilterContrast = (options: any): options is FilterContrast =>
   options && Object.keys(options).length === 1 && FilterOptionKey.contrast in options
 
-const isFilterFadeIn = (options: any): options is FilterFadeIn =>
+const isFilterFade = (options: any): options is FilterFade =>
   options &&
-  Object.keys(options).length === 2 &&
+  Object.keys(options).length === 3 &&
   FilterOptionKey.color in options &&
-  FilterOptionKey.duration in options
+  FilterOptionKey.duration in options &&
+  FilterOptionKey.startTime in options
 
 const isFilterSaturation = (options: any): options is FilterSaturation =>
   options && Object.keys(options).length === 1 && FilterOptionKey.saturation in options
@@ -29,7 +30,8 @@ const isFilterSaturation = (options: any): options is FilterSaturation =>
 const filterValidators = {
   [FilterName.brightness]: isFilterBrightness,
   [FilterName.contrast]: isFilterContrast,
-  [FilterName.fadeIn]: isFilterFadeIn,
+  [FilterName.fadeIn]: isFilterFade,
+  [FilterName.fadeOut]: isFilterFade,
   [FilterName.saturation]: isFilterSaturation,
 }
 
