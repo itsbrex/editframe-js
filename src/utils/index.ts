@@ -7,6 +7,7 @@ import { generatePath } from './paths'
 import { sanitizeHTML } from './sanitization'
 import { uuid } from './strings'
 import {
+  assertType,
   isValidUrl,
   validatePresenceOf,
   validateURL,
@@ -47,6 +48,7 @@ import {
 import { isApiVideo, isApiVideoMetadata, isApiVideos, isEncodeResponse } from './videos'
 
 export {
+  assertType,
   baseURL,
   createDirectory,
   createReadStream,

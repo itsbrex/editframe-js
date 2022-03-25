@@ -1,6 +1,9 @@
 import { ValidationErrorText } from 'strings'
 import { logError } from 'utils/errors'
 
+export const assertType = (value: unknown, expected: string[] | string): boolean =>
+  Array.isArray(expected) ? expected.includes(typeof value) : typeof value === expected
+
 export const isValidUrl = (url: string): boolean => {
   try {
     validateURL(url)
