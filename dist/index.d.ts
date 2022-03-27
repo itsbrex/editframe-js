@@ -1,6 +1,6 @@
 /// <reference types="node" />
 import FormData from "form-data";
-import { FontWeight, HTMLOptions, LayerAttribute, LayerHorizontalAlignment, LayerVerticalAlignment, TextAlignment, WaveformStyle, FilterBrightness, FilterContrast, FilterFadeIn, FilterName, FilterNames, FilterOptions, FilterSaturation } from "@editframe/shared-types";
+import { FontWeight, HTMLOptions, LayerAttribute, LayerHorizontalAlignment, LayerVerticalAlignment, TextAlignment, WaveformStyle, FilterBrightness, FilterContrast, FilterFade, FilterName, FilterNames, FilterOptions, FilterSaturation } from "@editframe/shared-types";
 import { Blob } from "node:buffer";
 import { Readable } from "stream";
 interface ApiInterface {
@@ -53,7 +53,7 @@ declare enum FilterAttribute {
 }
 type Filter = {
     [FilterAttribute.filterName]: FilterNames;
-    [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFadeIn | FilterSaturation;
+    [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFade | FilterSaturation;
 };
 declare enum FilterMethod {
     setFilter = "setFilter"
