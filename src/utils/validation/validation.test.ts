@@ -4,12 +4,36 @@ import { PrimitiveType } from 'constant'
 import { ValidationErrorText } from 'strings'
 
 import {
+  assertType,
   validatePresenceOf,
   validateValueIsOfType,
   validateValueIsOfTypes,
   withValidation,
   withValidationAsync,
 } from './'
+
+describe('assertType', () => {
+  describe('when provided a single type', () => {
+    it('returns `true` if the provided `value` matches the provided `type`', () => {
+      expect(assertType('string', PrimitiveType.string)).toEqual(true)
+    })
+
+    it('returns `false` if the provided `value` does not match the provided `type`', () => {
+      expect(assertType('string', PrimitiveType.number)).toEqual(false)
+    })
+  })
+
+  describe('when provided a list of types', () => {
+    it('returns `true` if the provided `value` matches one of the provided `types`', () => {
+      expect(assertType('string', [PrimitiveType.string, PrimitiveType.undefined])).toEqual(true)
+      expect(assertType(undefined, [PrimitiveType.string, PrimitiveType.undefined])).toEqual(true)
+    })
+
+    it('returns `false` if the provided `value` does not match one of the provided `types`', () => {
+      expect(assertType('string', [PrimitiveType.number, undefined])).toEqual(false)
+    })
+  })
+})
 
 describe('validatePresenceOf', () => {
   it('throws the provided `errorMessage` when the provided `value` does not exist', () => {
