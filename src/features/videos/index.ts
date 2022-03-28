@@ -10,6 +10,7 @@ import {
   ApiVideoMethod,
   Color,
   CompositionFile,
+  Paginated,
   Routes,
   VideoOptions,
 } from 'constant'
@@ -26,6 +27,7 @@ import {
   removeDirectory,
   urlOrFile,
   validateApiData,
+  withPaginationQueryParams,
 } from 'utils'
 
 import { Composition } from './composition'
@@ -37,14 +39,16 @@ export class Videos {
     this._api = api
   }
 
-  public async [ApiVideoMethod.all](): Promise<ApiVideo[]> {
+  public async [ApiVideoMethod.all](page?: number, perPage?: number): Promise<ApiVideo[]> {
     try {
-      const data = await this._api.get({ url: Routes.videos.all })
+      const data = await this._api.get({
+        url: withPaginationQueryParams(Routes.videos.all, page, perPage),
+      })
 
-      return validateApiData<ApiVideo[]>(data, {
+      return validateApiData<Paginated<ApiVideo>>(data, {
         invalidDataError: VideoErrorText.malformedResponse,
         validate: isApiVideos,
-      })
+      }).data
     } catch (error) {
       console.error(VideoErrorText.all(error.message))
     }

@@ -3,7 +3,8 @@ import { isApplication, isApplications } from './applications'
 import { logError } from './errors'
 import { createDirectory, createReadStream, downloadFile, removeDirectory } from './files'
 import { prepareFormData, urlOrFile } from './forms'
-import { generatePath } from './paths'
+import { isPaginated } from './pagination'
+import { generatePath, withPaginationQueryParams, withQueryParams } from './paths'
 import { sanitizeHTML } from './sanitization'
 import { uuid } from './strings'
 import {
@@ -62,6 +63,7 @@ export {
   isApplication,
   isApplications,
   isEncodeResponse,
+  isPaginated,
   isValidUrl,
   logError,
   makeHeaders,
@@ -99,6 +101,8 @@ export {
   validateValueIsOfType,
   validateValueIsOfTypes,
   validateVideoOptions,
+  withPaginationQueryParams,
+  withQueryParams,
   withValidation,
   withValidationAsync,
 }
