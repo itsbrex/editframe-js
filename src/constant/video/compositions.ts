@@ -1,9 +1,12 @@
-import { Blob } from 'node:buffer'
-import { Readable } from 'stream'
+import { CompositionFile, CompositionOptionAttribute, IdentifiedFile } from '@editframe/shared-types'
 
 import { Filter } from 'constant/video/filters'
 import { HTMLOptions, IdentifiedLayer, LayerAttribute, Size } from 'constant/video/layers'
 import { LottieAnimationData } from 'constant/video/lottie'
+
+export type { CompositionFile as CompositionFile }
+export type { IdentifiedFile as IdentifiedFile }
+export { CompositionOptionAttribute as CompositionOptionAttribute }
 
 export type LayerAttributeValue = number | string | Filter | LottieAnimationData | HTMLOptions
 
@@ -23,6 +26,7 @@ export enum CompositionMethod {
   layer = 'layer',
   layers = 'layers',
   metadata = 'metadata',
+  preview = 'preview',
   setLayer = 'setLayer',
   updateLayerAttribute = 'updateLayerAttribute',
 }
@@ -35,15 +39,6 @@ export interface CompositionInterface {
     layerAttribute: LayerAttribute,
     value: LayerAttributeValue
   ) => void
-}
-
-export type CompositionFile = Readable | Blob | string
-
-export enum CompositionOptionAttribute {
-  backgroundColor = 'backgroundColor',
-  dimensions = 'dimensions',
-  duration = 'duration',
-  metadata = 'metadata',
 }
 
 export type Metadata = Record<string, string>

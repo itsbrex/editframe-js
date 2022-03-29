@@ -1,9 +1,10 @@
 import {
+  Filter,
+  FilterAttribute,
   FilterBrightness,
   FilterContrast,
   FilterFade,
   FilterName,
-  FilterNames,
   FilterOptionKey,
   FilterOptions,
   FilterSaturation,
@@ -11,13 +12,15 @@ import {
 
 import { PrimitiveType } from 'constant/common'
 
-export { FilterName as FilterName }
-export { FilterOptionKey as FilterOptionKey }
-export type { FilterOptions as FilterOptions }
+export type { Filter as Filter }
 export type { FilterBrightness as FilterBrightness }
 export type { FilterContrast as FilterContrast }
 export type { FilterFade as FilterFade }
+export type { FilterOptions as FilterOptions }
 export type { FilterSaturation as FilterSaturation }
+export { FilterAttribute as FilterAttribute }
+export { FilterName as FilterName }
+export { FilterOptionKey as FilterOptionKey }
 
 export const FilterOptionTypes = {
   [FilterName.brightness]: {
@@ -39,16 +42,6 @@ export const FilterOptionTypes = {
   [FilterName.saturation]: {
     [FilterOptionKey.saturation]: PrimitiveType.number,
   },
-}
-
-export enum FilterAttribute {
-  filterName = 'filterName',
-  options = 'options',
-}
-
-export type Filter = {
-  [FilterAttribute.filterName]: FilterNames
-  [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFade | FilterSaturation
 }
 
 export enum FilterMethod {

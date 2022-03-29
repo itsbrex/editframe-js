@@ -9,6 +9,7 @@ import {
   FilterLayer,
   FormDataInterface,
   HTMLLayer,
+  IdentifiedFile,
   IdentifiedLayer,
   ImageLayer,
   LayerAttribute,
@@ -34,6 +35,7 @@ import { CompositionErrorText, MediaErrorText } from 'strings'
 import {
   formDataKey,
   isEncodeResponse,
+  preparePreview,
   sanitizeHTML,
   uuid,
   validateAddAudio,
@@ -53,10 +55,7 @@ import {
 
 export class Composition implements CompositionInterface {
   private _api: ApiInterface
-  private _files: {
-    file: CompositionFile
-    id: string
-  }[]
+  private _files: IdentifiedFile[]
   private _formData: FormDataInterface
   private _layers: IdentifiedLayer[] = []
   private _options: CompositionOptions
@@ -250,6 +249,16 @@ export class Composition implements CompositionInterface {
 
         return new VisualMedia({ composition: this, id })
       }
+    )
+  }
+
+  public async [CompositionMethod.preview](): Promise<void> {
+    await preparePreview(
+      JSON.stringify({
+        ...this._options,
+        files: this._files,
+        layers: this._layers,
+      })
     )
   }
 

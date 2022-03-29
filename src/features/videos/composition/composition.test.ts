@@ -24,6 +24,7 @@ import * as SanitizationUtilsModule from 'utils/sanitization'
 import * as StringsUtilsModule from 'utils/strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as CompositionUtilsModule from 'utils/video/compositions'
+import * as PreviewUtilsModule from 'utils/video/preview'
 
 import { Composition } from './'
 
@@ -48,8 +49,9 @@ describe('Composition', () => {
   let htmlOptions: LayerHTML
   let apiMock: ApiInterface
   let consoleErrorSpy: jest.SpyInstance
-  let sanitizeHTMLSpy: jest.SpyInstance
   let postMock: jest.Mock
+  let preparePreviewSpy: jest.SpyInstance
+  let sanitizeHTMLSpy: jest.SpyInstance
   let validateAddAudioSpy: jest.SpyInstance
   let validateAddFilterSpy: jest.SpyInstance
   let validateAddHTMLSpy: jest.SpyInstance
@@ -80,6 +82,7 @@ describe('Composition', () => {
     sanitizeHTMLSpy = jest.spyOn(SanitizationUtilsModule, 'sanitizeHTML').mockResolvedValue(sanitizedHTMLMock)
     formDataMock = { append: jest.fn() }
     jest.spyOn(StringsUtilsModule, 'uuid').mockReturnValue(uuidMock)
+    preparePreviewSpy = jest.spyOn(PreviewUtilsModule, 'preparePreview').mockResolvedValue(undefined)
     validateAddAudioSpy = jest.spyOn(CompositionUtilsModule, 'validateAddAudio')
     validateAddFilterSpy = jest.spyOn(CompositionUtilsModule, 'validateAddFilter')
     validateAddHTMLSpy = jest.spyOn(CompositionUtilsModule, 'validateAddHTML')
@@ -452,6 +455,24 @@ describe('Composition', () => {
       const waveform = composition.addWaveform(waveformOptions)
 
       expect(waveform instanceof VisualMedia).toBe(true)
+    })
+  })
+
+  describe('preview', () => {
+    it('calls the `preparePreview` function with the correct arguments', async () => {
+      composition = makeComposition()
+
+      composition.addAudio(filenames.audio, audioOptions)
+      composition.addFilter(filterOptions)
+      composition.addImage(filenames.image, imageOptions)
+      composition.addText(textOptions)
+      composition.addVideo(filenames.video, videoOptions)
+      composition.addWaveform(waveformOptions, filenames.audio)
+
+      await composition.preview()
+
+      // eslint-disable-next-line jest/prefer-called-with
+      expect(preparePreviewSpy).toHaveBeenCalled()
     })
   })
 
