@@ -1,4 +1,5 @@
-import { mockApiVideo, mockApiVideoMetadata } from 'mocks'
+import { ApiVideo } from 'constant'
+import { mockApiVideo, mockApiVideoMetadata, mockPagination } from 'mocks'
 
 import { isApiVideo, isApiVideoMetadata, isApiVideos } from './'
 
@@ -14,11 +15,11 @@ describe('isApiVideo', () => {
 
 describe('isApiVideos', () => {
   it('returns `false` when one of the provided `videos` does not adhere to the `ApiVideo` interface', () => {
-    expect(isApiVideos([{}])).toEqual(false)
+    expect(isApiVideos(mockPagination<ApiVideo>([{} as ApiVideo]))).toEqual(false)
   })
 
   it('returns `true` when the provided `videos` adheres to the `ApiVideo` interface', () => {
-    expect(isApiVideos([mockApiVideo()])).toEqual(true)
+    expect(isApiVideos(mockPagination<ApiVideo>([mockApiVideo()]))).toEqual(true)
   })
 })
 

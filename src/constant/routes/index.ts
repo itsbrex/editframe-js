@@ -7,6 +7,6 @@ export const Routes = {
   videos: {
     all: '/videos',
     create: '/videos',
-    get: '/video/:id',
+    get: '/videos/:id',
   },
 }

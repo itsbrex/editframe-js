@@ -1,6 +1,6 @@
-import { ApiApplication, ApiInterface, Routes } from 'constant'
+import { ApiApplication, ApiInterface, Paginated, Routes } from 'constant'
 import { ApplicationErrorText } from 'strings'
-import { generatePath, isApplication, isApplications, validateApiData } from 'utils'
+import { generatePath, isApplication, isApplications, validateApiData, withPaginationQueryParams } from 'utils'
 
 export class Applications {
   private _api: ApiInterface
@@ -9,14 +9,14 @@ export class Applications {
     this._api = api
   }
 
-  async all(): Promise<ApiApplication[]> {
+  async all(page?: number, perPage?: number): Promise<ApiApplication[]> {
     try {
-      const data = await this._api.get({ url: Routes.applications.all })
+      const data = await this._api.get({ url: withPaginationQueryParams(Routes.applications.all, page, perPage) })
 
-      return validateApiData<ApiApplication[]>(data, {
+      return validateApiData<Paginated<ApiApplication>>(data, {
         invalidDataError: ApplicationErrorText.malformedResponse,
         validate: isApplications,
-      })
+      }).data
     } catch (error) {
       console.error(ApplicationErrorText.get(error.message))
     }
