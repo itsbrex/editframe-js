@@ -1,4 +1,4 @@
-import { AudioMethod, CompositionInterface, IdentifiedLayer, LayerAttribute, PrimitiveType } from 'constant'
+import { AudioMethod, CompositionInterface, LayerAttribute, PrimitiveType } from 'constant'
 import { mockComposition } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
@@ -7,7 +7,6 @@ import { Audio } from './'
 
 describe('Audio', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let audio: Audio
   let validatePresenceOfSpy: jest.SpyInstance
@@ -21,8 +20,6 @@ describe('Audio', () => {
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

@@ -1,4 +1,4 @@
-import { CompositionInterface, FilterMethod, FilterName, IdentifiedLayer, LayerAttribute } from 'constant'
+import { CompositionInterface, FilterMethod, FilterName, LayerAttribute } from 'constant'
 import { mockComposition } from 'mocks'
 import * as ValidateFilterModule from 'utils/video/filters'
 
@@ -6,7 +6,6 @@ import { Filter } from './'
 
 describe('Filter', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   const filterName = FilterName.brightness
   const filterOptions = { brightness: 10 }
   let compositionMock: CompositionInterface
@@ -19,11 +18,7 @@ describe('Filter', () => {
 
   beforeEach(() => {
     validateFilterSpy = jest.spyOn(ValidateFilterModule, 'validateFilter')
-    compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
-      updateLayerAttribute: jest.fn(),
-    })
+    compositionMock = mockComposition({ updateLayerAttribute: jest.fn() })
     filter = new Filter({ composition: compositionMock, id })
   })
 

@@ -1,11 +1,4 @@
-import {
-  CompositionInterface,
-  IdentifiedLayer,
-  LayerAttribute,
-  LayerFormatValue,
-  PrimitiveType,
-  VisualMediaMethod,
-} from 'constant'
+import { CompositionInterface, LayerAttribute, LayerFormatValue, PrimitiveType, VisualMediaMethod } from 'constant'
 import { mockComposition } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
@@ -15,7 +8,6 @@ import { ResizableMedia } from './'
 
 describe('ResizableMedia', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let resizableMedia: ResizableMedia
   let validateLayerFormatSpy: jest.SpyInstance
@@ -31,8 +23,6 @@ describe('ResizableMedia', () => {
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

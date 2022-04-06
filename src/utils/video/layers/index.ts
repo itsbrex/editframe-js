@@ -54,11 +54,10 @@ export const validateLayerAudio = (callerName: string, options: AudioLayer): str
   return errors.filter(filterUndefined)
 }
 
-export const validateLayerBase = (callerName: string, { length, start }: LayerBase): string[] => {
+export const validateLayerBase = (callerName: string, { start }: LayerBase): string[] => {
   const errors: string[] = []
 
   errors.push(validateValueIsOfType(callerName, LayerAttribute.start, start, PrimitiveType.number))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.length, length, PrimitiveType.number))
 
   return errors.filter(filterUndefined)
 }

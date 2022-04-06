@@ -53,25 +53,17 @@ describe('validations', () => {
   })
 
   describe('validateLayerBase', () => {
-    const length = 10
     const start = 5
 
     it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-      const finalErrors = validateLayerBase(callerName, { length, start })
+      const finalErrors = validateLayerBase(callerName, { start })
 
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(2)
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(1)
 
       expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
         callerName,
         LayerAttribute.start,
         start,
-        PrimitiveType.number
-      )
-
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        callerName,
-        LayerAttribute.length,
-        length,
         PrimitiveType.number
       )
 

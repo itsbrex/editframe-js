@@ -1,3 +1,5 @@
+import { PassThrough } from 'stream'
+
 import { ApiVideoMethod, CompositionMethod, CompositionOptionAttribute, LayerAttribute, PrimitiveType } from 'constant'
 import {
   mockAudioLayer,
@@ -11,12 +13,14 @@ import {
   mockVideoLayer,
   mockWaveformLayer,
 } from 'mocks'
-import { CompositionErrorText, ValidationErrorText } from 'strings'
+import { CompositionErrorText, MediaErrorText, ValidationErrorText } from 'strings'
+import * as FilesUtilsModule from 'utils/files'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as LayerUtilsModule from 'utils/video/layers'
 
 import {
   formDataKey,
+  processCompositionFile,
   validateAddAudio,
   validateAddFilter,
   validateAddHTML,
@@ -26,6 +30,7 @@ import {
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
+  validateCompositionFile,
   validateCompositionOptions,
   validateVideoOptions,
 } from './'
@@ -43,6 +48,76 @@ describe('formDataKey', () => {
     const id = 'id'
 
     expect(formDataKey(file, id)).toEqual(`file${id}`)
+  })
+})
+
+describe('processCompositionFile', () => {
+  const temporaryDirectory = 'temporary-directory/'
+
+  describe('when the provided `file` is a `Readable`', () => {
+    it('throws an error if the provided `file` does not exist', async () => {
+      const file = {
+        path: './fake/path/fake-file.ts',
+      }
+
+      await expect(async () => await processCompositionFile(file as any, temporaryDirectory)).rejects.toThrow(
+        ValidationErrorText.FILE_DOES_NOT_EXIST(file.path)
+      )
+    })
+
+    it('returns the correct values', async () => {
+      const file = {
+        path: './package.json',
+      }
+
+      expect(await processCompositionFile(file as any, temporaryDirectory)).toEqual({
+        filepath: file.path,
+        readStream: file,
+      })
+    })
+  })
+
+  describe('when the provided `file` is a `url`', () => {
+    const file = 'https://www.editframe.com'
+    const temporaryFilePath = 'temporary-file-path'
+    const readStreamMock = new PassThrough()
+
+    beforeEach(() => {
+      jest.spyOn(FilesUtilsModule, 'createReadStream').mockReturnValue(readStreamMock)
+      jest.spyOn(FilesUtilsModule, 'downloadFile').mockResolvedValue({ temporaryFilePath })
+    })
+
+    it('returns the correct values', async () => {
+      expect(await processCompositionFile(file, temporaryDirectory)).toEqual({
+        filepath: temporaryFilePath,
+        readStream: readStreamMock,
+      })
+    })
+  })
+
+  describe('when the provided `file` is not a `url`', () => {
+    const readStreamMock = new PassThrough()
+
+    beforeEach(() => {
+      jest.spyOn(FilesUtilsModule, 'createReadStream').mockReturnValue(readStreamMock)
+    })
+
+    it('throws an error if the provided `file` does not exist', async () => {
+      const file = './fake-path/package.json'
+
+      await expect(async () => await processCompositionFile(file, temporaryDirectory)).rejects.toThrow(
+        ValidationErrorText.FILE_DOES_NOT_EXIST(file)
+      )
+    })
+
+    it('returns the correct values', async () => {
+      const file = './package.json'
+
+      expect(await processCompositionFile(file, temporaryDirectory)).toEqual({
+        filepath: file,
+        readStream: readStreamMock,
+      })
+    })
   })
 })
 
@@ -145,6 +220,33 @@ describe('validations', () => {
       })
     })
   })
+
+  describe('validateCompositionFile', () => {
+    describe('when no `file` is provided', () => {
+      it('throws an error', () => {
+        expect(validateCompositionFile).toThrow(MediaErrorText.invalidFileSource)
+      })
+    })
+
+    describe('when a `string` is provided', () => {
+      it('does not throw an error', () => {
+        expect(() => validateCompositionFile('filename.mp3')).not.toThrow()
+      })
+    })
+
+    describe('when a `Readable` is provided', () => {
+      it('does not throw an error', () => {
+        expect(() => validateCompositionFile(new PassThrough())).not.toThrow()
+      })
+    })
+
+    describe('when a non-`string`, non-`Readable` is provided', () => {
+      it('throws an error', () => {
+        expect(() => validateCompositionFile(5 as any)).toThrow(MediaErrorText.invalidFileSource)
+      })
+    })
+  })
+
   describe('validateCompositionOptions', () => {
     const compositionOptions = mockCompositionOptions()
     const { backgroundColor, dimensions, duration } = compositionOptions

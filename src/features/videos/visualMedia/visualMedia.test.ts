@@ -1,11 +1,4 @@
-import {
-  CompositionInterface,
-  FilterName,
-  IdentifiedLayer,
-  LayerAttribute,
-  PrimitiveType,
-  VisualMediaMethod,
-} from 'constant'
+import { CompositionInterface, FilterName, LayerAttribute, PrimitiveType, VisualMediaMethod } from 'constant'
 import { mockComposition } from 'mocks'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as FilterUtilsModule from 'utils/video/filters'
@@ -14,7 +7,6 @@ import { VisualMedia } from './'
 
 describe('VisualMedia', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let visualMedia: VisualMedia
   let validateFilterSpy: jest.SpyInstance
@@ -28,8 +20,6 @@ describe('VisualMedia', () => {
     validateFilterSpy = jest.spyOn(FilterUtilsModule, 'validateFilter')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

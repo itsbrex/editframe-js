@@ -1110,10 +1110,10 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@editframe/shared-types@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-2.0.0.tgz#c8a9a8ac7d2d8f062d9b2294c688086fbc51871c"
-  integrity sha512-AYePRhLmgi2hyTTKYzjXCAH4G5D0JvIoJnTKdyYOMof778IVlsudBFkHK+kBDTCnI7xojW7ippKxzH9Ox+qBAg==
+"@editframe/shared-types@2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-2.2.2.tgz#865c5a48b1057b85dafdbc74e5bed3480399b963"
+  integrity sha512-L9NmfJazgwNovDd1aq6TzXDS4xMAbN1nSBFXrDbZ2SKjHCITnGt8yu6yMDkdeatBZbe4q5uIk9IMiH9eptToDg==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -2358,6 +2358,11 @@ at-least-node@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
+
+audio-extensions@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/audio-extensions/-/audio-extensions-0.0.0.tgz#d0eefe077fb9eb625898eed9985890548cf1f8d2"
+  integrity sha1-0O7+B3+562JYmO7ZmFiQVIzx+NI=
 
 babel-jest@^27.4.6, babel-jest@^27.5.1:
   version "27.5.1"
@@ -4226,6 +4231,11 @@ ignore@^5.1.8, ignore@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.0.tgz#6d3bac8fa7fe0d45d9f9be7bac2fc279577e345a"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
+
+image-extensions@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/image-extensions/-/image-extensions-1.1.0.tgz#b8e6bf6039df0056e333502a00b6637a3105d894"
+  integrity sha1-uOa/YDnfAFbjM1AqALZjejEF2JQ=
 
 image-to-base64@^2.2.0:
   version "2.2.0"
@@ -7753,6 +7763,11 @@ validate-npm-package-name@^3.0.0, validate-npm-package-name@~3.0.0:
   integrity sha1-X6kS2B630MdK/BQN5zF/DKffQ34=
   dependencies:
     builtins "^1.0.3"
+
+video-extensions@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/video-extensions/-/video-extensions-1.2.0.tgz#62f449f403b853f02da40964cbf34143f7d96731"
+  integrity sha512-TriMl18BHEsh2KuuSA065tbu4SNAC9fge7k8uKoTTofTq89+Xsg4K1BGbmSVETwUZhqSjd9KwRCNwXAW/buXMg==
 
 w3c-hr-time@^1.0.2:
   version "1.0.2"

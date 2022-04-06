@@ -1,4 +1,5 @@
 import { CompositionOptionAttribute } from '@editframe/shared-types'
+import { Readable } from 'node:stream'
 
 import { Filter } from 'constant/video/filters'
 import { HTMLOptions, IdentifiedLayer, LayerAttribute, Size, SubtitlesOptions } from 'constant/video/layers'
@@ -11,8 +12,9 @@ export type LayerAttributeValue =
   | number
   | string
   | Filter
-  | LottieAnimationData
   | HTMLOptions
+  | LottieAnimationData
+  | Readable
   | SubtitlesOptions
 
 export enum CompositionMethod {
@@ -21,25 +23,34 @@ export enum CompositionMethod {
   addHTML = 'addHTML',
   addImage = 'addImage',
   addLottie = 'addLottie',
+  addSequence = 'addSequence',
   addSubtitles = 'addSubtitles',
   addText = 'addText',
   addVideo = 'addVideo',
   addWaveform = 'addWaveform',
+  aspectRatio = '_aspectRatio',
   backgroundColor = 'backgroundColor',
   dimensions = 'dimensions',
   duration = 'duration',
   encode = 'encode',
+  getLayerAttribute = 'getLayerAttribute',
+  getMetadata = '_getMetadata',
   layer = 'layer',
   layers = 'layers',
   metadata = 'metadata',
   preview = 'preview',
   setLayer = 'setLayer',
+  updateFile = 'updateFile',
   updateLayerAttribute = 'updateLayerAttribute',
 }
 
 export interface CompositionInterface {
   [CompositionMethod.layer]: (id: string) => IdentifiedLayer
   [CompositionMethod.layers]: IdentifiedLayer[]
+  [CompositionMethod.getLayerAttribute]: <LayerAttributeValue>(
+    id: string,
+    layerAttribute: LayerAttribute
+  ) => LayerAttributeValue
   [CompositionMethod.updateLayerAttribute]: (
     id: string,
     layerAttribute: LayerAttribute,

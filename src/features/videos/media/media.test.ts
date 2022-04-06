@@ -1,4 +1,4 @@
-import { CompositionInterface, IdentifiedLayer, LayerAttribute, MediaMethod, PrimitiveType } from 'constant'
+import { CompositionInterface, LayerAttribute, MediaMethod, PrimitiveType } from 'constant'
 import { mockComposition } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
@@ -7,7 +7,6 @@ import { Media } from './'
 
 describe('Media', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let media: Media
   let validatePresenceOfSpy: jest.SpyInstance
@@ -21,8 +20,6 @@ describe('Media', () => {
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

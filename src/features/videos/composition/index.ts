@@ -1,5 +1,14 @@
+import { Readable } from 'node:stream'
+
 import {
+  ApiAudioMetadata,
+  ApiImageMetadata,
   ApiInterface,
+  ApiMetadataTypes,
+  ApiVideoMetadata,
+  ApiVideoMetadataAttribute,
+  ApiVideoMetadataFormDataKey,
+  ApiVideoMetadataType,
   AudioLayer,
   CompositionFile,
   CompositionInterface,
@@ -18,6 +27,7 @@ import {
   LottieLayer,
   Metadata,
   Routes,
+  SequenceLayer,
   Size,
   SubtitlesLayer,
   TextLayer,
@@ -28,17 +38,29 @@ import {
 import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
 import { HTML } from 'features/videos/html'
+import { Layer } from 'features/videos/layer'
 import { Lottie } from 'features/videos/lottie'
+import { Sequence } from 'features/videos/sequence'
 import { Subtitles } from 'features/videos/subtitles'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
-import { CompositionErrorText, MediaErrorText } from 'strings'
+import { CompositionErrorText } from 'strings'
 import {
+  createReadStream,
+  createTemporaryDirectory,
   formDataKey,
+  getExtension,
+  isAudioExtension,
   isEncodeResponse,
+  isVideoExtension,
+  metadataValidatorsByType,
+  prepareFormData,
   preparePreview,
+  processCompositionFile,
+  removeDirectory,
   sanitizeHTML,
+  urlOrFile,
   uuid,
   validateAddAudio,
   validateAddFilter,
@@ -50,6 +72,7 @@ import {
   validateAddVideo,
   validateAddWaveform,
   validateApiData,
+  validateCompositionFile,
   validateCompositionOptions,
   validatePresenceOf,
   withValidation,
@@ -62,37 +85,41 @@ export class Composition implements CompositionInterface {
   private _formData: FormDataInterface
   private _layers: IdentifiedLayer[] = []
   private _options: CompositionOptions
+  private _temporaryDirectory: string
 
   constructor({
     api,
     formData,
     options,
+    temporaryDirectory,
   }: {
     api: ApiInterface
     formData: FormDataInterface
     options: CompositionOptions
+    temporaryDirectory?: string
   }) {
     this._api = api
     this._files = []
     this._formData = formData
     this._options = options
+    this._temporaryDirectory = temporaryDirectory ?? createTemporaryDirectory()
 
     withValidation<void>(() => validateCompositionOptions(this._options))
   }
 
-  get [CompositionMethod.backgroundColor](): string {
+  get backgroundColor(): string {
     return this._options.backgroundColor
   }
 
-  get [CompositionMethod.dimensions](): Size {
+  get dimensions(): Size {
     return this._options.dimensions
   }
 
-  get [CompositionMethod.duration](): number {
+  get duration(): number {
     return this._options.duration
   }
 
-  get [CompositionMethod.metadata](): Metadata {
+  get metadata(): Metadata {
     return this._options.metadata
   }
 
@@ -104,17 +131,45 @@ export class Composition implements CompositionInterface {
     return this._layers.find((layer) => layer.id && layer.id === id)
   }
 
-  public [CompositionMethod.addAudio](file: CompositionFile, options: AudioLayer = {}): Audio | undefined {
-    return withValidation<Audio>(
+  public setDuration(duration: number): void {
+    this._options.duration = duration
+  }
+
+  public [CompositionMethod.getLayerAttribute]<LayerAttributeValue>(
+    id: string,
+    layerAttribute: LayerAttribute
+  ): LayerAttributeValue {
+    return this._layers.find((layer) => layer.id === id)[layerAttribute]
+  }
+
+  public [CompositionMethod.updateLayerAttribute](
+    id: string,
+    layerAttribute: LayerAttribute,
+    value: LayerAttributeValue
+  ): void {
+    const newLayer = { ...this.layer(id) }
+
+    newLayer[layerAttribute] = value
+
+    this.setLayer(id, newLayer)
+  }
+
+  public [CompositionMethod.updateFile](id: string, file: Readable): void {
+    this._files.find((file) => file.id === id).file = file
+  }
+
+  public async [CompositionMethod.addAudio](file: CompositionFile, options: AudioLayer = {}): Promise<Audio> {
+    return withValidationAsync<Audio>(
       () => {
-        validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validateCompositionFile(file)
         validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validateAddAudio(options)
       },
-      () => {
+      async () => {
         const { id } = this._addLayer({ type: LayerType.audio, ...options })
+        const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
 
-        this._files.push({ file, id })
+        this._files.push({ file: readStream, id })
 
         return new Audio({ composition: this, id })
       }
@@ -173,17 +228,18 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  public [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video | undefined {
-    return withValidation<Video>(
+  public async [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer = {}): Promise<Video> {
+    return withValidationAsync<Video>(
       () => {
-        validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validateCompositionFile(file)
         validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validateAddImage(options)
       },
-      () => {
+      async () => {
         const { id } = this._addLayer({ type: LayerType.image, ...options })
+        const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
 
-        this._files.push({ file, id })
+        this._files.push({ file: readStream, id })
 
         return new Video({ composition: this, id })
       }
@@ -205,19 +261,89 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  public [CompositionMethod.addSubtitles](
+  public async [CompositionMethod.addSequence](
+    layers: Layer[],
+    options: SequenceLayer = { start: 0 }
+  ): Promise<Sequence> {
+    return await withValidationAsync<any>(
+      () => {},
+      async () => {
+        const layersWithDurationAndFilepath = await Promise.all(
+          layers.map(async (layer) => {
+            const layerFile = this._file(layer.id)
+            let metadata: ApiAudioMetadata | ApiImageMetadata | ApiVideoMetadata
+            let path: string
+
+            if (layerFile) {
+              const { filepath, readStream } = await processCompositionFile(layerFile.file, this._temporaryDirectory)
+              const extension = getExtension(filepath)
+
+              path = filepath
+
+              if (isVideoExtension(extension)) {
+                metadata = await this._getMetadata(readStream, ApiVideoMetadataType.video)
+              } else if (isAudioExtension(extension)) {
+                metadata = await this._getMetadata(readStream, ApiVideoMetadataType.audio)
+              }
+            }
+
+            return {
+              duration: metadata && ApiVideoMetadataAttribute.duration in metadata ? metadata.duration : undefined,
+              filepath: path,
+              layer: this.layer(layer.id),
+            }
+          })
+        )
+
+        let currentTime = options.start || 0
+
+        layersWithDurationAndFilepath.forEach(({ duration, filepath, layer }) => {
+          this.updateLayerAttribute(layer.id, LayerAttribute.start, currentTime)
+
+          if (filepath) {
+            this.updateFile(layer.id, createReadStream(filepath))
+          }
+
+          if (LayerAttribute.trim in layer) {
+            const { end, start = 0 } = layer.trim
+
+            if (end) {
+              currentTime += end - start
+            } else if (duration) {
+              currentTime += duration - start
+            } else {
+              throw new Error(CompositionErrorText.trimEndRequired(layer.type))
+            }
+          } else if (duration) {
+            currentTime = duration
+          } else {
+            throw new Error(CompositionErrorText.trimEndRequired(layer.type))
+          }
+        })
+
+        this.setDuration(currentTime)
+
+        const { id } = this._addLayer({ type: LayerType.sequence, ...options })
+
+        return new Sequence({ composition: this, id, layers })
+      }
+    )
+  }
+
+  public async [CompositionMethod.addSubtitles](
     file: CompositionFile,
     options: SubtitlesLayer = { subtitles: {} }
-  ): Subtitles | undefined {
-    return withValidation<Subtitles>(
+  ): Promise<Subtitles> {
+    return withValidationAsync<Subtitles>(
       () => {
-        validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validateCompositionFile(file)
         validateAddSubtitles(options)
       },
-      () => {
+      async () => {
         const { id } = this._addLayer({ type: LayerType.subtitles, ...options })
+        const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
 
-        this._files.push({ file, id })
+        this._files.push({ file: readStream, id })
 
         return new Subtitles({ composition: this, id })
       }
@@ -239,34 +365,43 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  public [CompositionMethod.addVideo](file: CompositionFile, options: VideoLayer = {}): Video | undefined {
-    return withValidation<Video>(
+  public async [CompositionMethod.addVideo](file: CompositionFile, options: VideoLayer = {}): Promise<Video> {
+    return withValidationAsync<Video>(
       () => {
-        validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validateCompositionFile(file)
         validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validateAddVideo(options)
       },
-      () => {
+      async () => {
         const { id } = this._addLayer({ type: LayerType.video, ...options })
+        const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
 
-        this._files.push({ file, id })
+        this._files.push({ file: readStream, id })
 
         return new Video({ composition: this, id })
       }
     )
   }
 
-  public [CompositionMethod.addWaveform](options: WaveformLayer = {}, file?: CompositionFile): VisualMedia | undefined {
-    return withValidation<VisualMedia>(
+  public async [CompositionMethod.addWaveform](
+    options: WaveformLayer = {},
+    file?: CompositionFile
+  ): Promise<VisualMedia> {
+    return withValidationAsync<VisualMedia>(
       () => {
         validatePresenceOf(options, CompositionErrorText.optionsRequired)
         validateAddWaveform(options)
+        if (file) {
+          validateCompositionFile(file)
+        }
       },
-      () => {
+      async () => {
         const { id } = this._addLayer({ type: LayerType.waveform, ...options })
 
         if (file) {
-          this._files.push({ file, id })
+          const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
+
+          this._files.push({ file: readStream, id })
         }
 
         return new VisualMedia({ composition: this, id })
@@ -290,6 +425,8 @@ export class Composition implements CompositionInterface {
     try {
       const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
+      removeDirectory(this._temporaryDirectory)
+
       return validateApiData<EncodeResponse>(data, {
         invalidDataError: CompositionErrorText.malformedEncodingResponse,
         validate: isEncodeResponse,
@@ -307,7 +444,7 @@ export class Composition implements CompositionInterface {
       'config',
       JSON.stringify({
         ...this._options,
-        layers: this._layers,
+        layers: this._layers.filter((layer) => layer.type !== LayerType.sequence),
       })
     )
   }
@@ -320,18 +457,6 @@ export class Composition implements CompositionInterface {
     return newLayer
   }
 
-  [CompositionMethod.updateLayerAttribute](
-    id: string,
-    layerAttribute: LayerAttribute,
-    value: LayerAttributeValue
-  ): void {
-    const newLayer = { ...this.layer(id) }
-
-    newLayer[layerAttribute] = value
-
-    this.setLayer(id, newLayer)
-  }
-
   private [CompositionMethod.setLayer](id: string, newLayer: IdentifiedLayer): void {
     const newLayers = [...this.layers]
     const layerIndex = newLayers.findIndex((layer) => layer.id === id)
@@ -339,5 +464,20 @@ export class Composition implements CompositionInterface {
     newLayers[layerIndex] = newLayer
 
     this._layers = newLayers
+  }
+
+  private async [CompositionMethod.getMetadata](file: Readable, type: ApiVideoMetadataType): Promise<ApiMetadataTypes> {
+    const formData = prepareFormData([
+      [urlOrFile(file), file],
+      [ApiVideoMetadataFormDataKey.type, type],
+    ])
+
+    const data = await this._api.post({ data: formData, isForm: true, url: Routes.metadata })
+
+    return metadataValidatorsByType[type](data)
+  }
+
+  private _file(id: string): IdentifiedFile {
+    return this._files.find((file) => file.id && file.id === id)
   }
 }

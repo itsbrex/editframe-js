@@ -1,12 +1,13 @@
 import { PassThrough } from 'stream'
 
-import { ApiInterface, ApiVideo, ApiVideoMetadataFormDataKey, ApiVideoMetadataType, LayerType, Routes } from 'constant'
+import { ApiInterface, ApiVideo, LayerType, Routes } from 'constant'
 import { Composition } from 'features/videos/composition'
 import { mockApi, mockApiVideo, mockApiVideoMetadata, mockCompositionOptions } from 'mocks'
 import { VideoErrorText } from 'strings'
-import { generatePath, prepareFormData, urlOrFile } from 'utils'
-import * as FileUtilsModule from 'utils/files'
-import * as FormUtilsModule from 'utils/forms'
+import { generatePath } from 'utils'
+import * as FilesUtilsModule from 'utils/files'
+import * as CompositionUtilsModule from 'utils/video/compositions'
+import * as VideosUtilsModule from 'utils/videos'
 
 import { Videos } from './'
 
@@ -17,10 +18,6 @@ describe('Videos', () => {
   let apiMock: ApiInterface
   let videos: Videos
   let consoleErrorSpy: jest.SpyInstance
-  let createReadStreamSpy: jest.SpyInstance
-  let downloadFileSpy: jest.SpyInstance
-  let removeDirectorySpy: jest.SpyInstance
-  let prepareFormDataSpy: jest.SpyInstance
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -30,7 +27,6 @@ describe('Videos', () => {
     apiMock = mockApi({
       get: jest.fn().mockReturnValue(videosMock),
       post: jest.fn().mockReturnValue(mockApiVideoMetadata()),
-      put: jest.fn(),
     })
 
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
@@ -51,8 +47,6 @@ describe('Videos', () => {
       beforeEach(() => {
         apiMock = mockApi({
           get: jest.fn().mockReturnValue([{}]),
-          post: jest.fn(),
-          put: jest.fn(),
         })
 
         videos = new Videos(apiMock)
@@ -87,8 +81,6 @@ describe('Videos', () => {
       beforeEach(() => {
         apiMock = mockApi({
           get: jest.fn().mockReturnValue([{}]),
-          post: jest.fn(),
-          put: jest.fn(),
         })
 
         videos = new Videos(apiMock)
@@ -107,99 +99,42 @@ describe('Videos', () => {
 
   describe('new', () => {
     let composition: Composition
-    let videoPath = './path/to/video.mp4'
-    const prepareFormDataArgs: [string, any][] = [
-      [urlOrFile(videoPath), videoPath],
-      [ApiVideoMetadataFormDataKey.type, ApiVideoMetadataType.video],
-    ]
-    const formData = prepareFormData(prepareFormDataArgs)
+    let validateNewVideoSpy: jest.SpyInstance
+    let validateCompositionFileSpy: jest.SpyInstance
+    const videoPath = './path/to/video.mp4'
     const compositionOptions = mockCompositionOptions()
-    const createReadStreamResponse = new PassThrough()
-    const downloadFileResponse = {
-      temporaryFileDirectory: 'temporary-file-directory',
-      temporaryFilePath: 'temporary-file-path',
-    }
+    const readStreamMock = new PassThrough()
 
     beforeEach(() => {
-      createReadStreamSpy = jest.spyOn(FileUtilsModule, 'createReadStream').mockReturnValue(createReadStreamResponse)
-      downloadFileSpy = jest.spyOn(FileUtilsModule, 'downloadFile').mockResolvedValue(downloadFileResponse)
-      prepareFormDataSpy = jest.spyOn(FormUtilsModule, 'prepareFormData').mockReturnValue(formData)
-      removeDirectorySpy = jest.spyOn(FileUtilsModule, 'removeDirectory').mockImplementation(() => {})
+      jest.spyOn(CompositionUtilsModule, 'processCompositionFile').mockResolvedValue({
+        filepath: 'file-path.mp4',
+        readStream: new PassThrough(),
+      })
+      jest.spyOn(FilesUtilsModule, 'createReadStream').mockReturnValue(readStreamMock)
+      validateNewVideoSpy = jest.spyOn(VideosUtilsModule, 'validateNewVideo')
+      validateCompositionFileSpy = jest.spyOn(CompositionUtilsModule, 'validateCompositionFile')
       videos = new Videos(apiMock)
     })
 
     describe('when a `videoPath` argument is provided', () => {
-      describe('when the provided `videoPath` is a local filepath', () => {
-        beforeEach(async () => {
-          videoPath = './path/to/video.mp4'
-
-          composition = await videos.new({}, videoPath)
-        })
-
-        it('calls `createReadStream` twice with the provided `videoPath`', () => {
-          expect(createReadStreamSpy).toHaveBeenCalledTimes(2)
-          expect(createReadStreamSpy).toHaveBeenCalledWith(videoPath)
-        })
-
-        it('calls the `prepareFormData` function with the correct arguments', () => {
-          expect(prepareFormDataSpy).toHaveBeenCalledWith([
-            [urlOrFile(createReadStreamResponse), createReadStreamResponse],
-            [ApiVideoMetadataFormDataKey.type, ApiVideoMetadataType.video],
-          ])
-        })
-
-        it('makes a `post` request to the api with the correct arguments', () => {
-          expect(apiMock.post).toHaveBeenCalledWith({
-            data: formData,
-            isForm: true,
-            url: Routes.metadata,
-          })
-        })
-
-        it('returns an `Composition` instance instantiated with the correct options and a video layer', () => {
-          const { duration, height, width } = mockApiVideoMetadata()
-
-          expect(composition.duration).toEqual(duration)
-          expect(composition.dimensions).toEqual({ height, width })
-          expect(composition.layers[0].type).toEqual(LayerType.video)
-        })
+      beforeEach(async () => {
+        composition = await videos.new(compositionOptions, videoPath)
       })
 
-      describe('when the provided `videoPath` is an external url', () => {
-        beforeEach(async () => {
-          videoPath = 'https://www.fakedomain.com/video.mp4'
+      it('calls the `validateNewVideo` function with the correct arguments', () => {
+        expect(validateNewVideoSpy).toHaveBeenCalledWith(compositionOptions)
+      })
 
-          await videos.new({}, videoPath)
-        })
+      it('calls the `validateCompositionFile` function with the correct arguments', () => {
+        expect(validateCompositionFileSpy).toHaveBeenCalledWith(videoPath)
+      })
 
-        it('calls `downloadFile` with the provided `videoPath`', () => {
-          expect(downloadFileSpy).toHaveBeenCalledWith(videoPath)
-        })
+      it('returns an `Composition` instance instantiated with the correct options and a video layer', async () => {
+        const { duration, height, width } = mockApiVideoMetadata()
 
-        it('calls `createReadStream` with the temporary file path returned by `downloadFile`', () => {
-          expect(createReadStreamSpy).toHaveBeenCalledTimes(2)
-          expect(createReadStreamSpy).toHaveBeenCalledWith(downloadFileResponse.temporaryFilePath)
-        })
-
-        it('calls `removeDirectory` with the temporary directory returned by `downloadFile`', () => {
-          expect(removeDirectorySpy).toHaveBeenCalledWith(downloadFileResponse.temporaryFileDirectory)
-        })
-
-        it('makes a `post` request to the api with the correct arguments', () => {
-          expect(apiMock.post).toHaveBeenCalledWith({
-            data: formData,
-            isForm: true,
-            url: Routes.metadata,
-          })
-        })
-
-        it('returns a `composition` instance instantiated with the correct options and a video layer', async () => {
-          const { duration, height, width } = mockApiVideoMetadata()
-
-          expect(composition.duration).toEqual(duration)
-          expect(composition.dimensions).toEqual({ height, width })
-          expect(composition.layers[0].type).toEqual(LayerType.video)
-        })
+        expect(composition.duration).toEqual(duration)
+        expect(composition.dimensions).toEqual({ height, width })
+        expect(composition.layers[0].type).toEqual(LayerType.video)
       })
     })
 
