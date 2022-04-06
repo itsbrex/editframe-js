@@ -1,3 +1,5 @@
+import { Mixin } from 'ts-mixer'
+
 import {
   CompositionInterface,
   FilterOptions,
@@ -8,10 +10,12 @@ import {
   VisualMediaMethod,
 } from 'constant'
 import { Media } from 'features/videos/media'
+import { PositionableMedia } from 'features/videos/positionableMedia'
+import { ResizableMedia } from 'features/videos/resizableMedia'
 import { ValidationErrorText } from 'strings'
 import { validateFilter, validateLayerFormat, validatePresenceOf, validateValueIsOfType, withValidation } from 'utils'
 
-export class VisualMedia extends Media {
+export class VisualMedia extends Mixin(Media, PositionableMedia, ResizableMedia) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }
@@ -27,13 +31,6 @@ export class VisualMedia extends Media {
           true
         ),
       () => this._updateAttribute(LayerAttribute.backgroundColor, backgroundColor)
-    )
-  }
-
-  public [VisualMediaMethod.setColor](color?: string): this | void {
-    withValidation<this>(
-      () => validateValueIsOfType(VisualMediaMethod.setColor, LayerAttribute.color, color, PrimitiveType.string, true),
-      () => this._updateAttribute(LayerAttribute.color, color)
     )
   }
 

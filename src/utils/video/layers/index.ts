@@ -5,19 +5,27 @@ import {
   LayerAlignment,
   LayerAttribute,
   LayerBase,
+  LayerFormat,
+  LayerFormatValue,
   LayerHTML,
   LayerHorizontalAlignment,
   LayerHorizontalAlignmentValue,
   LayerLottie,
+  LayerPositionableMedia,
+  LayerSubtitles,
   LayerText,
   LayerTrim,
+  LayerVerticalAlignment,
   LayerVerticalAlignmentValue,
   LayerVisualMedia,
   LayerWaveform,
   PrimitiveType,
+  SubtitlesAttribute,
   TextAlignment,
   TextAlignmentValue,
   WaveformStyleValue,
+  X,
+  Y,
 } from 'constant'
 import { CompositionErrorText, ValidationErrorText } from 'strings'
 import { validateValueIsOfType } from 'utils/validation'
@@ -30,20 +38,9 @@ export const validateLayerAlignment = (
   { horizontalAlignment, verticalAlignment }: LayerAlignment
 ): string[] => {
   const errors: string[] = []
-  const acceptedVerticalValues = Object.values(LayerVerticalAlignmentValue)
 
   errors.push(validateHorizontalAlignment(callerName, LayerAttribute.horizontalAlignment, horizontalAlignment))
-
-  if (verticalAlignment && !acceptedVerticalValues.includes(verticalAlignment)) {
-    errors.push(
-      ValidationErrorText.MUST_BE_TYPE(
-        callerName,
-        LayerAttribute.verticalAlignment,
-        verticalAlignment,
-        acceptedVerticalValues.join(', ')
-      )
-    )
-  }
+  errors.push(validateVerticalAlignment(callerName, LayerAttribute.verticalAlignment, verticalAlignment))
 
   return errors.filter(filterUndefined)
 }
@@ -113,6 +110,16 @@ export const validateLayerFilter = (callerName: string, { filter }: FilterLayer)
   return errors.filter(filterUndefined)
 }
 
+export const validateFormat = (callerName: string, layerAttribute: string, format: LayerFormat): string | undefined => {
+  const acceptedFormats = Object.values(LayerFormatValue)
+
+  if (format && !acceptedFormats.includes(format)) {
+    return ValidationErrorText.MUST_BE_TYPE(callerName, layerAttribute, format, acceptedFormats.join(', '))
+  }
+
+  return undefined
+}
+
 export const validateHorizontalAlignment = (
   callerName: string,
   layerAttribute: string,
@@ -130,6 +137,49 @@ export const validateHorizontalAlignment = (
   }
 
   return undefined
+}
+
+export const validateVerticalAlignment = (
+  callerName: string,
+  layerAttribute: string,
+  verticalAlignment: LayerVerticalAlignment
+): string | undefined => {
+  const acceptedVerticalValues = Object.values(LayerVerticalAlignmentValue)
+
+  if (verticalAlignment && !acceptedVerticalValues.includes(verticalAlignment)) {
+    return ValidationErrorText.MUST_BE_TYPE(
+      callerName,
+      layerAttribute,
+      verticalAlignment,
+      acceptedVerticalValues.join(', ')
+    )
+  }
+
+  return undefined
+}
+
+export const validateX = (callerName: string, x: X): string | undefined => {
+  if (!x) {
+    return undefined
+  }
+
+  if (typeof x === PrimitiveType.string) {
+    return validateHorizontalAlignment(callerName, LayerAttribute.x, x as LayerHorizontalAlignment)
+  } else {
+    return validateValueIsOfType(callerName, LayerAttribute.x, x, PrimitiveType.number)
+  }
+}
+
+export const validateY = (callerName: string, y: Y): string | undefined => {
+  if (!y) {
+    return undefined
+  }
+
+  if (typeof y === PrimitiveType.string) {
+    return validateVerticalAlignment(callerName, LayerAttribute.y, y as LayerVerticalAlignment)
+  } else {
+    return validateValueIsOfType(callerName, LayerAttribute.y, y, PrimitiveType.number)
+  }
 }
 
 export const validateTextAlignment = (callerName: string, textAlign: TextAlignment): string | undefined => {
@@ -155,12 +205,56 @@ export const validateLayerLottie = (callerName: string, { data }: LayerLottie): 
   return errors.filter(filterUndefined)
 }
 
-export const validateLayerText = (
+export const validateLayerPositionableMedia = (callerName: string, { x, y }: LayerPositionableMedia): string[] => {
+  const errors: string[] = []
+
+  errors.push(validateX(callerName, x))
+  errors.push(validateY(callerName, y))
+
+  return errors.filter(filterUndefined)
+}
+
+export const validateLayerSubtitles = (
   callerName: string,
-  { fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlign }: LayerText
+  { subtitles: { backgroundColor, color, fontSize } }: LayerSubtitles
 ): string[] => {
   const errors: string[] = []
 
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerAttribute.subtitles, SubtitlesAttribute.backgroundColor),
+      backgroundColor,
+      PrimitiveType.string
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerAttribute.subtitles, SubtitlesAttribute.color),
+      color,
+      PrimitiveType.string
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerAttribute.subtitles, SubtitlesAttribute.fontSize),
+      fontSize,
+      PrimitiveType.number
+    )
+  )
+
+  return errors.filter(filterUndefined)
+}
+
+export const validateLayerText = (
+  callerName: string,
+  { color, fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlign }: LayerText
+): string[] => {
+  const errors: string[] = []
+
+  errors.push(validateValueIsOfType(callerName, LayerAttribute.color, color, PrimitiveType.string))
   errors.push(validateValueIsOfType(callerName, LayerAttribute.fontFamily, fontFamily, PrimitiveType.string))
   errors.push(validateValueIsOfType(callerName, LayerAttribute.fontSize, fontSize, PrimitiveType.number))
   errors.push(validateValueIsOfType(callerName, LayerAttribute.maxFontSize, maxFontSize, PrimitiveType.number))
@@ -198,14 +292,14 @@ export const validateLayerTrim = (callerName: string, { trim }: LayerTrim): stri
 
 export const validateLayerVisualMedia = (
   callerName: string,
-  { backgroundColor, color, x, y }: LayerVisualMedia
+  { backgroundColor, format, x, y }: LayerVisualMedia
 ): string[] => {
   const errors: string[] = []
 
   errors.push(validateValueIsOfType(callerName, LayerAttribute.backgroundColor, backgroundColor, PrimitiveType.string))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.color, color, PrimitiveType.string))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.x, x, PrimitiveType.number))
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.y, y, PrimitiveType.number))
+  errors.push(validateFormat(callerName, LayerAttribute.format, format))
+  errors.push(validateX(callerName, x))
+  errors.push(validateY(callerName, y))
 
   return errors.filter(filterUndefined)
 }

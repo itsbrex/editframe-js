@@ -25,6 +25,7 @@ import {
   validateAddHTML,
   validateAddImage,
   validateAddLottie,
+  validateAddSubtitles,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
@@ -34,6 +35,7 @@ import {
 } from './video/compositions'
 import { validateFilter } from './video/filters'
 import {
+  validateFormat,
   validateHorizontalAlignment,
   validateLayerAlignment,
   validateLayerAudio,
@@ -41,10 +43,14 @@ import {
   validateLayerFilter,
   validateLayerHTML,
   validateLayerLottie,
+  validateLayerPositionableMedia,
+  validateLayerSubtitles,
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
   validateTextAlignment,
+  validateX,
+  validateY,
 } from './video/layers'
 import { preparePreview } from './video/preview'
 import { isApiVideo, isApiVideoMetadata, isApiVideos, isEncodeResponse } from './videos'
@@ -81,12 +87,14 @@ export {
   validateAddHTML,
   validateAddImage,
   validateAddLottie,
+  validateAddSubtitles,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
   validateApiData,
   validateCompositionOptions,
   validateFilter,
+  validateFormat,
   validateHorizontalAlignment,
   validateLayerAlignment,
   validateLayerAudio,
@@ -96,6 +104,8 @@ export {
   validateLayerFormat,
   validateLayerLottie,
   validateLayerMethod,
+  validateLayerPositionableMedia,
+  validateLayerSubtitles,
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
@@ -105,6 +115,8 @@ export {
   validateValueIsOfType,
   validateValueIsOfTypes,
   validateVideoOptions,
+  validateX,
+  validateY,
   withPaginationQueryParams,
   withQueryParams,
   withValidation,

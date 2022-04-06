@@ -19,6 +19,9 @@ import {
   LayerHorizontalAlignment,
   LayerHorizontalAlignmentValue,
   LayerLottie,
+  LayerPositionableMedia,
+  LayerResizableMedia,
+  LayerSubtitles,
   LayerText,
   LayerTrim,
   LayerType,
@@ -28,6 +31,9 @@ import {
   LayerWaveform,
   LottieLayer,
   Size,
+  SubtitlesAttribute,
+  SubtitlesLayer,
+  SubtitlesOptions,
   TextAlignment,
   TextAlignmentValue,
   TextLayer,
@@ -37,6 +43,8 @@ import {
   WaveformLayer,
   WaveformStyle,
   WaveformStyleValue,
+  X,
+  Y,
 } from '@editframe/shared-types'
 
 export type { AudioLayer as AudioLayer }
@@ -54,14 +62,19 @@ export type { LayerFilter as LayerFilter }
 export type { LayerFormat as LayerFormat }
 export type { LayerHTML as LayerHTML }
 export type { LayerHorizontalAlignment as LayerHorizontalAlignment }
+export type { LayerPositionableMedia as LayerPositionableMedia }
+export type { LayerResizableMedia as LayerResizableMedia }
 export type { LayerVerticalAlignment as LayerVerticalAlignment }
 export type { LayerLottie as LayerLottie }
+export type { LayerSubtitles as LayerSubtitles }
 export type { LayerText as LayerText }
 export type { LayerTrim as LayerTrim }
 export type { LayerVisualMedia as LayerVisualMedia }
 export type { LayerWaveform as LayerWaveform }
 export type { LottieLayer as LottieLayer }
 export type { Size as Size }
+export type { SubtitlesLayer as SubtitlesLayer }
+export type { SubtitlesOptions as SubtitlesOptions }
 export type { TextAlignment as TextAlignment }
 export type { TextLayer as TextLayer }
 export type { Trim as Trim }
@@ -69,11 +82,14 @@ export type { TypedLayer as TypedLayer }
 export type { VideoLayer as VideoLayer }
 export type { WaveformLayer as WaveformLayer }
 export type { WaveformStyle as WaveformStyle }
+export type { X as X }
+export type { Y as Y }
 export { HTMLAttribute as HTMLAttribute }
 export { LayerAttribute as LayerAttribute }
 export { LayerFormatValue as LayerFormatValue }
 export { LayerType as LayerType }
 export { LayerHorizontalAlignmentValue as LayerHorizontalAlignmentValue }
 export { LayerVerticalAlignmentValue as LayerVerticalAlignmentValue }
+export { SubtitlesAttribute as SubtitlesAttribute }
 export { TextAlignmentValue as TextAlignmentValue }
 export { WaveformStyleValue as WaveformStyleValue }

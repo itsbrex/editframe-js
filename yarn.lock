@@ -1110,10 +1110,8 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@editframe/shared-types@1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-1.7.0.tgz#81079a63d0cc3a3fb35630a92dda0af1cc265724"
-  integrity sha512-qq7/P9a9jO/UECrvrH27BVzKLxNg1bIk11DEQhJjUZx45qyXBHipuhj26RQkpErZgTIbAhMJxaLAtfODlxfhfQ==
+"@editframe/shared-types@file:.yalc/@editframe/shared-types":
+  version "0.0.1"
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"

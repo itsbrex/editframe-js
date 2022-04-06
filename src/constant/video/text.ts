@@ -1,4 +1,5 @@
 export enum TextMethod {
+  setColor = 'setColor',
   setFontFamily = 'setFontFamily',
   setFontSize = 'setFontSize',
   setFontWeight = 'setFontWeight',

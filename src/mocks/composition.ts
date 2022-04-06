@@ -9,7 +9,10 @@ import {
   HTMLLayer,
   ImageLayer,
   LayerFormatValue,
+  LayerHorizontalAlignmentValue,
+  LayerVerticalAlignmentValue,
   LottieLayer,
+  SubtitlesLayer,
   TextAlignmentValue,
   TextLayer,
   VideoLayer,
@@ -117,8 +120,25 @@ export const mockLottieLayer = (
   start,
 })
 
+export const mockSubtitlesLayer = (
+  { subtitles, x, y }: SubtitlesLayer = {
+    subtitles: {
+      backgroundColor: Color.black,
+      color: Color.white,
+      fontSize: 32,
+    },
+    x: LayerHorizontalAlignmentValue.center,
+    y: LayerVerticalAlignmentValue.center,
+  }
+): SubtitlesLayer => ({
+  subtitles,
+  x,
+  y,
+})
+
 export const mockTextLayer = (
   {
+    color,
     fontFamily,
     fontSize,
     format,
@@ -134,6 +154,7 @@ export const mockTextLayer = (
     x,
     y,
   }: TextLayer = {
+    color: Color.black,
     fontFamily: 'Arial',
     fontSize: 20,
     format: LayerFormatValue.fill,
@@ -150,6 +171,7 @@ export const mockTextLayer = (
     y: 20,
   }
 ): TextLayer => ({
+  color,
   fontFamily,
   fontSize,
   format,
@@ -187,16 +209,14 @@ export const mockVideoLayer = (
 })
 
 export const mockWaveformLayer = (
-  { backgroundColor, color, format, x, y }: WaveformLayer = {
+  { backgroundColor, format, x, y }: WaveformLayer = {
     backgroundColor: Color.white,
-    color: Color.black,
     format: LayerFormatValue.fill,
     x: 10,
     y: 20,
   }
 ): WaveformLayer => ({
   backgroundColor,
-  color,
   format,
   x,
   y,

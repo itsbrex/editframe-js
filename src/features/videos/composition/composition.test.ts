@@ -3,6 +3,7 @@ import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
 import { HTML } from 'features/videos/html'
 import { Lottie } from 'features/videos/lottie'
+import { Subtitles } from 'features/videos/subtitles'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
@@ -15,6 +16,7 @@ import {
   mockHTMLLayer,
   mockImageLayer,
   mockLottieLayer,
+  mockSubtitlesLayer,
   mockTextLayer,
   mockVideoLayer,
   mockWaveformLayer,
@@ -33,6 +35,7 @@ describe('Composition', () => {
     [LayerType.audio]: 'audio-filename',
     [LayerType.image]: 'image-filename',
     [LayerType.video]: 'video-filename',
+    [LayerType.subtitles]: 'subtitles-filename',
   }
   let formDataMock: FormDataInterface
   const audioOptions = mockAudioLayer()
@@ -41,6 +44,7 @@ describe('Composition', () => {
   const imageOptions = mockImageLayer()
   const lottieOptions = mockLottieLayer()
   const options = mockCompositionOptions()
+  const subtitlesOptions = mockSubtitlesLayer()
   const textOptions = mockTextLayer()
   const videoOptions = mockVideoLayer()
   const waveformOptions = mockWaveformLayer()
@@ -57,6 +61,7 @@ describe('Composition', () => {
   let validateAddHTMLSpy: jest.SpyInstance
   let validateAddImageSpy: jest.SpyInstance
   let validateAddLottieSpy: jest.SpyInstance
+  let validateAddSubtitlesSpy: jest.SpyInstance
   let validateAddTextSpy: jest.SpyInstance
   let validateAddVideoSpy: jest.SpyInstance
   let validateAddWaveformSpy: jest.SpyInstance
@@ -88,6 +93,7 @@ describe('Composition', () => {
     validateAddHTMLSpy = jest.spyOn(CompositionUtilsModule, 'validateAddHTML')
     validateAddImageSpy = jest.spyOn(CompositionUtilsModule, 'validateAddImage')
     validateAddLottieSpy = jest.spyOn(CompositionUtilsModule, 'validateAddLottie')
+    validateAddSubtitlesSpy = jest.spyOn(CompositionUtilsModule, 'validateAddSubtitles')
     validateAddTextSpy = jest.spyOn(CompositionUtilsModule, 'validateAddText')
     validateAddVideoSpy = jest.spyOn(CompositionUtilsModule, 'validateAddVideo')
     validateAddWaveformSpy = jest.spyOn(CompositionUtilsModule, 'validateAddWaveform')
@@ -172,7 +178,7 @@ describe('Composition', () => {
     it('returns an `Audio` object', () => {
       const audio = composition.addAudio(filenames.audio, videoOptions)
 
-      expect(audio instanceof Audio).toBe(true)
+      expect(audio).toBeInstanceOf(Audio)
     })
   })
 
@@ -203,7 +209,7 @@ describe('Composition', () => {
     it('returns a `Filter` object', () => {
       const filter = composition.addFilter(filterOptions)
 
-      expect(filter instanceof Filter).toBe(true)
+      expect(filter).toBeInstanceOf(Filter)
     })
   })
 
@@ -305,7 +311,7 @@ describe('Composition', () => {
       it('returns a `HTML` object', async () => {
         const html = await composition.addHTML(htmlOptions)
 
-        expect(html instanceof HTML).toBe(true)
+        expect(html).toBeInstanceOf(HTML)
       })
     })
   })
@@ -336,7 +342,7 @@ describe('Composition', () => {
     it('returns a `Video` object', () => {
       const image = composition.addImage(filenames.image, imageOptions)
 
-      expect(image instanceof Video).toBe(true)
+      expect(image).toBeInstanceOf(Video)
     })
   })
 
@@ -367,7 +373,37 @@ describe('Composition', () => {
     it('returns a `Lottie` object', () => {
       const lottie = composition.addLottie(lottieOptions)
 
-      expect(lottie instanceof Lottie).toBe(true)
+      expect(lottie).toBeInstanceOf(Lottie)
+    })
+  })
+
+  describe('addSubtitles', () => {
+    beforeEach(() => {
+      composition = makeComposition()
+
+      composition.addSubtitles(filenames.subtitles, subtitlesOptions)
+    })
+
+    it('calls the `validatePresenceOf` function with the correct arguments', () => {
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(filenames.subtitles, MediaErrorText.invalidFileSource)
+    })
+
+    it('calls the `validateAddSubtitles` function with the correct arguments', () => {
+      expect(validateAddSubtitlesSpy).toHaveBeenCalledWith(subtitlesOptions)
+    })
+
+    it('adds a `subtitles` layer with the correct attributes', () => {
+      expect(composition.layers[0]).toEqual({
+        id: uuidMock,
+        type: LayerType.subtitles,
+        ...subtitlesOptions,
+      })
+    })
+
+    it('returns a `Subtitles` object', () => {
+      const subtitles = composition.addSubtitles(filenames.subtitles, subtitlesOptions)
+
+      expect(subtitles).toBeInstanceOf(Subtitles)
     })
   })
 
@@ -397,7 +433,7 @@ describe('Composition', () => {
     it('returns a `Text` object', () => {
       const text = composition.addText(textOptions)
 
-      expect(text instanceof Text).toBe(true)
+      expect(text).toBeInstanceOf(Text)
     })
   })
 
@@ -428,7 +464,7 @@ describe('Composition', () => {
     it('returns a `Video` object', () => {
       const video = composition.addVideo(filenames.video, videoOptions)
 
-      expect(video instanceof Video).toBe(true)
+      expect(video).toBeInstanceOf(Video)
     })
   })
 
@@ -454,7 +490,7 @@ describe('Composition', () => {
     it('returns a `VisualMedia` object', () => {
       const waveform = composition.addWaveform(waveformOptions)
 
-      expect(waveform instanceof VisualMedia).toBe(true)
+      expect(waveform).toBeInstanceOf(VisualMedia)
     })
   })
 
