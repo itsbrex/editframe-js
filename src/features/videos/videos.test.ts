@@ -16,7 +16,6 @@ describe('Videos', () => {
 
   let apiMock: ApiInterface
   let videos: Videos
-  // let compositionSpy: jest.SpyInstance
   let consoleErrorSpy: jest.SpyInstance
   let createReadStreamSpy: jest.SpyInstance
   let downloadFileSpy: jest.SpyInstance

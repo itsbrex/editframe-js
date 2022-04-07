@@ -1,12 +1,10 @@
-import { CompositionFile, CompositionOptionAttribute, IdentifiedFile } from '@editframe/shared-types'
+import { CompositionOptionAttribute } from '@editframe/shared-types'
 
 import { Filter } from 'constant/video/filters'
 import { HTMLOptions, IdentifiedLayer, LayerAttribute, Size, SubtitlesOptions } from 'constant/video/layers'
 import { LottieAnimationData } from 'constant/video/lottie'
 
-export type { CompositionFile as CompositionFile }
-export type { IdentifiedFile as IdentifiedFile }
-export { CompositionOptionAttribute as CompositionOptionAttribute }
+export { CompositionFile, CompositionOptionAttribute, IdentifiedFile } from '@editframe/shared-types'
 
 export type LayerAttributeValue = number | string | Filter | LottieAnimationData | HTMLOptions | SubtitlesOptions
 

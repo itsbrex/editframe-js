@@ -1,11 +1,11 @@
-import { Color, FilterName } from '@editframe/shared-types'
-
 import {
   AudioLayer,
+  Color,
   CompositionInterface,
   CompositionOptions,
   EncodeResponse,
   FilterLayer,
+  FilterName,
   HTMLLayer,
   ImageLayer,
   LayerFormatValue,
