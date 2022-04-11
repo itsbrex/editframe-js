@@ -58,6 +58,7 @@ describe('validations', () => {
   let validateLayerTextSpy: jest.SpyInstance
   let validateLayerTrimSpy: jest.SpyInstance
   let validateLayerVisualMediaSpy: jest.SpyInstance
+  let validateLayerWaveform: jest.SpyInstance
   let validatePresenceOfSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
@@ -77,6 +78,7 @@ describe('validations', () => {
     validateLayerTextSpy = jest.spyOn(LayerUtilsModule, 'validateLayerText')
     validateLayerTrimSpy = jest.spyOn(LayerUtilsModule, 'validateLayerTrim')
     validateLayerVisualMediaSpy = jest.spyOn(LayerUtilsModule, 'validateLayerVisualMedia')
+    validateLayerWaveform = jest.spyOn(LayerUtilsModule, 'validateLayerWaveform')
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
   })
@@ -384,13 +386,8 @@ describe('validations', () => {
       expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addWaveform, waveformOptions)
     })
 
-    it('calls the `validateValueIsOfType` funciton with the correct arguments', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        CompositionMethod.addWaveform,
-        LayerAttribute.style,
-        waveformOptions.style,
-        PrimitiveType.string
-      )
+    it('calls the `validateLayerWaveform` function with the correct arguments', () => {
+      expect(validateLayerWaveform).toHaveBeenCalledWith(CompositionMethod.addWaveform, waveformOptions)
     })
   })
 })

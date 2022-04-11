@@ -209,15 +209,18 @@ export const mockVideoLayer = (
 })
 
 export const mockWaveformLayer = (
-  { backgroundColor, format, x, y }: WaveformLayer = {
-    backgroundColor: Color.white,
+  { format, waveform, x, y }: WaveformLayer = {
     format: LayerFormatValue.fill,
+    waveform: {
+      backgroundColor: Color.transparent,
+      color: Color.white,
+    },
     x: 10,
     y: 20,
   }
 ): WaveformLayer => ({
-  backgroundColor,
   format,
+  waveform,
   x,
   y,
 })

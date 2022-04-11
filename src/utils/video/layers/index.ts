@@ -23,6 +23,7 @@ import {
   SubtitlesAttribute,
   TextAlignment,
   TextAlignmentValue,
+  WaveformAttribute,
   WaveformStyleValue,
   X,
   Y,
@@ -304,16 +305,23 @@ export const validateLayerVisualMedia = (
   return errors.filter(filterUndefined)
 }
 
-export const validateLayerWaveform = (callerName: string, { style }: LayerWaveform): string[] => {
+export const validateLayerWaveform = (
+  callerName: string,
+  { waveform: { backgroundColor, color, style } }: LayerWaveform
+): string[] => {
   const errors: string[] = []
 
-  errors.push(validateValueIsOfType(callerName, LayerAttribute.style, style, PrimitiveType.string))
+  errors.push(
+    validateValueIsOfType(callerName, WaveformAttribute.backgroundColor, backgroundColor, PrimitiveType.string)
+  )
+  errors.push(validateValueIsOfType(callerName, WaveformAttribute.color, color, PrimitiveType.string))
+  errors.push(validateValueIsOfType(callerName, WaveformAttribute.style, style, PrimitiveType.string))
 
   const acceptedWaveformStyles = Object.values(WaveformStyleValue)
 
   if (style && !acceptedWaveformStyles.includes(style)) {
     errors.push(
-      ValidationErrorText.MUST_BE_TYPE(callerName, LayerAttribute.style, style, acceptedWaveformStyles.join(', '))
+      ValidationErrorText.MUST_BE_TYPE(callerName, WaveformAttribute.style, style, acceptedWaveformStyles.join(', '))
     )
   }
 

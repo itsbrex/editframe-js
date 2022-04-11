@@ -40,6 +40,7 @@ export {
   Trim,
   TypedLayer,
   VideoLayer,
+  WaveformAttribute,
   WaveformLayer,
   WaveformStyle,
   WaveformStyleValue,

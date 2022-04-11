@@ -189,15 +189,4 @@ export const validateAddWaveform = (options: WaveformLayer): void => {
     CompositionMethod.addWaveform,
     options
   )
-
-  const error = validateValueIsOfType(
-    CompositionMethod.addWaveform,
-    LayerAttribute.style,
-    options.style,
-    PrimitiveType.string
-  )
-
-  if (error) {
-    throw new Error(error)
-  }
 }
