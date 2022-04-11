@@ -1,5 +1,6 @@
-import { CompositionInterface, IdentifiedLayer, LayerAttribute, VisualMediaMethod } from 'constant'
+import { CompositionInterface, IdentifiedLayer, LayerAttribute, PositionableMediaMethod, PrimitiveType } from 'constant'
 import { mockComposition } from 'mocks'
+import * as ValidationUtilsModule from 'utils/validation'
 import * as VideoLayersUtilsModule from 'utils/video/layers'
 
 import { PositionableMedia } from './'
@@ -9,6 +10,7 @@ describe('PositionableMedia', () => {
   const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let positionableMedia: PositionableMedia
+  let validateValueIsOfTypeSpy: jest.SpyInstance
   let validateXSpy: jest.SpyInstance
   let validateYSpy: jest.SpyInstance
 
@@ -17,6 +19,7 @@ describe('PositionableMedia', () => {
   })
 
   beforeEach(() => {
+    validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     validateXSpy = jest.spyOn(VideoLayersUtilsModule, 'validateX')
     validateYSpy = jest.spyOn(VideoLayersUtilsModule, 'validateY')
     compositionMock = mockComposition({
@@ -28,6 +31,28 @@ describe('PositionableMedia', () => {
     positionableMedia = new PositionableMedia({ composition: compositionMock, id })
   })
 
+  describe('setIsRelative', () => {
+    const isRelative = true
+
+    beforeEach(() => {
+      positionableMedia.setIsRelative(isRelative)
+    })
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        PositionableMediaMethod.setIsRelative,
+        LayerAttribute.isRelative,
+        isRelative,
+        PrimitiveType.boolean,
+        true
+      )
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.isRelative, isRelative)
+    })
+  })
+
   describe('setX', () => {
     const x = 20
 
@@ -36,7 +61,7 @@ describe('PositionableMedia', () => {
     })
 
     it('calls the `validateX` function with the correct arguments', () => {
-      expect(validateXSpy).toHaveBeenCalledWith(VisualMediaMethod.setX, x)
+      expect(validateXSpy).toHaveBeenCalledWith(PositionableMediaMethod.setX, x)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
@@ -52,7 +77,7 @@ describe('PositionableMedia', () => {
     })
 
     it('calls the `validateY` function with the correct arguments', () => {
-      expect(validateYSpy).toHaveBeenCalledWith(VisualMediaMethod.setY, y)
+      expect(validateYSpy).toHaveBeenCalledWith(PositionableMediaMethod.setY, y)
     })
 
     it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {

@@ -6,7 +6,14 @@ import { LottieAnimationData } from 'constant/video/lottie'
 
 export { CompositionFile, CompositionOptionAttribute, IdentifiedFile } from '@editframe/shared-types'
 
-export type LayerAttributeValue = number | string | Filter | LottieAnimationData | HTMLOptions | SubtitlesOptions
+export type LayerAttributeValue =
+  | boolean
+  | number
+  | string
+  | Filter
+  | LottieAnimationData
+  | HTMLOptions
+  | SubtitlesOptions
 
 export enum CompositionMethod {
   addAudio = 'addAudio',
