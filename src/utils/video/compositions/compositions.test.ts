@@ -6,6 +6,7 @@ import {
   mockHTMLLayer,
   mockImageLayer,
   mockLottieLayer,
+  mockSubtitlesLayer,
   mockTextLayer,
   mockVideoLayer,
   mockWaveformLayer,
@@ -21,6 +22,7 @@ import {
   validateAddHTML,
   validateAddImage,
   validateAddLottie,
+  validateAddSubtitles,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
@@ -51,9 +53,12 @@ describe('validations', () => {
   let validateLayerFilterSpy: jest.SpyInstance
   let validateLayerHTMLSpy: jest.SpyInstance
   let validateLayerLottieSpy: jest.SpyInstance
+  let validateLayerPositionableMediaSpy: jest.SpyInstance
+  let validateLayerSubtitlesSpy: jest.SpyInstance
   let validateLayerTextSpy: jest.SpyInstance
   let validateLayerTrimSpy: jest.SpyInstance
   let validateLayerVisualMediaSpy: jest.SpyInstance
+  let validateLayerWaveform: jest.SpyInstance
   let validatePresenceOfSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
@@ -68,9 +73,12 @@ describe('validations', () => {
     validateLayerFilterSpy = jest.spyOn(LayerUtilsModule, 'validateLayerFilter')
     validateLayerHTMLSpy = jest.spyOn(LayerUtilsModule, 'validateLayerHTML')
     validateLayerLottieSpy = jest.spyOn(LayerUtilsModule, 'validateLayerLottie')
+    validateLayerPositionableMediaSpy = jest.spyOn(LayerUtilsModule, 'validateLayerPositionableMedia')
+    validateLayerSubtitlesSpy = jest.spyOn(LayerUtilsModule, 'validateLayerSubtitles')
     validateLayerTextSpy = jest.spyOn(LayerUtilsModule, 'validateLayerText')
     validateLayerTrimSpy = jest.spyOn(LayerUtilsModule, 'validateLayerTrim')
     validateLayerVisualMediaSpy = jest.spyOn(LayerUtilsModule, 'validateLayerVisualMedia')
+    validateLayerWaveform = jest.spyOn(LayerUtilsModule, 'validateLayerWaveform')
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
   })
@@ -215,6 +223,46 @@ describe('validations', () => {
     })
   })
 
+  describe('validateAddFilter', () => {
+    const filterOptions = mockFilterLayer()
+
+    beforeEach(() => {
+      validateAddFilter(filterOptions)
+    })
+
+    it('calls the `validateLayerBase` function with the correct arguments', () => {
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, filterOptions)
+    })
+
+    it('calls the `validateFilter` function with the correct arguments', () => {
+      expect(validateLayerFilterSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, filterOptions)
+    })
+  })
+
+  describe('validateAddHTML', () => {
+    const htmlLayer = mockHTMLLayer()
+
+    beforeEach(() => {
+      validateAddHTML(htmlLayer)
+    })
+
+    it('calls the `validateLayerBase` function with the correct arguments', () => {
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addHTML, htmlLayer)
+    })
+
+    it('calls the `validateLayerVisualMedia` function with the correct arguments', () => {
+      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addHTML, htmlLayer)
+    })
+
+    it('calls the `validateFilter` function with the correct arguments', () => {
+      expect(validateLayerFilterSpy).toHaveBeenCalledWith(CompositionMethod.addHTML, htmlLayer)
+    })
+
+    it('calls the `validateLayerHTML` function with the correct arguments', () => {
+      expect(validateLayerHTMLSpy).toHaveBeenCalledWith(CompositionMethod.addHTML, htmlLayer)
+    })
+  })
+
   describe('validateAddImage', () => {
     const imageOptions = mockImageLayer()
 
@@ -252,6 +300,26 @@ describe('validations', () => {
 
     it('calls the `validateLayerLottie` function with the correct arguments', () => {
       expect(validateLayerLottieSpy).toHaveBeenCalledWith(CompositionMethod.addLottie, lottieOptions)
+    })
+  })
+
+  describe('validateAddSubtitles', () => {
+    const subtitleOptions = mockSubtitlesLayer()
+
+    beforeEach(() => {
+      validateAddSubtitles(subtitleOptions)
+    })
+
+    it('calls the `validateLayerBase` function with the correct arguments', () => {
+      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addSubtitles, subtitleOptions)
+    })
+
+    it('calls the `validateLayerPositionableMedia` function with the correct arguments', () => {
+      expect(validateLayerPositionableMediaSpy).toHaveBeenCalledWith(CompositionMethod.addSubtitles, subtitleOptions)
+    })
+
+    it('calls the `validateLayerSubtitles` function with the correct arguments', () => {
+      expect(validateLayerSubtitlesSpy).toHaveBeenCalledWith(CompositionMethod.addSubtitles, subtitleOptions)
     })
   })
 
@@ -303,46 +371,6 @@ describe('validations', () => {
     })
   })
 
-  describe('validateAddHTML', () => {
-    const htmlLayer = mockHTMLLayer()
-
-    beforeEach(() => {
-      validateAddHTML(htmlLayer)
-    })
-
-    it('calls the `validateLayerBase` function with the correct arguments', () => {
-      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addHTML, htmlLayer)
-    })
-
-    it('calls the `validateLayerVisualMedia` function with the correct arguments', () => {
-      expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addHTML, htmlLayer)
-    })
-
-    it('calls the `validateFilter` function with the correct arguments', () => {
-      expect(validateLayerFilterSpy).toHaveBeenCalledWith(CompositionMethod.addHTML, htmlLayer)
-    })
-
-    it('calls the `validateLayerHTML` function with the correct arguments', () => {
-      expect(validateLayerHTMLSpy).toHaveBeenCalledWith(CompositionMethod.addHTML, htmlLayer)
-    })
-  })
-
-  describe('validateAddFilter', () => {
-    const filterOptions = mockFilterLayer()
-
-    beforeEach(() => {
-      validateAddFilter(filterOptions)
-    })
-
-    it('calls the `validateLayerBase` function with the correct arguments', () => {
-      expect(validateLayerBaseSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, filterOptions)
-    })
-
-    it('calls the `validateFilter` function with the correct arguments', () => {
-      expect(validateLayerFilterSpy).toHaveBeenCalledWith(CompositionMethod.addFilter, filterOptions)
-    })
-  })
-
   describe('validateAddWaveform', () => {
     const waveformOptions = mockWaveformLayer()
 
@@ -358,13 +386,8 @@ describe('validations', () => {
       expect(validateLayerVisualMediaSpy).toHaveBeenCalledWith(CompositionMethod.addWaveform, waveformOptions)
     })
 
-    it('calls the `validateValueIsOfType` funciton with the correct arguments', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        CompositionMethod.addWaveform,
-        LayerAttribute.style,
-        waveformOptions.style,
-        PrimitiveType.string
-      )
+    it('calls the `validateLayerWaveform` function with the correct arguments', () => {
+      expect(validateLayerWaveform).toHaveBeenCalledWith(CompositionMethod.addWaveform, waveformOptions)
     })
   })
 })

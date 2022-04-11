@@ -13,6 +13,12 @@ export class Text extends VisualMedia {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }
+  public [TextMethod.setColor](color?: string): this | void {
+    withValidation<this>(
+      () => validateValueIsOfType(TextMethod.setColor, LayerAttribute.color, color, PrimitiveType.string, true),
+      () => this._updateAttribute(LayerAttribute.color, color)
+    )
+  }
 
   public [TextMethod.setFontFamily](fontFamily?: string): this | void {
     return withValidation<this>(

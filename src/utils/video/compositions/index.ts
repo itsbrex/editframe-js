@@ -12,6 +12,7 @@ import {
   LayerValidator,
   LottieLayer,
   PrimitiveType,
+  SubtitlesLayer,
   TextLayer,
   VideoLayer,
   VideoOptions,
@@ -27,6 +28,8 @@ import {
   validateLayerFilter,
   validateLayerHTML,
   validateLayerLottie,
+  validateLayerPositionableMedia,
+  validateLayerSubtitles,
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
@@ -156,6 +159,13 @@ export const validateAddLottie = (options: LottieLayer): void => {
   )
 }
 
+export const validateAddSubtitles = (options: SubtitlesLayer): void =>
+  validateLayerMethod(
+    [validateLayerBase, validateLayerPositionableMedia, validateLayerSubtitles],
+    CompositionMethod.addSubtitles,
+    options
+  )
+
 export const validateAddText = (options: TextLayer): void =>
   validateLayerMethod(
     [validateLayerBase, validateLayerVisualMedia, validateLayerAlignment, validateLayerText],
@@ -179,15 +189,4 @@ export const validateAddWaveform = (options: WaveformLayer): void => {
     CompositionMethod.addWaveform,
     options
   )
-
-  const error = validateValueIsOfType(
-    CompositionMethod.addWaveform,
-    LayerAttribute.style,
-    options.style,
-    PrimitiveType.string
-  )
-
-  if (error) {
-    throw new Error(error)
-  }
 }

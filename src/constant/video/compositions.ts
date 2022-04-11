@@ -1,14 +1,19 @@
-import { CompositionFile, CompositionOptionAttribute, IdentifiedFile } from '@editframe/shared-types'
+import { CompositionOptionAttribute } from '@editframe/shared-types'
 
 import { Filter } from 'constant/video/filters'
-import { HTMLOptions, IdentifiedLayer, LayerAttribute, Size } from 'constant/video/layers'
+import { HTMLOptions, IdentifiedLayer, LayerAttribute, Size, SubtitlesOptions } from 'constant/video/layers'
 import { LottieAnimationData } from 'constant/video/lottie'
 
-export type { CompositionFile as CompositionFile }
-export type { IdentifiedFile as IdentifiedFile }
-export { CompositionOptionAttribute as CompositionOptionAttribute }
+export { CompositionFile, CompositionOptionAttribute, IdentifiedFile } from '@editframe/shared-types'
 
-export type LayerAttributeValue = number | string | Filter | LottieAnimationData | HTMLOptions
+export type LayerAttributeValue =
+  | boolean
+  | number
+  | string
+  | Filter
+  | LottieAnimationData
+  | HTMLOptions
+  | SubtitlesOptions
 
 export enum CompositionMethod {
   addAudio = 'addAudio',
@@ -16,6 +21,7 @@ export enum CompositionMethod {
   addHTML = 'addHTML',
   addImage = 'addImage',
   addLottie = 'addLottie',
+  addSubtitles = 'addSubtitles',
   addText = 'addText',
   addVideo = 'addVideo',
   addWaveform = 'addWaveform',

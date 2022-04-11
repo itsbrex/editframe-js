@@ -19,6 +19,7 @@ import {
   Metadata,
   Routes,
   Size,
+  SubtitlesLayer,
   TextLayer,
   TypedLayer,
   VideoLayer,
@@ -28,6 +29,7 @@ import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
 import { HTML } from 'features/videos/html'
 import { Lottie } from 'features/videos/lottie'
+import { Subtitles } from 'features/videos/subtitles'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
@@ -43,6 +45,7 @@ import {
   validateAddHTML,
   validateAddImage,
   validateAddLottie,
+  validateAddSubtitles,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
@@ -198,6 +201,25 @@ export class Composition implements CompositionInterface {
         const { id } = this._addLayer({ type: LayerType.lottie, ...options })
 
         return new Lottie({ composition: this, id })
+      }
+    )
+  }
+
+  public [CompositionMethod.addSubtitles](
+    file: CompositionFile,
+    options: SubtitlesLayer = { subtitles: {} }
+  ): Subtitles | undefined {
+    return withValidation<Subtitles>(
+      () => {
+        validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validateAddSubtitles(options)
+      },
+      () => {
+        const { id } = this._addLayer({ type: LayerType.subtitles, ...options })
+
+        this._files.push({ file, id })
+
+        return new Subtitles({ composition: this, id })
       }
     )
   }
