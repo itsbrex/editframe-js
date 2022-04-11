@@ -1,8 +1,6 @@
-/// <reference types="node" />
 import FormData from "form-data";
-import { FontWeight, HTMLOptions, LayerAttribute, LayerHorizontalAlignment, LayerVerticalAlignment, TextAlignment, WaveformStyle, FilterBrightness, FilterContrast, FilterFade, FilterName, FilterNames, FilterOptions, FilterSaturation } from "@editframe/shared-types";
-import { Blob } from "node:buffer";
-import { Readable } from "stream";
+import { Size, CompositionOptionAttribute, Filter, HTMLOptions, IdentifiedLayer, LayerAttribute, SubtitlesOptions, AudioLayer, CompositionFile, FilterLayer, HTMLLayer, ImageLayer, LottieLayer, SubtitlesLayer, TextLayer, VideoLayer, WaveformLayer, Trim, FilterOptions, X, Y, LayerFormat, FontWeight, TextAlignment } from "@editframe/shared-types";
+import { Filter as FilterType } from "@editframe/shared-types";
 interface ApiInterface {
     get: ({ url }: {
         url: string;
@@ -30,13 +28,12 @@ type Timestamped = {
 };
 declare enum ApiApplicationAttribute {
     description = "description",
-    lastUsedAt = "lastUsedAt",
+    id = "id",
     name = "name",
     webhook = "webhook"
 }
 type ApiApplication = Hashided & Timestamped & {
     [ApiApplicationAttribute.description]: string;
-    [ApiApplicationAttribute.lastUsedAt]: string;
     [ApiApplicationAttribute.name]: string;
     [ApiApplicationAttribute.webhook]: string;
 };
@@ -47,14 +44,10 @@ interface EditframeOptions {
     token: string;
     version?: number;
 }
-declare enum FilterAttribute {
-    filterName = "filterName",
-    options = "options"
+declare enum AudioMethod {
+    setMuted = "setMuted",
+    setVolume = "setVolume"
 }
-type Filter = {
-    [FilterAttribute.filterName]: FilterNames;
-    [FilterAttribute.options]?: FilterBrightness | FilterContrast | FilterFade | FilterSaturation;
-};
 declare enum FilterMethod {
     setFilter = "setFilter"
 }
@@ -86,100 +79,14 @@ interface LottieAnimationData {
     v: string;
     w: number;
 }
-type Size = {
-    [LayerAttribute.height]?: number;
-    [LayerAttribute.width]?: number;
-};
-declare enum LayerType {
-    audio = "audio",
-    filter = "filter",
-    html = "html",
-    image = "image",
-    lottie = "lottie",
-    text = "text",
-    video = "video",
-    waveform = "waveform"
-}
-declare enum LayerFormatValue {
-    fill = "fill",
-    fit = "fit",
-    stretch = "stretch"
-}
-type LayerFormat = LayerFormatValue.fill | LayerFormatValue.fit | LayerFormatValue.stretch;
-type LayerBase = {
-    [LayerAttribute.start]?: number;
-    [LayerAttribute.length]?: number;
-};
-type Trim = {
-    [LayerAttribute.end]?: number;
-    [LayerAttribute.start]: number;
-};
-type LayerTrim = {
-    [LayerAttribute.trim]?: Trim;
-};
-type LayerAlignment = {
-    [LayerAttribute.horizontalAlignment]?: LayerHorizontalAlignment;
-    [LayerAttribute.verticalAlignment]?: LayerVerticalAlignment;
-};
-type LayerVisualMedia = Size & {
-    [LayerAttribute.backgroundColor]?: string;
-    [LayerAttribute.color]?: string;
-    [LayerAttribute.format]?: LayerFormat;
-    [LayerAttribute.x]?: number;
-    [LayerAttribute.y]?: number;
-};
-type LayerHTML = {
-    [LayerAttribute.html]: HTMLOptions;
-};
-type LayerText = {
-    [LayerAttribute.fontFamily]?: string;
-    [LayerAttribute.fontSize]?: number;
-    [LayerAttribute.fontWeight]?: FontWeight;
-    [LayerAttribute.lineHeight]?: number;
-    [LayerAttribute.maxFontSize]?: number;
-    [LayerAttribute.maxHeight]?: number;
-    [LayerAttribute.maxWidth]?: number;
-    [LayerAttribute.text]: string;
-    [LayerAttribute.textAlign]?: TextAlignment;
-};
-type LayerAudio = {
-    [LayerAttribute.volume]?: number;
-};
-type LayerFilter = {
-    [LayerAttribute.filter]?: Filter;
-};
-type LayerLottie = {
-    [LayerAttribute.data]?: LottieAnimationData;
-};
-type LayerWaveform = {
-    [LayerAttribute.style]?: WaveformStyle;
-};
-type AudioLayer = LayerBase & LayerTrim & LayerAudio;
-type FilterLayer = LayerBase & LayerFilter;
-type HTMLLayer = LayerBase & LayerFilter & LayerVisualMedia & LayerHTML;
-type ImageLayer = LayerBase & LayerVisualMedia & LayerFilter;
-type LottieLayer = LayerBase & LayerLottie;
-type TextLayer = LayerBase & LayerAlignment & LayerText & LayerVisualMedia;
-type VideoLayer = LayerBase & LayerTrim & LayerAudio & LayerFilter & LayerVisualMedia;
-type WaveformLayer = LayerBase & LayerVisualMedia & LayerWaveform;
-type ComposableLayer = AudioLayer | FilterLayer | HTMLLayer | ImageLayer | LottieLayer | TextLayer | VideoLayer | WaveformLayer | FilterLayer;
-type TypedLayer = ComposableLayer & {
-    type: LayerType;
-};
-type IdentifiedLayer = TypedLayer & {
-    id: string;
-};
-declare enum AudioMethod {
-    setMuted = "setMuted",
-    setVolume = "setVolume"
-}
-type LayerAttributeValue = number | string | Filter | LottieAnimationData | HTMLOptions;
+type LayerAttributeValue = boolean | number | string | Filter | LottieAnimationData | HTMLOptions | SubtitlesOptions;
 declare enum CompositionMethod {
     addAudio = "addAudio",
     addFilter = "addFilter",
     addHTML = "addHTML",
     addImage = "addImage",
     addLottie = "addLottie",
+    addSubtitles = "addSubtitles",
     addText = "addText",
     addVideo = "addVideo",
     addWaveform = "addWaveform",
@@ -190,6 +97,7 @@ declare enum CompositionMethod {
     layer = "layer",
     layers = "layers",
     metadata = "metadata",
+    preview = "preview",
     setLayer = "setLayer",
     updateLayerAttribute = "updateLayerAttribute"
 }
@@ -197,13 +105,6 @@ interface CompositionInterface {
     [CompositionMethod.layer]: (id: string) => IdentifiedLayer;
     [CompositionMethod.layers]: IdentifiedLayer[];
     [CompositionMethod.updateLayerAttribute]: (id: string, layerAttribute: LayerAttribute, value: LayerAttributeValue) => void;
-}
-type CompositionFile = Readable | Blob | string;
-declare enum CompositionOptionAttribute {
-    backgroundColor = "backgroundColor",
-    dimensions = "dimensions",
-    duration = "duration",
-    metadata = "metadata"
 }
 type Metadata = Record<string, string>;
 type VideoOptions = {
@@ -238,7 +139,22 @@ declare enum LayerMethod {
 declare enum MediaMethod {
     setTrim = "setTrim"
 }
+declare enum PositionableMediaMethod {
+    setIsRelative = "setIsRelative",
+    setX = "setX",
+    setY = "setY"
+}
+declare enum ResizableMediaMethod {
+    setDimensions = "setDimensions",
+    setFormat = "setFormat",
+    setHeight = "setHeight",
+    setWidth = "setWidth"
+}
+declare enum SubtitlesMethod {
+    setSubtitlesOptions = "setSubtitlesOptions"
+}
 declare enum TextMethod {
+    setColor = "setColor",
     setFontFamily = "setFontFamily",
     setFontSize = "setFontSize",
     setFontWeight = "setFontWeight",
@@ -263,6 +179,8 @@ declare enum VisualMediaMethod {
 declare enum ApiVideoAttribute {
     downloadUrl = "downloadUrl",
     duration = "duration",
+    id = "id",
+    isFailed = "isFailed",
     isReady = "isReady",
     metadata = "metadata",
     streamUrl = "streamUrl",
@@ -272,6 +190,7 @@ declare enum ApiVideoAttribute {
 type ApiVideo = Hashided & Timestamped & {
     [ApiVideoAttribute.downloadUrl]?: string;
     [ApiVideoAttribute.duration]?: number;
+    [ApiVideoAttribute.isFailed]: boolean;
     [ApiVideoAttribute.isReady]: boolean;
     [ApiVideoAttribute.metadata]: Record<string, unknown>;
     [ApiVideoAttribute.streamUrl]?: string;
@@ -287,7 +206,7 @@ declare enum ApiVideoMethod {
 declare class Applications {
     private _api;
     constructor(api: ApiInterface);
-    all(): Promise<ApiApplication[]>;
+    all(page?: number, perPage?: number): Promise<ApiApplication[]>;
     get(id: string): Promise<ApiApplication | undefined>;
 }
 declare class Layer {
@@ -317,7 +236,6 @@ declare class Audio extends Media {
     [AudioMethod.setVolume](volume: number): this | void;
     [AudioMethod.setMuted](): this;
 }
-type FilterType = Filter;
 declare class Filter$0 extends Layer {
     constructor({ composition, id }: {
         composition: CompositionInterface;
@@ -325,23 +243,36 @@ declare class Filter$0 extends Layer {
     });
     [FilterMethod.setFilter]({ filterName, options }: FilterType): this | void;
 }
-declare class VisualMedia extends Media {
+declare class PositionableMedia extends Media {
+    constructor({ composition, id }: {
+        composition: CompositionInterface;
+        id: string;
+    });
+    [PositionableMediaMethod.setIsRelative](isRelative?: boolean): this | void;
+    [PositionableMediaMethod.setX](x?: X): this | void;
+    [PositionableMediaMethod.setY](y?: Y): this | void;
+}
+declare class ResizableMedia extends Media {
+    constructor({ composition, id }: {
+        composition: CompositionInterface;
+        id: string;
+    });
+    [ResizableMediaMethod.setDimensions]({ height, width }: Size): this | void;
+    [ResizableMediaMethod.setFormat](format: LayerFormat): this | void;
+    [ResizableMediaMethod.setHeight](height?: number): this | void;
+    [ResizableMediaMethod.setWidth](width?: number): this | void;
+}
+declare const VisualMedia_base: import("ts-mixer/dist/types/types").Class<any[], Media & PositionableMedia & ResizableMedia, typeof Media & typeof PositionableMedia & typeof ResizableMedia, false>;
+declare class VisualMedia extends VisualMedia_base {
     constructor({ composition, id }: {
         composition: CompositionInterface;
         id: string;
     });
     [VisualMediaMethod.setBackgroundColor](backgroundColor?: string): this | void;
-    [VisualMediaMethod.setColor](color?: string): this | void;
-    [VisualMediaMethod.setDimensions]({ height, width }: Size): this | void;
     [VisualMediaMethod.setFilter]<FilterName extends keyof FilterOptions>({ filterName, options }: {
         filterName: FilterName;
         options?: FilterOptions[FilterName];
     }): this | void;
-    [VisualMediaMethod.setFormat](format: LayerFormat): this | void;
-    [VisualMediaMethod.setHeight](height?: number): this | void;
-    [VisualMediaMethod.setWidth](width?: number): this | void;
-    [VisualMediaMethod.setX](x?: number): this | void;
-    [VisualMediaMethod.setY](y?: number): this | void;
 }
 declare class HTML extends VisualMedia {
     constructor({ composition, id }: {
@@ -357,11 +288,19 @@ declare class Lottie extends VisualMedia {
     });
     [LottieMethod.setAnimationData](data: LottieAnimationData): Lottie | void;
 }
+declare class Subtitles extends PositionableMedia {
+    constructor({ composition, id }: {
+        composition: CompositionInterface;
+        id: string;
+    });
+    [SubtitlesMethod.setSubtitlesOptions](subtitles?: SubtitlesOptions): this | void;
+}
 declare class Text extends VisualMedia {
     constructor({ composition, id }: {
         composition: CompositionInterface;
         id: string;
     });
+    [TextMethod.setColor](color?: string): this | void;
     [TextMethod.setFontFamily](fontFamily?: string): this | void;
     [TextMethod.setFontSize](fontSize?: number): this | void;
     [TextMethod.setFontWeight](fontWeight?: FontWeight): this | void;
@@ -401,9 +340,11 @@ declare class Composition implements CompositionInterface {
     [CompositionMethod.addHTML](options: HTMLLayer): Promise<HTML>;
     [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video | undefined;
     [CompositionMethod.addLottie](options: LottieLayer): Lottie | undefined;
+    [CompositionMethod.addSubtitles](file: CompositionFile, options?: SubtitlesLayer): Subtitles | undefined;
     [CompositionMethod.addText](options: TextLayer): Text | undefined;
     [CompositionMethod.addVideo](file: CompositionFile, options?: VideoLayer): Video | undefined;
     [CompositionMethod.addWaveform](options?: WaveformLayer, file?: CompositionFile): VisualMedia | undefined;
+    [CompositionMethod.preview](): Promise<void>;
     [CompositionMethod.encode](): Promise<EncodeResponse>;
     private _generateConfig;
     private _addLayer;
@@ -413,7 +354,7 @@ declare class Composition implements CompositionInterface {
 declare class Videos {
     private _api;
     constructor(api: ApiInterface);
-    [ApiVideoMethod.all](): Promise<ApiVideo[]>;
+    [ApiVideoMethod.all](page?: number, perPage?: number): Promise<ApiVideo[]>;
     [ApiVideoMethod.get](id: string): Promise<ApiVideo | undefined>;
     [ApiVideoMethod.new](options?: VideoOptions, videoPath?: string): Promise<Composition>;
     private [ApiVideoMethod.getMetadata];
@@ -432,5 +373,5 @@ declare class Editframe {
     get token(): string;
     get version(): number;
 }
-declare const CommonResolutions: Record<string, Size>;
+declare const CommonResolutions: Record<string, import("@editframe/shared-types").Size>;
 export { Editframe, CommonResolutions };
