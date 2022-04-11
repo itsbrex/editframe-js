@@ -9,6 +9,7 @@ import {
   FilterLayer,
   FormDataInterface,
   HTMLLayer,
+  IdentifiedFile,
   IdentifiedLayer,
   ImageLayer,
   LayerAttribute,
@@ -18,6 +19,7 @@ import {
   Metadata,
   Routes,
   Size,
+  SubtitlesLayer,
   TextLayer,
   TypedLayer,
   VideoLayer,
@@ -27,6 +29,7 @@ import { Audio } from 'features/videos/audio'
 import { Filter } from 'features/videos/filter'
 import { HTML } from 'features/videos/html'
 import { Lottie } from 'features/videos/lottie'
+import { Subtitles } from 'features/videos/subtitles'
 import { Text } from 'features/videos/text'
 import { Video } from 'features/videos/video'
 import { VisualMedia } from 'features/videos/visualMedia'
@@ -34,6 +37,7 @@ import { CompositionErrorText, MediaErrorText } from 'strings'
 import {
   formDataKey,
   isEncodeResponse,
+  preparePreview,
   sanitizeHTML,
   uuid,
   validateAddAudio,
@@ -41,6 +45,7 @@ import {
   validateAddHTML,
   validateAddImage,
   validateAddLottie,
+  validateAddSubtitles,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
@@ -53,10 +58,7 @@ import {
 
 export class Composition implements CompositionInterface {
   private _api: ApiInterface
-  private _files: {
-    file: CompositionFile
-    id: string
-  }[]
+  private _files: IdentifiedFile[]
   private _formData: FormDataInterface
   private _layers: IdentifiedLayer[] = []
   private _options: CompositionOptions
@@ -203,6 +205,25 @@ export class Composition implements CompositionInterface {
     )
   }
 
+  public [CompositionMethod.addSubtitles](
+    file: CompositionFile,
+    options: SubtitlesLayer = { subtitles: {} }
+  ): Subtitles | undefined {
+    return withValidation<Subtitles>(
+      () => {
+        validatePresenceOf(file, MediaErrorText.invalidFileSource)
+        validateAddSubtitles(options)
+      },
+      () => {
+        const { id } = this._addLayer({ type: LayerType.subtitles, ...options })
+
+        this._files.push({ file, id })
+
+        return new Subtitles({ composition: this, id })
+      }
+    )
+  }
+
   public [CompositionMethod.addText](options: TextLayer): Text | undefined {
     return withValidation<Text>(
       () => {
@@ -250,6 +271,16 @@ export class Composition implements CompositionInterface {
 
         return new VisualMedia({ composition: this, id })
       }
+    )
+  }
+
+  public async [CompositionMethod.preview](): Promise<void> {
+    await preparePreview(
+      JSON.stringify({
+        ...this._options,
+        files: this._files,
+        layers: this._layers,
+      })
     )
   }
 

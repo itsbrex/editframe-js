@@ -1,4 +1,5 @@
-import { mockApplication } from 'mocks'
+import { ApiApplication } from 'constant'
+import { mockApplication, mockPagination } from 'mocks'
 
 import { isApplication, isApplications } from './'
 
@@ -14,10 +15,10 @@ describe('isApplication', () => {
 
 describe('isApplications', () => {
   it('returns `false` when one of the provided `applications` does not adhere to the `ApiApplication` interface', () => {
-    expect(isApplications([{}])).toEqual(false)
+    expect(isApplications(mockPagination<ApiApplication>([{} as ApiApplication]))).toEqual(false)
   })
 
   it('returns `true` when the provided `applications` adheres to the `ApiApplication` interface', () => {
-    expect(isApplications([mockApplication()])).toEqual(true)
+    expect(isApplications(mockPagination<ApiApplication>([mockApplication()]))).toEqual(true)
   })
 })

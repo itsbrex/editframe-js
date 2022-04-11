@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import { createDirectory, createReadStream, removeDirectory } from './'
+import { createDirectory, createReadStream, fileExists, removeDirectory, saveFile } from './'
 
 describe('createDirectory', () => {
   const directory = 'directory'
@@ -44,6 +44,22 @@ describe('createReadStream', () => {
   })
 })
 
+describe('fileExists', () => {
+  const filepath = 'file-path'
+
+  it('returns `true` when the file exists', () => {
+    jest.spyOn(fs, 'existsSync').mockReturnValue(true)
+
+    expect(fileExists(filepath)).toEqual(true)
+  })
+
+  it('returns `false` when the file does not exist', () => {
+    jest.spyOn(fs, 'existsSync').mockReturnValue(false)
+
+    expect(fileExists(filepath)).toEqual(false)
+  })
+})
+
 describe('removeDirectory', () => {
   const directory = 'directory'
   let existsSyncSpy: jest.SpyInstance
@@ -68,5 +84,21 @@ describe('removeDirectory', () => {
     removeDirectory(directory)
 
     expect(rmdirSyncSpy).toHaveBeenCalledWith(directory, { recursive: true })
+  })
+})
+
+describe('saveFile', () => {
+  const filepath = 'file-path'
+  const data = 'data'
+  let writeFileSyncSpy: jest.SpyInstance
+
+  beforeEach(() => {
+    writeFileSyncSpy = jest.spyOn(fs, 'writeFileSync').mockImplementation(() => {})
+  })
+
+  it('calls the `writeFileSync` function w ith the correct arguments', () => {
+    saveFile(filepath, data)
+
+    expect(writeFileSyncSpy).toHaveBeenCalledWith(filepath, data)
   })
 })

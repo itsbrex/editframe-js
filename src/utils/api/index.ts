@@ -36,7 +36,7 @@ export const makeRequest: MakeFetchFunction =
     const json = await response.json()
     const camelCasedJson = camelCaseKeys(json, { deep: true })
 
-    if (camelCasedJson.data) {
+    if (camelCasedJson.data && !camelCasedJson.links && !camelCasedJson.meta) {
       return camelCasedJson.data
     }
 

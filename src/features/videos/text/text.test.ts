@@ -41,6 +41,30 @@ describe('Text', () => {
     text = new Text({ composition: compositionMock, id })
   })
 
+  describe('setColor', () => {
+    const color = 'color'
+
+    beforeEach(() => {
+      text.setColor(color)
+    })
+
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setColor,
+        LayerAttribute.color,
+        color,
+        PrimitiveType.string,
+        true
+      )
+    })
+
+    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
+      text.setColor(color)
+
+      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.color, color)
+    })
+  })
+
   describe('setFontFamily', () => {
     const fontFamily = 'Arial'
 

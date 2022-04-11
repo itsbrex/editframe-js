@@ -1,9 +1,10 @@
 import { baseURL, initializeFetchUtil, makeHeaders, validateApiData } from './api'
 import { isApplication, isApplications } from './applications'
 import { logError } from './errors'
-import { createDirectory, createReadStream, downloadFile, removeDirectory } from './files'
+import { createDirectory, createReadStream, downloadFile, fileExists, removeDirectory, saveFile } from './files'
 import { prepareFormData, urlOrFile } from './forms'
-import { generatePath } from './paths'
+import { isPaginated } from './pagination'
+import { generatePath, withPaginationQueryParams, withQueryParams } from './paths'
 import { sanitizeHTML } from './sanitization'
 import { uuid } from './strings'
 import {
@@ -24,6 +25,7 @@ import {
   validateAddHTML,
   validateAddImage,
   validateAddLottie,
+  validateAddSubtitles,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
@@ -33,6 +35,7 @@ import {
 } from './video/compositions'
 import { validateFilter } from './video/filters'
 import {
+  validateFormat,
   validateHorizontalAlignment,
   validateLayerAlignment,
   validateLayerAudio,
@@ -40,11 +43,16 @@ import {
   validateLayerFilter,
   validateLayerHTML,
   validateLayerLottie,
+  validateLayerPositionableMedia,
+  validateLayerSubtitles,
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
   validateTextAlignment,
+  validateX,
+  validateY,
 } from './video/layers'
+import { preparePreview } from './video/preview'
 import { isApiVideo, isApiVideoMetadata, isApiVideos, isEncodeResponse } from './videos'
 
 export {
@@ -53,6 +61,7 @@ export {
   createDirectory,
   createReadStream,
   downloadFile,
+  fileExists,
   formDataKey,
   generatePath,
   initializeFetchUtil,
@@ -62,12 +71,15 @@ export {
   isApplication,
   isApplications,
   isEncodeResponse,
+  isPaginated,
   isValidUrl,
   logError,
   makeHeaders,
   prepareFormData,
+  preparePreview,
   removeDirectory,
   sanitizeHTML,
+  saveFile,
   urlOrFile,
   uuid,
   validateAddAudio,
@@ -75,12 +87,14 @@ export {
   validateAddHTML,
   validateAddImage,
   validateAddLottie,
+  validateAddSubtitles,
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
   validateApiData,
   validateCompositionOptions,
   validateFilter,
+  validateFormat,
   validateHorizontalAlignment,
   validateLayerAlignment,
   validateLayerAudio,
@@ -90,6 +104,8 @@ export {
   validateLayerFormat,
   validateLayerLottie,
   validateLayerMethod,
+  validateLayerPositionableMedia,
+  validateLayerSubtitles,
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
@@ -99,6 +115,10 @@ export {
   validateValueIsOfType,
   validateValueIsOfTypes,
   validateVideoOptions,
+  validateX,
+  validateY,
+  withPaginationQueryParams,
+  withQueryParams,
   withValidation,
   withValidationAsync,
 }

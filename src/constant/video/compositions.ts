@@ -1,11 +1,19 @@
-import { Blob } from 'node:buffer'
-import { Readable } from 'stream'
+import { CompositionOptionAttribute } from '@editframe/shared-types'
 
 import { Filter } from 'constant/video/filters'
-import { HTMLOptions, IdentifiedLayer, LayerAttribute, Size } from 'constant/video/layers'
+import { HTMLOptions, IdentifiedLayer, LayerAttribute, Size, SubtitlesOptions } from 'constant/video/layers'
 import { LottieAnimationData } from 'constant/video/lottie'
 
-export type LayerAttributeValue = number | string | Filter | LottieAnimationData | HTMLOptions
+export { CompositionFile, CompositionOptionAttribute, IdentifiedFile } from '@editframe/shared-types'
+
+export type LayerAttributeValue =
+  | boolean
+  | number
+  | string
+  | Filter
+  | LottieAnimationData
+  | HTMLOptions
+  | SubtitlesOptions
 
 export enum CompositionMethod {
   addAudio = 'addAudio',
@@ -13,6 +21,7 @@ export enum CompositionMethod {
   addHTML = 'addHTML',
   addImage = 'addImage',
   addLottie = 'addLottie',
+  addSubtitles = 'addSubtitles',
   addText = 'addText',
   addVideo = 'addVideo',
   addWaveform = 'addWaveform',
@@ -23,6 +32,7 @@ export enum CompositionMethod {
   layer = 'layer',
   layers = 'layers',
   metadata = 'metadata',
+  preview = 'preview',
   setLayer = 'setLayer',
   updateLayerAttribute = 'updateLayerAttribute',
 }
@@ -35,15 +45,6 @@ export interface CompositionInterface {
     layerAttribute: LayerAttribute,
     value: LayerAttributeValue
   ) => void
-}
-
-export type CompositionFile = Readable | Blob | string
-
-export enum CompositionOptionAttribute {
-  backgroundColor = 'backgroundColor',
-  dimensions = 'dimensions',
-  duration = 'duration',
-  metadata = 'metadata',
 }
 
 export type Metadata = Record<string, string>

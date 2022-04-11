@@ -1,5 +1,5 @@
 import { fetch } from 'cross-fetch'
-import fs, { createWriteStream, existsSync, mkdirSync, rmdirSync } from 'fs'
+import fs, { createWriteStream, existsSync, mkdirSync, rmdirSync, writeFileSync } from 'fs'
 import { Readable } from 'stream'
 
 import { FetchResponse } from 'constant'
@@ -33,8 +33,12 @@ export const downloadFile = async (
   return { temporaryFileDirectory, temporaryFilePath }
 }
 
+export const fileExists = (filepath: string): boolean => existsSync(filepath)
+
 export const removeDirectory = (directory: string): void => {
-  if (existsSync(directory)) {
+  if (fileExists(directory)) {
     rmdirSync(directory, { recursive: true })
   }
 }
+
+export const saveFile = (filepath: string, data: string): void => writeFileSync(filepath, data)

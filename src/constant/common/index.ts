@@ -1,5 +1,8 @@
+export { Color } from '@editframe/shared-types'
+
 export enum PrimitiveType {
   boolean = 'boolean',
+  null = 'object',
   number = 'number',
   object = 'object',
   string = 'string',

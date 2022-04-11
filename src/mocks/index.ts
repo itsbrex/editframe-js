@@ -9,10 +9,12 @@ import {
   mockHTMLLayer,
   mockImageLayer,
   mockLottieLayer,
+  mockSubtitlesLayer,
   mockTextLayer,
   mockVideoLayer,
   mockWaveformLayer,
 } from './composition'
+import { mockPagination } from './pagination'
 import { mockApiVideo, mockApiVideoMetadata } from './videos'
 
 export {
@@ -28,6 +30,8 @@ export {
   mockHTMLLayer,
   mockImageLayer,
   mockLottieLayer,
+  mockPagination,
+  mockSubtitlesLayer,
   mockTextLayer,
   mockVideoLayer,
   mockWaveformLayer,

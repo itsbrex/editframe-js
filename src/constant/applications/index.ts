@@ -2,7 +2,7 @@ import { Hashided, Timestamped } from 'constant/common'
 
 export enum ApiApplicationAttribute {
   description = 'description',
-  lastUsedAt = 'lastUsedAt',
+  id = 'id',
   name = 'name',
   webhook = 'webhook',
 }
@@ -10,7 +10,6 @@ export enum ApiApplicationAttribute {
 export type ApiApplication = Hashided &
   Timestamped & {
     [ApiApplicationAttribute.description]: string
-    [ApiApplicationAttribute.lastUsedAt]: string
     [ApiApplicationAttribute.name]: string
     [ApiApplicationAttribute.webhook]: string
   }
