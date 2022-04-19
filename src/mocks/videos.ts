@@ -1,4 +1,4 @@
-import { ApiVideo, ApiVideoMetadata } from 'constant'
+import { ApiVideo } from 'constant'
 
 export const mockApiVideo = (
   {
@@ -38,24 +38,4 @@ export const mockApiVideo = (
   thumbnailUrl,
   timestamp,
   updatedAt,
-})
-
-export const mockApiVideoMetadata = (
-  { bitrate, codec, duration, fps, height, size, width }: ApiVideoMetadata = {
-    bitrate: 48100,
-    codec: 'codec',
-    duration: 1000,
-    fps: 30,
-    height: 1080,
-    size: 9001,
-    width: 1920,
-  }
-): ApiVideoMetadata => ({
-  bitrate,
-  codec,
-  duration,
-  fps,
-  height,
-  size,
-  width,
 })

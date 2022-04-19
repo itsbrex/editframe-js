@@ -1,6 +1,5 @@
 import {
   CompositionInterface,
-  IdentifiedLayer,
   LayerAttribute,
   LayerHorizontalAlignmentValue,
   PrimitiveType,
@@ -15,7 +14,6 @@ import { Text } from './'
 
 describe('Text', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let text: Text
   let validatePresenceOfSpy: jest.SpyInstance
@@ -33,8 +31,6 @@ describe('Text', () => {
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     validateValueIsOfTypesSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfTypes')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

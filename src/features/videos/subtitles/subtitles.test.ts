@@ -1,4 +1,4 @@
-import { Color, CompositionInterface, IdentifiedLayer, LayerAttribute, SubtitlesMethod } from 'constant'
+import { Color, CompositionInterface, LayerAttribute, SubtitlesMethod } from 'constant'
 import { mockComposition } from 'mocks'
 import * as VideoLayersUtilsModule from 'utils/video/layers'
 
@@ -6,7 +6,6 @@ import { Subtitles } from './'
 
 describe('Subtitles', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let subtitles: Subtitles
   let validateLayerSubtitlesSpy: jest.SpyInstance
@@ -18,8 +17,6 @@ describe('Subtitles', () => {
   beforeEach(() => {
     validateLayerSubtitlesSpy = jest.spyOn(VideoLayersUtilsModule, 'validateLayerSubtitles')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

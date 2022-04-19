@@ -14,17 +14,14 @@ export class Layer {
     return this._id
   }
 
+  get start(): number | undefined {
+    return this._composition.getLayerAttribute<number | undefined>(this.id, LayerAttribute.start)
+  }
+
   public [LayerMethod.setStart](start?: number): this | void {
     return withValidation<this>(
       () => validateValueIsOfType(LayerMethod.setStart, LayerAttribute.start, start, PrimitiveType.number, true),
       () => this._updateAttribute(LayerAttribute.start, start)
-    )
-  }
-
-  public [LayerMethod.setLength](length?: number): this | void {
-    return withValidation<this>(
-      () => validateValueIsOfType(LayerMethod.setLength, LayerAttribute.length, length, PrimitiveType.number, true),
-      () => this._updateAttribute(LayerAttribute.length, length)
     )
   }
 

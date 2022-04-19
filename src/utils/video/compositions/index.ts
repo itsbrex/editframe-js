@@ -1,3 +1,5 @@
+import { Readable } from 'stream'
+
 import {
   ApiVideoMethod,
   AudioLayer,
@@ -18,9 +20,10 @@ import {
   VideoOptions,
   WaveformLayer,
 } from 'constant'
-import { CompositionErrorText, ValidationErrorText } from 'strings'
+import { CompositionErrorText, MediaErrorText, ValidationErrorText } from 'strings'
+import { createReadStream, downloadFile, fileExists } from 'utils/files'
 import { urlOrFile } from 'utils/forms'
-import { validatePresenceOf, validateValueIsOfType } from 'utils/validation'
+import { isValidUrl, validatePresenceOf, validateValueIsOfType } from 'utils/validation'
 import {
   validateLayerAlignment,
   validateLayerAudio,
@@ -37,6 +40,46 @@ import {
 } from 'utils/video/layers'
 
 export const formDataKey = (file: CompositionFile, id: string): string => `${urlOrFile(file)}${id}`
+
+export const processCompositionFile = async (
+  file: CompositionFile,
+  temporaryDirectory: string
+): Promise<{ filepath: string; readStream: Readable }> => {
+  if (typeof file !== 'string') {
+    const filepath = (file as any).path
+
+    if (!fileExists(filepath)) {
+      throw new Error(ValidationErrorText.FILE_DOES_NOT_EXIST(filepath))
+    }
+
+    return { filepath, readStream: file as Readable }
+  }
+
+  if (isValidUrl(file)) {
+    const { temporaryFilePath } = await downloadFile(file, temporaryDirectory)
+
+    return {
+      filepath: temporaryFilePath,
+      readStream: createReadStream(temporaryFilePath),
+    }
+  }
+
+  if (!fileExists(file)) {
+    throw new Error(ValidationErrorText.FILE_DOES_NOT_EXIST(file))
+  }
+
+  return { filepath: file, readStream: createReadStream(file) }
+}
+
+export const validateCompositionFile = (file: CompositionFile): void => {
+  validatePresenceOf(file, MediaErrorText.invalidFileSource)
+
+  if (typeof file !== 'string') {
+    if (!(file instanceof Readable)) {
+      throw new Error(MediaErrorText.invalidFileSource)
+    }
+  }
+}
 
 export const validateVideoOptions = ({ backgroundColor, dimensions, duration }: VideoOptions): void => {
   const errors: string[] = []

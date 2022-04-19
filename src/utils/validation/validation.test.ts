@@ -2,6 +2,7 @@ import colors from 'colors/safe'
 
 import { PrimitiveType } from 'constant'
 import { ValidationErrorText } from 'strings'
+import * as ProcessUtilsModule from 'utils/process'
 
 import {
   assertType,
@@ -101,7 +102,7 @@ describe('withValidation', () => {
   let validator: jest.Mock
   let callback: jest.Mock
   let consoleErrorSpy: jest.SpyInstance
-  let processExitSpy: jest.SpyInstance
+  let exitProcessSpy: jest.SpyInstance
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -111,7 +112,7 @@ describe('withValidation', () => {
     validator = jest.fn()
     callback = jest.fn()
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
-    processExitSpy = jest.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+    exitProcessSpy = jest.spyOn(ProcessUtilsModule, 'exitProcess').mockImplementation(() => {})
     withValidation(validator, callback)
   })
 
@@ -134,12 +135,13 @@ describe('withValidation', () => {
       })
       withValidation(validator, callback)
     })
+
     it('logs the error to the console', () => {
       expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(typeError.stack))
     })
 
     it('exits the process', () => {
-      expect(processExitSpy).toHaveBeenCalledWith(1)
+      expect(exitProcessSpy).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -151,12 +153,13 @@ describe('withValidation', () => {
 
       withValidation(validator, callback)
     })
+
     it('logs the error to the console', () => {
       expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(error.stack))
     })
 
     it('exits the process', () => {
-      expect(processExitSpy).toHaveBeenCalledWith(1)
+      expect(exitProcessSpy).toHaveBeenCalledTimes(1)
     })
   })
 })
@@ -167,7 +170,7 @@ describe('withValidationAsync', () => {
   let validator: jest.Mock
   let callback: jest.Mock
   let consoleErrorSpy: jest.SpyInstance
-  let processExitSpy: jest.SpyInstance
+  let exitProcessSpy: jest.SpyInstance
 
   afterEach(() => {
     jest.resetAllMocks()
@@ -177,7 +180,7 @@ describe('withValidationAsync', () => {
     validator = jest.fn()
     callback = jest.fn()
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
-    processExitSpy = jest.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+    exitProcessSpy = jest.spyOn(ProcessUtilsModule, 'exitProcess').mockImplementation(() => {})
     await withValidationAsync(validator, callback)
   })
 
@@ -206,7 +209,7 @@ describe('withValidationAsync', () => {
     })
 
     it('exits the process', () => {
-      expect(processExitSpy).toHaveBeenCalledWith(1)
+      expect(exitProcessSpy).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -224,7 +227,7 @@ describe('withValidationAsync', () => {
     })
 
     it('exits the process', () => {
-      expect(processExitSpy).toHaveBeenCalledWith(1)
+      expect(exitProcessSpy).toHaveBeenCalledTimes(1)
     })
   })
 })

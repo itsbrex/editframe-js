@@ -1,5 +1,6 @@
 import colors from 'colors/safe'
 export const ValidationErrorText = {
+  FILE_DOES_NOT_EXIST: (filepath: string): string => `\\${colors.white(filepath)}\\ is not a valid path`,
   INVALID_URL: (url: string): string => `\\${colors.white(url)}\\ is not valid url`,
   MUST_BE_TYPE: (caller: string, fieldName: string, value: any, type: string): string =>
     `\n  \\${colors.white(fieldName)}\\ attribute in \\${colors.white(caller)}\\ must be of type \\${colors.white(

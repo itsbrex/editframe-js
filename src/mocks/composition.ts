@@ -19,15 +19,25 @@ import {
   WaveformLayer,
 } from 'constant'
 
-export const mockComposition = ({
-  layer,
-  layers,
-  updateLayerAttribute,
-}: {
-  layer: any
-  layers: any
-  updateLayerAttribute: any
-}): CompositionInterface => ({
+export const mockComposition = (
+  {
+    getLayerAttribute = () => {},
+    layer = () => {},
+    layers = [],
+    updateLayerAttribute = () => {},
+  }: {
+    getLayerAttribute?: any
+    layer?: any
+    layers?: any
+    updateLayerAttribute?: any
+  } = {
+    getLayerAttribute: () => {},
+    layer: () => {},
+    layers: [],
+    updateLayerAttribute: () => {},
+  }
+): CompositionInterface => ({
+  getLayerAttribute,
   layer,
   layers,
   updateLayerAttribute,
@@ -48,8 +58,8 @@ export const mockCompositionOptions = (
 })
 
 export const mockAudioLayer = (
-  { length, start, trim, volume }: AudioLayer = { length: 10, start: 0, trim: { end: 5, start: 1 }, volume: 1 }
-): AudioLayer => ({ length, start, trim, volume })
+  { start, trim, volume }: AudioLayer = { start: 0, trim: { end: 5, start: 1 }, volume: 1 }
+): AudioLayer => ({ start, trim, volume })
 
 export const mockEncodeResponse = (
   { id, status, timestamp }: EncodeResponse = { id: 'id', status: 'status', timestamp: 1646242134 }
@@ -60,14 +70,12 @@ export const mockEncodeResponse = (
 })
 
 export const mockFilterLayer = (
-  { filter, length, start }: FilterLayer = {
+  { filter, start }: FilterLayer = {
     filter: { filterName: FilterName.brightness, options: { brightness: 10 } },
-    length: 10,
     start: 0,
   }
 ): FilterLayer => ({
   filter,
-  length,
   start,
 })
 
@@ -101,7 +109,6 @@ export const mockImageLayer = ({ withFilter }: { withFilter: boolean } = { withF
     : undefined,
   format: LayerFormatValue.fill,
   height: 100,
-  length: 20,
   start: 10,
   width: 200,
   x: 10,
@@ -109,14 +116,12 @@ export const mockImageLayer = ({ withFilter }: { withFilter: boolean } = { withF
 })
 
 export const mockLottieLayer = (
-  { data, length, start }: LottieLayer = {
+  { data, start }: LottieLayer = {
     data: { assets: [], ddd: 10, fr: 20, h: 30, ip: 40, layers: [], nm: 'nm', op: 50, v: 'v', w: 60 },
-    length: 20,
     start: 10,
   }
 ): LottieLayer => ({
   data,
-  length,
   start,
 })
 
@@ -143,7 +148,6 @@ export const mockTextLayer = (
     fontSize,
     format,
     height,
-    length,
     maxFontSize,
     maxHeight,
     maxWidth,
@@ -159,7 +163,6 @@ export const mockTextLayer = (
     fontSize: 20,
     format: LayerFormatValue.fill,
     height: 100,
-    length: 20,
     maxFontSize: 25,
     maxHeight: 400,
     maxWidth: 800,
@@ -176,7 +179,6 @@ export const mockTextLayer = (
   fontSize,
   format,
   height,
-  length,
   maxFontSize,
   maxHeight,
   maxWidth,
@@ -189,10 +191,9 @@ export const mockTextLayer = (
 })
 
 export const mockVideoLayer = (
-  { format, height, length, start, width, x, y }: VideoLayer = {
+  { format, height, start, width, x, y }: VideoLayer = {
     format: LayerFormatValue.fill,
     height: 100,
-    length: 20,
     start: 10,
     width: 200,
     x: 10,
@@ -201,7 +202,6 @@ export const mockVideoLayer = (
 ): VideoLayer => ({
   format,
   height,
-  length,
   start,
   width,
   x,

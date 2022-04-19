@@ -107,7 +107,7 @@ await editframe.videos.get('yKOqd7QnJZ')
 Constructing a video clip from images and audio :
 
 ```javascript
-const composition = editframe.videos.new({ dimensions: { height: 700, width: 700 }, duration: 12 })
+const composition = await editframe.videos.new({ dimensions: { height: 700, width: 700 }, duration: 12 })
 const imageOne =
   'https://media0.giphy.com/media/gK99k8iMtKeJ2/giphy.gif?cid=ecf05e47iow5n0ep2sb40lm4bh8kvs7sckmh6af7zwwdurvi&rid=giphy.gif&ct=g'
 const imageTwo =
@@ -117,11 +117,11 @@ const imageThree =
 const logo = fs.createReadStream(path.resolve('./logo.png'))
 const audioFile = 'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_2MG.mp3'
 
-composition.addImage(imageOne, { format: 'fill', start: 0, length: 4 })
-composition.addImage(imageTwo, { format: 'fill', start: 4, length: 8 })
-composition.addImage(imageThree, { format: 'fill', start: 8, length: 12 })
-composition.addImage(logo, { x: 'center', y: 'center' })
-composition.addAudio(audioFile)
+await composition.addImage(imageOne, { format: 'fill', start: 0, length: 4 })
+await composition.addImage(imageTwo, { format: 'fill', start: 4, length: 8 })
+await composition.addImage(imageThree, { format: 'fill', start: 8, length: 12 })
+await composition.addImage(logo, { x: 'center', y: 'center' })
+await composition.addAudio(audioFile)
 
 await composition.encode()
 ```

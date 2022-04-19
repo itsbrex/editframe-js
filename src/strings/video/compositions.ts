@@ -1,5 +1,8 @@
 import colors from 'colors/safe'
 
+import { LayerAttribute } from 'constant'
+import { ValidationErrorText } from 'strings/validation'
+
 export const CompositionErrorText = {
   dataRequired: `\\${colors.white('data')}\\ must be provided`,
   dimensionsRequired: `\\${colors.white('dimensions')}\\ must be provided unless a \\${colors.white(
@@ -14,5 +17,10 @@ export const CompositionErrorText = {
   malformedEncodingResponse: `malformed ${colors.white('encoding')}\\ response`,
   optionsRequired: `\\${colors.white('options')}\\ must be provided`,
   textRequired: `\\${colors.white('text')}\\ field required`,
+  trimEndRequired: (layerType: string): string =>
+    `layer \\${colors.white(layerType)}\\ must provide \\${colors.white(
+      ValidationErrorText.SUB_FIELD(LayerAttribute.trim, LayerAttribute.end)
+    )}\\ attribute in order to calculate position in sequence timeline automatically`,
+
   validationOptionsError: (errors: string): string => `Error: ${errors}`,
 }

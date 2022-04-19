@@ -1,4 +1,4 @@
-import { CompositionInterface, IdentifiedLayer, LayerAttribute, PositionableMediaMethod, PrimitiveType } from 'constant'
+import { CompositionInterface, LayerAttribute, PositionableMediaMethod, PrimitiveType } from 'constant'
 import { mockComposition } from 'mocks'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as VideoLayersUtilsModule from 'utils/video/layers'
@@ -7,7 +7,6 @@ import { PositionableMedia } from './'
 
 describe('PositionableMedia', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let positionableMedia: PositionableMedia
   let validateValueIsOfTypeSpy: jest.SpyInstance
@@ -23,8 +22,6 @@ describe('PositionableMedia', () => {
     validateXSpy = jest.spyOn(VideoLayersUtilsModule, 'validateX')
     validateYSpy = jest.spyOn(VideoLayersUtilsModule, 'validateY')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

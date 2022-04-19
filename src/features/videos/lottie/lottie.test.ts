@@ -1,4 +1,4 @@
-import { CompositionInterface, IdentifiedLayer, LayerAttribute, LottieMethod, PrimitiveType } from 'constant'
+import { CompositionInterface, LayerAttribute, LottieMethod, PrimitiveType } from 'constant'
 import { mockComposition, mockLottieLayer } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
@@ -7,7 +7,6 @@ import { Lottie } from './'
 
 describe('Lottie', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   const { data } = mockLottieLayer()
   let compositionMock: CompositionInterface
   let lottie: Lottie
@@ -22,8 +21,6 @@ describe('Lottie', () => {
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

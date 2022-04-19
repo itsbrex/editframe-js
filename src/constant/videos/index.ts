@@ -30,33 +30,3 @@ export enum ApiVideoMethod {
   getMetadata = '_getMetadata',
   new = 'new',
 }
-
-export enum ApiVideoMetadataAttribute {
-  bitrate = 'bitrate',
-  codec = 'codec',
-  duration = 'duration',
-  fps = 'fps',
-  height = 'height',
-  size = 'size',
-  width = 'width',
-}
-
-export type ApiVideoMetadata = {
-  [ApiVideoMetadataAttribute.bitrate]: number
-  [ApiVideoMetadataAttribute.codec]: string
-  [ApiVideoMetadataAttribute.duration]: number
-  [ApiVideoMetadataAttribute.fps]: number
-  [ApiVideoMetadataAttribute.height]: number
-  [ApiVideoMetadataAttribute.size]: number
-  [ApiVideoMetadataAttribute.width]: number
-}
-
-export enum ApiVideoMetadataFormDataKey {
-  type = 'type',
-}
-
-export enum ApiVideoMetadataType {
-  audio = 'audio',
-  image = 'image',
-  video = 'video',
-}

@@ -8,6 +8,10 @@ export class Media extends Layer {
     super({ composition, id })
   }
 
+  get trim(): Trim {
+    return this._composition.getLayerAttribute<Trim>(this.id, LayerAttribute.trim)
+  }
+
   [MediaMethod.setTrim]({ end, start }: Trim): this | void {
     withValidation<this>(
       () => {

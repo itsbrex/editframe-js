@@ -1,10 +1,21 @@
-import { baseURL, initializeFetchUtil, makeHeaders, validateApiData } from './api'
+import { baseURL, initializeFetchUtil, makeHeaders, metadataValidatorsByType, validateApiData } from './api'
 import { isApplication, isApplications } from './applications'
 import { logError } from './errors'
-import { createDirectory, createReadStream, downloadFile, fileExists, removeDirectory, saveFile } from './files'
+import {
+  createDirectory,
+  createReadStream,
+  createTemporaryDirectory,
+  downloadFile,
+  fileExists,
+  getExtension,
+  removeDirectory,
+  saveFile,
+} from './files'
 import { prepareFormData, urlOrFile } from './forms'
+import { isAudioExtension, isImageExtension, isVideoExtension } from './media'
 import { isPaginated } from './pagination'
 import { generatePath, withPaginationQueryParams, withQueryParams } from './paths'
+import { exitProcess } from './process'
 import { sanitizeHTML } from './sanitization'
 import { uuid } from './strings'
 import {
@@ -20,6 +31,7 @@ import {
 import { validateLayerFormat } from './video'
 import {
   formDataKey,
+  processCompositionFile,
   validateAddAudio,
   validateAddFilter,
   validateAddHTML,
@@ -29,6 +41,7 @@ import {
   validateAddText,
   validateAddVideo,
   validateAddWaveform,
+  validateCompositionFile,
   validateCompositionOptions,
   validateLayerMethod,
   validateVideoOptions,
@@ -53,30 +66,48 @@ import {
   validateY,
 } from './video/layers'
 import { preparePreview } from './video/preview'
-import { isApiVideo, isApiVideoMetadata, isApiVideos, isEncodeResponse } from './videos'
+import {
+  isApiAudioMetadata,
+  isApiImageMetadata,
+  isApiVideo,
+  isApiVideoMetadata,
+  isApiVideos,
+  isEncodeResponse,
+  validateNewVideo,
+} from './videos'
 
 export {
   assertType,
   baseURL,
   createDirectory,
   createReadStream,
+  createTemporaryDirectory,
   downloadFile,
+  exitProcess,
   fileExists,
   formDataKey,
   generatePath,
+  getExtension,
   initializeFetchUtil,
+  isApiAudioMetadata,
+  isApiImageMetadata,
   isApiVideo,
   isApiVideoMetadata,
   isApiVideos,
   isApplication,
   isApplications,
+  isAudioExtension,
   isEncodeResponse,
+  isImageExtension,
   isPaginated,
   isValidUrl,
+  isVideoExtension,
   logError,
   makeHeaders,
+  metadataValidatorsByType,
   prepareFormData,
   preparePreview,
+  processCompositionFile,
   removeDirectory,
   sanitizeHTML,
   saveFile,
@@ -92,6 +123,7 @@ export {
   validateAddVideo,
   validateAddWaveform,
   validateApiData,
+  validateCompositionFile,
   validateCompositionOptions,
   validateFilter,
   validateFormat,
@@ -109,6 +141,7 @@ export {
   validateLayerText,
   validateLayerTrim,
   validateLayerVisualMedia,
+  validateNewVideo,
   validatePresenceOf,
   validateTextAlignment,
   validateURL,
