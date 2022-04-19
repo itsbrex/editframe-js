@@ -1,6 +1,8 @@
+/// <reference types="node" />
 import FormData from "form-data";
-import { Size, CompositionOptionAttribute, Filter, HTMLOptions, IdentifiedLayer, LayerAttribute, SubtitlesOptions, AudioLayer, CompositionFile, FilterLayer, HTMLLayer, ImageLayer, LottieLayer, SubtitlesLayer, TextLayer, VideoLayer, WaveformLayer, Trim, FilterOptions, X, Y, LayerFormat, FontWeight, TextAlignment } from "@editframe/shared-types";
+import { Size, CompositionOptionAttribute, Filter, HTMLOptions, IdentifiedLayer, LayerAttribute, SubtitlesOptions, CompositionFile, AudioLayer, FilterLayer, HTMLLayer, ImageLayer, LottieLayer, SequenceLayer, SubtitlesLayer, TextLayer, VideoLayer, WaveformLayer, Trim, FilterOptions, X, Y, LayerFormat, FontWeight, TextAlignment } from "@editframe/shared-types";
 import { Filter as FilterType } from "@editframe/shared-types";
+import { Readable } from "node:stream";
 interface ApiInterface {
     get: ({ url }: {
         url: string;
@@ -79,31 +81,37 @@ interface LottieAnimationData {
     v: string;
     w: number;
 }
-type LayerAttributeValue = boolean | number | string | Filter | LottieAnimationData | HTMLOptions | SubtitlesOptions;
+type LayerAttributeValue = boolean | number | string | Filter | HTMLOptions | LottieAnimationData | Readable | SubtitlesOptions;
 declare enum CompositionMethod {
     addAudio = "addAudio",
     addFilter = "addFilter",
     addHTML = "addHTML",
     addImage = "addImage",
     addLottie = "addLottie",
+    addSequence = "addSequence",
     addSubtitles = "addSubtitles",
     addText = "addText",
     addVideo = "addVideo",
     addWaveform = "addWaveform",
+    aspectRatio = "_aspectRatio",
     backgroundColor = "backgroundColor",
     dimensions = "dimensions",
     duration = "duration",
     encode = "encode",
+    getLayerAttribute = "getLayerAttribute",
+    getMetadata = "_getMetadata",
     layer = "layer",
     layers = "layers",
     metadata = "metadata",
     preview = "preview",
     setLayer = "setLayer",
+    updateFile = "updateFile",
     updateLayerAttribute = "updateLayerAttribute"
 }
 interface CompositionInterface {
     [CompositionMethod.layer]: (id: string) => IdentifiedLayer;
     [CompositionMethod.layers]: IdentifiedLayer[];
+    [CompositionMethod.getLayerAttribute]: <LayerAttributeValue>(id: string, layerAttribute: LayerAttribute) => LayerAttributeValue;
     [CompositionMethod.updateLayerAttribute]: (id: string, layerAttribute: LayerAttribute, value: LayerAttributeValue) => void;
 }
 type Metadata = Record<string, string>;
@@ -133,7 +141,6 @@ declare enum HTMLMethod {
     setHTMLOptions = "setHTMLOptions"
 }
 declare enum LayerMethod {
-    setLength = "setLength",
     setStart = "setStart"
 }
 declare enum MediaMethod {
@@ -149,6 +156,9 @@ declare enum ResizableMediaMethod {
     setFormat = "setFormat",
     setHeight = "setHeight",
     setWidth = "setWidth"
+}
+declare enum SequenceMethod {
+    setStart = "setStart"
 }
 declare enum SubtitlesMethod {
     setSubtitlesOptions = "setSubtitlesOptions"
@@ -217,8 +227,8 @@ declare class Layer {
         id: string;
     });
     get id(): string;
+    get start(): number | undefined;
     [LayerMethod.setStart](start?: number): this | void;
-    [LayerMethod.setLength](length?: number): this | void;
     _updateAttribute(layerAttribute: LayerAttribute, value: LayerAttributeValue): this;
 }
 declare class Media extends Layer {
@@ -226,6 +236,7 @@ declare class Media extends Layer {
         composition: CompositionInterface;
         id: string;
     });
+    get trim(): Trim;
     [MediaMethod.setTrim]({ end, start }: Trim): this | void;
 }
 declare class Audio extends Media {
@@ -288,6 +299,15 @@ declare class Lottie extends VisualMedia {
     });
     [LottieMethod.setAnimationData](data: LottieAnimationData): Lottie | void;
 }
+declare class Sequence extends Layer {
+    layers: Layer[];
+    constructor({ composition, id, layers }: {
+        composition: CompositionInterface;
+        id: string;
+        layers: Layer[];
+    });
+    [SequenceMethod.setStart](start?: number): this | void;
+}
 declare class Subtitles extends PositionableMedia {
     constructor({ composition, id }: {
         composition: CompositionInterface;
@@ -324,39 +344,47 @@ declare class Composition implements CompositionInterface {
     private _formData;
     private _layers;
     private _options;
-    constructor({ api, formData, options }: {
+    private _temporaryDirectory;
+    constructor({ api, formData, options, temporaryDirectory }: {
         api: ApiInterface;
         formData: FormDataInterface;
         options: CompositionOptions;
+        temporaryDirectory?: string;
     });
-    get [CompositionMethod.backgroundColor](): string;
-    get [CompositionMethod.dimensions](): Size;
-    get [CompositionMethod.duration](): number;
-    get [CompositionMethod.metadata](): Metadata;
+    get backgroundColor(): string;
+    get dimensions(): Size;
+    get duration(): number;
+    get metadata(): Metadata;
     get [CompositionMethod.layers](): IdentifiedLayer[];
     [CompositionMethod.layer](id: string): IdentifiedLayer;
-    [CompositionMethod.addAudio](file: CompositionFile, options?: AudioLayer): Audio | undefined;
+    setDuration(duration: number): void;
+    [CompositionMethod.getLayerAttribute]<LayerAttributeValue>(id: string, layerAttribute: LayerAttribute): LayerAttributeValue;
+    [CompositionMethod.updateLayerAttribute](id: string, layerAttribute: LayerAttribute, value: LayerAttributeValue): void;
+    [CompositionMethod.updateFile](id: string, file: Readable): void;
+    [CompositionMethod.addAudio](file: CompositionFile, options?: AudioLayer): Promise<Audio>;
     [CompositionMethod.addFilter](options: FilterLayer): Filter$0 | undefined;
     [CompositionMethod.addHTML](options: HTMLLayer): Promise<HTML>;
-    [CompositionMethod.addImage](file: CompositionFile, options: ImageLayer): Video | undefined;
+    [CompositionMethod.addImage](file: CompositionFile, options?: ImageLayer): Promise<Video>;
     [CompositionMethod.addLottie](options: LottieLayer): Lottie | undefined;
-    [CompositionMethod.addSubtitles](file: CompositionFile, options?: SubtitlesLayer): Subtitles | undefined;
+    [CompositionMethod.addSequence](layers: Layer[], options?: SequenceLayer): Promise<Sequence>;
+    [CompositionMethod.addSubtitles](file: CompositionFile, options?: SubtitlesLayer): Promise<Subtitles>;
     [CompositionMethod.addText](options: TextLayer): Text | undefined;
-    [CompositionMethod.addVideo](file: CompositionFile, options?: VideoLayer): Video | undefined;
-    [CompositionMethod.addWaveform](options?: WaveformLayer, file?: CompositionFile): VisualMedia | undefined;
+    [CompositionMethod.addVideo](file: CompositionFile, options?: VideoLayer): Promise<Video>;
+    [CompositionMethod.addWaveform](options?: WaveformLayer, file?: CompositionFile): Promise<VisualMedia>;
     [CompositionMethod.preview](): Promise<void>;
     [CompositionMethod.encode](): Promise<EncodeResponse>;
     private _generateConfig;
     private _addLayer;
-    [CompositionMethod.updateLayerAttribute](id: string, layerAttribute: LayerAttribute, value: LayerAttributeValue): void;
     private [CompositionMethod.setLayer];
+    private [CompositionMethod.getMetadata];
+    private _file;
 }
 declare class Videos {
     private _api;
     constructor(api: ApiInterface);
     [ApiVideoMethod.all](page?: number, perPage?: number): Promise<ApiVideo[]>;
     [ApiVideoMethod.get](id: string): Promise<ApiVideo | undefined>;
-    [ApiVideoMethod.new](options?: VideoOptions, videoPath?: string): Promise<Composition>;
+    [ApiVideoMethod.new](options?: VideoOptions, videoFile?: CompositionFile): Promise<Composition>;
     private [ApiVideoMethod.getMetadata];
 }
 declare class Editframe {
