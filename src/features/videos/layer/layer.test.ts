@@ -1,4 +1,4 @@
-import { CompositionInterface, IdentifiedLayer, LayerAttribute, LayerMethod, PrimitiveType } from 'constant'
+import { CompositionInterface, LayerAttribute, LayerMethod, PrimitiveType } from 'constant'
 import { mockComposition } from 'mocks'
 import * as ValidationUtilsModule from 'utils/validation'
 
@@ -6,7 +6,6 @@ import { Layer } from './'
 
 describe('Layer', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let layer: Layer
   let validateValueIsOfTypeSpy: jest.SpyInstance
@@ -18,8 +17,6 @@ describe('Layer', () => {
   beforeEach(() => {
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 
@@ -51,30 +48,6 @@ describe('Layer', () => {
       layer.setStart(start)
 
       expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.start, start)
-    })
-  })
-
-  describe('setLength', () => {
-    it('calls the `validateValueIsOfType` function', () => {
-      const length = 5
-
-      layer.setLength(length)
-
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        LayerMethod.setLength,
-        LayerAttribute.length,
-        length,
-        PrimitiveType.number,
-        true
-      )
-    })
-
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      const length = 20
-
-      layer.setLength(length)
-
-      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.length, length)
     })
   })
 })

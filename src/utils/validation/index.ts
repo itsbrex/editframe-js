@@ -1,5 +1,6 @@
 import { ValidationErrorText } from 'strings'
 import { logError } from 'utils/errors'
+import { exitProcess } from 'utils/process'
 
 export const assertType = (value: unknown, expected: string[] | string): boolean =>
   Array.isArray(expected) ? expected.includes(typeof value) : typeof value === expected
@@ -81,7 +82,9 @@ export const withValidation = <T>(validate: () => void, callback?: () => T | und
   } catch ({ name, stack }) {
     logError(stack)
 
-    process.exit(1)
+    exitProcess()
+
+    return undefined
   }
 }
 
@@ -97,6 +100,8 @@ export const withValidationAsync = async <T>(validate: () => void, callback?: ()
   } catch ({ name, stack }) {
     logError(stack)
 
-    process.exit(1)
+    exitProcess()
+
+    return undefined
   }
 }

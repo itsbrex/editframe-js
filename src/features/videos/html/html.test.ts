@@ -1,4 +1,4 @@
-import { CompositionInterface, HTMLMethod, HTMLOptions, IdentifiedLayer, LayerAttribute } from 'constant'
+import { CompositionInterface, HTMLMethod, HTMLOptions, LayerAttribute } from 'constant'
 import { mockComposition } from 'mocks'
 import * as VideoLayersUtilsModule from 'utils/video/layers'
 
@@ -6,7 +6,6 @@ import { HTML } from './'
 
 describe('HTML', () => {
   const id = 'id'
-  const layers: IdentifiedLayer[] = []
   let compositionMock: CompositionInterface
   let html: HTML
   let validateLayerHTMLSpy: jest.SpyInstance
@@ -18,8 +17,6 @@ describe('HTML', () => {
   beforeEach(() => {
     validateLayerHTMLSpy = jest.spyOn(VideoLayersUtilsModule, 'validateLayerHTML')
     compositionMock = mockComposition({
-      layer: jest.fn(),
-      layers,
       updateLayerAttribute: jest.fn(),
     })
 

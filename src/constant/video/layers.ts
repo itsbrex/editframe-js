@@ -30,6 +30,7 @@ export {
   LayerVisualMedia,
   LayerWaveform,
   LottieLayer,
+  SequenceLayer,
   Size,
   SubtitlesAttribute,
   SubtitlesLayer,

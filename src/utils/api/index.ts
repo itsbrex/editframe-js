@@ -2,16 +2,21 @@ import camelCaseKeys from 'camelcase-keys'
 import fetch from 'cross-fetch'
 
 import {
+  ApiAudioMetadata,
   ApiDataValidator,
   ApiHeaderKey,
   ApiHeaderValue,
   ApiHeaders,
+  ApiImageMetadata,
+  ApiVideoMetadata,
+  ApiVideoMetadataType,
   FetchFunction,
   Fetcher,
   MakeFetchFunction,
   MimeType,
 } from 'constant'
-import { ApiErrorText } from 'strings'
+import { ApiErrorText, VideoErrorText } from 'strings'
+import { isApiAudioMetadata, isApiImageMetadata, isApiVideoMetadata } from 'utils/videos'
 
 import { version } from '../../../package.json'
 
@@ -74,4 +79,22 @@ export const validateApiData = <DataType>(data: unknown, validator: ApiDataValid
   }
 
   throw new Error(validator.invalidDataError)
+}
+
+export const metadataValidatorsByType = {
+  [ApiVideoMetadataType.audio]: (data: unknown): ApiAudioMetadata =>
+    validateApiData<ApiAudioMetadata>(data, {
+      invalidDataError: VideoErrorText.malformedResponse,
+      validate: isApiAudioMetadata,
+    }),
+  [ApiVideoMetadataType.image]: (data: unknown): ApiImageMetadata =>
+    validateApiData<ApiImageMetadata>(data, {
+      invalidDataError: VideoErrorText.malformedResponse,
+      validate: isApiImageMetadata,
+    }),
+  [ApiVideoMetadataType.video]: (data: unknown): ApiVideoMetadata =>
+    validateApiData<ApiVideoMetadata>(data, {
+      invalidDataError: VideoErrorText.malformedResponse,
+      validate: isApiVideoMetadata,
+    }),
 }

@@ -1,4 +1,4 @@
-import { mockApi } from './api'
+import { mockApi, mockApiAudioMetadata, mockApiVideoMetadata } from './api'
 import { mockApplication } from './applications'
 import {
   mockAudioLayer,
@@ -15,10 +15,11 @@ import {
   mockWaveformLayer,
 } from './composition'
 import { mockPagination } from './pagination'
-import { mockApiVideo, mockApiVideoMetadata } from './videos'
+import { mockApiVideo } from './videos'
 
 export {
   mockApi,
+  mockApiAudioMetadata,
   mockApiVideo,
   mockApiVideoMetadata,
   mockAudioLayer,

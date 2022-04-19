@@ -1,5 +1,6 @@
 import { fetch } from 'cross-fetch'
 import fs, { createWriteStream, existsSync, mkdirSync, rmdirSync, writeFileSync } from 'fs'
+import { parse, resolve } from 'path'
 import { Readable } from 'stream'
 
 import { FetchResponse } from 'constant'
@@ -13,14 +14,16 @@ export const createDirectory = (directory: string): void => {
 
 export const createReadStream = (path: string): Readable => fs.createReadStream(path)
 
-export const downloadFile = async (
-  url: string
-): Promise<{ temporaryFileDirectory: string; temporaryFilePath: string }> => {
-  const temporaryFileDirectory = `./tmp/${uuid()}`
-  const temporaryFilePath = `${temporaryFileDirectory}/${uuid()}`
+export const createTemporaryDirectory = (): string => {
+  const directory = resolve(`./tmp/${uuid()}`)
 
-  createDirectory(temporaryFileDirectory)
+  createDirectory(directory)
 
+  return directory
+}
+
+export const downloadFile = async (url: string, directory: string): Promise<{ temporaryFilePath: string }> => {
+  const temporaryFilePath = resolve(`${directory}/${uuid()}${getExtension(url)}`)
   const res = (await fetch(url)) as FetchResponse
   const fileStream = createWriteStream(temporaryFilePath)
 
@@ -30,10 +33,12 @@ export const downloadFile = async (
     fileStream.on('finish', resolve)
   })
 
-  return { temporaryFileDirectory, temporaryFilePath }
+  return { temporaryFilePath }
 }
 
 export const fileExists = (filepath: string): boolean => existsSync(filepath)
+
+export const getExtension = (filepath: string): string => parse(filepath).ext
 
 export const removeDirectory = (directory: string): void => {
   if (fileExists(directory)) {

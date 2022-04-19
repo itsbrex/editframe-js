@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import { createDirectory, createReadStream, fileExists, removeDirectory, saveFile } from './'
+import { createDirectory, createReadStream, fileExists, getExtension, removeDirectory, saveFile } from './'
 
 describe('createDirectory', () => {
   const directory = 'directory'
@@ -57,6 +57,16 @@ describe('fileExists', () => {
     jest.spyOn(fs, 'existsSync').mockReturnValue(false)
 
     expect(fileExists(filepath)).toEqual(false)
+  })
+})
+
+describe('getExtension', () => {
+  it('returns the extension of a provided name', () => {
+    expect(getExtension('file.mp3')).toEqual('.mp3')
+  })
+
+  it('returns the extension of a provided filepath', () => {
+    expect(getExtension('path/to/file.mp3')).toEqual('.mp3')
   })
 })
 
