@@ -2,7 +2,7 @@ import { Api } from 'api'
 import { CommonResolution, EditframeOptions, defaultHost } from 'constant'
 import { Applications, Videos } from 'features'
 import { EditframeErrorText } from 'strings'
-import { baseURL, initializeFetchUtil } from 'utils'
+import { baseUrl, initializeFetchUtil } from 'utils'
 
 export class Editframe {
   public applications: Applications
@@ -20,7 +20,7 @@ export class Editframe {
 
     this._api = new Api({
       clientId,
-      fetch: initializeFetchUtil(baseURL(host, version)),
+      fetch: initializeFetchUtil(baseUrl(host, version)),
       host,
       token,
       version,

@@ -1,6 +1,6 @@
 import { Hashided, Timestamped } from 'constant/common'
 
-export enum ApiVideoAttribute {
+export enum ApiVideoKey {
   downloadUrl = 'downloadUrl',
   duration = 'duration',
   id = 'id',
@@ -14,14 +14,14 @@ export enum ApiVideoAttribute {
 
 export type ApiVideo = Hashided &
   Timestamped & {
-    [ApiVideoAttribute.downloadUrl]?: string
-    [ApiVideoAttribute.duration]?: number
-    [ApiVideoAttribute.isFailed]: boolean
-    [ApiVideoAttribute.isReady]: boolean
-    [ApiVideoAttribute.metadata]: Record<string, unknown>
-    [ApiVideoAttribute.streamUrl]?: string
-    [ApiVideoAttribute.thumbnailUrl]?: string
-    [ApiVideoAttribute.timestamp]: number
+    [ApiVideoKey.downloadUrl]?: string
+    [ApiVideoKey.duration]?: number
+    [ApiVideoKey.isFailed]: boolean
+    [ApiVideoKey.isReady]: boolean
+    [ApiVideoKey.metadata]: Record<string, unknown>
+    [ApiVideoKey.streamUrl]?: string
+    [ApiVideoKey.thumbnailUrl]?: string
+    [ApiVideoKey.timestamp]: number
   }
 
 export enum ApiVideoMethod {

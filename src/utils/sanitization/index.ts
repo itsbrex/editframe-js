@@ -2,9 +2,9 @@ import he from 'he'
 import imageToBase64 from 'image-to-base64'
 import { JSDOM } from 'jsdom'
 
-export const escapeHTML = (html: string): string => he.unescape(he.escape(html))
+export const escapeHtml = (html: string): string => he.unescape(he.escape(html))
 
-export const sanitizeHTML = async (html: string): Promise<string> => {
+export const sanitizeHtml = async (html: string): Promise<string> => {
   const {
     window: { document },
   } = new JSDOM(html.slice())
@@ -21,5 +21,5 @@ export const sanitizeHTML = async (html: string): Promise<string> => {
     }
   }
 
-  return escapeHTML(document.documentElement.outerHTML)
+  return escapeHtml(document.documentElement.outerHTML)
 }

@@ -3,4 +3,12 @@ export interface ApiDataValidator<DataType> {
   validate: (data: unknown) => data is DataType
 }
 
-export type LayerValidator = (callerName: string, options: Record<string, any>) => string[]
+export type LayerValidator<LayerType> = ({
+  callerName,
+  layer,
+  shouldThrow,
+}: {
+  callerName: string
+  layer: LayerType
+  shouldThrow?: false
+}) => string[]

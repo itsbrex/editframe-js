@@ -1,4 +1,4 @@
-export enum ApiVideoMetadataAttribute {
+export enum ApiVideoMetadataKey {
   bitrate = 'bitrate',
   codec = 'codec',
   duration = 'duration',
@@ -10,28 +10,28 @@ export enum ApiVideoMetadataAttribute {
 }
 
 export type ApiVideoMetadata = {
-  [ApiVideoMetadataAttribute.bitrate]: number
-  [ApiVideoMetadataAttribute.codec]: string
-  [ApiVideoMetadataAttribute.duration]: number
-  [ApiVideoMetadataAttribute.fps]: number
-  [ApiVideoMetadataAttribute.height]: number
-  [ApiVideoMetadataAttribute.size]: number
-  [ApiVideoMetadataAttribute.width]: number
+  [ApiVideoMetadataKey.bitrate]: number
+  [ApiVideoMetadataKey.codec]: string
+  [ApiVideoMetadataKey.duration]: number
+  [ApiVideoMetadataKey.fps]: number
+  [ApiVideoMetadataKey.height]: number
+  [ApiVideoMetadataKey.size]: number
+  [ApiVideoMetadataKey.width]: number
 }
 
 export type ApiAudioMetadata = {
-  [ApiVideoMetadataAttribute.bitrate]: number
-  [ApiVideoMetadataAttribute.codec]: string
-  [ApiVideoMetadataAttribute.duration]: number
-  [ApiVideoMetadataAttribute.samplerate]: number
-  [ApiVideoMetadataAttribute.size]: number
+  [ApiVideoMetadataKey.bitrate]: number
+  [ApiVideoMetadataKey.codec]: string
+  [ApiVideoMetadataKey.duration]: number
+  [ApiVideoMetadataKey.samplerate]: number
+  [ApiVideoMetadataKey.size]: number
 }
 
 export type ApiImageMetadata = {
-  [ApiVideoMetadataAttribute.codec]: string
-  [ApiVideoMetadataAttribute.height]: string
-  [ApiVideoMetadataAttribute.size]: string
-  [ApiVideoMetadataAttribute.width]: string
+  [ApiVideoMetadataKey.codec]: string
+  [ApiVideoMetadataKey.height]: string
+  [ApiVideoMetadataKey.size]: string
+  [ApiVideoMetadataKey.width]: string
 }
 
 export enum ApiVideoMetadataFormDataKey {

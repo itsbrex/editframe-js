@@ -1,3 +1,4 @@
+import { LayerValidator } from 'constant'
 import { ValidationErrorText } from 'strings'
 import { logError } from 'utils/errors'
 import { exitProcess } from 'utils/process'
@@ -7,7 +8,7 @@ export const assertType = (value: unknown, expected: string[] | string): boolean
 
 export const isValidUrl = (url: string): boolean => {
   try {
-    validateURL(url)
+    validateUrl(url)
 
     return true
   } catch (error) {
@@ -15,7 +16,7 @@ export const isValidUrl = (url: string): boolean => {
   }
 }
 
-export const validateURL = (url: string): void => {
+export const validateUrl = (url: string): void => {
   try {
     new URL(url)
   } catch (error) {
@@ -23,9 +24,46 @@ export const validateURL = (url: string): void => {
   }
 }
 
+export const validateOptions = <OptionKey, Options>(
+  callerName: string,
+  optionKey: OptionKey,
+  options?: Options
+): void => {
+  if (!options) {
+    return
+  }
+
+  Object.keys(options).forEach((key) => {
+    if (!Object.keys(optionKey).includes(key)) {
+      throw new Error(
+        ValidationErrorText.INVALID_OPTIONS(
+          callerName,
+          Object.keys(optionKey).join(', '),
+          Object.keys(options).join(', ')
+        )
+      )
+    }
+  })
+}
+
+export const validateLayer = <LayerType>(
+  validators: LayerValidator<LayerType>[],
+  callerName: string,
+  layer: LayerType
+): void => {
+  const errors = validators
+    .map((validate) => validate({ callerName, layer }))
+    .flat()
+    .filter((error) => error !== undefined)
+
+  if (errors.length) {
+    throw new TypeError(`Validation Errors: ${errors.join('\n')}`)
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const validatePresenceOf = (value: any, errorMessage: string): void => {
-  if (!value) {
+  if (value === undefined || value === null) {
     throw new Error(errorMessage)
   }
 }
@@ -70,6 +108,30 @@ export const validateValueIsOfTypes = (
   return undefined
 }
 
+export const validateValueIsInList = (
+  caller: string,
+  fieldName: string,
+  value: number | string | undefined,
+  values: (string | number)[],
+  shouldThrow = false
+): string | undefined => {
+  if (value && !values.includes(value)) {
+    const message = ValidationErrorText.MUST_BE_TYPE(
+      caller,
+      fieldName,
+      value,
+      ValidationErrorText.OR(values.map((value) => value.toString()))
+    )
+
+    if (shouldThrow) {
+      throw new TypeError(message)
+    } else {
+      return message
+    }
+  }
+  return undefined
+}
+
 export const withValidation = <T>(validate: () => void, callback?: () => T | undefined): T => {
   try {
     validate()
@@ -105,3 +167,5 @@ export const withValidationAsync = async <T>(validate: () => void, callback?: ()
     return undefined
   }
 }
+
+export const filterUndefined = (maybeUndefined: unknown): boolean => maybeUndefined !== undefined

@@ -52,7 +52,7 @@ describe('generatePath', () => {
   })
 
   describe('with no path', () => {
-    it('matches the root URL', () => {
+    it('matches the root url', () => {
       expect(generatePath()).toBe('/')
     })
   })

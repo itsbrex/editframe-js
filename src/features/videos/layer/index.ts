@@ -1,5 +1,4 @@
-import { CompositionInterface, LayerAttribute, LayerAttributeValue, LayerMethod, PrimitiveType } from 'constant'
-import { validateValueIsOfType, withValidation } from 'utils'
+import { ChildKey, CompositionInterface, LayerAttributeValue, LayerKey } from 'constant'
 
 export class Layer {
   protected _composition: CompositionInterface
@@ -14,19 +13,20 @@ export class Layer {
     return this._id
   }
 
-  get start(): number | undefined {
-    return this._composition.getLayerAttribute<number | undefined>(this.id, LayerAttribute.start)
+  public getAttribute<Value>({ childKey, layerKey }: { childKey?: ChildKey; layerKey: LayerKey }): Value {
+    return this._composition.getLayerAttribute<Value>({ childKey, id: this.id, layerKey })
   }
 
-  public [LayerMethod.setStart](start?: number): this | void {
-    return withValidation<this>(
-      () => validateValueIsOfType(LayerMethod.setStart, LayerAttribute.start, start, PrimitiveType.number, true),
-      () => this._updateAttribute(LayerAttribute.start, start)
-    )
-  }
-
-  _updateAttribute(layerAttribute: LayerAttribute, value: LayerAttributeValue): this {
-    this._composition.updateLayerAttribute(this._id, layerAttribute, value)
+  public setAttribute({
+    childKey,
+    layerKey,
+    value,
+  }: {
+    childKey?: ChildKey
+    layerKey: LayerKey
+    value: LayerAttributeValue
+  }): this {
+    this._composition.setLayerAttribute({ childKey, id: this._id, layerKey, value })
 
     return this
   }

@@ -80,7 +80,7 @@ export class Videos {
       () => {
         validateNewVideo(options)
         if (videoFile) {
-          validateCompositionFile(videoFile)
+          validateCompositionFile(ApiVideoMethod.new, videoFile)
         }
       },
       async () => {

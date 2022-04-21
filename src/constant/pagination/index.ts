@@ -1,32 +1,32 @@
 export const PaginationPageSize = 15
 
-export enum PaginationAttribute {
+export enum PaginationKey {
   data = 'data',
   links = 'links',
   meta = 'meta',
 }
 
-export enum PaginationLinkAttribute {
+export enum PaginationLinkKey {
   first = 'first',
   last = 'last',
   next = 'next',
   prev = 'prev',
 }
 
-export enum PaginationMetaLinkAttribute {
+export enum PaginationMetaLinkKey {
   active = 'active',
   label = 'label',
   url = 'url',
 }
 
 export interface PaginationLinks {
-  [PaginationLinkAttribute.first]: string
-  [PaginationLinkAttribute.last]: string
-  [PaginationLinkAttribute.next]?: string
-  [PaginationLinkAttribute.prev]?: string
+  [PaginationLinkKey.first]: string
+  [PaginationLinkKey.last]: string
+  [PaginationLinkKey.next]?: string
+  [PaginationLinkKey.prev]?: string
 }
 
-export enum PaginationMetaAttribute {
+export enum PaginationMetaKey {
   currentPage = 'currentPage',
   from = 'from',
   lastPage = 'lastPage',
@@ -38,26 +38,26 @@ export enum PaginationMetaAttribute {
 }
 
 export interface PaginationMetaLink {
-  [PaginationMetaLinkAttribute.active]: boolean
-  [PaginationMetaLinkAttribute.label]: string
-  [PaginationMetaLinkAttribute.url]?: string
+  [PaginationMetaLinkKey.active]: boolean
+  [PaginationMetaLinkKey.label]: string
+  [PaginationMetaLinkKey.url]?: string
 }
 
 export interface PaginationMeta {
-  [PaginationMetaAttribute.currentPage]: number
-  [PaginationMetaAttribute.from]: number
-  [PaginationMetaAttribute.lastPage]: number
-  [PaginationMetaAttribute.links]: PaginationMetaLink[]
-  [PaginationMetaAttribute.path]: string
-  [PaginationMetaAttribute.perPage]: string
-  [PaginationMetaAttribute.to]: number
-  [PaginationMetaAttribute.total]: number
+  [PaginationMetaKey.currentPage]: number
+  [PaginationMetaKey.from]: number
+  [PaginationMetaKey.lastPage]: number
+  [PaginationMetaKey.links]: PaginationMetaLink[]
+  [PaginationMetaKey.path]: string
+  [PaginationMetaKey.perPage]: string
+  [PaginationMetaKey.to]: number
+  [PaginationMetaKey.total]: number
 }
 
 export interface Paginated<Resource> {
-  [PaginationAttribute.data]: Resource[]
-  [PaginationAttribute.links]: PaginationLinks
-  [PaginationAttribute.meta]: PaginationMeta
+  [PaginationKey.data]: Resource[]
+  [PaginationKey.links]: PaginationLinks
+  [PaginationKey.meta]: PaginationMeta
 }
 
 export enum PaginationQueryParam {

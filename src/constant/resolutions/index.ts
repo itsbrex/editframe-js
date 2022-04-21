@@ -1,6 +1,6 @@
-import { Size } from 'constant/video/layers'
+import { Dimensions } from 'constant/shared'
 
-export const CommonResolution: Record<string, Size> = {
+export const CommonResolution: Record<string, Dimensions> = {
   _1080p: { height: 1080, width: 1920 },
   _1080pVertical: { height: 1920, width: 1080 },
   _1080x1080: { height: 1080, width: 1080 },
