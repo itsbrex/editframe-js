@@ -1,26 +1,12 @@
 import camelCaseKeys from 'camelcase-keys'
 import fetch from 'cross-fetch'
 
-import {
-  ApiAudioMetadata,
-  ApiDataValidator,
-  ApiHeaderKey,
-  ApiHeaderValue,
-  ApiHeaders,
-  ApiImageMetadata,
-  ApiVideoMetadata,
-  ApiVideoMetadataType,
-  FetchFunction,
-  Fetcher,
-  MakeFetchFunction,
-  MimeType,
-} from 'constant'
-import { ApiErrorText, VideoErrorText } from 'strings'
-import { isApiAudioMetadata, isApiImageMetadata, isApiVideoMetadata } from 'utils/videos'
+import { ApiHeaderKey, ApiHeaderValue, ApiHeaders, FetchFunction, Fetcher, MakeFetchFunction, MimeType } from 'constant'
+import { ApiErrorText } from 'strings'
 
 import { version } from '../../../package.json'
 
-export const baseURL = (host: string, version: number): string => `${host}/v${version}`
+export const baseUrl = (host: string, version: number): string => `${host}/v${version}`
 
 export const initializeFetchUtil = (baseUrl: string): FetchFunction => makeRequest(makeFetcher(baseUrl))
 
@@ -71,30 +57,4 @@ export const makeHeaders = ({
   }
 
   return headers
-}
-
-export const validateApiData = <DataType>(data: unknown, validator: ApiDataValidator<DataType>): DataType => {
-  if (data && validator.validate(data)) {
-    return data
-  }
-
-  throw new Error(validator.invalidDataError)
-}
-
-export const metadataValidatorsByType = {
-  [ApiVideoMetadataType.audio]: (data: unknown): ApiAudioMetadata =>
-    validateApiData<ApiAudioMetadata>(data, {
-      invalidDataError: VideoErrorText.malformedResponse,
-      validate: isApiAudioMetadata,
-    }),
-  [ApiVideoMetadataType.image]: (data: unknown): ApiImageMetadata =>
-    validateApiData<ApiImageMetadata>(data, {
-      invalidDataError: VideoErrorText.malformedResponse,
-      validate: isApiImageMetadata,
-    }),
-  [ApiVideoMetadataType.video]: (data: unknown): ApiVideoMetadata =>
-    validateApiData<ApiVideoMetadata>(data, {
-      invalidDataError: VideoErrorText.malformedResponse,
-      validate: isApiVideoMetadata,
-    }),
 }

@@ -1,6 +1,5 @@
-import { CompositionInterface, LayerAttribute, LayerMethod, PrimitiveType } from 'constant'
+import { CompositionInterface, LayerKey, TimelineKey } from 'constant'
 import { mockComposition } from 'mocks'
-import * as ValidationUtilsModule from 'utils/validation'
 
 import { Layer } from './'
 
@@ -8,46 +7,46 @@ describe('Layer', () => {
   const id = 'id'
   let compositionMock: CompositionInterface
   let layer: Layer
-  let validateValueIsOfTypeSpy: jest.SpyInstance
 
   afterEach(() => {
     jest.resetAllMocks()
   })
 
   beforeEach(() => {
-    validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     compositionMock = mockComposition({
-      updateLayerAttribute: jest.fn(),
+      getLayerAttribute: jest.fn(),
+      setLayerAttribute: jest.fn(),
     })
 
     layer = new Layer({ composition: compositionMock, id })
   })
 
-  it('sets the `id` property to the value passed into the constructor', () => {
-    expect(layer.id).toEqual(id)
+  describe('id', () => {
+    it('returns the correct id', () => {
+      expect(layer.id).toEqual(id)
+    })
   })
 
-  describe('setStart', () => {
-    it('calls the `validateValueIsOfType` function', () => {
-      const start = 5
+  describe('getAttribute', () => {
+    it('calls the `getAttribute` method on the `composition` with the correct arguments', () => {
+      const childKey = TimelineKey.start
+      const layerKey = LayerKey.audio
 
-      layer.setStart(start)
+      layer.getAttribute({ childKey, layerKey })
 
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        LayerMethod.setStart,
-        LayerAttribute.start,
-        start,
-        PrimitiveType.number,
-        true
-      )
+      expect(compositionMock.getLayerAttribute).toHaveBeenCalledWith({ childKey, id, layerKey })
     })
+  })
 
-    it('calls the `updateLayerAttribute` method on the composition with the correct arguments', () => {
-      const start = 20
+  describe('setAttribute', () => {
+    it('calls the `setAttribute` method on the `composition` with the correct arguments', () => {
+      const childKey = TimelineKey.start
+      const layerKey = LayerKey.audio
+      const value = 10
 
-      layer.setStart(start)
+      layer.setAttribute({ childKey, layerKey, value })
 
-      expect(compositionMock.updateLayerAttribute).toHaveBeenCalledWith(id, LayerAttribute.start, start)
+      expect(compositionMock.setLayerAttribute).toHaveBeenCalledWith({ childKey, id, layerKey, value })
     })
   })
 })

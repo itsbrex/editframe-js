@@ -1,18 +1,23 @@
-import { CompositionOptionAttribute } from '@editframe/shared-types'
 import { Readable } from 'node:stream'
 
-import { Filter } from 'constant/video/filters'
-import { HTMLOptions, IdentifiedLayer, LayerAttribute, Size, SubtitlesOptions } from 'constant/video/layers'
-import { LottieAnimationData } from 'constant/video/lottie'
-
-export { CompositionFile, CompositionOptionAttribute, IdentifiedFile } from '@editframe/shared-types'
+import {
+  ChildKey,
+  CompositionKey,
+  Dimensions,
+  FilterOptions,
+  HtmlOptions,
+  IdentifiedLayer,
+  LayerKey,
+  SubtitlesOptions,
+} from 'constant/shared'
+import { LottieAnimationData } from 'constant/video/layers/lottie'
 
 export type LayerAttributeValue =
   | boolean
   | number
   | string
-  | Filter
-  | HTMLOptions
+  | FilterOptions
+  | HtmlOptions
   | LottieAnimationData
   | Readable
   | SubtitlesOptions
@@ -20,7 +25,7 @@ export type LayerAttributeValue =
 export enum CompositionMethod {
   addAudio = 'addAudio',
   addFilter = 'addFilter',
-  addHTML = 'addHTML',
+  addHtml = 'addHtml',
   addImage = 'addImage',
   addLottie = 'addLottie',
   addSequence = 'addSequence',
@@ -39,39 +44,52 @@ export enum CompositionMethod {
   layers = 'layers',
   metadata = 'metadata',
   preview = 'preview',
+  setDuration = '_setDuration',
+  setFile = '_setFile',
   setLayer = 'setLayer',
-  updateFile = 'updateFile',
-  updateLayerAttribute = 'updateLayerAttribute',
+  setLayerAttribute = 'setLayerAttribute',
 }
 
 export interface CompositionInterface {
+  readonly [CompositionMethod.duration]: number
   [CompositionMethod.layer]: (id: string) => IdentifiedLayer
   [CompositionMethod.layers]: IdentifiedLayer[]
-  [CompositionMethod.getLayerAttribute]: <LayerAttributeValue>(
-    id: string,
-    layerAttribute: LayerAttribute
-  ) => LayerAttributeValue
-  [CompositionMethod.updateLayerAttribute]: (
-    id: string,
-    layerAttribute: LayerAttribute,
+  [CompositionMethod.getLayerAttribute]: <LayerAttributeValue>({
+    childKey,
+    id,
+    layerKey,
+  }: {
+    childKey?: ChildKey
+    id: string
+    layerKey: LayerKey
+  }) => LayerAttributeValue
+  [CompositionMethod.setLayerAttribute]: ({
+    childKey,
+    id,
+    layerKey,
+    value,
+  }: {
+    childKey?: ChildKey
+    id: string
+    layerKey: LayerKey
     value: LayerAttributeValue
-  ) => void
+  }) => void
 }
 
 export type Metadata = Record<string, string>
 
 export type VideoOptions = {
-  [CompositionOptionAttribute.backgroundColor]?: string
-  [CompositionOptionAttribute.dimensions]?: Size
-  [CompositionOptionAttribute.duration]?: number
-  [CompositionOptionAttribute.metadata]?: Metadata
+  [CompositionKey.backgroundColor]?: string
+  [CompositionKey.dimensions]?: Dimensions
+  [CompositionKey.duration]?: number
+  [CompositionKey.metadata]?: Metadata
 }
 
 export type CompositionOptions = {
-  [CompositionOptionAttribute.backgroundColor]?: string
-  [CompositionOptionAttribute.dimensions]: Size
-  [CompositionOptionAttribute.duration]: number
-  [CompositionOptionAttribute.metadata]?: Metadata
+  [CompositionKey.backgroundColor]?: string
+  [CompositionKey.dimensions]: Dimensions
+  [CompositionKey.duration]: number
+  [CompositionKey.metadata]?: Metadata
 }
 
 export type EncodeConfig = CompositionOptions & {
@@ -79,14 +97,14 @@ export type EncodeConfig = CompositionOptions & {
   layers: IdentifiedLayer[]
 }
 
-export enum EncodeResponseAttribute {
+export enum EncodeResponseKey {
   id = 'id',
   status = 'status',
   timestamp = 'timestamp',
 }
 
 export type EncodeResponse = {
-  [EncodeResponseAttribute.id]: string
-  [EncodeResponseAttribute.status]: string
-  [EncodeResponseAttribute.timestamp]: number
+  [EncodeResponseKey.id]: string
+  [EncodeResponseKey.status]: string
+  [EncodeResponseKey.timestamp]: number
 }

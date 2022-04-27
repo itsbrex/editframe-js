@@ -58,7 +58,7 @@ describe('Editframe', () => {
     })
 
     it('instantiates the `Api` instance with the correct arguments', () => {
-      expect(initializeFetchSpy).toHaveBeenCalledWith(ApiUtilsModule.baseURL(host, version))
+      expect(initializeFetchSpy).toHaveBeenCalledWith(ApiUtilsModule.baseUrl(host, version))
 
       expect(apiSpy).toHaveBeenCalledWith({
         clientId,

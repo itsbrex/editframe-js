@@ -6,7 +6,9 @@ import * as ProcessUtilsModule from 'utils/process'
 
 import {
   assertType,
+  validateOptions,
   validatePresenceOf,
+  validateValueIsInList,
   validateValueIsOfType,
   validateValueIsOfTypes,
   withValidation,
@@ -36,6 +38,27 @@ describe('assertType', () => {
   })
 })
 
+describe('validateOptions', () => {
+  enum OptionKey {
+    validKey = 'validKey',
+  }
+
+  const callerName = 'caller-name'
+  const options = { invalidKey: 'invalid-key-value' }
+
+  it('throws an error if invalid keys are provided', () => {
+    expect(() => validateOptions(callerName, OptionKey, options)).toThrow(
+      new Error(
+        ValidationErrorText.INVALID_OPTIONS(
+          callerName,
+          Object.keys(OptionKey).join(', '),
+          Object.keys(options).join(', ')
+        )
+      )
+    )
+  })
+})
+
 describe('validatePresenceOf', () => {
   it('throws the provided `errorMessage` when the provided `value` does not exist', () => {
     const errorMessage = 'error-message'
@@ -45,13 +68,13 @@ describe('validatePresenceOf', () => {
 })
 
 describe('validateValueIsOfType', () => {
+  const caller = 'caller'
+  const fieldName = 'field-name'
+  const value = 'invalid-value'
+  const type = PrimitiveType.number
+
   describe('when the provided `shouldThrow` argument evaluates to `true`', () => {
     it('throws an error when the provided `value` does not match the provided `type`', () => {
-      const caller = 'caller'
-      const fieldName = 'field-name'
-      const value = 'invalid-value'
-      const type = PrimitiveType.number
-
       expect(() => validateValueIsOfType(caller, fieldName, value, type, true)).toThrow(
         new Error(ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, type))
       )
@@ -59,11 +82,6 @@ describe('validateValueIsOfType', () => {
   })
 
   it('returns an error when the provided `value` does not match the provided `type`', () => {
-    const caller = 'caller'
-    const fieldName = 'field-name'
-    const value = 'invalid-value'
-    const type = PrimitiveType.number
-
     expect(validateValueIsOfType(caller, fieldName, value, type)).toEqual(
       ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, type)
     )
@@ -71,13 +89,13 @@ describe('validateValueIsOfType', () => {
 })
 
 describe('validateValueIsOfTypes', () => {
+  const caller = 'caller'
+  const fieldName = 'field-name'
+  const value = 'invalid-value'
+  const types = [PrimitiveType.number, PrimitiveType.object]
+
   describe('when the provided `shouldThrow` argument evaluates to `true`', () => {
     it('throws an error when the provided `value` does not match the provided `types`', () => {
-      const caller = 'caller'
-      const fieldName = 'field-name'
-      const value = 'invalid-value'
-      const types = [PrimitiveType.number, PrimitiveType.object]
-
       expect(() => validateValueIsOfTypes(caller, fieldName, value, types, true)).toThrow(
         new Error(ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, ValidationErrorText.OR(types)))
       )
@@ -85,13 +103,41 @@ describe('validateValueIsOfTypes', () => {
   })
 
   it('returns an error when the provided `value` does not match the provided `types`', () => {
-    const caller = 'caller'
-    const fieldName = 'field-name'
-    const value = 'invalid-value'
-    const types = [PrimitiveType.number, PrimitiveType.object]
-
     expect(validateValueIsOfTypes(caller, fieldName, value, types)).toEqual(
       ValidationErrorText.MUST_BE_TYPE(caller, fieldName, value, ValidationErrorText.OR(types))
+    )
+  })
+})
+
+describe('validateValueIsInList', () => {
+  const caller = 'caller'
+  const fieldName = 'field-name'
+  const value = 'invalid-value'
+  const types = ['valid-value']
+
+  describe('when the provided `shouldThrow` argument evaluates to `true`', () => {
+    it('throws an error when the provided `value` is not in the provided `types`', () => {
+      expect(() => validateValueIsInList(caller, fieldName, value, types, true)).toThrow(
+        new Error(
+          ValidationErrorText.MUST_BE_TYPE(
+            caller,
+            fieldName,
+            value,
+            ValidationErrorText.OR(types.map((type) => type.toString()))
+          )
+        )
+      )
+    })
+  })
+
+  it('returns an error when the provided `value` does not match the provided `type`', () => {
+    expect(validateValueIsInList(caller, fieldName, value, types)).toEqual(
+      ValidationErrorText.MUST_BE_TYPE(
+        caller,
+        fieldName,
+        value,
+        ValidationErrorText.OR(types.map((type) => type.toString()))
+      )
     )
   })
 })
