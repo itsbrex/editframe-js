@@ -21,10 +21,9 @@ export const validateCompositionFile = (callerName: string, file: CompositionFil
   }
 }
 
-export const validateCompositionOptions = ({ backgroundColor, dimensions, duration }: CompositionOptions): void => {
+export const validateCompositionOptions = ({ backgroundColor, dimensions }: CompositionOptions): void => {
   const errors: string[] = []
 
-  validatePresenceOf(duration, CompositionErrorText.durationRequired)
   validatePresenceOf(dimensions, CompositionErrorText.dimensionsRequired)
 
   errors.push(

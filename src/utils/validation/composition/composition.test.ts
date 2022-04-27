@@ -2,14 +2,13 @@ import { PassThrough } from 'stream'
 
 import { ApiVideoMethod, CompositionKey, DimensionsKey, PrimitiveType } from 'constant'
 import { mockCompositionOptions } from 'mocks'
-import { CompositionErrorText, MediaErrorText, ValidationErrorText } from 'strings'
+import { MediaErrorText, ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
 
 import { validateCompositionFile, validateCompositionOptions } from './'
 
 describe('validations', () => {
   const callerName = 'caller-name'
-  let validatePresenceOfSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
   afterEach(() => {
@@ -17,7 +16,6 @@ describe('validations', () => {
   })
 
   beforeEach(() => {
-    validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
   })
 
@@ -53,13 +51,7 @@ describe('validations', () => {
 
   describe('validateCompositionOptions', () => {
     const compositionOptions = mockCompositionOptions()
-    const { backgroundColor, dimensions, duration } = compositionOptions
-
-    it('calls the `validatePresenceOf` function with the correct arguments', () => {
-      validateCompositionOptions(compositionOptions)
-
-      expect(validatePresenceOfSpy).toHaveBeenCalledWith(duration, CompositionErrorText.durationRequired)
-    })
+    const { backgroundColor, dimensions } = compositionOptions
 
     it('calls the `validateValueIsOfType` function with the correct arguments', () => {
       validateCompositionOptions(compositionOptions)

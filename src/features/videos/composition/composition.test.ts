@@ -774,6 +774,23 @@ describe('Composition', () => {
   })
 
   describe('encode', () => {
+    describe('when no `duration` exists on the `composition`', () => {
+      it('logs an error to the console', async () => {
+        composition = new Composition({
+          api: apiMock,
+          formData: formDataMock,
+          options: { ...options, duration: 0 },
+          temporaryDirectory,
+        })
+
+        await composition.encode()
+
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+          CompositionErrorText.errorEncoding(CompositionErrorText.durationRequired)
+        )
+      })
+    })
+
     describe('when the encode response is malformed', () => {
       beforeEach(() => {
         postMock.mockResolvedValue({})
