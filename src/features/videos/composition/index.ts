@@ -76,6 +76,7 @@ import {
   createReadStream,
   createTemporaryDirectory,
   deepClone,
+  deepMerge,
   formDataKey,
   getExtension,
   isAudioExtension,
@@ -265,7 +266,7 @@ export class Composition implements CompositionInterface {
         const {
           html: { page },
         } = htmlLayer
-        const transformedLayer: HtmlLayer = { ...htmlLayer }
+        const transformedLayer: HtmlLayer = deepClone(htmlLayer)
 
         if (page) {
           transformedLayer.html.page = await sanitizeHtml(page)
@@ -528,7 +529,7 @@ export class Composition implements CompositionInterface {
   }
 
   private _addLayer(options: TypedLayer): IdentifiedLayer {
-    const newLayer: IdentifiedLayer = { id: uuid(), ...options }
+    const newLayer: IdentifiedLayer = deepMerge({ id: uuid() }, options)
 
     this._layers.push(newLayer)
 
@@ -570,7 +571,7 @@ export class Composition implements CompositionInterface {
   }
 
   private [CompositionMethod.setLayer](id: string, newLayer: IdentifiedLayer): void {
-    const newLayers = [...this.layers]
+    const newLayers = deepClone(this.layers)
     const layerIndex = newLayers.findIndex((layer) => layer.id === id)
 
     newLayers[layerIndex] = newLayer

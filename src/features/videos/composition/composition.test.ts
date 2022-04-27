@@ -407,6 +407,9 @@ describe('Composition', () => {
       it('adds an `html` layer with the correct attributes', () => {
         expect(composition.layers[0]).toEqual(
           deepMerge(layer, {
+            html: {
+              page: sanitizedHtmlMock,
+            },
             id: uuidMock,
             type: LayerType.html,
           })
