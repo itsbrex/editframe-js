@@ -1,17 +1,11 @@
 module.exports = {
-  branches: 'main',
+  branches: ['main'],
   plugins: [
-    '@semantic-release/changelog',
     '@semantic-release/commit-analyzer',
-    [
-      '@semantic-release/git',
-      {
-        assets: ['README.md', 'dist/**'],
-        message: 'chore(release): set `package.json` to ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
-      },
-    ],
+    '@semantic-release/release-notes-generator',
+    '@semantic-release/changelog',
     '@semantic-release/github',
     '@semantic-release/npm',
-    '@semantic-release/release-notes-generator',
+    '@semantic-release/git',
   ],
 }
