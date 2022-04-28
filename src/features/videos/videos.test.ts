@@ -1,13 +1,14 @@
 import { PassThrough } from 'stream'
 
-import { ApiInterface, ApiVideo, LayerType, Routes } from 'constant'
+import { ApiInterface, ApiVideo, ApiVideoMethod, LayerType, Routes } from 'constant'
 import { Composition } from 'features/videos/composition'
 import { mockApi, mockApiVideo, mockApiVideoMetadata, mockCompositionOptions } from 'mocks'
 import { VideoErrorText } from 'strings'
 import { generatePath } from 'utils'
 import * as FilesUtilsModule from 'utils/files'
+import * as CompositionValidationUtilsModule from 'utils/validation/composition'
+import * as VideosUtilsModule from 'utils/validation/videos'
 import * as CompositionUtilsModule from 'utils/video/compositions'
-import * as VideosUtilsModule from 'utils/videos'
 
 import { Videos } from './'
 
@@ -112,7 +113,7 @@ describe('Videos', () => {
       })
       jest.spyOn(FilesUtilsModule, 'createReadStream').mockReturnValue(readStreamMock)
       validateNewVideoSpy = jest.spyOn(VideosUtilsModule, 'validateNewVideo')
-      validateCompositionFileSpy = jest.spyOn(CompositionUtilsModule, 'validateCompositionFile')
+      validateCompositionFileSpy = jest.spyOn(CompositionValidationUtilsModule, 'validateCompositionFile')
       videos = new Videos(apiMock)
     })
 
@@ -126,7 +127,7 @@ describe('Videos', () => {
       })
 
       it('calls the `validateCompositionFile` function with the correct arguments', () => {
-        expect(validateCompositionFileSpy).toHaveBeenCalledWith(videoPath)
+        expect(validateCompositionFileSpy).toHaveBeenCalledWith(ApiVideoMethod.new, videoPath)
       })
 
       it('returns an `Composition` instance instantiated with the correct options and a video layer', async () => {
