@@ -1,12 +1,14 @@
 import { Mixin } from 'ts-mixer'
 
 import { CompositionInterface, LayerKey, LayerType, LottieAnimationData, LottieMethod, PrimitiveType } from 'constant'
+import { PositionMixin } from 'features/videos/mixins/positionMixin'
+import { SizeMixin } from 'features/videos/mixins/sizeMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
 import { ValidationErrorText } from 'strings'
 import { validatePresenceOf, validateValueIsOfType, withValidation } from 'utils'
 
-export class Lottie extends Mixin(TimelineMixin, TrimMixin) {
+export class Lottie extends Mixin(PositionMixin, SizeMixin, TimelineMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }

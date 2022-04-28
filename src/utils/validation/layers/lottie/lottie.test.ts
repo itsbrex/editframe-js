@@ -30,6 +30,8 @@ describe('validateLottieLayer', () => {
   const callerName = 'caller-name'
   const layer = mockLottieLayer()
   let validateLottieSpy: jest.SpyInstance
+  let validatePositionSpy: jest.SpyInstance
+  let validateSizeSpy: jest.SpyInstance
   let validateTimelineSpy: jest.SpyInstance
   let validateTrimSpy: jest.SpyInstance
 
@@ -39,7 +41,9 @@ describe('validateLottieLayer', () => {
 
   beforeEach(() => {
     validateLottieSpy = jest.spyOn(LottieValidationUtilsModule, 'validateLottie')
-    validateTimelineSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateTimeline')
+    validateTimelineSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validatePosition')
+    validatePositionSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateSize')
+    validateSizeSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateTimeline')
     validateTrimSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateTrim')
 
     validateLottieLayer(callerName, layer)
@@ -47,6 +51,14 @@ describe('validateLottieLayer', () => {
 
   it('calls the `validateLottie` function with the correct arguments', () => {
     expect(validateLottieSpy).toHaveBeenCalledWith({ callerName, layer })
+  })
+
+  it('calls the `validatePosition` function with the correct arguments', () => {
+    expect(validatePositionSpy).toHaveBeenCalledWith({ callerName, layer })
+  })
+
+  it('calls the `validateSize` function with the correct arguments', () => {
+    expect(validateSizeSpy).toHaveBeenCalledWith({ callerName, layer })
   })
 
   it('calls the `validateTimeline` function with the correct arguments', () => {

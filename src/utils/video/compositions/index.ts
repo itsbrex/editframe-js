@@ -60,7 +60,7 @@ export const setLayerDefaults = <Layer>(
     [LayerType.filter]: defaultFilterLayer,
     [LayerType.html]: makeDefaultHtmlLayer(defaultDimensions),
     [LayerType.image]: makeDefaultImageLayer(defaultDimensions),
-    [LayerType.lottie]: makeDefaultLottieLayer(),
+    [LayerType.lottie]: makeDefaultLottieLayer(defaultDimensions),
     [LayerType.sequence]: makeDefaultSequenceLayer(),
     [LayerType.subtitles]: makeDefaultSubtitlesLayer(),
     [LayerType.text]: makeDefaultTextLayer(defaultDimensions),
