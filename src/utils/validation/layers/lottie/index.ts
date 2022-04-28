@@ -1,6 +1,6 @@
 import { LayerKey, LayerValidator, LottieLayer, PrimitiveType } from 'constant'
 import { filterUndefined, validateLayer, validateValueIsOfType } from 'utils/validation'
-import { validateTimeline, validateTrim } from 'utils/validation/layerConfigs'
+import { validatePosition, validateSize, validateTimeline, validateTrim } from 'utils/validation/layerConfigs'
 
 export const validateLottie: LayerValidator<LottieLayer> = ({ callerName, layer: { lottie: lottieOptions } }) => {
   const errors: string[] = []
@@ -11,5 +11,9 @@ export const validateLottie: LayerValidator<LottieLayer> = ({ callerName, layer:
 }
 
 export const validateLottieLayer = (callerName: string, layer: LottieLayer): void => {
-  validateLayer<LottieLayer>([validateLottie, validateTimeline, validateTrim], callerName, layer)
+  validateLayer<LottieLayer>(
+    [validateLottie, validatePosition, validateSize, validateTimeline, validateTrim],
+    callerName,
+    layer
+  )
 }

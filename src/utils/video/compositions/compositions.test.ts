@@ -100,7 +100,7 @@ describe('setLayerDefaults', () => {
   })
 
   describe('lottie', () => {
-    const defaultLottieLayer = makeDefaultLottieLayer()
+    const defaultLottieLayer = makeDefaultLottieLayer(dimensions)
 
     it('sets the correct layer defaults when no options or config are provided', () => {
       expect(setLayerDefaults(dimensions, LayerType.lottie, {}, {})).toEqual(defaultLottieLayer)

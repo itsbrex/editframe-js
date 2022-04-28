@@ -1,4 +1,4 @@
-import { LayerKey, LottieMethod, PrimitiveType } from 'constant'
+import { LayerKey, LottieLayerConfig, LottieMethod, PrimitiveType } from 'constant'
 import { Composition } from 'features/videos/composition'
 import { mockApi, mockLottieOptions } from 'mocks'
 import { ValidationErrorText } from 'strings'
@@ -21,7 +21,7 @@ describe('Lottie', () => {
     v: 'v',
     w: 70,
   })
-  const defaultLottieLayerConfig = makeDefaultLottieLayerConfig()
+  let defaultLottieLayerConfig: LottieLayerConfig
   let composition: Composition
   let lottie: Lottie
   let result: Lottie | void
@@ -38,6 +38,7 @@ describe('Lottie', () => {
       formData: { append: jest.fn() },
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
     })
+    defaultLottieLayerConfig = makeDefaultLottieLayerConfig(composition.dimensions)
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     lottie = composition.addLottie(lottieOptions)

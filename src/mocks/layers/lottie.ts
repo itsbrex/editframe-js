@@ -1,13 +1,27 @@
 import { LottieLayer, LottieLayerConfig, LottieOptions } from 'constant'
-import { defaultTimelineOptions, defaultTrimOptions } from 'mocks/layerConfigs'
+import {
+  defaultPositionOptions,
+  defaultSizeOptions,
+  defaultTimelineOptions,
+  defaultTrimOptions,
+} from 'mocks/layerConfigs'
 import { deepMerge } from 'utils/objects'
 
 export const mockLottieLayerConfig = (
-  { timeline = defaultTimelineOptions, trim = defaultTrimOptions }: LottieLayerConfig = {
+  {
+    position = defaultPositionOptions,
+    size = defaultSizeOptions,
+    timeline = defaultTimelineOptions,
+    trim = defaultTrimOptions,
+  }: LottieLayerConfig = {
+    position: defaultPositionOptions,
+    size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
     trim: defaultTrimOptions,
   }
 ): LottieLayerConfig => ({
+  position,
+  size,
   timeline,
   trim,
 })
