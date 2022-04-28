@@ -88,7 +88,7 @@ export type VideoOptions = {
 export type CompositionOptions = {
   [CompositionKey.backgroundColor]?: string
   [CompositionKey.dimensions]: Dimensions
-  [CompositionKey.duration]: number
+  [CompositionKey.duration]?: number
   [CompositionKey.metadata]?: Metadata
 }
 

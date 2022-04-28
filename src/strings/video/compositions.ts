@@ -8,9 +8,11 @@ export const CompositionErrorText = {
   dimensionsRequired: `\\${colors.white('dimensions')}\\ must be provided unless a \\${colors.white(
     'videoFile'
   )}\\ is provided`,
-  durationRequired: `\\${colors.white('duration')}\\ must be provided unless a \\${colors.white(
+  durationRequired: `\\${colors.white(
+    'duration'
+  )}\\ must be provided unless composition is instantiated from a \\${colors.white(
     'videoFile'
-  )}\\ is provided`,
+  )}\\ or calculated automatically via a call to \\${colors.white('addSequence')}\\`,
   errorEncoding: (error: string): string => `Error encoding video: ${error}`,
   filterRequired: `\\${colors.white('filter')}\\ must be provided`,
   htmlPageOrUrlRequired: `Either \\${colors.white('page')}\\ or \\${colors.white('url')}\\ must be provided`,

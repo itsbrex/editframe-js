@@ -500,9 +500,13 @@ export class Composition implements CompositionInterface {
   }
 
   public async [CompositionMethod.encode](): Promise<EncodeResponse> {
-    this._generateConfig()
-
     try {
+      if (!this.duration) {
+        throw new Error(CompositionErrorText.durationRequired)
+      }
+
+      this._generateConfig()
+
       const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
       removeDirectory(this._temporaryDirectory)
