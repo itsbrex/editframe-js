@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/editframe/editframe-js/compare/v2.2.0...v2.2.1) (2022-05-03)
+
+
+### Bug Fixes
+
+* update expected type of `perPage` in Video pagination metadata to be `number` as it has changed ([cebb488](https://github.com/editframe/editframe-js/commit/cebb4886b83f592d78c5c79b3e7e3d82d9dfa69e))
+
 # [2.2.0](https://github.com/editframe/editframe-js/compare/v2.1.0...v2.2.0) (2022-04-28)
 
 
