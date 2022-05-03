@@ -1,20 +1,7 @@
 import { ApiVideo } from 'constant'
 
 export const mockApiVideo = (
-  {
-    createdAt,
-    downloadUrl,
-    duration,
-    id,
-    isFailed,
-    isReady,
-    metadata,
-    streamUrl,
-    thumbnailUrl,
-    timestamp,
-    updatedAt,
-  }: ApiVideo = {
-    createdAt: 'createdAt',
+  { downloadUrl, duration, id, isFailed, isReady, metadata, streamUrl, thumbnailUrl, timestamp }: ApiVideo = {
     downloadUrl: 'download-url',
     duration: 100,
     id: 'id',
@@ -24,10 +11,8 @@ export const mockApiVideo = (
     streamUrl: 'stream-url',
     thumbnailUrl: 'thumbnail-url',
     timestamp: 50,
-    updatedAt: 'updated-at',
   }
 ): ApiVideo => ({
-  createdAt,
   downloadUrl,
   duration,
   id,
@@ -37,5 +22,4 @@ export const mockApiVideo = (
   streamUrl,
   thumbnailUrl,
   timestamp,
-  updatedAt,
 })

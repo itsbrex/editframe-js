@@ -35,7 +35,7 @@ const isPaginationMeta = (paginationMeta: any): paginationMeta is PaginationMeta
   PaginationMetaKey.path in paginationMeta &&
   assertType(paginationMeta.path, PrimitiveType.string) &&
   PaginationMetaKey.perPage in paginationMeta &&
-  assertType(paginationMeta.perPage, PrimitiveType.string) &&
+  assertType(paginationMeta.perPage, PrimitiveType.number) &&
   PaginationMetaKey.to in paginationMeta &&
   assertType(paginationMeta.to, [PrimitiveType.number, PrimitiveType.null]) &&
   PaginationMetaKey.total in paginationMeta &&

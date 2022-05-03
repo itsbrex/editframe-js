@@ -49,7 +49,7 @@ export interface PaginationMeta {
   [PaginationMetaKey.lastPage]: number
   [PaginationMetaKey.links]: PaginationMetaLink[]
   [PaginationMetaKey.path]: string
-  [PaginationMetaKey.perPage]: string
+  [PaginationMetaKey.perPage]: number
   [PaginationMetaKey.to]: number
   [PaginationMetaKey.total]: number
 }
