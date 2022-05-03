@@ -17,7 +17,7 @@ export const mockPagination = <T>(data: T[]): Paginated<T> => ({
       },
     ],
     path: 'path',
-    perPage: '10',
+    perPage: 10,
     to: 20,
     total: 100,
   },
