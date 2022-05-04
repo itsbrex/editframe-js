@@ -59,7 +59,7 @@ export const setLayerDefaults = <Layer>(
     [LayerType.audio]: makeDefaultAudioLayer(),
     [LayerType.filter]: defaultFilterLayer,
     [LayerType.html]: makeDefaultHtmlLayer(defaultDimensions),
-    [LayerType.image]: makeDefaultImageLayer(defaultDimensions),
+    [LayerType.image]: makeDefaultImageLayer(),
     [LayerType.lottie]: makeDefaultLottieLayer(defaultDimensions),
     [LayerType.sequence]: makeDefaultSequenceLayer(),
     [LayerType.subtitles]: makeDefaultSubtitlesLayer(),
