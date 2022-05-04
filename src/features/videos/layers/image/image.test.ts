@@ -21,7 +21,7 @@ describe('Image', () => {
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
     })
     image = await composition.addImage('./package.json')
-    layerConfigDefaults = makeDefaultImageLayerConfig(composition.dimensions)
+    layerConfigDefaults = makeDefaultImageLayerConfig()
 
     jest.clearAllMocks()
   })

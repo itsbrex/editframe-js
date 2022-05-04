@@ -84,7 +84,7 @@ describe('setLayerDefaults', () => {
   })
 
   describe('image', () => {
-    const defaultImageLayer = makeDefaultImageLayer(dimensions)
+    const defaultImageLayer = makeDefaultImageLayer()
 
     it('sets the correct layer defaults when no options or config are provided', () => {
       expect(setLayerDefaults(dimensions, LayerType.image, {}, {})).toEqual(defaultImageLayer)
