@@ -21,7 +21,7 @@ describe('Video', () => {
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
     })
     video = await composition.addVideo('./package.json')
-    layerConfigDefaults = makeDefaultVideoLayerConfig(composition.dimensions)
+    layerConfigDefaults = makeDefaultVideoLayerConfig()
 
     jest.clearAllMocks()
   })
