@@ -84,7 +84,7 @@ describe('setLayerDefaults', () => {
   })
 
   describe('image', () => {
-    const defaultImageLayer = makeDefaultImageLayer(dimensions)
+    const defaultImageLayer = makeDefaultImageLayer()
 
     it('sets the correct layer defaults when no options or config are provided', () => {
       expect(setLayerDefaults(dimensions, LayerType.image, {}, {})).toEqual(defaultImageLayer)
@@ -100,7 +100,7 @@ describe('setLayerDefaults', () => {
   })
 
   describe('lottie', () => {
-    const defaultLottieLayer = makeDefaultLottieLayer(dimensions)
+    const defaultLottieLayer = makeDefaultLottieLayer()
 
     it('sets the correct layer defaults when no options or config are provided', () => {
       expect(setLayerDefaults(dimensions, LayerType.lottie, {}, {})).toEqual(defaultLottieLayer)
@@ -167,7 +167,7 @@ describe('setLayerDefaults', () => {
   })
 
   describe('video', () => {
-    const defaultVideoLayer = makeDefaultVideoLayer(dimensions)
+    const defaultVideoLayer = makeDefaultVideoLayer()
 
     it('sets the correct layer defaults when no options or config are provided', () => {
       expect(setLayerDefaults(dimensions, LayerType.video, {}, {})).toEqual(defaultVideoLayer)

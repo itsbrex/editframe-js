@@ -1,27 +1,26 @@
 import {
-  Dimensions,
   ImageLayer,
   ImageLayerConfig,
   defaultBackground,
   defaultPosition,
+  defaultSize,
   defaultTimeline,
   defaultTrim,
 } from 'constant'
-import { makeDefaultSize } from 'utils/defaults/size'
 import { deepMerge } from 'utils/objects'
 
-export const makeDefaultImageLayerConfig = (dimensions: Dimensions): ImageLayerConfig => {
+export const makeDefaultImageLayerConfig = (): ImageLayerConfig => {
   const defaults: ImageLayerConfig = {}
 
-  deepMerge(defaults, defaultBackground, defaultPosition, makeDefaultSize(dimensions), defaultTimeline, defaultTrim)
+  deepMerge(defaults, defaultBackground, defaultPosition, defaultSize, defaultTimeline, defaultTrim)
 
   return defaults
 }
 
-export const makeDefaultImageLayer = (dimensions: Dimensions): ImageLayer => {
+export const makeDefaultImageLayer = (): ImageLayer => {
   const defaults: ImageLayer = {}
 
-  deepMerge(defaults, makeDefaultImageLayerConfig(dimensions))
+  deepMerge(defaults, makeDefaultImageLayerConfig())
 
   return defaults
 }

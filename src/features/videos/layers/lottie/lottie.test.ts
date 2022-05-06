@@ -38,7 +38,7 @@ describe('Lottie', () => {
       formData: { append: jest.fn() },
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
     })
-    defaultLottieLayerConfig = makeDefaultLottieLayerConfig(composition.dimensions)
+    defaultLottieLayerConfig = makeDefaultLottieLayerConfig()
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     lottie = composition.addLottie(lottieOptions)
