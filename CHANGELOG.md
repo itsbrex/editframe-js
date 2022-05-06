@@ -1,3 +1,11 @@
+## [2.2.2](https://github.com/editframe/editframe-js/compare/v2.2.1...v2.2.2) (2022-05-06)
+
+
+### Bug Fixes
+
+* dont default lottie or video size to composition dimensions ([132713a](https://github.com/editframe/editframe-js/commit/132713af72e8b02da4c2a77adc46ba22bc560375))
+* dont set default size of image layer to the composition dimensions ([3044b7d](https://github.com/editframe/editframe-js/commit/3044b7d74a66c9ebc322a3871d676e1672bd04b4))
+
 ## [2.2.1](https://github.com/editframe/editframe-js/compare/v2.2.0...v2.2.1) (2022-05-03)
 
 

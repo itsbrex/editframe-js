@@ -114,5 +114,5 @@
     "test:watch": "jest --watch"
   },
   "types": "dist/index.d.ts",
-  "version": "2.2.1"
+  "version": "2.2.2"
 }
