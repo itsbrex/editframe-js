@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/editframe/editframe-js/compare/v2.2.2...v2.2.3) (2022-05-21)
+
+
+### Bug Fixes
+
+* update shared types to 3.0.2 ([c58586f](https://github.com/editframe/editframe-js/commit/c58586fc1836092c1e0d06d3c588124ce3d416a4))
+
 ## [2.2.2](https://github.com/editframe/editframe-js/compare/v2.2.1...v2.2.2) (2022-05-06)
 
 
