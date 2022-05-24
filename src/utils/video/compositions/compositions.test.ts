@@ -1,7 +1,9 @@
 import { PassThrough } from 'stream'
 
-import { LayerType, defaultFilterLayer } from 'constant'
+import { LayerType, SequenceableLayer, TransitionOptions, TransitionType, defaultFilterLayer } from 'constant'
+import { Composition } from 'features/videos/composition'
 import {
+  mockApi,
   mockAudioLayerConfig,
   mockAudioOptions,
   mockFilterOptions,
@@ -32,7 +34,7 @@ import { makeDefaultWaveformLayer } from 'utils/defaults/waveform'
 import * as FilesUtilsModule from 'utils/files'
 import { deepMerge } from 'utils/objects'
 
-import { formDataKey, processCompositionFile, setLayerDefaults } from './'
+import { formDataKey, processCompositionFile, processCrossfades, setLayerDefaults } from './'
 
 describe('setLayerDefaults', () => {
   const dimensions = { height: 10, width: 30 }
@@ -282,6 +284,118 @@ describe('processCompositionFile', () => {
         filepath: file,
         readStream: readStreamMock,
       })
+    })
+  })
+})
+
+describe('processCrossfades', () => {
+  const currentTime = 0
+  const currentLayerCrossfadeDuration = 1
+  const previousLayerCrossfadeDuration = 2
+  const nextLayerCrossfadeDuration = 3
+  let composition: Composition
+  let currentLayer: SequenceableLayer
+  let previousLayer: SequenceableLayer
+  let nextLayer: SequenceableLayer
+  let transition: TransitionOptions
+  let result: number
+
+  beforeEach(async () => {
+    composition = new Composition({
+      api: mockApi({ get: jest.fn(), post: jest.fn(), put: jest.fn() }),
+      formData: { append: jest.fn() },
+      options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
+    })
+
+    currentLayer = composition.addText({ text: 'currentLayer' }, { trim: { end: 3 } })
+    previousLayer = composition.addText({ text: 'previousLayer' }, { trim: { end: 4 } })
+    nextLayer = composition.addText({ text: 'nextLayer' }, { trim: { end: 5 } })
+
+    await composition.addSequence([previousLayer, currentLayer, nextLayer])
+  })
+
+  describe('when the previous layer is crossfading out from the current layer', () => {
+    beforeEach(() => {
+      previousLayer.addTransition({ duration: previousLayerCrossfadeDuration, type: TransitionType.crossfadeOut })
+
+      result = processCrossfades(currentTime, currentLayer, previousLayer, undefined)
+
+      transition = currentLayer.transitions[0]
+    })
+
+    it('adds a `fadeIn` transition on the current layer with the correct duration', () => {
+      expect(transition.duration).toEqual(previousLayerCrossfadeDuration)
+      expect(transition.type).toEqual(TransitionType.fadeIn)
+    })
+
+    it('adjusts the start time of the current layer', () => {
+      expect(currentLayer.start).toEqual(currentTime - previousLayerCrossfadeDuration)
+    })
+
+    it('returns the correct adjusted current time', () => {
+      expect(result).toEqual(currentTime - previousLayerCrossfadeDuration)
+    })
+  })
+
+  describe('when the next layer is crossfading in from the current layer', () => {
+    beforeEach(() => {
+      nextLayer.addTransition({ duration: nextLayerCrossfadeDuration, type: TransitionType.crossfadeIn })
+
+      result = processCrossfades(currentTime, currentLayer, previousLayer, nextLayer)
+
+      transition = currentLayer.transitions[0]
+    })
+
+    it('adds a `fadeOut` transition on the current layer with the correct duration', () => {
+      expect(transition.duration).toEqual(nextLayerCrossfadeDuration)
+      expect(transition.type).toEqual(TransitionType.fadeOut)
+    })
+
+    it('keeps the start time of the current layer', () => {
+      expect(currentLayer.start).toEqual(currentTime)
+    })
+
+    it('returns the correct adjusted current time', () => {
+      expect(result).toEqual(currentTime - nextLayerCrossfadeDuration)
+    })
+  })
+
+  describe('when the current layer is crossfading in from the previous layer', () => {
+    beforeEach(() => {
+      currentLayer.addTransition({ duration: currentLayerCrossfadeDuration, type: TransitionType.crossfadeIn })
+
+      result = processCrossfades(currentTime, currentLayer, previousLayer, nextLayer)
+
+      transition = previousLayer.transitions[0]
+    })
+
+    it('adds a `fadeOut` transition on the previous layer with the correct duration', () => {
+      expect(transition.duration).toEqual(currentLayerCrossfadeDuration)
+      expect(transition.type).toEqual(TransitionType.fadeOut)
+    })
+
+    it('adjusts the start time of the current layer', () => {
+      expect(currentLayer.start).toEqual(currentTime - currentLayerCrossfadeDuration)
+    })
+
+    it('returns the correct adjusted current time', () => {
+      expect(result).toEqual(currentTime - currentLayerCrossfadeDuration)
+    })
+  })
+
+  describe('when there is no crossfade', () => {
+    beforeEach(() => {
+      result = processCrossfades(currentTime, currentLayer, previousLayer, nextLayer)
+
+      transition = previousLayer.transitions[0]
+    })
+
+    it('keeps the start time of the current layer', () => {
+      expect(currentLayer.start).toEqual(currentTime)
+    })
+
+    it('returns the normal current time', () => {
+      expect(result).toEqual(currentTime)
     })
   })
 })

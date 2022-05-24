@@ -6,6 +6,7 @@ import {
   defaultPosition,
   defaultSize,
   defaultTimeline,
+  defaultTransitions,
   defaultTrim,
 } from 'constant'
 import { deepMerge } from 'utils/objects'
@@ -13,7 +14,7 @@ import { deepMerge } from 'utils/objects'
 export const makeDefaultLottieLayerConfig = (): LottieLayerConfig => {
   const defaults: LottieLayerConfig = {}
 
-  deepMerge(defaults, defaultPosition, defaultSize, defaultTimeline, defaultTrim)
+  deepMerge(defaults, defaultPosition, defaultSize, defaultTimeline, defaultTransitions, defaultTrim)
 
   return defaults
 }

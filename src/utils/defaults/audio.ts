@@ -1,10 +1,17 @@
-import { AudioLayer, AudioLayerConfig, defaultAudioOptions, defaultTimeline, defaultTrim } from 'constant'
+import {
+  AudioLayer,
+  AudioLayerConfig,
+  defaultAudioOptions,
+  defaultTimeline,
+  defaultTransitions,
+  defaultTrim,
+} from 'constant'
 import { deepMerge } from 'utils/objects'
 
 export const makeDefaultAudioLayerConfig = (): AudioLayerConfig => {
   const defaults = {}
 
-  deepMerge(defaults, defaultTimeline, defaultTrim)
+  deepMerge(defaults, defaultTimeline, defaultTransitions, defaultTrim)
 
   return defaults
 }

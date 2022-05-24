@@ -4,6 +4,7 @@ import {
   SubtitlesLayerConfig,
   defaultSubtitlesOptions,
   defaultTimeline,
+  defaultTransitions,
   defaultTrim,
 } from 'constant'
 import { deepMerge } from 'utils/objects'
@@ -15,6 +16,7 @@ export const makeDefaultSubtitlesLayerConfig = (): SubtitlesLayerConfig => {
     defaults,
     { position: { isRelative: true, x: LayerHorizontalAlignmentValue.center, y: 0.85 } },
     defaultTimeline,
+    defaultTransitions,
     defaultTrim
   )
 

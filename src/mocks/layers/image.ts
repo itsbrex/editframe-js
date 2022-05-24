@@ -4,6 +4,7 @@ import {
   defaultPositionOptions,
   defaultSizeOptions,
   defaultTimelineOptions,
+  defaultTransitionsOptions,
   defaultTrimOptions,
 } from 'mocks/layerConfigs'
 
@@ -13,12 +14,14 @@ export const mockImageLayerConfig = (
     position = defaultPositionOptions,
     size = defaultSizeOptions,
     timeline = defaultTimelineOptions,
+    transitions = defaultTransitionsOptions,
     trim = defaultTrimOptions,
   }: ImageLayerConfig = {
     background: defaultBackgroundOptions,
     position: defaultPositionOptions,
     size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
+    transitions: defaultTransitionsOptions,
     trim: defaultTrimOptions,
   }
 ): ImageLayerConfig => ({
@@ -26,6 +29,7 @@ export const mockImageLayerConfig = (
   position,
   size,
   timeline,
+  transitions,
   trim,
 })
 

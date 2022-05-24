@@ -4,6 +4,7 @@ import {
   defaultPositionOptions,
   defaultSizeOptions,
   defaultTimelineOptions,
+  defaultTransitionsOptions,
   defaultTrimOptions,
 } from 'mocks/layerConfigs'
 import { deepMerge } from 'utils/objects'
@@ -14,12 +15,14 @@ export const mockTextLayerConfig = (
     position = defaultPositionOptions,
     size = defaultSizeOptions,
     timeline = defaultTimelineOptions,
+    transitions = defaultTransitionsOptions,
     trim = defaultTrimOptions,
   }: TextLayerConfig = {
     background: defaultBackgroundOptions,
     position: defaultPositionOptions,
     size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
+    transitions: defaultTransitionsOptions,
     trim: defaultTrimOptions,
   }
 ): TextLayerConfig => ({
@@ -27,6 +30,7 @@ export const mockTextLayerConfig = (
   position,
   size,
   timeline,
+  transitions,
   trim,
 })
 

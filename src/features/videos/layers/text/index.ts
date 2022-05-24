@@ -16,6 +16,7 @@ import { BackgroundMixin } from 'features/videos/mixins/backgroundMixin'
 import { PositionMixin } from 'features/videos/mixins/positionMixin'
 import { SizeMixin } from 'features/videos/mixins/sizeMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
+import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
 import { CompositionErrorText } from 'strings'
 import {
@@ -26,7 +27,7 @@ import {
   withValidation,
 } from 'utils'
 
-export class Text extends Mixin(BackgroundMixin, TimelineMixin, TrimMixin, SizeMixin, PositionMixin) {
+export class Text extends Mixin(BackgroundMixin, PositionMixin, SizeMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }

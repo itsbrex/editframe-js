@@ -7,6 +7,8 @@ import {
   LayerConfigs,
   LayerOptions,
   LayerType,
+  SequenceableLayer,
+  TransitionType,
   defaultAudioOptions,
   defaultFilterLayer,
   defaultFilterOptions,
@@ -109,4 +111,40 @@ export const processCompositionFile = async (
   }
 
   return { filepath: file, readStream: createReadStream(file) }
+}
+
+export const processCrossfades = (
+  currentTime: number,
+  currentLayer: SequenceableLayer,
+  previousLayer?: SequenceableLayer,
+  nextLayer?: SequenceableLayer
+): number => {
+  let newCurrentTime = currentTime
+  const currentLayerCrossfadeIn = currentLayer.transitions.find(
+    (transition) => transition.type === TransitionType.crossfadeIn
+  )
+  const previousLayerCrossfadeOut = previousLayer
+    ? previousLayer.transitions.find((transition) => transition.type === TransitionType.crossfadeOut)
+    : undefined
+  const nextLayerCrossfadeIn = nextLayer
+    ? nextLayer.transitions.find((transition) => transition.type === TransitionType.crossfadeIn)
+    : undefined
+
+  if (previousLayer && previousLayerCrossfadeOut) {
+    currentLayer.addTransition({ duration: previousLayerCrossfadeOut.duration, type: TransitionType.fadeIn })
+    currentLayer.setStart(newCurrentTime - previousLayerCrossfadeOut.duration)
+    newCurrentTime = newCurrentTime - previousLayerCrossfadeOut.duration
+  } else if (nextLayer && nextLayerCrossfadeIn) {
+    currentLayer.addTransition({ duration: nextLayerCrossfadeIn.duration, type: TransitionType.fadeOut })
+    currentLayer.setStart(newCurrentTime)
+    newCurrentTime = newCurrentTime - nextLayerCrossfadeIn.duration
+  } else if (previousLayer && currentLayerCrossfadeIn) {
+    previousLayer.addTransition({ duration: currentLayerCrossfadeIn.duration, type: TransitionType.fadeOut })
+    currentLayer.setStart(newCurrentTime - currentLayerCrossfadeIn.duration)
+    newCurrentTime = newCurrentTime - currentLayerCrossfadeIn.duration
+  } else {
+    currentLayer.setStart(newCurrentTime)
+  }
+
+  return newCurrentTime
 }

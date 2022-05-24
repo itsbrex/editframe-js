@@ -1,20 +1,28 @@
 import { Color, SubtitlesLayer, SubtitlesLayerConfig, SubtitlesOptions } from 'constant'
-import { defaultPositionOptions, defaultTimelineOptions, defaultTrimOptions } from 'mocks/layerConfigs'
+import {
+  defaultPositionOptions,
+  defaultTimelineOptions,
+  defaultTransitionsOptions,
+  defaultTrimOptions,
+} from 'mocks/layerConfigs'
 import { deepMerge } from 'utils/objects'
 
 export const mockSubtitlesLayerConfig = (
   {
     position = defaultPositionOptions,
     timeline = defaultTimelineOptions,
+    transitions = defaultTransitionsOptions,
     trim = defaultTrimOptions,
   }: SubtitlesLayerConfig = {
     position: defaultPositionOptions,
     timeline: defaultTimelineOptions,
+    transitions: defaultTransitionsOptions,
     trim: defaultTrimOptions,
   }
 ): SubtitlesLayerConfig => ({
   position,
   timeline,
+  transitions,
   trim,
 })
 
