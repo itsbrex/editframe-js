@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/editframe/editframe-js/compare/v2.2.3...v2.3.0) (2022-05-25)
+
+
+### Features
+
+* add transitions ([dc639bb](https://github.com/editframe/editframe-js/commit/dc639bbd4b6c361eee19cfc6da691c2ef9aac1b2))
+
 ## [2.2.3](https://github.com/editframe/editframe-js/compare/v2.2.2...v2.2.3) (2022-05-21)
 
 
