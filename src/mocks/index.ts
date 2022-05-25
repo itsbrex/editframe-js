@@ -7,6 +7,7 @@ import {
   mockPositionOptions,
   mockSizeOptions,
   mockTimelineOptions,
+  mockTransitionsOptions,
   mockTrimOptions,
 } from './layerConfigs'
 import {
@@ -74,6 +75,7 @@ export {
   mockTextLayerConfig,
   mockTextOptions,
   mockTimelineOptions,
+  mockTransitionsOptions,
   mockTrimOptions,
   mockVideoLayer,
   mockVideoLayerConfig,

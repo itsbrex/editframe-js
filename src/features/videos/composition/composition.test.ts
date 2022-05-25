@@ -4,6 +4,7 @@ import {
   ApiInterface,
   AudioKey,
   CompositionMethod,
+  CompositionOptions,
   FilterKey,
   FormDataInterface,
   HtmlKey,
@@ -16,6 +17,7 @@ import {
   SubtitlesKey,
   TextKey,
   TextLayer,
+  TransitionType,
   WaveformKey,
 } from 'constant'
 import { Audio } from 'features/videos/layers/audio'
@@ -115,6 +117,7 @@ describe('Composition', () => {
   let postMock: jest.Mock
   let preparePreviewSpy: jest.SpyInstance
   let processCompositionFileSpy: jest.SpyInstance
+  let processCrossfadesSpy: jest.SpyInstance
   let removeDirectorySpy: jest.SpyInstance
   let sanitizeHtmlSpy: jest.SpyInstance
   let uuidSpy: jest.SpyInstance
@@ -134,11 +137,14 @@ describe('Composition', () => {
   let validatePresenceOfSpy: jest.SpyInstance
   let composition: Composition
 
-  const makeComposition = (customApiMock?: ApiInterface) =>
+  const makeComposition = ({
+    compositionOptions,
+    customApiMock,
+  }: { compositionOptions?: CompositionOptions; customApiMock?: ApiInterface } = {}) =>
     new Composition({
       api: customApiMock ? customApiMock : apiMock,
       formData: formDataMock,
-      options: { ...options },
+      options: compositionOptions ? compositionOptions : { ...options },
       temporaryDirectory,
     })
 
@@ -156,6 +162,7 @@ describe('Composition', () => {
     uuidSpy = jest.spyOn(StringsUtilsModule, 'uuid').mockReturnValue(uuidMock)
     preparePreviewSpy = jest.spyOn(PreviewUtilsModule, 'preparePreview').mockResolvedValue(undefined)
     processCompositionFileSpy = jest.spyOn(CompositionUtilsModule, 'processCompositionFile')
+    processCrossfadesSpy = jest.spyOn(CompositionUtilsModule, 'processCrossfades')
     removeDirectorySpy = jest.spyOn(FilesUtilsModule, 'removeDirectory').mockReturnValue(undefined)
     validateAudioLayerSpy = jest.spyOn(LayerValidationUtilsModule, 'validateAudioLayer')
     validateFilterLayerSpy = jest.spyOn(LayerValidationUtilsModule, 'validateFilterLayer')
@@ -543,7 +550,7 @@ describe('Composition', () => {
         uuidSpy.mockReturnValueOnce(uuids[LayerType.text])
         uuidSpy.mockReturnValueOnce(uuids[LayerType.video])
 
-        composition = makeComposition(apiMock)
+        composition = makeComposition({ customApiMock: apiMock })
       })
 
       it('sets the `start` attributes of the provided layers to the correct values', async () => {
@@ -559,12 +566,51 @@ describe('Composition', () => {
       })
     })
 
+    describe('when layers have `crossfade` transitions', () => {
+      const processCrossfadeResults = [1, 2, 3]
+      const layer1Duration = 3
+      const layer2Duration = 4
+      const layer3Duration = 5
+      const layer1TransitionDuration = 1
+      const layer3TransitionDuration = 2
+      let layer1: Text
+      let layer2: Text
+      let layer3: Text
+
+      beforeEach(async () => {
+        composition = makeComposition({
+          compositionOptions: {
+            dimensions: options.dimensions,
+          },
+        })
+        layer1 = composition.addText({ text: 'layer1' }, { trim: { end: layer1Duration } })
+        layer2 = composition.addText({ text: 'layer2' }, { trim: { end: layer2Duration } })
+        layer3 = composition.addText({ text: 'layer3' }, { trim: { end: layer3Duration } })
+
+        layer1.addTransition({ duration: layer1TransitionDuration, type: TransitionType.crossfadeOut })
+        layer3.addTransition({ duration: layer3TransitionDuration, type: TransitionType.crossfadeIn })
+
+        processCrossfadesSpy.mockReturnValueOnce(processCrossfadeResults[0])
+        processCrossfadesSpy.mockReturnValueOnce(processCrossfadeResults[1])
+        processCrossfadesSpy.mockReturnValueOnce(processCrossfadeResults[2])
+
+        await composition.addSequence([layer1, layer2, layer3])
+      })
+
+      it('sets the duration to the result of the call to processCrossfades', () => {
+        expect(composition.duration).toEqual(
+          processCrossfadeResults[0] + processCrossfadeResults[1] + processCrossfadeResults[2]
+        )
+      })
+    })
+
     describe('always', () => {
       let sequence: Sequence
+      let text: Text
 
       beforeEach(async () => {
         composition = makeComposition()
-        const text = composition.addText({ text: 'text' }, { trim: { end: 3, start: 0 } })
+        text = composition.addText({ text: 'text' }, { trim: { end: 3, start: 0 } })
 
         sequence = await composition.addSequence([text])
       })

@@ -1,14 +1,25 @@
 import { AudioLayer, AudioLayerConfig } from 'constant'
-import { defaultTimelineOptions, defaultTrimOptions, mockAudioOptions } from 'mocks/layerConfigs'
+import {
+  defaultTimelineOptions,
+  defaultTransitionsOptions,
+  defaultTrimOptions,
+  mockAudioOptions,
+} from 'mocks/layerConfigs'
 import { deepMerge } from 'utils/objects'
 
 export const mockAudioLayerConfig = (
-  { timeline = defaultTimelineOptions, trim = defaultTrimOptions }: AudioLayerConfig = {
+  {
+    timeline = defaultTimelineOptions,
+    transitions = defaultTransitionsOptions,
+    trim = defaultTrimOptions,
+  }: AudioLayerConfig = {
     timeline: defaultTimelineOptions,
+    transitions: defaultTransitionsOptions,
     trim: defaultTrimOptions,
   }
 ): AudioLayerConfig => ({
   timeline,
+  transitions,
   trim,
 })
 

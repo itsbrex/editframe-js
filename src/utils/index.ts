@@ -66,6 +66,8 @@ import {
   validateSizeMixin,
   validateTimeline,
   validateTimelineMixin,
+  validateTransitions,
+  validateTransitionsMixin,
   validateTrim,
   validateTrimMixin,
   validateX,
@@ -101,7 +103,7 @@ import {
   isEncodeResponse,
   validateNewVideo,
 } from './validation/videos'
-import { formDataKey, processCompositionFile, setLayerDefaults } from './video/compositions'
+import { formDataKey, processCompositionFile, processCrossfades, setLayerDefaults } from './video/compositions'
 import { preparePreview } from './video/preview'
 
 export {
@@ -159,6 +161,7 @@ export {
   prepareFormData,
   preparePreview,
   processCompositionFile,
+  processCrossfades,
   removeDirectory,
   sanitizeHtml,
   saveFile,
@@ -196,6 +199,8 @@ export {
   validateTextLayer,
   validateTimeline,
   validateTimelineMixin,
+  validateTransitions,
+  validateTransitionsMixin,
   validateTrim,
   validateTrimMixin,
   validateUrl,

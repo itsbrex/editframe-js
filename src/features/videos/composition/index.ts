@@ -45,6 +45,7 @@ import {
   Routes,
   SequenceLayer,
   SequenceLayerConfig,
+  SequenceableLayer,
   SubtitlesKey,
   SubtitlesLayer,
   SubtitlesLayerConfig,
@@ -86,6 +87,7 @@ import {
   prepareFormData,
   preparePreview,
   processCompositionFile,
+  processCrossfades,
   removeDirectory,
   sanitizeHtml,
   setLayerDefaults,
@@ -320,7 +322,7 @@ export class Composition implements CompositionInterface {
   }
 
   public async [CompositionMethod.addSequence](
-    layers: (Audio | Html | Image | Lottie | Subtitles | Text | Video | Waveform)[],
+    layers: SequenceableLayer[],
     layerConfig: SequenceLayerConfig = { timeline: { start: 0 } }
   ): Promise<Sequence> {
     const sequenceLayer: SequenceLayer = this._setLayerDefaults<SequenceLayer>({
@@ -362,10 +364,13 @@ export class Composition implements CompositionInterface {
 
         let currentTime = sequenceLayer.timeline.start || 0
 
-        layersWithDurationAndFilepath.map(({ duration, filepath, layer }) => {
+        layersWithDurationAndFilepath.map(({ duration, filepath, layer }, i) => {
           const { type } = layer
+          const previousLayer = i > 0 ? layersWithDurationAndFilepath[i - 1].layer : undefined
+          const nextLayer =
+            i < layersWithDurationAndFilepath.length - 1 ? layersWithDurationAndFilepath[i + 1].layer : undefined
 
-          layer.setStart(currentTime)
+          currentTime = processCrossfades(currentTime, layer, previousLayer, nextLayer)
 
           if (filepath) {
             this._setFile(layer.id, createReadStream(filepath))
