@@ -5,6 +5,7 @@ import {
   defaultPositionOptions,
   defaultSizeOptions,
   defaultTimelineOptions,
+  defaultTransitionsOptions,
   defaultTrimOptions,
 } from 'mocks/layerConfigs'
 
@@ -15,6 +16,7 @@ export const mockVideoLayerConfig = (
     position = defaultPositionOptions,
     size = defaultSizeOptions,
     timeline = defaultTimelineOptions,
+    transitions = defaultTransitionsOptions,
     trim = defaultTrimOptions,
   }: VideoLayerConfig = {
     audio: defaultAudioOptions,
@@ -22,6 +24,7 @@ export const mockVideoLayerConfig = (
     position: defaultPositionOptions,
     size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
+    transitions: defaultTransitionsOptions,
     trim: defaultTrimOptions,
   }
 ): VideoLayerConfig => ({
@@ -30,6 +33,7 @@ export const mockVideoLayerConfig = (
   position,
   size,
   timeline,
+  transitions,
   trim,
 })
 

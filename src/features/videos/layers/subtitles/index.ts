@@ -12,10 +12,11 @@ import {
 } from 'constant'
 import { PositionMixin } from 'features/videos/mixins/positionMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
+import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
 import { validateValueIsOfType, withValidation } from 'utils'
 
-export class Subtitles extends Mixin(PositionMixin, TimelineMixin, TrimMixin) {
+export class Subtitles extends Mixin(PositionMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }

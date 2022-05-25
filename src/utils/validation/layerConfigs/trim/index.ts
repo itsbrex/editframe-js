@@ -23,7 +23,7 @@ export const validateTrim: LayerValidator<Trim> = ({ callerName, layer: { trim }
     )
   )
 
-  if (shouldThrow) {
+  if (errors.length > 0 && shouldThrow) {
     throw new Error(errors[0])
   }
 

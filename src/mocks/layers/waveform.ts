@@ -3,6 +3,7 @@ import {
   defaultPositionOptions,
   defaultSizeOptions,
   defaultTimelineOptions,
+  defaultTransitionsOptions,
   defaultTrimOptions,
 } from 'mocks/layerConfigs'
 import { deepMerge } from 'utils/objects'
@@ -12,17 +13,20 @@ export const mockWaveformLayerConfig = (
     position = defaultPositionOptions,
     size = defaultSizeOptions,
     timeline = defaultTimelineOptions,
+    transitions = defaultTransitionsOptions,
     trim = defaultTrimOptions,
   }: WaveformLayerConfig = {
     position: defaultPositionOptions,
     size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
+    transitions: defaultTransitionsOptions,
     trim: defaultTrimOptions,
   }
 ): WaveformLayerConfig => ({
   position,
   size,
   timeline,
+  transitions,
   trim,
 })
 

@@ -14,10 +14,11 @@ import { BackgroundMixin } from 'features/videos/mixins/backgroundMixin'
 import { PositionMixin } from 'features/videos/mixins/positionMixin'
 import { SizeMixin } from 'features/videos/mixins/sizeMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
+import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
 import { sanitizeHtml, validateValueIsOfType, withValidation, withValidationAsync } from 'utils'
 
-export class Html extends Mixin(BackgroundMixin, PositionMixin, SizeMixin, TimelineMixin, TrimMixin) {
+export class Html extends Mixin(BackgroundMixin, PositionMixin, SizeMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }
