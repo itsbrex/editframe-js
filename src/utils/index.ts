@@ -58,8 +58,6 @@ import { validateCompositionFile, validateCompositionOptions } from './validatio
 import {
   validateAudio,
   validateAudioMixin,
-  validateBackground,
-  validateBackgroundMixin,
   validatePosition,
   validatePositionMixin,
   validateSize,
@@ -172,8 +170,6 @@ export {
   validateAudio,
   validateAudioMixin,
   validateAudioLayer,
-  validateBackground,
-  validateBackgroundMixin,
   validateCompositionFile,
   validateCompositionOptions,
   validateFilter,

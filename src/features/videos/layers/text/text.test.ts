@@ -72,8 +72,6 @@ describe('Text', () => {
     })
 
     it('sets the correct default layer configs', () => {
-      expect(text.backgroundColor).toEqual(layerConfigDefaults.background.color)
-      expect(text.backgroundOpacity).toEqual(layerConfigDefaults.background.opacity)
       expect(text.isRelative).toEqual(layerConfigDefaults.position.isRelative)
       expect(text.x).toEqual(layerConfigDefaults.position.x)
       expect(text.y).toEqual(layerConfigDefaults.position.y)

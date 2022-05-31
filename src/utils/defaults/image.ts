@@ -1,7 +1,6 @@
 import {
   ImageLayer,
   ImageLayerConfig,
-  defaultBackground,
   defaultPosition,
   defaultSize,
   defaultTimeline,
@@ -13,7 +12,7 @@ import { deepMerge } from 'utils/objects'
 export const makeDefaultImageLayerConfig = (): ImageLayerConfig => {
   const defaults: ImageLayerConfig = {}
 
-  deepMerge(defaults, defaultBackground, defaultPosition, defaultSize, defaultTimeline, defaultTransitions, defaultTrim)
+  deepMerge(defaults, defaultPosition, defaultSize, defaultTimeline, defaultTransitions, defaultTrim)
 
   return defaults
 }

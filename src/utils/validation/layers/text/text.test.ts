@@ -137,7 +137,6 @@ describe('validateText', () => {
 describe('validateTextLayer', () => {
   const callerName = 'caller-name'
   const layer = mockTextLayer()
-  let validateBackgroundSpy: jest.SpyInstance
   let validatePositionSpy: jest.SpyInstance
   let validateSizeSpy: jest.SpyInstance
   let validateTextSpy: jest.SpyInstance
@@ -149,7 +148,6 @@ describe('validateTextLayer', () => {
   })
 
   beforeEach(() => {
-    validateBackgroundSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateBackground')
     validatePositionSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validatePosition')
     validateSizeSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateSize')
     validateTextSpy = jest.spyOn(TextValidationUtilsModule, 'validateText')
@@ -157,10 +155,6 @@ describe('validateTextLayer', () => {
     validateTrimSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateTrim')
 
     validateTextLayer(callerName, layer)
-  })
-
-  it('calls the `validateBackground` function with the correct arguments', () => {
-    expect(validateBackgroundSpy).toHaveBeenCalledWith({ callerName, layer })
   })
 
   it('calls the `validatePosition` function with the correct arguments', () => {

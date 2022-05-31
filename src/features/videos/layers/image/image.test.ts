@@ -32,8 +32,6 @@ describe('Image', () => {
 
   describe('initialization', () => {
     it('sets the correct default layer configs', () => {
-      expect(image.backgroundColor).toEqual(layerConfigDefaults.background.color)
-      expect(image.backgroundOpacity).toEqual(layerConfigDefaults.background.opacity)
       expect(image.isRelative).toEqual(layerConfigDefaults.position.isRelative)
       expect(image.x).toEqual(layerConfigDefaults.position.x)
       expect(image.y).toEqual(layerConfigDefaults.position.y)

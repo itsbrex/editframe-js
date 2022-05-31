@@ -45,8 +45,6 @@ describe('Html', () => {
     })
 
     it('sets the correct default layer configs', () => {
-      expect(html.backgroundColor).toEqual(layerConfigDefaults.background.color)
-      expect(html.backgroundOpacity).toEqual(layerConfigDefaults.background.opacity)
       expect(html.isRelative).toEqual(layerConfigDefaults.position.isRelative)
       expect(html.x).toEqual(layerConfigDefaults.position.x)
       expect(html.y).toEqual(layerConfigDefaults.position.y)

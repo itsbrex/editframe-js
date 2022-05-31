@@ -9,13 +9,7 @@ import {
 } from 'constant'
 import { ValidationErrorText } from 'strings'
 import { filterUndefined, validateLayer, validateValueIsOfType } from 'utils/validation'
-import {
-  validateBackground,
-  validatePosition,
-  validateSize,
-  validateTimeline,
-  validateTrim,
-} from 'utils/validation/layerConfigs'
+import { validatePosition, validateSize, validateTimeline, validateTrim } from 'utils/validation/layerConfigs'
 
 export const validateTextAlignment = (callerName: string, textAlign: TextAlignment): string | undefined => {
   const acceptedHorizontalValues = Object.values(TextAlignmentValue)
@@ -103,7 +97,7 @@ export const validateText: LayerValidator<TextLayer> = ({
 
 export const validateTextLayer = (callerName: string, layer: TextLayer): void =>
   validateLayer<TextLayer>(
-    [validateBackground, validatePosition, validateSize, validateText, validateTimeline, validateTrim],
+    [validatePosition, validateSize, validateText, validateTimeline, validateTrim],
     callerName,
     layer
   )

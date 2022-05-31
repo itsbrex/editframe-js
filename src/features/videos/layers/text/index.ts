@@ -12,7 +12,6 @@ import {
   TextKey,
   TextMethod,
 } from 'constant'
-import { BackgroundMixin } from 'features/videos/mixins/backgroundMixin'
 import { PositionMixin } from 'features/videos/mixins/positionMixin'
 import { SizeMixin } from 'features/videos/mixins/sizeMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
@@ -27,7 +26,7 @@ import {
   withValidation,
 } from 'utils'
 
-export class Text extends Mixin(BackgroundMixin, PositionMixin, SizeMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
+export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }

@@ -1,6 +1,5 @@
 import { Color, TextAlignmentValue, TextLayer, TextLayerConfig, TextOptions } from 'constant'
 import {
-  defaultBackgroundOptions,
   defaultPositionOptions,
   defaultSizeOptions,
   defaultTimelineOptions,
@@ -11,14 +10,12 @@ import { deepMerge } from 'utils/objects'
 
 export const mockTextLayerConfig = (
   {
-    background = defaultBackgroundOptions,
     position = defaultPositionOptions,
     size = defaultSizeOptions,
     timeline = defaultTimelineOptions,
     transitions = defaultTransitionsOptions,
     trim = defaultTrimOptions,
   }: TextLayerConfig = {
-    background: defaultBackgroundOptions,
     position: defaultPositionOptions,
     size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
@@ -26,7 +23,6 @@ export const mockTextLayerConfig = (
     trim: defaultTrimOptions,
   }
 ): TextLayerConfig => ({
-  background,
   position,
   size,
   timeline,

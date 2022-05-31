@@ -5,7 +5,6 @@ import {
   TextLayer,
   TextLayerConfig,
   TextOptions,
-  defaultBackground,
   defaultPosition,
   defaultTimeline,
   defaultTransitions,
@@ -17,15 +16,7 @@ import { deepMerge } from 'utils/objects'
 export const makeDefaultTextLayerConfig = (dimensions: Dimensions): TextLayerConfig => {
   const defaults = {}
 
-  deepMerge(
-    defaults,
-    defaultBackground,
-    defaultPosition,
-    makeDefaultSize(dimensions),
-    defaultTimeline,
-    defaultTransitions,
-    defaultTrim
-  )
+  deepMerge(defaults, defaultPosition, makeDefaultSize(dimensions), defaultTimeline, defaultTransitions, defaultTrim)
 
   return defaults
 }

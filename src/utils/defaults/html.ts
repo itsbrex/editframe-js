@@ -2,7 +2,6 @@ import {
   Dimensions,
   HtmlLayer,
   HtmlLayerConfig,
-  defaultBackground,
   defaultHtmlOptions,
   defaultPosition,
   defaultTimeline,
@@ -15,15 +14,7 @@ import { deepMerge } from 'utils/objects'
 export const makeDefaultHtmlLayerConfig = (dimensions: Dimensions): HtmlLayerConfig => {
   const defaults = {}
 
-  deepMerge(
-    defaults,
-    defaultBackground,
-    defaultPosition,
-    makeDefaultSize(dimensions),
-    defaultTimeline,
-    defaultTransitions,
-    defaultTrim
-  )
+  deepMerge(defaults, defaultPosition, makeDefaultSize(dimensions), defaultTimeline, defaultTransitions, defaultTrim)
 
   return defaults
 }
