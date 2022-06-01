@@ -10,7 +10,7 @@ import ts from 'rollup-plugin-ts'
 import packageJson from './package.json'
 
 export default {
-  external: [...Object.keys(packageJson.dependencies)],
+  external: [...Object.keys(packageJson.dependencies), 'node:child_process', 'node:fs'],
   input: 'src/index.ts',
   output: [
     {
