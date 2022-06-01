@@ -1,7 +1,7 @@
-import colors from 'colors/safe'
+import chalk from 'chalk'
 
 export const EditframeErrorText = {
-  clientIdAndTokenRequired: `\\${colors.white('clientId')}\\ and \\${colors.white(
+  clientIdAndTokenRequired: `\\${chalk.white('clientId')}\\ and \\${chalk.white(
     'token'
   )}\\ must be provided to constructor`,
 }
