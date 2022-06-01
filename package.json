@@ -6,7 +6,7 @@
   "dependencies": {
     "audio-extensions": "^0.0.0",
     "camelcase-keys": "^7.0.2",
-    "colors": "^1.4.0",
+    "chalk": "^4",
     "cross-fetch": "^3.1.5",
     "find-process": "^1.4.7",
     "form-data": "^3.0.0",
