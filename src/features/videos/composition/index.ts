@@ -514,8 +514,6 @@ export class Composition implements CompositionInterface {
 
       const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
-      removeDirectory(this._temporaryDirectory)
-
       return validateApiData<EncodeResponse>(data, {
         invalidDataError: CompositionErrorText.malformedEncodingResponse,
         validate: isEncodeResponse,
@@ -524,6 +522,8 @@ export class Composition implements CompositionInterface {
       console.error(CompositionErrorText.errorEncoding(error.message))
 
       return undefined
+    } finally {
+      removeDirectory(this._temporaryDirectory)
     }
   }
 
