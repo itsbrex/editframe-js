@@ -73,11 +73,11 @@ describe('getExtension', () => {
 describe('removeDirectory', () => {
   const directory = 'directory'
   let existsSyncSpy: jest.SpyInstance
-  let rmdirSyncSpy: jest.SpyInstance
+  let rmSyncSpy: jest.SpyInstance
 
   beforeEach(() => {
     existsSyncSpy = jest.spyOn(fs, 'existsSync')
-    rmdirSyncSpy = jest.spyOn(fs, 'rmdirSync').mockImplementation(() => 'path')
+    rmSyncSpy = jest.spyOn(fs, 'rmSync').mockImplementation(() => 'path')
   })
 
   it('does nothing when the provided directory does not exist', () => {
@@ -85,7 +85,7 @@ describe('removeDirectory', () => {
 
     removeDirectory(directory)
 
-    expect(rmdirSyncSpy).not.toHaveBeenCalled()
+    expect(rmSyncSpy).not.toHaveBeenCalled()
   })
 
   it('calls the `mkdirSync` function with the correct arguments when the provided directory does not exist', () => {
@@ -93,7 +93,7 @@ describe('removeDirectory', () => {
 
     removeDirectory(directory)
 
-    expect(rmdirSyncSpy).toHaveBeenCalledWith(directory, { recursive: true })
+    expect(rmSyncSpy).toHaveBeenCalledWith(directory, { recursive: true })
   })
 })
 
