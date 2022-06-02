@@ -1,3 +1,4 @@
+import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { Text } from 'features/videos/layers/text'
 import { mockApi } from 'mocks'
@@ -13,8 +14,10 @@ describe('Sequence', () => {
   let text2: Text
 
   beforeEach(async () => {
+    const api = mockApi()
+
     composition = new Composition({
-      api: mockApi(),
+      api,
       formData: { append: jest.fn() },
       options: {
         dimensions: {
@@ -23,6 +26,7 @@ describe('Sequence', () => {
         },
         duration: 10,
       },
+      videos: new Videos({ api }),
     })
 
     text1 = composition.addText({ text: 'text-1' }, { trim: { end: 5 } })

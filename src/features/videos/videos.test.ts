@@ -35,7 +35,7 @@ describe('Videos', () => {
 
   describe('all', () => {
     beforeEach(() => {
-      videos = new Videos(apiMock)
+      videos = new Videos({ api: apiMock })
     })
 
     it('makes a `get` request to the api with the correct arguments', async () => {
@@ -50,7 +50,7 @@ describe('Videos', () => {
           get: jest.fn().mockReturnValue([{}]),
         })
 
-        videos = new Videos(apiMock)
+        videos = new Videos({ api: apiMock })
       })
 
       it('logs the correct error to the console', async () => {
@@ -66,12 +66,12 @@ describe('Videos', () => {
 
   describe('get', () => {
     beforeEach(() => {
-      videos = new Videos(apiMock)
+      videos = new Videos({ api: apiMock })
       consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
     })
 
     it('makes a `get` request to the api with the correct arguments', async () => {
-      await videos.get(videoMock.id)
+      await videos.get({ id: videoMock.id })
 
       expect(apiMock.get).toHaveBeenCalledWith({
         url: generatePath(Routes.videos.get, { id: videoMock.id }),
@@ -84,16 +84,16 @@ describe('Videos', () => {
           get: jest.fn().mockReturnValue([{}]),
         })
 
-        videos = new Videos(apiMock)
+        videos = new Videos({ api: apiMock })
       })
 
       it('logs the correct error to the console', async () => {
-        await videos.get(videoMock.id)
+        await videos.get({ id: videoMock.id })
         expect(consoleErrorSpy).toHaveBeenCalledWith(VideoErrorText.get(VideoErrorText.malformedResponse))
       })
 
       it('returns `undefined`', async () => {
-        expect(await videos.get(videoMock.id)).toBeUndefined()
+        expect(await videos.get({ id: videoMock.id })).toBeUndefined()
       })
     })
   })
@@ -114,7 +114,7 @@ describe('Videos', () => {
       jest.spyOn(FilesUtilsModule, 'createReadStream').mockReturnValue(readStreamMock)
       validateNewVideoSpy = jest.spyOn(VideosUtilsModule, 'validateNewVideo')
       validateCompositionFileSpy = jest.spyOn(CompositionValidationUtilsModule, 'validateCompositionFile')
-      videos = new Videos(apiMock)
+      videos = new Videos({ api: apiMock })
     })
 
     describe('when a `videoPath` argument is provided', () => {

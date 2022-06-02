@@ -74,7 +74,7 @@ describe('Editframe', () => {
     })
 
     it('instantiates the `Videos` instance with the correct arguments', () => {
-      expect(videosSpy).toHaveBeenCalledWith(apiMock)
+      expect(videosSpy).toHaveBeenCalledWith({ api: apiMock, develop: false })
     })
   })
 })

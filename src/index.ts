@@ -13,7 +13,7 @@ export class Editframe {
   private _token: string
   private _version: number
 
-  constructor({ clientId, host = defaultHost, token, version = 2 }: EditframeOptions) {
+  constructor({ clientId, develop = false, host = defaultHost, token, version = 2 }: EditframeOptions) {
     if (!clientId || !token) {
       throw new Error(EditframeErrorText.clientIdAndTokenRequired)
     }
@@ -30,7 +30,7 @@ export class Editframe {
     this._token = token
     this._version = version
     this.applications = new Applications(this._api)
-    this.videos = new Videos(this._api)
+    this.videos = new Videos({ api: this._api, develop })
   }
 
   public get clientId(): string {

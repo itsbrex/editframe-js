@@ -6,6 +6,7 @@ import {
   TextMethod,
   TextOptions,
 } from 'constant'
+import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
 import { CompositionErrorText } from 'strings'
@@ -33,8 +34,10 @@ describe('Text', () => {
   })
 
   beforeEach(() => {
+    const api = mockApi()
+
     composition = new Composition({
-      api: mockApi(),
+      api,
       formData: { append: jest.fn() },
       options: {
         dimensions: {
@@ -43,6 +46,7 @@ describe('Text', () => {
         },
         duration: 10,
       },
+      videos: new Videos({ api }),
     })
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
     validateTextAlignmentSpy = jest.spyOn(LayerUtilsModule, 'validateTextAlignment')
