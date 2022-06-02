@@ -105,7 +105,7 @@
   "scripts": {
     "build": "rollup -c && tsc-alias",
     "build:watch": "rollup -w & tsc-alias -w",
-    "format": "prettier --write '**/*.{js, ts}' --loglevel error",
+    "format": "prettier --write '**/*.{js,ts}' --loglevel error",
     "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --ext .ts . --fix",
     "prepare": "husky install",
