@@ -31,6 +31,7 @@ export const mockTextLayerConfig = (
 })
 
 const MockTextValue = {
+  backgroundColor: Color.white,
   color: Color.black,
   fontFamily: 'Arial',
   fontSize: 20,
@@ -39,11 +40,13 @@ const MockTextValue = {
   maxFontSize: 25,
   maxHeight: 400,
   maxWidth: 800,
+  padding: 0,
   text: 'text',
   textAlign: TextAlignmentValue.center,
 }
 
 export const mockTextOptions = ({
+  backgroundColor = MockTextValue.backgroundColor,
   color = MockTextValue.color,
   fontFamily = MockTextValue.fontFamily,
   fontSize = MockTextValue.fontSize,
@@ -52,9 +55,11 @@ export const mockTextOptions = ({
   maxFontSize = MockTextValue.maxFontSize,
   maxHeight = MockTextValue.maxHeight,
   maxWidth = MockTextValue.maxWidth,
+  padding = MockTextValue.padding,
   text = MockTextValue.text,
   textAlign = MockTextValue.textAlign,
 }: TextOptions = MockTextValue): TextOptions => ({
+  backgroundColor,
   color,
   fontFamily,
   fontSize,
@@ -63,6 +68,7 @@ export const mockTextOptions = ({
   maxFontSize,
   maxHeight,
   maxWidth,
+  padding,
   text,
   textAlign,
 })

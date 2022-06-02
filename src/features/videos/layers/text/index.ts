@@ -35,6 +35,10 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
     return LayerType.text
   }
 
+  get backgroundColor(): string | undefined {
+    return this._getTextAttribute<string | undefined>(TextKey.backgroundColor)
+  }
+
   get color(): string | undefined {
     return this._getTextAttribute<string | undefined>(TextKey.color)
   }
@@ -67,12 +71,30 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
     return this._getTextAttribute<number | undefined>(TextKey.maxWidth)
   }
 
+  get padding(): number {
+    return this._getTextAttribute<number>(TextKey.padding)
+  }
+
   get text(): string {
     return this._getTextAttribute<string>(TextKey.text)
   }
 
   get textAlignment(): TextAlignment | undefined {
     return this._getTextAttribute<TextAlignment | undefined>(TextKey.textAlign)
+  }
+
+  public [TextMethod.setBackgroundColor](backgroundColor: string): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setBackgroundColor,
+          TextKey.backgroundColor,
+          backgroundColor,
+          PrimitiveType.string,
+          true
+        ),
+      () => this._setTextAttribute(TextKey.backgroundColor, backgroundColor)
+    )
   }
 
   public [TextMethod.setColor](color?: string): this {
@@ -136,6 +158,13 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
     return withValidation<this>(
       () => validateValueIsOfType(TextMethod.setMaxWidth, TextKey.maxWidth, maxWidth, PrimitiveType.number, true),
       () => this._setTextAttribute(TextKey.maxWidth, maxWidth)
+    )
+  }
+
+  public [TextMethod.setPadding](padding: number): this {
+    return withValidation<this>(
+      () => validateValueIsOfType(TextMethod.setPadding, TextKey.padding, padding, PrimitiveType.number, true),
+      () => this._setTextAttribute(TextKey.padding, padding)
     )
   }
 

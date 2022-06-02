@@ -22,6 +22,7 @@ export const makeDefaultTextLayerConfig = (dimensions: Dimensions): TextLayerCon
 }
 
 export const makeDefaultTextOptions = ({ height, width }: Dimensions): TextOptions => ({
+  backgroundColor: Color.transparent,
   color: Color.black,
   fontFamily: 'Arial',
   fontSize: 32,
@@ -30,6 +31,7 @@ export const makeDefaultTextOptions = ({ height, width }: Dimensions): TextOptio
   maxFontSize: null,
   maxHeight: height,
   maxWidth: width,
+  padding: 0,
   text: 'Your Text Here...',
   textAlign: TextAlignmentValue.center,
 })

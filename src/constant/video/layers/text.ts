@@ -1,4 +1,5 @@
 export enum TextMethod {
+  setBackgroundColor = 'setBackgroundColor',
   setColor = 'setColor',
   setFontFamily = 'setFontFamily',
   setFontSize = 'setFontSize',
@@ -7,6 +8,7 @@ export enum TextMethod {
   setMaxFontSize = 'setMaxFontSize',
   setMaxHeight = 'setMaxHeight',
   setMaxWidth = 'setMaxWidth',
+  setPadding = 'setPadding',
   setText = 'setText',
   setTextAlignment = 'setTextAlignment',
 }

@@ -63,11 +63,13 @@ describe('Text', () => {
   describe('initialization', () => {
     it('sets the correct options and defaults', () => {
       expect(text.text).toEqual(initialText)
+      expect(text.backgroundColor).toEqual(layerOptionsDefaults.backgroundColor)
       expect(text.color).toEqual(layerOptionsDefaults.color)
       expect(text.fontFamily).toEqual(layerOptionsDefaults.fontFamily)
       expect(text.fontSize).toEqual(layerOptionsDefaults.fontSize)
       expect(text.maxHeight).toEqual(layerOptionsDefaults.maxHeight)
       expect(text.maxWidth).toEqual(layerOptionsDefaults.maxWidth)
+      expect(text.padding).toEqual(layerOptionsDefaults.padding)
       expect(text.textAlignment).toEqual(layerOptionsDefaults.textAlign)
     })
 
@@ -80,6 +82,34 @@ describe('Text', () => {
       expect(text.width).toEqual(layerConfigDefaults.size.width)
       expect(text.start).toEqual(layerConfigDefaults.timeline.start)
       expect(text.trim).toEqual(layerConfigDefaults.trim)
+    })
+  })
+
+  describe('setBackgroundColor', () => {
+    const backgroundColor = 'backgroundColor'
+
+    beforeEach(() => {
+      result = text.setBackgroundColor(backgroundColor)
+    })
+
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setBackgroundColor,
+        TextKey.backgroundColor,
+        backgroundColor,
+        PrimitiveType.string,
+        true
+      )
+    })
+
+    it('sets the `backgroundColor`', () => {
+      text.setBackgroundColor(backgroundColor)
+
+      expect(text.backgroundColor).toEqual(backgroundColor)
+    })
+
+    it('returns the `Text` instance', () => {
+      expect(result).toBeInstanceOf(Text)
     })
   })
 
@@ -286,6 +316,32 @@ describe('Text', () => {
 
     it('sets the `maxWidth`', () => {
       expect(text.maxWidth).toEqual(maxWidth)
+    })
+
+    it('returns the `Text` instance', () => {
+      expect(result).toBeInstanceOf(Text)
+    })
+  })
+
+  describe('setPadding', () => {
+    const padding = 10
+
+    beforeEach(() => {
+      result = text.setPadding(padding)
+    })
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setPadding,
+        TextKey.padding,
+        padding,
+        PrimitiveType.number,
+        true
+      )
+    })
+
+    it('sets the `padding`', () => {
+      expect(text.padding).toEqual(padding)
     })
 
     it('returns the `Text` instance', () => {
