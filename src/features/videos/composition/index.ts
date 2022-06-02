@@ -526,6 +526,7 @@ export class Composition implements CompositionInterface {
   > {
     let encodeResponse: EncodeResponse
     let encodeStartTime: Date
+    let spinner: ora.Ora
 
     try {
       if (!this.duration) {
@@ -534,7 +535,29 @@ export class Composition implements CompositionInterface {
 
       this._generateConfig()
 
-      const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
+      if (this._develop) {
+        spinner = ora('Uploading assets')
+      }
+
+      let data
+
+      try {
+        const requestStart = new Date()
+
+        data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
+
+        const requestEnd = new Date()
+
+        if (this._develop) {
+          spinner.succeed(`Assets uploaded in ${prettyMilliseconds(requestEnd.getTime() - requestStart.getTime())}`)
+        }
+      } catch (error) {
+        if (this._develop) {
+          spinner.fail('Asset upload failed')
+        }
+
+        throw error
+      }
 
       encodeResponse = validateApiData<EncodeResponse>(data, {
         invalidDataError: CompositionErrorText.malformedEncodingResponse,
@@ -550,7 +573,7 @@ export class Composition implements CompositionInterface {
       removeDirectory(this._temporaryDirectory)
     }
 
-    return synchronously ? this._getNewVideo({ encodeStartTime, videoId: encodeResponse.id }) : encodeResponse
+    return synchronously ? this._getNewlyCreatedVideo({ encodeStartTime, videoId: encodeResponse.id }) : encodeResponse
   }
 
   public async [CompositionMethod.preview](): Promise<void> {
@@ -615,13 +638,13 @@ export class Composition implements CompositionInterface {
   }
 
   /**
-   * get a recently-created video
+   * get a newly-created video which is likely still being encoded
    *
    * waits for encoding attempt to complete before returning
    *
    * in develop mode, outputs state to console and opens the video stream url when ready
    */
-  private async _getNewVideo({
+  private async _getNewlyCreatedVideo({
     encodeStartTime,
     videoId,
   }: {
