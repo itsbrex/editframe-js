@@ -1,40 +1,58 @@
-import { Color, LayerKey, PrimitiveType, TextAlignmentValue, TextKey } from 'constant'
-import { mockTextLayer } from 'mocks'
+import { LayerKey, PrimitiveType, TextAlignValue, TextKey } from 'constant'
+import { mockTextLayer, mockTextOptions } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as LayerConfigValidationUtilsModule from 'utils/validation/layerConfigs'
-import { validateText, validateTextAlignment, validateTextLayer } from 'utils/validation/layers/text'
+import { validateText, validateTextAlign, validateTextLayer } from 'utils/validation/layers/text'
 import * as TextValidationUtilsModule from 'utils/validation/layers/text'
 
-describe('validateTextAlignment', () => {
+describe('validateTextAlign', () => {
   const textAlign = 'invalid-text-alignment'
   const callerName = 'caller-name'
 
   it('returns an error if the provided `textAlign` is invalid', () => {
-    expect(validateTextAlignment(callerName, textAlign as any)).toEqual(
+    expect(validateTextAlign(callerName, textAlign as any)).toEqual(
       ValidationErrorText.MUST_BE_TYPE(
         callerName,
         ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.textAlign),
         textAlign,
-        Object.values(TextAlignmentValue).join(', ')
+        Object.values(TextAlignValue).join(', ')
       )
     )
   })
 })
 
 describe('validateText', () => {
-  const color = Color.black
-  const fontFamily = 'font-family'
-  const fontSize = 10
-  const maxFontSize = 20
-  const maxHeight = 30
-  const maxWidth = 40
-  const text = 'text'
-  const textAlign = 'invalid-text-alignment'
   const callerName = 'caller-name'
+  let validateFontStyleSpy: jest.SpyInstance
+  let validateFontWeightSpy: jest.SpyInstance
+  let validateTextAlignSpy: jest.SpyInstance
+  let validateTextPositionSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
+  const textOptions = mockTextOptions()
+  const {
+    backgroundColor,
+    border,
+    borderRadius,
+    color,
+    fontFamily,
+    fontSize,
+    fontStyle,
+    fontWeight,
+    lineHeight,
+    padding,
+    text,
+    textAlign,
+    textDecoration,
+    textPosition,
+  } = textOptions
+
   beforeEach(() => {
+    validateFontStyleSpy = jest.spyOn(TextValidationUtilsModule, 'validateFontStyle')
+    validateFontWeightSpy = jest.spyOn(TextValidationUtilsModule, 'validateFontWeight')
+    validateTextAlignSpy = jest.spyOn(TextValidationUtilsModule, 'validateTextAlign')
+    validateTextPositionSpy = jest.spyOn(TextValidationUtilsModule, 'validateTextPosition')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
   })
 
@@ -42,20 +60,32 @@ describe('validateText', () => {
     validateText({
       callerName,
       layer: {
-        text: {
-          color,
-          fontFamily,
-          fontSize,
-          maxFontSize,
-          maxHeight,
-          maxWidth,
-          text,
-          textAlign: TextAlignmentValue.center,
-        },
+        text: textOptions,
       },
     })
 
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(7)
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(10)
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.backgroundColor),
+      backgroundColor,
+      PrimitiveType.string
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.border),
+      border,
+      PrimitiveType.string
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.borderRadius),
+      borderRadius,
+      PrimitiveType.number
+    )
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
@@ -80,22 +110,15 @@ describe('validateText', () => {
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.maxFontSize),
-      maxFontSize,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.lineHeight),
+      lineHeight,
       PrimitiveType.number
     )
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.maxHeight),
-      maxHeight,
-      PrimitiveType.number
-    )
-
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-      callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.maxWidth),
-      maxWidth,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.padding),
+      padding,
       PrimitiveType.number
     )
 
@@ -105,32 +128,29 @@ describe('validateText', () => {
       text,
       PrimitiveType.string
     )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.textDecoration),
+      textDecoration,
+      PrimitiveType.string
+    )
   })
 
-  it('returns an error if the provided `textAlign` is invalid', () => {
-    expect(
-      validateText({
-        callerName,
-        layer: {
-          text: {
-            fontFamily,
-            fontSize,
-            maxFontSize,
-            maxHeight,
-            maxWidth,
-            text,
-            textAlign: textAlign as any,
-          },
-        },
-      })
-    ).toEqual([
-      ValidationErrorText.MUST_BE_TYPE(
-        callerName,
-        ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.textAlign),
-        textAlign,
-        Object.values(TextAlignmentValue).join(', ')
-      ),
-    ])
+  it('calls the `validateFontStyle` function with the correct arguments', () => {
+    expect(validateFontStyleSpy).toHaveBeenCalledWith(callerName, fontStyle)
+  })
+
+  it('calls the `validateFontWeight` function with the correct arguments', () => {
+    expect(validateFontWeightSpy).toHaveBeenCalledWith(callerName, fontWeight)
+  })
+
+  it('calls the `validateTextAlign` function with the correct arguments', () => {
+    expect(validateTextAlignSpy).toHaveBeenCalledWith(callerName, textAlign)
+  })
+
+  it('calls the `validateTextPositionSpy` function with the correct arguments', () => {
+    expect(validateTextPositionSpy).toHaveBeenCalledWith(callerName, textPosition)
   })
 })
 

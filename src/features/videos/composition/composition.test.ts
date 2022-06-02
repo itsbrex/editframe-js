@@ -247,7 +247,7 @@ describe('Composition', () => {
       const text = 'text'
       const layer = composition.addText({ text })
 
-      const defaultTextLayer = makeDefaultTextLayer(composition.dimensions)
+      const defaultTextLayer = makeDefaultTextLayer()
 
       expect(composition.layer(layer?.id)).toEqual(
         deepMerge(defaultTextLayer, { id: uuidMock, text: { text }, type: LayerType.text })

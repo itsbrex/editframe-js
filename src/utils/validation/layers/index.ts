@@ -5,7 +5,14 @@ import { validateImageLayer } from './image'
 import { validateLottie, validateLottieLayer } from './lottie'
 import { validateSequenceLayer } from './sequence'
 import { validateSubtitles, validateSubtitlesLayer } from './subtitles'
-import { validateText, validateTextAlignment, validateTextLayer } from './text'
+import {
+  validateFontStyle,
+  validateFontWeight,
+  validateText,
+  validateTextAlign,
+  validateTextLayer,
+  validateTextPosition,
+} from './text'
 import { validateVideoLayer } from './video'
 import { validateWaveform, validateWaveformLayer } from './waveform'
 
@@ -13,6 +20,8 @@ export {
   validateAudioLayer,
   validateFilter,
   validateFilterLayer,
+  validateFontStyle,
+  validateFontWeight,
   validateHtml,
   validateHtmlLayer,
   validateImageLayer,
@@ -22,8 +31,9 @@ export {
   validateSubtitles,
   validateSubtitlesLayer,
   validateText,
+  validateTextAlign,
   validateTextLayer,
-  validateTextAlignment,
+  validateTextPosition,
   validateVideoLayer,
   validateWaveform,
   validateWaveformLayer,

@@ -1,4 +1,14 @@
-import { Color, TextAlignmentValue, TextLayer, TextLayerConfig, TextOptions } from 'constant'
+import {
+  Color,
+  FontStyleValue,
+  FontWeightValue,
+  TextAlignValue,
+  TextHorizontalPositionValue,
+  TextLayer,
+  TextLayerConfig,
+  TextOptions,
+  TextVerticalPositionValue,
+} from 'constant'
 import {
   defaultPositionOptions,
   defaultSizeOptions,
@@ -32,45 +42,54 @@ export const mockTextLayerConfig = (
 
 const MockTextValue = {
   backgroundColor: Color.white,
+  border: 'none',
+  borderRadius: 0,
   color: Color.black,
   fontFamily: 'Arial',
   fontSize: 20,
-  fontWeight: 100,
-  lineHeight: 26,
-  maxFontSize: 25,
-  maxHeight: 400,
-  maxWidth: 800,
+  fontStyle: FontStyleValue.normal,
+  fontWeight: FontWeightValue.normal,
+  lineHeight: 1.2,
   padding: 0,
   text: 'text',
-  textAlign: TextAlignmentValue.center,
+  textAlign: TextAlignValue.center,
+  textDecoration: 'none',
+  textPosition: {
+    x: TextHorizontalPositionValue.center,
+    y: TextVerticalPositionValue.center,
+  },
 }
 
 export const mockTextOptions = ({
   backgroundColor = MockTextValue.backgroundColor,
+  border = MockTextValue.border,
+  borderRadius = MockTextValue.borderRadius,
   color = MockTextValue.color,
   fontFamily = MockTextValue.fontFamily,
   fontSize = MockTextValue.fontSize,
+  fontStyle = MockTextValue.fontStyle,
   fontWeight = MockTextValue.fontWeight,
   lineHeight = MockTextValue.lineHeight,
-  maxFontSize = MockTextValue.maxFontSize,
-  maxHeight = MockTextValue.maxHeight,
-  maxWidth = MockTextValue.maxWidth,
   padding = MockTextValue.padding,
   text = MockTextValue.text,
   textAlign = MockTextValue.textAlign,
+  textDecoration = MockTextValue.textDecoration,
+  textPosition = MockTextValue.textPosition,
 }: TextOptions = MockTextValue): TextOptions => ({
   backgroundColor,
+  border,
+  borderRadius,
   color,
   fontFamily,
   fontSize,
+  fontStyle,
   fontWeight,
   lineHeight,
-  maxFontSize,
-  maxHeight,
-  maxWidth,
   padding,
   text,
   textAlign,
+  textDecoration,
+  textPosition,
 })
 
 export const mockTextLayer = (): TextLayer => deepMerge({ text: mockTextOptions() }, mockTextLayerConfig())
