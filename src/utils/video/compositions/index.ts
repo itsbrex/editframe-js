@@ -60,7 +60,7 @@ export const setLayerDefaults = <Layer>(
   const layerDefaults: Record<LayerType, ComposableLayer> = {
     [LayerType.audio]: makeDefaultAudioLayer(),
     [LayerType.filter]: defaultFilterLayer,
-    [LayerType.html]: makeDefaultHtmlLayer(defaultDimensions),
+    [LayerType.html]: makeDefaultHtmlLayer(),
     [LayerType.image]: makeDefaultImageLayer(),
     [LayerType.lottie]: makeDefaultLottieLayer(),
     [LayerType.sequence]: makeDefaultSequenceLayer(),
