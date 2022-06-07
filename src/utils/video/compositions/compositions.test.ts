@@ -1,6 +1,7 @@
 import { PassThrough } from 'stream'
 
 import { LayerType, SequenceableLayer, TransitionOptions, TransitionType, defaultFilterLayer } from 'constant'
+import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import {
   mockApi,
@@ -301,10 +302,13 @@ describe('processCrossfades', () => {
   let result: number
 
   beforeEach(async () => {
+    const api = mockApi({ get: jest.fn(), post: jest.fn(), put: jest.fn() })
+
     composition = new Composition({
-      api: mockApi({ get: jest.fn(), post: jest.fn(), put: jest.fn() }),
+      api,
       formData: { append: jest.fn() },
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
+      videos: new Videos({ api }),
     })
 
     currentLayer = composition.addText({ text: 'currentLayer' }, { trim: { end: 3 } })

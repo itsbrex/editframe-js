@@ -1,4 +1,5 @@
 import { Color, PrimitiveType, SubtitlesKey, SubtitlesMethod, defaultSubtitlesOptions } from 'constant'
+import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
 import { makeDefaultSubtitlesLayerConfig } from 'utils'
@@ -18,9 +19,11 @@ describe('Subtitles', () => {
   })
 
   beforeEach(async () => {
+    const api = mockApi()
+
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     composition = new Composition({
-      api: mockApi(),
+      api,
       formData: { append: jest.fn() },
       options: {
         dimensions: {
@@ -29,6 +32,7 @@ describe('Subtitles', () => {
         },
         duration: 10,
       },
+      videos: new Videos({ api }),
     })
 
     subtitles = await composition.addSubtitles('./package.json')
