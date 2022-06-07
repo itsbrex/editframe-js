@@ -33,6 +33,7 @@ describe('validateText', () => {
   const textOptions = mockTextOptions()
   const {
     backgroundColor,
+    backgroundTransform,
     border,
     borderRadius,
     color,
@@ -46,6 +47,7 @@ describe('validateText', () => {
     textAlign,
     textDecoration,
     textPosition,
+    textTransform,
   } = textOptions
 
   beforeEach(() => {
@@ -64,12 +66,19 @@ describe('validateText', () => {
       },
     })
 
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(10)
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(12)
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.backgroundColor),
       backgroundColor,
+      PrimitiveType.string
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.backgroundTransform),
+      backgroundTransform,
       PrimitiveType.string
     )
 
@@ -133,6 +142,13 @@ describe('validateText', () => {
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.textDecoration),
       textDecoration,
+      PrimitiveType.string
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.textTransform),
+      textTransform,
       PrimitiveType.string
     )
   })

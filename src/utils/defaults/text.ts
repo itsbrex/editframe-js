@@ -22,6 +22,7 @@ export const makeDefaultTextLayerConfig = (): TextLayerConfig => {
 
 export const makeDefaultTextOptions = (): TextOptions => ({
   backgroundColor: Color.transparent,
+  backgroundTransform: 'none',
   border: 'none',
   borderRadius: 0,
   color: Color.white,
@@ -35,6 +36,7 @@ export const makeDefaultTextOptions = (): TextOptions => ({
   textAlign: TextAlignValue.left,
   textDecoration: 'none',
   textPosition: null,
+  textTransform: 'none',
 })
 
 export const makeDefaultTextLayer = (): TextLayer => {
