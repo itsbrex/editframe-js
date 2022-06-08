@@ -117,6 +117,34 @@ describe('Text', () => {
     })
   })
 
+  describe('setBackgroundTransform', () => {
+    const backgroundTransform = 'backgroundTransform'
+
+    beforeEach(() => {
+      result = text.setBackgroundTransform(backgroundTransform)
+    })
+
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setBackgroundTransform,
+        TextKey.backgroundTransform,
+        backgroundTransform,
+        PrimitiveType.string,
+        true
+      )
+    })
+
+    it('sets the `backgroundColor`', () => {
+      text.setBackgroundTransform(backgroundTransform)
+
+      expect(text.backgroundTransform).toEqual(backgroundTransform)
+    })
+
+    it('returns the `Text` instance', () => {
+      expect(result).toBeInstanceOf(Text)
+    })
+  })
+
   describe('setBorder', () => {
     const border = 'border'
 
@@ -434,6 +462,34 @@ describe('Text', () => {
 
     it('sets the `textPosition`', () => {
       expect(text.textPosition).toEqual(textPosition)
+    })
+
+    it('returns the `Text` instance', () => {
+      expect(result).toBeInstanceOf(Text)
+    })
+  })
+
+  describe('setTextTransform', () => {
+    const textTransform = 'textTransform'
+
+    beforeEach(() => {
+      result = text.setTextTransform(textTransform)
+    })
+
+    it('calls the `validateValueIsOfType` function', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        TextMethod.setTextTransform,
+        TextKey.textTransform,
+        textTransform,
+        PrimitiveType.string,
+        true
+      )
+    })
+
+    it('sets the `backgroundColor`', () => {
+      text.setTextTransform(textTransform)
+
+      expect(text.textTransform).toEqual(textTransform)
     })
 
     it('returns the `Text` instance', () => {

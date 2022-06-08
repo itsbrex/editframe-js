@@ -41,8 +41,12 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
     return LayerType.text
   }
 
-  get backgroundColor(): string | undefined {
-    return this._getTextAttribute<string | undefined>(TextKey.backgroundColor)
+  get backgroundColor(): string {
+    return this._getTextAttribute<string>(TextKey.backgroundColor)
+  }
+
+  get backgroundTransform(): string {
+    return this._getTextAttribute<string>(TextKey.backgroundTransform)
   }
 
   get border(): string {
@@ -97,6 +101,10 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
     return this._getTextAttribute<TextPosition>(TextKey.textPosition)
   }
 
+  get textTransform(): string {
+    return this._getTextAttribute<string>(TextKey.textTransform)
+  }
+
   public [TextMethod.setBackgroundColor](backgroundColor: string): this {
     return withValidation<this>(
       () =>
@@ -108,6 +116,20 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
           true
         ),
       () => this._setTextAttribute(TextKey.backgroundColor, backgroundColor)
+    )
+  }
+
+  public [TextMethod.setBackgroundTransform](backgroundTransform: string): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setBackgroundTransform,
+          TextKey.backgroundTransform,
+          backgroundTransform,
+          PrimitiveType.string,
+          true
+        ),
+      () => this._setTextAttribute(TextKey.backgroundTransform, backgroundTransform)
     )
   }
 
@@ -216,6 +238,20 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
     return withValidation<this>(
       () => validateTextPosition(TextMethod.setTextPosition, textPosition),
       () => this._setTextAttribute(TextKey.textPosition, textPosition)
+    )
+  }
+
+  public [TextMethod.setTextTransform](textTransform: string): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setTextTransform,
+          TextKey.textTransform,
+          textTransform,
+          PrimitiveType.string,
+          true
+        ),
+      () => this._setTextAttribute(TextKey.textTransform, textTransform)
     )
   }
 
