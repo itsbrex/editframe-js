@@ -1,4 +1,5 @@
 import { ImageLayerConfig } from 'constant'
+import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
 import { makeDefaultImageLayerConfig } from 'utils'
@@ -15,10 +16,13 @@ describe('Image', () => {
   })
 
   beforeEach(async () => {
+    const api = mockApi({ get: jest.fn(), post: jest.fn(), put: jest.fn() })
+
     composition = new Composition({
-      api: mockApi({ get: jest.fn(), post: jest.fn(), put: jest.fn() }),
+      api,
       formData: { append: jest.fn() },
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
+      videos: new Videos({ api }),
     })
     image = await composition.addImage('./package.json')
     layerConfigDefaults = makeDefaultImageLayerConfig()
@@ -28,8 +32,6 @@ describe('Image', () => {
 
   describe('initialization', () => {
     it('sets the correct default layer configs', () => {
-      expect(image.backgroundColor).toEqual(layerConfigDefaults.background.color)
-      expect(image.backgroundOpacity).toEqual(layerConfigDefaults.background.opacity)
       expect(image.isRelative).toEqual(layerConfigDefaults.position.isRelative)
       expect(image.x).toEqual(layerConfigDefaults.position.x)
       expect(image.y).toEqual(layerConfigDefaults.position.y)

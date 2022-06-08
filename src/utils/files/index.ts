@@ -1,5 +1,5 @@
 import { fetch } from 'cross-fetch'
-import fs, { createWriteStream, existsSync, mkdirSync, rmdirSync, writeFileSync } from 'fs'
+import fs, { createWriteStream, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { parse, resolve } from 'path'
 import { Readable } from 'stream'
 
@@ -42,7 +42,7 @@ export const getExtension = (filepath: string): string => parse(filepath).ext
 
 export const removeDirectory = (directory: string): void => {
   if (fileExists(directory)) {
-    rmdirSync(directory, { recursive: true })
+    rmSync(directory, { recursive: true })
   }
 }
 

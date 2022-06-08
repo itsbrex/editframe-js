@@ -1,52 +1,48 @@
 import {
   Color,
-  Dimensions,
-  TextAlignmentValue,
+  TextAlignValue,
   TextLayer,
   TextLayerConfig,
   TextOptions,
-  defaultBackground,
   defaultPosition,
+  defaultSize,
   defaultTimeline,
   defaultTransitions,
   defaultTrim,
 } from 'constant'
-import { makeDefaultSize } from 'utils/defaults/size'
 import { deepMerge } from 'utils/objects'
 
-export const makeDefaultTextLayerConfig = (dimensions: Dimensions): TextLayerConfig => {
+export const makeDefaultTextLayerConfig = (): TextLayerConfig => {
   const defaults = {}
 
-  deepMerge(
-    defaults,
-    defaultBackground,
-    defaultPosition,
-    makeDefaultSize(dimensions),
-    defaultTimeline,
-    defaultTransitions,
-    defaultTrim
-  )
+  deepMerge(defaults, defaultPosition, defaultSize, defaultTimeline, defaultTransitions, defaultTrim)
 
   return defaults
 }
 
-export const makeDefaultTextOptions = ({ height, width }: Dimensions): TextOptions => ({
-  color: Color.black,
-  fontFamily: 'Arial',
-  fontSize: 32,
-  fontWeight: null,
-  lineHeight: 38,
-  maxFontSize: null,
-  maxHeight: height,
-  maxWidth: width,
+export const makeDefaultTextOptions = (): TextOptions => ({
+  backgroundColor: Color.transparent,
+  backgroundTransform: 'none',
+  border: 'none',
+  borderRadius: 0,
+  color: Color.white,
+  fontFamily: 'Helvetica',
+  fontSize: 100,
+  fontStyle: 'normal',
+  fontWeight: 400,
+  lineHeight: 1.2,
+  padding: 16,
   text: 'Your Text Here...',
-  textAlign: TextAlignmentValue.center,
+  textAlign: TextAlignValue.left,
+  textDecoration: 'none',
+  textPosition: null,
+  textTransform: 'none',
 })
 
-export const makeDefaultTextLayer = (dimensions: Dimensions): TextLayer => {
-  const defaults: TextLayer = { text: makeDefaultTextOptions(dimensions) }
+export const makeDefaultTextLayer = (): TextLayer => {
+  const defaults: TextLayer = { text: makeDefaultTextOptions() }
 
-  deepMerge(defaults, makeDefaultTextLayerConfig(dimensions))
+  deepMerge(defaults, makeDefaultTextLayerConfig())
 
   return defaults
 }

@@ -1,26 +1,26 @@
-import colors from 'colors/safe'
+import chalk from 'chalk'
 
 import { LayerKey, TrimKey } from 'constant'
 import { ValidationErrorText } from 'strings/validation'
 
 export const CompositionErrorText = {
-  dataRequired: `\\${colors.white('data')}\\ must be provided`,
-  dimensionsRequired: `\\${colors.white('dimensions')}\\ must be provided unless a \\${colors.white(
+  dataRequired: `\\${chalk.white('data')}\\ must be provided`,
+  dimensionsRequired: `\\${chalk.white('dimensions')}\\ must be provided unless a \\${chalk.white(
     'videoFile'
   )}\\ is provided`,
-  durationRequired: `\\${colors.white(
+  durationRequired: `\\${chalk.white(
     'duration'
-  )}\\ must be provided unless composition is instantiated from a \\${colors.white(
+  )}\\ must be provided unless composition is instantiated from a \\${chalk.white(
     'videoFile'
-  )}\\ or calculated automatically via a call to \\${colors.white('addSequence')}\\`,
+  )}\\ or calculated automatically via a call to \\${chalk.white('addSequence')}\\`,
   errorEncoding: (error: string): string => `Error encoding video: ${error}`,
-  filterRequired: `\\${colors.white('filter')}\\ must be provided`,
-  htmlPageOrUrlRequired: `Either \\${colors.white('page')}\\ or \\${colors.white('url')}\\ must be provided`,
-  malformedEncodingResponse: `malformed ${colors.white('encoding')}\\ response`,
-  optionsRequired: `\\${colors.white('options')}\\ must be provided`,
-  textRequired: `\\${colors.white('text')}\\ field required`,
+  filterRequired: `\\${chalk.white('filter')}\\ must be provided`,
+  htmlPageOrUrlRequired: `Either \\${chalk.white('page')}\\ or \\${chalk.white('url')}\\ must be provided`,
+  malformedEncodingResponse: `malformed ${chalk.white('encoding')}\\ response`,
+  optionsRequired: `\\${chalk.white('options')}\\ must be provided`,
+  textRequired: `\\${chalk.white('text')}\\ field required`,
   trimEndRequired: (layerType: string): string =>
-    `layer \\${colors.white(layerType)}\\ must provide \\${colors.white(
+    `layer \\${chalk.white(layerType)}\\ must provide \\${chalk.white(
       ValidationErrorText.SUB_FIELD(LayerKey.trim, TrimKey.end)
     )}\\ attribute in order to calculate position in sequence timeline automatically`,
 

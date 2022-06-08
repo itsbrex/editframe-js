@@ -1,13 +1,7 @@
 import { HtmlKey, HtmlLayer, LayerKey, LayerValidator, PrimitiveType } from 'constant'
 import { CompositionErrorText, ValidationErrorText } from 'strings'
 import { filterUndefined, validateLayer, validateValueIsOfType } from 'utils/validation'
-import {
-  validateBackground,
-  validatePosition,
-  validateSize,
-  validateTimeline,
-  validateTrim,
-} from 'utils/validation/layerConfigs'
+import { validatePosition, validateSize, validateTimeline, validateTrim } from 'utils/validation/layerConfigs'
 
 export const validateHtml: LayerValidator<HtmlLayer> = ({
   callerName,
@@ -51,7 +45,7 @@ export const validateHtml: LayerValidator<HtmlLayer> = ({
 
 export const validateHtmlLayer = (callerName: string, layer: HtmlLayer): void =>
   validateLayer<HtmlLayer>(
-    [validateBackground, validatePosition, validateSize, validateTimeline, validateTrim, validateHtml],
+    [validatePosition, validateSize, validateTimeline, validateTrim, validateHtml],
     callerName,
     layer
   )

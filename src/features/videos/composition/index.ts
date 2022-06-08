@@ -1,10 +1,16 @@
+import fetch from 'cross-fetch'
 import { Readable } from 'node:stream'
+import { setTimeout } from 'node:timers/promises'
+import open from 'open'
+import ora from 'ora'
+import prettyMilliseconds from 'pretty-ms'
 
 import {
   ApiAudioMetadata,
   ApiImageMetadata,
   ApiInterface,
   ApiMetadataTypes,
+  ApiVideo,
   ApiVideoMetadata,
   ApiVideoMetadataFormDataKey,
   ApiVideoMetadataKey,
@@ -62,6 +68,7 @@ import {
   WaveformLayerConfig,
   WaveformOptions,
 } from 'constant'
+import { Videos } from 'features'
 import { Audio } from 'features/videos/layers/audio'
 import { Filter } from 'features/videos/layers/filter'
 import { Html } from 'features/videos/layers/html'
@@ -114,28 +121,36 @@ import {
 
 export class Composition implements CompositionInterface {
   private _api: ApiInterface
+  private _develop: boolean
   private _files: IdentifiedFile[]
   private _formData: FormDataInterface
   private _layers: IdentifiedLayer[] = []
   private _options: CompositionOptions
   private _temporaryDirectory: string
+  private _videos: Videos
 
   constructor({
     api,
+    develop = false,
     formData,
     options,
     temporaryDirectory,
+    videos,
   }: {
     api: ApiInterface
+    develop?: boolean
     formData: FormDataInterface
     options: CompositionOptions
     temporaryDirectory?: string
+    videos: Videos
   }) {
     this._api = api
+    this._develop = develop
     this._files = []
     this._formData = formData
     this._options = options
     this._temporaryDirectory = temporaryDirectory ?? createTemporaryDirectory()
+    this._videos = videos
 
     withValidation<void>(() => validateCompositionOptions(this._options))
   }
@@ -504,7 +519,15 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  public async [CompositionMethod.encode](): Promise<EncodeResponse> {
+  public async [CompositionMethod.encode](options?: { synchronously?: false }): Promise<EncodeResponse>
+  public async [CompositionMethod.encode](options?: { synchronously?: true }): Promise<ApiVideo>
+  public async [CompositionMethod.encode]({ synchronously }: { synchronously?: boolean } = {}): Promise<
+    ApiVideo | EncodeResponse
+  > {
+    let encodeResponse: EncodeResponse
+    let encodeStartTime: Date
+    let spinner: ora.Ora
+
     try {
       if (!this.duration) {
         throw new Error(CompositionErrorText.durationRequired)
@@ -512,19 +535,45 @@ export class Composition implements CompositionInterface {
 
       this._generateConfig()
 
-      const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
+      if (this._develop) {
+        spinner = ora('Uploading assets')
+      }
 
-      removeDirectory(this._temporaryDirectory)
+      let data
 
-      return validateApiData<EncodeResponse>(data, {
+      try {
+        const requestStart = new Date()
+
+        data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
+
+        const requestEnd = new Date()
+
+        if (this._develop) {
+          spinner.succeed(`Assets uploaded in ${prettyMilliseconds(requestEnd.getTime() - requestStart.getTime())}`)
+        }
+      } catch (error) {
+        if (this._develop) {
+          spinner.fail('Asset upload failed')
+        }
+
+        throw error
+      }
+
+      encodeResponse = validateApiData<EncodeResponse>(data, {
         invalidDataError: CompositionErrorText.malformedEncodingResponse,
         validate: isEncodeResponse,
       })
+
+      encodeStartTime = new Date()
     } catch (error) {
       console.error(CompositionErrorText.errorEncoding(error.message))
 
       return undefined
+    } finally {
+      removeDirectory(this._temporaryDirectory)
     }
+
+    return synchronously ? this._getNewlyCreatedVideo({ encodeStartTime, videoId: encodeResponse.id }) : encodeResponse
   }
 
   public async [CompositionMethod.preview](): Promise<void> {
@@ -586,6 +635,59 @@ export class Composition implements CompositionInterface {
     newLayers[layerIndex] = newLayer
 
     this._layers = newLayers
+  }
+
+  /**
+   * get a newly-created video which is likely still being encoded
+   *
+   * waits for encoding attempt to complete before returning
+   *
+   * in develop mode, outputs state to console and opens the video stream url when ready
+   */
+  private async _getNewlyCreatedVideo({
+    encodeStartTime,
+    videoId,
+  }: {
+    encodeStartTime: Date
+    videoId: string
+  }): Promise<ApiVideo> {
+    if (this._develop) {
+      const encodingSpinner = ora('Encoding video').start()
+      let video: ApiVideo
+
+      try {
+        video = await this._videos.get({ id: videoId, waitUntilEncodingComplete: true })
+      } catch (error) {
+        encodingSpinner.stop()
+
+        throw error
+      }
+
+      if (video.isFailed) {
+        encodingSpinner.fail('Video encoding failed')
+      } else if (video.isReady) {
+        const encodeEndTime = new Date(video.timestamp * 1000)
+        const encodeDuration = prettyMilliseconds(encodeEndTime.getTime() - encodeStartTime.getTime())
+
+        encodingSpinner.succeed(`Video encoded in ${encodeDuration}`)
+
+        const gettingSpinner = ora('Getting video').start()
+
+        let streamResponse = await fetch(video.streamUrl)
+
+        while (streamResponse.status !== 200) {
+          await setTimeout(1000)
+
+          streamResponse = await fetch(video.streamUrl)
+        }
+
+        gettingSpinner.stop()
+
+        await open(video.streamUrl)
+      }
+    }
+
+    return this._videos.get({ id: videoId, waitUntilEncodingComplete: true })
   }
 
   private _setLayerDefaults<Layer>({

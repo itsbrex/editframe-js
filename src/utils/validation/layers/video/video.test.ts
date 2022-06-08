@@ -7,7 +7,6 @@ describe('validateVideoLayer', () => {
   const callerName = 'caller-name'
   const layer = mockVideoLayer()
   let validateAudioSpy: jest.SpyInstance
-  let validateBackgroundSpy: jest.SpyInstance
   let validatePositionSpy: jest.SpyInstance
   let validateSizeSpy: jest.SpyInstance
   let validateTimelineSpy: jest.SpyInstance
@@ -19,7 +18,6 @@ describe('validateVideoLayer', () => {
 
   beforeEach(() => {
     validateAudioSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateAudio')
-    validateBackgroundSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateBackground')
     validatePositionSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validatePosition')
     validateSizeSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateSize')
     validateTimelineSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateTimeline')
@@ -30,10 +28,6 @@ describe('validateVideoLayer', () => {
 
   it('calls the `validateAudio` function with the correct arguments', () => {
     expect(validateAudioSpy).toHaveBeenCalledWith({ callerName, layer })
-  })
-
-  it('calls the `validateBackground` function with the correct arguments', () => {
-    expect(validateBackgroundSpy).toHaveBeenCalledWith({ callerName, layer })
   })
 
   it('calls the `validatePosition` function with the correct arguments', () => {

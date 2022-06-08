@@ -1,3 +1,3 @@
-import colors from 'colors/safe'
+import chalk from 'chalk'
 
-export const logError = (message: string): void => console.error(colors.yellow(message))
+export const logError = (message: string): void => console.error(chalk.yellow(message))

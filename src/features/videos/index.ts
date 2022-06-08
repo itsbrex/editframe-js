@@ -1,4 +1,5 @@
 import FormData from 'form-data'
+import { setTimeout } from 'node:timers/promises'
 
 import {
   ApiInterface,
@@ -35,9 +36,11 @@ import { Composition } from './composition'
 
 export class Videos {
   private _api: ApiInterface
+  private _develop: boolean
 
-  constructor(api: ApiInterface) {
+  constructor({ api, develop = false }: { api: ApiInterface; develop?: boolean }) {
     this._api = api
+    this._develop = develop
   }
 
   public async [ApiVideoMethod.all](page?: number, perPage?: number): Promise<ApiVideo[]> {
@@ -57,14 +60,32 @@ export class Videos {
     return []
   }
 
-  public async [ApiVideoMethod.get](id: string): Promise<ApiVideo | undefined> {
-    try {
+  public async [ApiVideoMethod.get]({
+    id,
+    waitUntilEncodingComplete = false,
+  }: {
+    id: string
+    waitUntilEncodingComplete?: boolean
+  }): Promise<ApiVideo | undefined> {
+    const getVideo = async () => {
       const data = await this._api.get({ url: generatePath(Routes.videos.get, { id }) })
 
       return validateApiData<ApiVideo>(data, {
         invalidDataError: VideoErrorText.malformedResponse,
         validate: isApiVideo,
       })
+    }
+
+    try {
+      let video = await getVideo()
+
+      while (waitUntilEncodingComplete && !video.isFailed && !video.isReady) {
+        await setTimeout(1000)
+
+        video = await getVideo()
+      }
+
+      return video
     } catch (error) {
       console.error(VideoErrorText.get(error.message))
     }
@@ -93,9 +114,11 @@ export class Videos {
 
           composition = new Composition({
             api: this._api,
+            develop: this._develop,
             formData: new FormData(),
             options: { ...options, dimensions: { height, width }, duration },
             temporaryDirectory,
+            videos: this,
           })
 
           await composition.addVideo(createReadStream(filepath))
@@ -104,6 +127,7 @@ export class Videos {
 
           composition = new Composition({
             api: this._api,
+            develop: this._develop,
             formData: new FormData(),
             options: {
               backgroundColor,
@@ -111,6 +135,7 @@ export class Videos {
               duration,
               metadata,
             },
+            videos: this,
           })
         }
 

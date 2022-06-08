@@ -1,4 +1,4 @@
-import colors from 'colors/safe'
+import chalk from 'chalk'
 
 import { PrimitiveType } from 'constant'
 import { ValidationErrorText } from 'strings'
@@ -183,7 +183,7 @@ describe('withValidation', () => {
     })
 
     it('logs the error to the console', () => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(typeError.stack))
+      expect(consoleErrorSpy).toHaveBeenCalledWith(chalk.yellow(typeError.stack))
     })
 
     it('exits the process', () => {
@@ -201,7 +201,7 @@ describe('withValidation', () => {
     })
 
     it('logs the error to the console', () => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(error.stack))
+      expect(consoleErrorSpy).toHaveBeenCalledWith(chalk.yellow(error.stack))
     })
 
     it('exits the process', () => {
@@ -251,7 +251,7 @@ describe('withValidationAsync', () => {
       await withValidationAsync(validator, callback)
     })
     it('logs the error to the console', () => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(typeError.stack))
+      expect(consoleErrorSpy).toHaveBeenCalledWith(chalk.yellow(typeError.stack))
     })
 
     it('exits the process', () => {
@@ -269,7 +269,7 @@ describe('withValidationAsync', () => {
     })
 
     it('logs the error to the console', () => {
-      expect(consoleErrorSpy).toHaveBeenCalledWith(colors.yellow(error.stack))
+      expect(consoleErrorSpy).toHaveBeenCalledWith(chalk.yellow(error.stack))
     })
 
     it('exits the process', () => {

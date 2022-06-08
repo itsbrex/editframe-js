@@ -1,5 +1,5 @@
-import { execSync } from 'child_process'
 import findProcess from 'find-process'
+import { execSync } from 'node:child_process'
 import path from 'path'
 
 import { previewConfigFilepath, previewDirectory, previewPort } from 'constant'

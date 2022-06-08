@@ -3,16 +3,19 @@ import { Mixin } from 'ts-mixer'
 import {
   ChildKey,
   CompositionInterface,
+  FontStyle,
   FontWeight,
   LayerAttributeValue,
   LayerKey,
   LayerType,
   PrimitiveType,
-  TextAlignment,
+  TextAlign,
+  TextHorizontalPosition,
   TextKey,
   TextMethod,
+  TextPosition,
+  TextVerticalPosition,
 } from 'constant'
-import { BackgroundMixin } from 'features/videos/mixins/backgroundMixin'
 import { PositionMixin } from 'features/videos/mixins/positionMixin'
 import { SizeMixin } from 'features/videos/mixins/sizeMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
@@ -20,20 +23,38 @@ import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
 import { CompositionErrorText } from 'strings'
 import {
+  validateFontStyle,
+  validateFontWeight,
   validatePresenceOf,
-  validateTextAlignment,
+  validateTextAlign,
+  validateTextPosition,
   validateValueIsOfType,
-  validateValueIsOfTypes,
   withValidation,
 } from 'utils'
 
-export class Text extends Mixin(BackgroundMixin, PositionMixin, SizeMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
+export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }
 
   get type(): LayerType {
     return LayerType.text
+  }
+
+  get backgroundColor(): string {
+    return this._getTextAttribute<string>(TextKey.backgroundColor)
+  }
+
+  get backgroundTransform(): string {
+    return this._getTextAttribute<string>(TextKey.backgroundTransform)
+  }
+
+  get border(): string {
+    return this._getTextAttribute<string>(TextKey.border)
+  }
+
+  get borderRadius(): number {
+    return this._getTextAttribute<number>(TextKey.borderRadius)
   }
 
   get color(): string | undefined {
@@ -44,69 +65,126 @@ export class Text extends Mixin(BackgroundMixin, PositionMixin, SizeMixin, Timel
     return this._getTextAttribute<string | undefined>(TextKey.fontFamily)
   }
 
-  get fontSize(): string | undefined {
-    return this._getTextAttribute<string | undefined>(TextKey.fontSize)
+  get fontSize(): string {
+    return this._getTextAttribute<string>(TextKey.fontSize)
   }
 
-  get fontWeight(): FontWeight | undefined {
-    return this._getTextAttribute<FontWeight | undefined>(TextKey.fontWeight)
+  get fontStyle(): FontStyle {
+    return this._getTextAttribute<FontStyle>(TextKey.fontStyle)
   }
 
-  get lineHeight(): number | undefined {
-    return this._getTextAttribute<number | undefined>(TextKey.lineHeight)
+  get fontWeight(): FontWeight {
+    return this._getTextAttribute<FontWeight>(TextKey.fontWeight)
   }
 
-  get maxFontSize(): number | undefined {
-    return this._getTextAttribute<number | undefined>(TextKey.maxFontSize)
+  get lineHeight(): number {
+    return this._getTextAttribute<number>(TextKey.lineHeight)
   }
 
-  get maxHeight(): number | undefined {
-    return this._getTextAttribute<number | undefined>(TextKey.maxHeight)
-  }
-
-  get maxWidth(): number | undefined {
-    return this._getTextAttribute<number | undefined>(TextKey.maxWidth)
+  get padding(): number {
+    return this._getTextAttribute<number>(TextKey.padding)
   }
 
   get text(): string {
     return this._getTextAttribute<string>(TextKey.text)
   }
 
-  get textAlignment(): TextAlignment | undefined {
-    return this._getTextAttribute<TextAlignment | undefined>(TextKey.textAlign)
+  get textAlign(): TextAlign {
+    return this._getTextAttribute<TextAlign>(TextKey.textAlign)
   }
 
-  public [TextMethod.setColor](color?: string): this {
+  get textDecoration(): string {
+    return this._getTextAttribute<string>(TextKey.textDecoration)
+  }
+
+  get textPosition(): TextPosition {
+    return this._getTextAttribute<TextPosition>(TextKey.textPosition)
+  }
+
+  get textTransform(): string {
+    return this._getTextAttribute<string>(TextKey.textTransform)
+  }
+
+  public [TextMethod.setBackgroundColor](backgroundColor: string): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setBackgroundColor,
+          TextKey.backgroundColor,
+          backgroundColor,
+          PrimitiveType.string,
+          true
+        ),
+      () => this._setTextAttribute(TextKey.backgroundColor, backgroundColor)
+    )
+  }
+
+  public [TextMethod.setBackgroundTransform](backgroundTransform: string): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setBackgroundTransform,
+          TextKey.backgroundTransform,
+          backgroundTransform,
+          PrimitiveType.string,
+          true
+        ),
+      () => this._setTextAttribute(TextKey.backgroundTransform, backgroundTransform)
+    )
+  }
+
+  public [TextMethod.setBorder](border: string): this {
+    return withValidation<this>(
+      () => validateValueIsOfType(TextMethod.setBorder, TextKey.border, border, PrimitiveType.string, true),
+      () => this._setTextAttribute(TextKey.border, border)
+    )
+  }
+
+  public [TextMethod.setBorderRadius](borderRadius: number): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setBorderRadius,
+          TextKey.borderRadius,
+          borderRadius,
+          PrimitiveType.number,
+          true
+        ),
+      () => this._setTextAttribute(TextKey.borderRadius, borderRadius)
+    )
+  }
+
+  public [TextMethod.setColor](color: string): this {
     return withValidation<this>(
       () => validateValueIsOfType(TextMethod.setColor, TextKey.color, color, PrimitiveType.string, true),
       () => this._setTextAttribute(TextKey.color, color)
     )
   }
 
-  public [TextMethod.setFontFamily](fontFamily?: string): this {
+  public [TextMethod.setFontFamily](fontFamily: string): this {
     return withValidation<this>(
       () => validateValueIsOfType(TextMethod.setFontFamily, TextKey.fontFamily, fontFamily, PrimitiveType.string, true),
       () => this._setTextAttribute(TextKey.fontFamily, fontFamily)
     )
   }
 
-  public [TextMethod.setFontSize](fontSize?: number): this {
+  public [TextMethod.setFontSize](fontSize: number): this {
     return withValidation<this>(
       () => validateValueIsOfType(TextMethod.setFontSize, TextKey.fontSize, fontSize, PrimitiveType.number, true),
       () => this._setTextAttribute(TextKey.fontSize, fontSize)
     )
   }
 
-  public [TextMethod.setFontWeight](fontWeight?: FontWeight): this {
+  public [TextMethod.setFontStyle](fontStyle: FontStyle): this {
     return withValidation<this>(
-      () =>
-        validateValueIsOfTypes(
-          TextMethod.setFontWeight,
-          TextKey.fontWeight,
-          fontWeight,
-          [PrimitiveType.number, PrimitiveType.string],
-          true
-        ),
+      () => validateFontStyle(TextMethod.setFontStyle, fontStyle),
+      () => this._setTextAttribute(TextKey.fontStyle, fontStyle)
+    )
+  }
+
+  public [TextMethod.setFontWeight](fontWeight: FontWeight): this {
+    return withValidation<this>(
+      () => validateFontWeight(TextMethod.setFontWeight, fontWeight),
       () => this._setTextAttribute(TextKey.fontWeight, fontWeight)
     )
   }
@@ -118,25 +196,10 @@ export class Text extends Mixin(BackgroundMixin, PositionMixin, SizeMixin, Timel
     )
   }
 
-  public [TextMethod.setMaxFontSize](maxFontSize?: number): this {
+  public [TextMethod.setPadding](padding: number): this {
     return withValidation<this>(
-      () =>
-        validateValueIsOfType(TextMethod.setMaxFontSize, TextKey.maxFontSize, maxFontSize, PrimitiveType.number, true),
-      () => this._setTextAttribute(TextKey.maxFontSize, maxFontSize)
-    )
-  }
-
-  public [TextMethod.setMaxHeight](maxHeight?: number): this {
-    return withValidation<this>(
-      () => validateValueIsOfType(TextMethod.setMaxHeight, TextKey.maxHeight, maxHeight, PrimitiveType.number, true),
-      () => this._setTextAttribute(TextKey.maxHeight, maxHeight)
-    )
-  }
-
-  public [TextMethod.setMaxWidth](maxWidth?: number): this {
-    return withValidation<this>(
-      () => validateValueIsOfType(TextMethod.setMaxWidth, TextKey.maxWidth, maxWidth, PrimitiveType.number, true),
-      () => this._setTextAttribute(TextKey.maxWidth, maxWidth)
+      () => validateValueIsOfType(TextMethod.setPadding, TextKey.padding, padding, PrimitiveType.number, true),
+      () => this._setTextAttribute(TextKey.padding, padding)
     )
   }
 
@@ -150,10 +213,45 @@ export class Text extends Mixin(BackgroundMixin, PositionMixin, SizeMixin, Timel
     )
   }
 
-  public [TextMethod.setTextAlignment](textAlign?: TextAlignment): this {
+  public [TextMethod.setTextAlign](textAlign: TextAlign): this {
     return withValidation<this>(
-      () => validateTextAlignment(TextMethod.setTextAlignment, textAlign),
+      () => validateTextAlign(TextMethod.setTextAlign, textAlign),
       () => this._setTextAttribute(TextKey.textAlign, textAlign)
+    )
+  }
+
+  public [TextMethod.setTextDecoration](textDecoration: string): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setTextDecoration,
+          TextKey.textDecoration,
+          textDecoration,
+          PrimitiveType.string,
+          true
+        ),
+      () => this._setTextAttribute(TextKey.textDecoration, textDecoration)
+    )
+  }
+
+  public [TextMethod.setTextPosition](textPosition: { x: TextHorizontalPosition; y: TextVerticalPosition }): this {
+    return withValidation<this>(
+      () => validateTextPosition(TextMethod.setTextPosition, textPosition),
+      () => this._setTextAttribute(TextKey.textPosition, textPosition)
+    )
+  }
+
+  public [TextMethod.setTextTransform](textTransform: string): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          TextMethod.setTextTransform,
+          TextKey.textTransform,
+          textTransform,
+          PrimitiveType.string,
+          true
+        ),
+      () => this._setTextAttribute(TextKey.textTransform, textTransform)
     )
   }
 

@@ -1,6 +1,5 @@
 import { HtmlLayer, HtmlLayerConfig, HtmlOptions } from 'constant'
 import {
-  defaultBackgroundOptions,
   defaultPositionOptions,
   defaultSizeOptions,
   defaultTimelineOptions,
@@ -11,14 +10,12 @@ import { deepMerge } from 'utils/objects'
 
 export const mockHtmlLayerConfig = (
   {
-    background = defaultBackgroundOptions,
     position = defaultPositionOptions,
     size = defaultSizeOptions,
     timeline = defaultTimelineOptions,
     transitions = defaultTransitionsOptions,
     trim = defaultTrimOptions,
   }: HtmlLayerConfig = {
-    background: defaultBackgroundOptions,
     position: defaultPositionOptions,
     size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
@@ -26,7 +23,6 @@ export const mockHtmlLayerConfig = (
     trim: defaultTrimOptions,
   }
 ): HtmlLayerConfig => ({
-  background,
   position,
   size,
   timeline,

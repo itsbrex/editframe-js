@@ -1,7 +1,6 @@
 import { VideoLayer, VideoLayerConfig } from 'constant'
 import {
   defaultAudioOptions,
-  defaultBackgroundOptions,
   defaultPositionOptions,
   defaultSizeOptions,
   defaultTimelineOptions,
@@ -12,7 +11,6 @@ import {
 export const mockVideoLayerConfig = (
   {
     audio = defaultAudioOptions,
-    background = defaultBackgroundOptions,
     position = defaultPositionOptions,
     size = defaultSizeOptions,
     timeline = defaultTimelineOptions,
@@ -20,7 +18,6 @@ export const mockVideoLayerConfig = (
     trim = defaultTrimOptions,
   }: VideoLayerConfig = {
     audio: defaultAudioOptions,
-    background: defaultBackgroundOptions,
     position: defaultPositionOptions,
     size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
@@ -29,7 +26,6 @@ export const mockVideoLayerConfig = (
   }
 ): VideoLayerConfig => ({
   audio,
-  background,
   position,
   size,
   timeline,

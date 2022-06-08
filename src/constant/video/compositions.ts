@@ -9,6 +9,7 @@ import {
   IdentifiedLayer,
   LayerKey,
   SubtitlesOptions,
+  TextPosition,
   TransitionOptions,
 } from 'constant/shared'
 import { LottieAnimationData } from 'constant/video/layers/lottie'
@@ -23,6 +24,7 @@ export type LayerAttributeValue =
   | Readable
   | SubtitlesOptions
   | TransitionOptions[]
+  | TextPosition
 
 export enum CompositionMethod {
   addAudio = 'addAudio',

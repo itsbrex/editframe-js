@@ -2,7 +2,6 @@ import {
   VideoLayer,
   VideoLayerConfig,
   defaultAudio,
-  defaultBackground,
   defaultPosition,
   defaultSize,
   defaultTimeline,
@@ -14,16 +13,7 @@ import { deepMerge } from 'utils/objects'
 export const makeDefaultVideoLayerConfig = (): VideoLayerConfig => {
   const defaults = {}
 
-  deepMerge(
-    defaults,
-    defaultAudio,
-    defaultBackground,
-    defaultPosition,
-    defaultSize,
-    defaultTimeline,
-    defaultTransitions,
-    defaultTrim
-  )
+  deepMerge(defaults, defaultAudio, defaultPosition, defaultSize, defaultTimeline, defaultTransitions, defaultTrim)
 
   return defaults
 }

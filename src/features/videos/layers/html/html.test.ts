@@ -1,4 +1,5 @@
 import { HtmlKey, HtmlLayerConfig, HtmlMethod, PrimitiveType, defaultHtmlOptions } from 'constant'
+import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
 import { makeDefaultHtmlLayerConfig } from 'utils'
@@ -20,15 +21,18 @@ describe('Html', () => {
   })
 
   beforeEach(async () => {
+    const api = mockApi({ get: jest.fn(), post: jest.fn(), put: jest.fn() })
+
     composition = new Composition({
-      api: mockApi({ get: jest.fn(), post: jest.fn(), put: jest.fn() }),
+      api,
       formData: { append: jest.fn() },
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
+      videos: new Videos({ api }),
     })
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
 
     html = await composition.addHtml({ page })
-    layerConfigDefaults = makeDefaultHtmlLayerConfig(composition.dimensions)
+    layerConfigDefaults = makeDefaultHtmlLayerConfig()
 
     jest.clearAllMocks()
   })
@@ -41,8 +45,6 @@ describe('Html', () => {
     })
 
     it('sets the correct default layer configs', () => {
-      expect(html.backgroundColor).toEqual(layerConfigDefaults.background.color)
-      expect(html.backgroundOpacity).toEqual(layerConfigDefaults.background.opacity)
       expect(html.isRelative).toEqual(layerConfigDefaults.position.isRelative)
       expect(html.x).toEqual(layerConfigDefaults.position.x)
       expect(html.y).toEqual(layerConfigDefaults.position.y)

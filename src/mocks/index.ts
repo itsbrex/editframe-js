@@ -3,7 +3,6 @@ import { mockApplication } from './applications'
 import { mockComposition, mockCompositionOptions, mockEncodeResponse } from './composition'
 import {
   mockAudioOptions,
-  mockBackgroundOptions,
   mockPositionOptions,
   mockSizeOptions,
   mockTimelineOptions,
@@ -49,7 +48,6 @@ export {
   mockAudioLayer,
   mockAudioLayerConfig,
   mockAudioOptions,
-  mockBackgroundOptions,
   mockComposition,
   mockCompositionOptions,
   mockEncodeResponse,

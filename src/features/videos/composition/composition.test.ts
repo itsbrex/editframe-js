@@ -20,6 +20,7 @@ import {
   TransitionType,
   WaveformKey,
 } from 'constant'
+import { Videos } from 'features'
 import { Audio } from 'features/videos/layers/audio'
 import { Filter } from 'features/videos/layers/filter'
 import { Html } from 'features/videos/layers/html'
@@ -140,13 +141,17 @@ describe('Composition', () => {
   const makeComposition = ({
     compositionOptions,
     customApiMock,
-  }: { compositionOptions?: CompositionOptions; customApiMock?: ApiInterface } = {}) =>
-    new Composition({
-      api: customApiMock ? customApiMock : apiMock,
+  }: { compositionOptions?: CompositionOptions; customApiMock?: ApiInterface } = {}) => {
+    const api = customApiMock ?? apiMock
+
+    return new Composition({
+      api,
       formData: formDataMock,
       options: compositionOptions ? compositionOptions : { ...options },
       temporaryDirectory,
+      videos: new Videos({ api }),
     })
+  }
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -242,7 +247,7 @@ describe('Composition', () => {
       const text = 'text'
       const layer = composition.addText({ text })
 
-      const defaultTextLayer = makeDefaultTextLayer(composition.dimensions)
+      const defaultTextLayer = makeDefaultTextLayer()
 
       expect(composition.layer(layer?.id)).toEqual(
         deepMerge(defaultTextLayer, { id: uuidMock, text: { text }, type: LayerType.text })
@@ -827,6 +832,7 @@ describe('Composition', () => {
           formData: formDataMock,
           options: { ...options, duration: 0 },
           temporaryDirectory,
+          videos: new Videos({ api: apiMock }),
         })
 
         await composition.encode()

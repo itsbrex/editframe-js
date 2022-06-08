@@ -2,7 +2,6 @@ import { VideoLayer } from 'constant'
 import { validateLayer } from 'utils/validation'
 import {
   validateAudio,
-  validateBackground,
   validatePosition,
   validateSize,
   validateTimeline,
@@ -11,7 +10,7 @@ import {
 
 export const validateVideoLayer = (callerName: string, layer: VideoLayer): void =>
   validateLayer<VideoLayer>(
-    [validateBackground, validatePosition, validateSize, validateTimeline, validateTrim, validateAudio],
+    [validatePosition, validateSize, validateTimeline, validateTrim, validateAudio],
     callerName,
     layer
   )
