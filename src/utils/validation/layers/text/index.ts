@@ -93,6 +93,7 @@ export const validateText: LayerValidator<TextLayer> = ({
   layer: {
     text: {
       backgroundColor,
+      backgroundTransform,
       border,
       borderRadius,
       color,
@@ -106,6 +107,7 @@ export const validateText: LayerValidator<TextLayer> = ({
       textAlign,
       textDecoration,
       textPosition,
+      textTransform,
     },
   },
 }) => {
@@ -116,6 +118,14 @@ export const validateText: LayerValidator<TextLayer> = ({
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.backgroundColor),
       backgroundColor,
+      PrimitiveType.string
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.backgroundTransform),
+      backgroundTransform,
       PrimitiveType.string
     )
   )
@@ -195,6 +205,14 @@ export const validateText: LayerValidator<TextLayer> = ({
     )
   )
   errors.push(validateTextPosition(callerName, textPosition))
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.textTransform),
+      textTransform,
+      PrimitiveType.string
+    )
+  )
 
   return errors.filter(filterUndefined)
 }

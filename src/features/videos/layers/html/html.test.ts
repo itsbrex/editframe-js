@@ -32,7 +32,7 @@ describe('Html', () => {
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
 
     html = await composition.addHtml({ page })
-    layerConfigDefaults = makeDefaultHtmlLayerConfig(composition.dimensions)
+    layerConfigDefaults = makeDefaultHtmlLayerConfig()
 
     jest.clearAllMocks()
   })

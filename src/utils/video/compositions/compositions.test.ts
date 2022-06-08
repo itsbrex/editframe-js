@@ -70,7 +70,7 @@ describe('setLayerDefaults', () => {
   })
 
   describe('html', () => {
-    const defaultHtmlLayer = makeDefaultHtmlLayer(dimensions)
+    const defaultHtmlLayer = makeDefaultHtmlLayer()
 
     it('sets the correct layer defaults when no options or config are provided', () => {
       expect(setLayerDefaults(dimensions, LayerType.html, {}, {})).toEqual(defaultHtmlLayer)

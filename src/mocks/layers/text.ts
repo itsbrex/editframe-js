@@ -42,6 +42,7 @@ export const mockTextLayerConfig = (
 
 const MockTextValue = {
   backgroundColor: Color.white,
+  backgroundTransform: 'none',
   border: 'none',
   borderRadius: 0,
   color: Color.black,
@@ -58,10 +59,12 @@ const MockTextValue = {
     x: TextHorizontalPositionValue.center,
     y: TextVerticalPositionValue.center,
   },
+  textTransform: 'none',
 }
 
 export const mockTextOptions = ({
   backgroundColor = MockTextValue.backgroundColor,
+  backgroundTransform = MockTextValue.backgroundTransform,
   border = MockTextValue.border,
   borderRadius = MockTextValue.borderRadius,
   color = MockTextValue.color,
@@ -75,8 +78,10 @@ export const mockTextOptions = ({
   textAlign = MockTextValue.textAlign,
   textDecoration = MockTextValue.textDecoration,
   textPosition = MockTextValue.textPosition,
+  textTransform = MockTextValue.textTransform,
 }: TextOptions = MockTextValue): TextOptions => ({
   backgroundColor,
+  backgroundTransform,
   border,
   borderRadius,
   color,
@@ -90,6 +95,7 @@ export const mockTextOptions = ({
   textAlign,
   textDecoration,
   textPosition,
+  textTransform,
 })
 
 export const mockTextLayer = (): TextLayer => deepMerge({ text: mockTextOptions() }, mockTextLayerConfig())

@@ -1,5 +1,6 @@
 export enum TextMethod {
   setBackgroundColor = 'setBackgroundColor',
+  setBackgroundTransform = 'setBackgroundTransform',
   setBorder = 'setBorder',
   setBorderRadius = 'setBorderRadius',
   setColor = 'setColor',
@@ -13,4 +14,5 @@ export enum TextMethod {
   setTextAlign = 'setTextAlign',
   setTextDecoration = 'setTextDecoration',
   setTextPosition = 'setTextPosition',
+  setTextTransform = 'setTextTransform',
 }
