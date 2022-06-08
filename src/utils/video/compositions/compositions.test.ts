@@ -70,7 +70,7 @@ describe('setLayerDefaults', () => {
   })
 
   describe('html', () => {
-    const defaultHtmlLayer = makeDefaultHtmlLayer(dimensions)
+    const defaultHtmlLayer = makeDefaultHtmlLayer()
 
     it('sets the correct layer defaults when no options or config are provided', () => {
       expect(setLayerDefaults(dimensions, LayerType.html, {}, {})).toEqual(defaultHtmlLayer)
@@ -153,7 +153,7 @@ describe('setLayerDefaults', () => {
   })
 
   describe('text', () => {
-    const defaultTextLayer = makeDefaultTextLayer(dimensions)
+    const defaultTextLayer = makeDefaultTextLayer()
 
     it('sets the correct layer defaults when no options or config are provided', () => {
       expect(setLayerDefaults(dimensions, LayerType.text, {}, {})).toEqual(defaultTextLayer)

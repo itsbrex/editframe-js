@@ -1,6 +1,5 @@
 import { ImageLayer, ImageLayerConfig } from 'constant'
 import {
-  defaultBackgroundOptions,
   defaultPositionOptions,
   defaultSizeOptions,
   defaultTimelineOptions,
@@ -10,14 +9,12 @@ import {
 
 export const mockImageLayerConfig = (
   {
-    background = defaultBackgroundOptions,
     position = defaultPositionOptions,
     size = defaultSizeOptions,
     timeline = defaultTimelineOptions,
     transitions = defaultTransitionsOptions,
     trim = defaultTrimOptions,
   }: ImageLayerConfig = {
-    background: defaultBackgroundOptions,
     position: defaultPositionOptions,
     size: defaultSizeOptions,
     timeline: defaultTimelineOptions,
@@ -25,7 +22,6 @@ export const mockImageLayerConfig = (
     trim: defaultTrimOptions,
   }
 ): ImageLayerConfig => ({
-  background,
   position,
   size,
   timeline,

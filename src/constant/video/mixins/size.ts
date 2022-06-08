@@ -9,6 +9,7 @@ export enum SizeMethod {
 
 export const defaultSize: Size = {
   size: {
+    format: null,
     height: null,
     width: null,
   },

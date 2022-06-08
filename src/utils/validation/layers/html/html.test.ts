@@ -66,7 +66,6 @@ describe('validateHtml', () => {
 describe('validateHtmlLayer', () => {
   const callerName = 'caller-name'
   const layer = mockHtmlLayer()
-  let validateBackgroundSpy: jest.SpyInstance
   let validatePositionSpy: jest.SpyInstance
   let validateSizeSpy: jest.SpyInstance
   let validateTimelineSpy: jest.SpyInstance
@@ -77,17 +76,12 @@ describe('validateHtmlLayer', () => {
   })
 
   beforeEach(() => {
-    validateBackgroundSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateBackground')
     validatePositionSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validatePosition')
     validateSizeSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateSize')
     validateTimelineSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateTimeline')
     validateTrimSpy = jest.spyOn(LayerConfigValidationUtilsModule, 'validateTrim')
 
     validateHtmlLayer(callerName, layer)
-  })
-
-  it('calls the `validateBackground` function with the correct arguments', () => {
-    expect(validateBackgroundSpy).toHaveBeenCalledWith({ callerName, layer })
   })
 
   it('calls the `validatePosition` function with the correct arguments', () => {

@@ -52,7 +52,7 @@ export const setLayerDefaults = <Layer>(
     [LayerType.lottie]: {},
     [LayerType.sequence]: undefined,
     [LayerType.subtitles]: defaultSubtitlesOptions,
-    [LayerType.text]: makeDefaultTextOptions(defaultDimensions),
+    [LayerType.text]: makeDefaultTextOptions(),
     [LayerType.video]: undefined,
     [LayerType.waveform]: defaultWaveformOptions,
   }
@@ -60,12 +60,12 @@ export const setLayerDefaults = <Layer>(
   const layerDefaults: Record<LayerType, ComposableLayer> = {
     [LayerType.audio]: makeDefaultAudioLayer(),
     [LayerType.filter]: defaultFilterLayer,
-    [LayerType.html]: makeDefaultHtmlLayer(defaultDimensions),
+    [LayerType.html]: makeDefaultHtmlLayer(),
     [LayerType.image]: makeDefaultImageLayer(),
     [LayerType.lottie]: makeDefaultLottieLayer(),
     [LayerType.sequence]: makeDefaultSequenceLayer(),
     [LayerType.subtitles]: makeDefaultSubtitlesLayer(),
-    [LayerType.text]: makeDefaultTextLayer(defaultDimensions),
+    [LayerType.text]: makeDefaultTextLayer(),
     [LayerType.video]: makeDefaultVideoLayer(),
     [LayerType.waveform]: makeDefaultWaveformLayer(defaultDimensions),
   }

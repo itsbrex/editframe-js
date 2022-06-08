@@ -32,8 +32,6 @@ describe('Video', () => {
 
   describe('initialization', () => {
     it('sets the correct default layer configs', () => {
-      expect(video.backgroundColor).toEqual(layerConfigDefaults.background.color)
-      expect(video.backgroundOpacity).toEqual(layerConfigDefaults.background.opacity)
       expect(video.isRelative).toEqual(layerConfigDefaults.position.isRelative)
       expect(video.x).toEqual(layerConfigDefaults.position.x)
       expect(video.y).toEqual(layerConfigDefaults.position.y)
