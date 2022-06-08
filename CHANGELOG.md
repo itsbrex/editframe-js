@@ -1,3 +1,22 @@
+# [2.4.0](https://github.com/editframe/editframe-js/compare/v2.3.0...v2.4.0) (2022-06-08)
+
+
+### Bug Fixes
+
+* add backgroundColor and padding to text ([e61c13c](https://github.com/editframe/editframe-js/commit/e61c13c466165c77c087c19adffba12dd86d37d8))
+* add backgroundTransform and textTransform ([603cfb5](https://github.com/editframe/editframe-js/commit/603cfb5c4e2efe296a52567ab2737125e72780cf))
+* dont supply default dimensions for addHtml ([6e61e09](https://github.com/editframe/editframe-js/commit/6e61e09c9f909bc3042f77a11431c1ef3609cf43))
+* format typescript files ([7993636](https://github.com/editframe/editframe-js/commit/79936364c41c268b64881d224efc3bae25f1161d))
+* remove background layer config ([0a28410](https://github.com/editframe/editframe-js/commit/0a28410f8ec3de74f21bc313671f988f73aed65d))
+* update shared-types to 3.2.0 ([4bc8d9d](https://github.com/editframe/editframe-js/commit/4bc8d9d27c0d22eef1a07153d8ad66abbc37ce1f))
+
+
+### Features
+
+* log encoding state and open video when ready ([684cae9](https://github.com/editframe/editframe-js/commit/684cae914f1287499d4c3037f547e4a0c6a727e0))
+* rewrite addText api ([06700a5](https://github.com/editframe/editframe-js/commit/06700a54a920a1012df387dac894ad1f537f5d9e))
+* show asset uploading state in console in develop mode ([8e52c18](https://github.com/editframe/editframe-js/commit/8e52c182ba13917125218849ec09e1f8d9626e7e))
+
 # [2.3.0](https://github.com/editframe/editframe-js/compare/v2.2.3...v2.3.0) (2022-05-25)
 
 
