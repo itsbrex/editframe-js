@@ -1,10 +1,10 @@
 import {
+  DefaultWaveformOptions,
   PrimitiveType,
   WaveformKey,
   WaveformLayerConfig,
   WaveformMethod,
   WaveformStyleValue,
-  defaultWaveformOptions,
 } from 'constant'
 import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
@@ -44,9 +44,9 @@ describe('Waveform', () => {
 
   describe('initialization', () => {
     it('sets the volume to the correct value', () => {
-      expect(waveform.backgroundColor).toEqual(defaultWaveformOptions.backgroundColor)
-      expect(waveform.color).toEqual(defaultWaveformOptions.color)
-      expect(waveform.style).toEqual(defaultWaveformOptions.style)
+      expect(waveform.backgroundColor).toEqual(DefaultWaveformOptions.backgroundColor)
+      expect(waveform.color).toEqual(DefaultWaveformOptions.color)
+      expect(waveform.style).toEqual(DefaultWaveformOptions.style)
     })
 
     it('sets the correct default layer configs', () => {
