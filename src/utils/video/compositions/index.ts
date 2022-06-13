@@ -3,18 +3,19 @@ import { Readable } from 'stream'
 import {
   ComposableLayer,
   CompositionFile,
+  DefaultAudioOptions,
+  DefaultHtmlOptions,
+  DefaultSubtitlesOptions,
+  DefaultTextOptions,
+  DefaultWaveformOptions,
   Dimensions,
   LayerConfigs,
   LayerOptions,
   LayerType,
   SequenceableLayer,
   TransitionType,
-  defaultAudioOptions,
   defaultFilterLayer,
   defaultFilterOptions,
-  defaultHtmlOptions,
-  defaultSubtitlesOptions,
-  defaultWaveformOptions,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
 import {
@@ -25,13 +26,12 @@ import {
   makeDefaultSequenceLayer,
   makeDefaultSubtitlesLayer,
   makeDefaultTextLayer,
-  makeDefaultTextOptions,
   makeDefaultVideoLayer,
   makeDefaultWaveformLayer,
 } from 'utils/defaults'
 import { createReadStream, downloadFile, fileExists } from 'utils/files'
 import { urlOrFile } from 'utils/forms'
-import { deepMerge } from 'utils/objects'
+import { deepClone, deepMerge } from 'utils/objects'
 import { isValidUrl } from 'utils/validation'
 
 export const formDataKey = (file: CompositionFile, id: string): string => `${urlOrFile(file)}${id}`
@@ -45,32 +45,32 @@ export const setLayerDefaults = <Layer>(
   const defaultDimensions = { ...dimensions }
 
   const layerOptionsDefaults: Record<LayerType, LayerOptions> = {
-    [LayerType.audio]: defaultAudioOptions,
-    [LayerType.filter]: defaultFilterOptions,
-    [LayerType.html]: defaultHtmlOptions,
+    [LayerType.audio]: deepClone(DefaultAudioOptions),
+    [LayerType.filter]: deepClone(defaultFilterOptions),
+    [LayerType.html]: deepClone(DefaultHtmlOptions),
     [LayerType.image]: undefined,
     [LayerType.lottie]: {},
     [LayerType.sequence]: undefined,
-    [LayerType.subtitles]: defaultSubtitlesOptions,
-    [LayerType.text]: makeDefaultTextOptions(),
+    [LayerType.subtitles]: deepClone(DefaultSubtitlesOptions),
+    [LayerType.text]: deepClone(DefaultTextOptions),
     [LayerType.video]: undefined,
-    [LayerType.waveform]: defaultWaveformOptions,
+    [LayerType.waveform]: deepClone(DefaultWaveformOptions),
   }
 
   const layerDefaults: Record<LayerType, ComposableLayer> = {
-    [LayerType.audio]: makeDefaultAudioLayer(),
-    [LayerType.filter]: defaultFilterLayer,
-    [LayerType.html]: makeDefaultHtmlLayer(),
-    [LayerType.image]: makeDefaultImageLayer(),
-    [LayerType.lottie]: makeDefaultLottieLayer(),
-    [LayerType.sequence]: makeDefaultSequenceLayer(),
-    [LayerType.subtitles]: makeDefaultSubtitlesLayer(),
-    [LayerType.text]: makeDefaultTextLayer(),
-    [LayerType.video]: makeDefaultVideoLayer(),
-    [LayerType.waveform]: makeDefaultWaveformLayer(defaultDimensions),
+    [LayerType.audio]: deepClone(makeDefaultAudioLayer()),
+    [LayerType.filter]: deepClone(defaultFilterLayer),
+    [LayerType.html]: deepClone(makeDefaultHtmlLayer()),
+    [LayerType.image]: deepClone(makeDefaultImageLayer()),
+    [LayerType.lottie]: deepClone(makeDefaultLottieLayer()),
+    [LayerType.sequence]: deepClone(makeDefaultSequenceLayer()),
+    [LayerType.subtitles]: deepClone(makeDefaultSubtitlesLayer()),
+    [LayerType.text]: deepClone(makeDefaultTextLayer()),
+    [LayerType.video]: deepClone(makeDefaultVideoLayer()),
+    [LayerType.waveform]: deepClone(makeDefaultWaveformLayer(defaultDimensions)),
   }
 
-  let layerWithDefaults = layerDefaults[layerType] as Layer
+  let layerWithDefaults = deepClone(layerDefaults)[layerType] as Layer
 
   if (layerOptions && Object.keys(layerOptions).length !== 0) {
     layerWithDefaults[layerType] = deepMerge(layerOptionsDefaults[layerType], layerOptions)

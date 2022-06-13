@@ -1,4 +1,5 @@
 import {
+  DefaultTextOptions,
   LayerHorizontalAlignmentValue,
   PrimitiveType,
   TextHorizontalPositionValue,
@@ -12,7 +13,7 @@ import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
 import { CompositionErrorText } from 'strings'
-import { makeDefaultTextLayerConfig, makeDefaultTextOptions } from 'utils'
+import { makeDefaultTextLayerConfig } from 'utils'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as LayerUtilsModule from 'utils/validation/layers/text'
 
@@ -60,7 +61,7 @@ describe('Text', () => {
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
 
     text = composition.addText({ text: initialText })
-    layerOptionsDefaults = makeDefaultTextOptions()
+    layerOptionsDefaults = DefaultTextOptions
     layerConfigDefaults = makeDefaultTextLayerConfig()
 
     jest.clearAllMocks()
