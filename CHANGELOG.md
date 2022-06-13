@@ -1,3 +1,11 @@
+## [2.4.1](https://github.com/editframe/editframe-js/compare/v2.4.0...v2.4.1) (2022-06-13)
+
+
+### Bug Fixes
+
+* import defaults from shared-types. deep clone everything ([d575d17](https://github.com/editframe/editframe-js/commit/d575d176f7016c6aef530bd29cc0b08aeb430298))
+* import layer/config defaults from shared-types ([f20bb4e](https://github.com/editframe/editframe-js/commit/f20bb4ec21902538b644476524534a983946812b))
+
 # [2.4.0](https://github.com/editframe/editframe-js/compare/v2.3.0...v2.4.0) (2022-06-08)
 
 
