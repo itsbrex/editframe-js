@@ -3,19 +3,18 @@ import { Readable } from 'stream'
 import {
   ComposableLayer,
   CompositionFile,
-  DefaultAudioOptions,
-  DefaultHtmlOptions,
-  DefaultSubtitlesOptions,
-  DefaultTextOptions,
-  DefaultWaveformOptions,
   Dimensions,
   LayerConfigs,
   LayerOptions,
   LayerType,
   SequenceableLayer,
   TransitionType,
+  defaultAudioOptions,
   defaultFilterLayer,
   defaultFilterOptions,
+  defaultHtmlOptions,
+  defaultSubtitlesOptions,
+  defaultWaveformOptions,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
 import {
@@ -26,6 +25,7 @@ import {
   makeDefaultSequenceLayer,
   makeDefaultSubtitlesLayer,
   makeDefaultTextLayer,
+  makeDefaultTextOptions,
   makeDefaultVideoLayer,
   makeDefaultWaveformLayer,
 } from 'utils/defaults'
@@ -45,16 +45,16 @@ export const setLayerDefaults = <Layer>(
   const defaultDimensions = { ...dimensions }
 
   const layerOptionsDefaults: Record<LayerType, LayerOptions> = {
-    [LayerType.audio]: DefaultAudioOptions,
+    [LayerType.audio]: defaultAudioOptions,
     [LayerType.filter]: defaultFilterOptions,
-    [LayerType.html]: DefaultHtmlOptions,
+    [LayerType.html]: defaultHtmlOptions,
     [LayerType.image]: undefined,
     [LayerType.lottie]: {},
     [LayerType.sequence]: undefined,
-    [LayerType.subtitles]: DefaultSubtitlesOptions,
-    [LayerType.text]: DefaultTextOptions,
+    [LayerType.subtitles]: defaultSubtitlesOptions,
+    [LayerType.text]: makeDefaultTextOptions(),
     [LayerType.video]: undefined,
-    [LayerType.waveform]: DefaultWaveformOptions,
+    [LayerType.waveform]: defaultWaveformOptions,
   }
 
   const layerDefaults: Record<LayerType, ComposableLayer> = {

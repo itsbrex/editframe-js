@@ -1,12 +1,12 @@
 import {
-  DefaultPosition,
-  DefaultTimeline,
-  DefaultTransitions,
-  DefaultTrim,
-  DefaultWaveformOptions,
   Dimensions,
   WaveformLayer,
   WaveformLayerConfig,
+  defaultPosition,
+  defaultTimeline,
+  defaultTransitions,
+  defaultTrim,
+  defaultWaveformOptions,
 } from 'constant'
 import { makeDefaultSize } from 'utils/defaults/size'
 import { deepMerge } from 'utils/objects'
@@ -14,13 +14,13 @@ import { deepMerge } from 'utils/objects'
 export const makeDefaultWaveformLayerConfig = (dimensions: Dimensions): WaveformLayerConfig => {
   const defaults: WaveformLayerConfig = {}
 
-  deepMerge(defaults, DefaultPosition, makeDefaultSize(dimensions), DefaultTimeline, DefaultTransitions, DefaultTrim)
+  deepMerge(defaults, defaultPosition, makeDefaultSize(dimensions), defaultTimeline, defaultTransitions, defaultTrim)
 
   return defaults
 }
 
 export const makeDefaultWaveformLayer = (dimensions: Dimensions): WaveformLayer => {
-  const defaults: WaveformLayer = { waveform: DefaultWaveformOptions }
+  const defaults: WaveformLayer = { waveform: defaultWaveformOptions }
 
   deepMerge(defaults, makeDefaultWaveformLayerConfig(dimensions))
 
