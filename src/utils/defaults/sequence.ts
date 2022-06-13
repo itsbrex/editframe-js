@@ -1,10 +1,10 @@
-import { SequenceLayer, SequenceLayerConfig, defaultTimeline } from 'constant'
+import { DefaultTimeline, SequenceLayer, SequenceLayerConfig } from 'constant'
 import { deepMerge } from 'utils/objects'
 
 export const makeDefaultSequenceLayerConfig = (): SequenceLayerConfig => {
   const defaults: SequenceLayerConfig = {}
 
-  deepMerge(defaults, defaultTimeline)
+  deepMerge(defaults, DefaultTimeline)
 
   return defaults
 }
