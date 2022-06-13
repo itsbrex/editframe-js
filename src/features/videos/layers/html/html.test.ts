@@ -1,4 +1,4 @@
-import { HtmlKey, HtmlLayerConfig, HtmlMethod, PrimitiveType, defaultHtmlOptions } from 'constant'
+import { DefaultHtmlOptions, HtmlKey, HtmlLayerConfig, HtmlMethod, PrimitiveType } from 'constant'
 import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
@@ -40,8 +40,8 @@ describe('Html', () => {
   describe('initialization', () => {
     it('sets the correct options and defaults', () => {
       expect(html.page).toEqual(`<html><head></head><body>${text}</body></html>`)
-      expect(html.url).toEqual(defaultHtmlOptions.url)
-      expect(html.withTransparentBackground).toEqual(defaultHtmlOptions.withTransparentBackground)
+      expect(html.url).toEqual(DefaultHtmlOptions.url)
+      expect(html.withTransparentBackground).toEqual(DefaultHtmlOptions.withTransparentBackground)
     })
 
     it('sets the correct default layer configs', () => {
