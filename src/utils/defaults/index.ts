@@ -5,7 +5,7 @@ import { makeDefaultLottieLayer, makeDefaultLottieLayerConfig } from 'utils/defa
 import { makeDefaultSequenceLayer, makeDefaultSequenceLayerConfig } from 'utils/defaults/sequence'
 import { makeDefaultSize } from 'utils/defaults/size'
 import { makeDefaultSubtitlesLayer, makeDefaultSubtitlesLayerConfig } from 'utils/defaults/subtitles'
-import { makeDefaultTextLayer, makeDefaultTextLayerConfig } from 'utils/defaults/text'
+import { makeDefaultTextLayer, makeDefaultTextLayerConfig, makeDefaultTextOptions } from 'utils/defaults/text'
 import { makeDefaultVideoLayer, makeDefaultVideoLayerConfig } from 'utils/defaults/video'
 import { makeDefaultWaveformLayer, makeDefaultWaveformLayerConfig } from 'utils/defaults/waveform'
 
@@ -25,6 +25,7 @@ export {
   makeDefaultSize,
   makeDefaultTextLayer,
   makeDefaultTextLayerConfig,
+  makeDefaultTextOptions,
   makeDefaultVideoLayer,
   makeDefaultVideoLayerConfig,
   makeDefaultWaveformLayer,

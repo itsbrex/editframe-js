@@ -1,4 +1,4 @@
-import { Color, DefaultSubtitlesOptions, PrimitiveType, SubtitlesKey, SubtitlesMethod } from 'constant'
+import { Color, PrimitiveType, SubtitlesKey, SubtitlesMethod, defaultSubtitlesOptions } from 'constant'
 import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
@@ -42,9 +42,9 @@ describe('Subtitles', () => {
 
   describe('initialization', () => {
     it('sets the correct options and defaults', () => {
-      expect(subtitles.backgroundColor).toEqual(DefaultSubtitlesOptions.backgroundColor)
-      expect(subtitles.color).toEqual(DefaultSubtitlesOptions.color)
-      expect(subtitles.fontSize).toEqual(DefaultSubtitlesOptions.fontSize)
+      expect(subtitles.backgroundColor).toEqual(defaultSubtitlesOptions.backgroundColor)
+      expect(subtitles.color).toEqual(defaultSubtitlesOptions.color)
+      expect(subtitles.fontSize).toEqual(defaultSubtitlesOptions.fontSize)
     })
 
     it('sets the correct default layer configs', () => {

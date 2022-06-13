@@ -1,3 +1,5 @@
+import { LottieOptions } from 'constant/shared'
+
 export enum LottieMethod {
   setAnimationData = 'setAnimationData',
 }
@@ -27,3 +29,5 @@ export interface LottieAnimationData {
   v: string
   w: number
 }
+
+export const defaultLottieOptions: LottieOptions = {} as LottieAnimationData

@@ -1,4 +1,4 @@
-import { DefaultAudioOptions } from 'constant'
+import { defaultAudioOptions } from 'constant'
 import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
@@ -32,7 +32,7 @@ describe('Audio', () => {
 
   describe('initialization', () => {
     it('sets the correct default layer configs', () => {
-      expect(audio.volume).toEqual(DefaultAudioOptions.volume)
+      expect(audio.volume).toEqual(defaultAudioOptions.volume)
       expect(audio.start).toEqual(defaultAudioLayerConfig.timeline.start)
       expect(audio.trim).toEqual(defaultAudioLayerConfig.trim)
     })
