@@ -395,9 +395,7 @@ describe('Composition', () => {
         layer = CompositionUtilsModule.setLayerDefaults(
           composition.dimensions,
           LayerType.html,
-          {
-            page: sanitizedHtmlMock,
-          },
+          htmlOptions,
           htmlLayerConfig
         )
 
