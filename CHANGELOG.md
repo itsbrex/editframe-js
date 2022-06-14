@@ -1,3 +1,11 @@
+## [2.4.2](https://github.com/editframe/editframe-js/compare/v2.4.1...v2.4.2) (2022-06-14)
+
+
+### Bug Fixes
+
+* remove development info from readme. add link to docs ([56aee43](https://github.com/editframe/editframe-js/commit/56aee43a3b773db02129e80d3c9c740be792a344))
+* use os tmp directory ([5971a39](https://github.com/editframe/editframe-js/commit/5971a398c706ea3e04a1b982588cd5359673786f))
+
 ## [2.4.1](https://github.com/editframe/editframe-js/compare/v2.4.0...v2.4.1) (2022-06-13)
 
 
