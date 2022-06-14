@@ -67,6 +67,7 @@ import {
   WaveformLayer,
   WaveformLayerConfig,
   WaveformOptions,
+  pollDelay,
 } from 'constant'
 import { Videos } from 'features'
 import { Audio } from 'features/videos/layers/audio'
@@ -682,7 +683,7 @@ export class Composition implements CompositionInterface {
         let streamResponse = await fetch(video.streamUrl)
 
         while (streamResponse.status !== 200) {
-          await setTimeout(1000)
+          await setTimeout(pollDelay)
 
           streamResponse = await fetch(video.streamUrl)
         }
