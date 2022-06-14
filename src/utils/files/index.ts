@@ -1,7 +1,8 @@
 import { fetch } from 'cross-fetch'
 import fs, { createWriteStream, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
-import { parse, resolve } from 'path'
+import { parse } from 'path'
 import { Readable } from 'stream'
+import tempDirectory from 'temp-dir'
 
 import { FetchResponse } from 'constant'
 import { uuid } from 'utils/strings'
@@ -15,7 +16,7 @@ export const createDirectory = (directory: string): void => {
 export const createReadStream = (path: string): Readable => fs.createReadStream(path)
 
 export const createTemporaryDirectory = (): string => {
-  const directory = resolve(`./tmp/${uuid()}`)
+  const directory = `${tempDirectory}/${uuid()}`
 
   createDirectory(directory)
 
@@ -23,7 +24,7 @@ export const createTemporaryDirectory = (): string => {
 }
 
 export const downloadFile = async (url: string, directory: string): Promise<{ temporaryFilePath: string }> => {
-  const temporaryFilePath = resolve(`${directory}/${uuid()}${getExtension(url)}`)
+  const temporaryFilePath = `${directory}/${uuid()}${getExtension(url)}`
   const res = (await fetch(url)) as FetchResponse
   const fileStream = createWriteStream(temporaryFilePath)
 
