@@ -1,8 +1,8 @@
-name: Release
+name: Release Dev
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
 
 jobs:
   test:
@@ -34,8 +34,8 @@ jobs:
           config: .github/config/slack.yml
         if: always()
 
-  release:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  release_dev:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     needs: test
     runs-on: ubuntu-latest
     env:
@@ -56,11 +56,10 @@ jobs:
           cache: 'yarn'
       - run: yarn install
       - run: yarn build
-      - run: HUSKY=0 yarn semantic-release
       - name: HTTP Request Action
         uses: fjogeleit/http-request-action@v1.9.2
         with:
-          url: 'https://envoyer.io/deploy/Yo50TZDfKbsPtCnNEyCIwRHoyzEExYFjG703V5dv'
+          url: 'https://forge.laravel.com/servers/526578/sites/1537210/deploy/http?token=MWzb3cZaVQ7vIvRuunnf1RujUrAKaKCSfd7bmdKi'
           method: 'GET'
       - uses: act10ns/slack@v1
         with:

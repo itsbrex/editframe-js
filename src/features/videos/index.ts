@@ -13,6 +13,7 @@ import {
   Paginated,
   Routes,
   VideoOptions,
+  pollDelay,
 } from 'constant'
 import { VideoErrorText } from 'strings'
 import {
@@ -80,7 +81,7 @@ export class Videos {
       let video = await getVideo()
 
       while (waitUntilEncodingComplete && !video.isFailed && !video.isReady) {
-        await setTimeout(1000)
+        await setTimeout(pollDelay)
 
         video = await getVideo()
       }
