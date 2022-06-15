@@ -1,3 +1,12 @@
+## [2.4.3](https://github.com/editframe/editframe-js/compare/v2.4.2...v2.4.3) (2022-06-15)
+
+
+### Bug Fixes
+
+* add backend deploy webhook to prod release workflow ([788dde4](https://github.com/editframe/editframe-js/commit/788dde44b8969dc6116c7dbe6910d63fa70da0c1))
+* increase poll delay ([3253fa0](https://github.com/editframe/editframe-js/commit/3253fa0810c0a0566107a3fc8dff26c0f6b30c96))
+* trigger dev backend release on merge into dev ([33120d8](https://github.com/editframe/editframe-js/commit/33120d8758166ce557ceaca95601405104be0b17))
+
 ## [2.4.2](https://github.com/editframe/editframe-js/compare/v2.4.1...v2.4.2) (2022-06-14)
 
 
