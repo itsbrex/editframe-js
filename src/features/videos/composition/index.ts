@@ -67,6 +67,7 @@ import {
   WaveformLayer,
   WaveformLayerConfig,
   WaveformOptions,
+  pollDelay,
 } from 'constant'
 import { Videos } from 'features'
 import { Audio } from 'features/videos/layers/audio'
@@ -651,18 +652,24 @@ export class Composition implements CompositionInterface {
     encodeStartTime: Date
     videoId: string
   }): Promise<ApiVideo> {
+    let encodingSpinner: ora.Ora
+    let video: ApiVideo
+
     if (this._develop) {
-      const encodingSpinner = ora('Encoding video').start()
-      let video: ApiVideo
+      encodingSpinner = ora('Encoding video').start()
+    }
 
-      try {
-        video = await this._videos.get({ id: videoId, waitUntilEncodingComplete: true })
-      } catch (error) {
+    try {
+      video = await this._videos.get({ id: videoId, waitUntilEncodingComplete: true })
+    } catch (error) {
+      if (this._develop) {
         encodingSpinner.stop()
-
-        throw error
       }
 
+      throw error
+    }
+
+    if (this._develop) {
       if (video.isFailed) {
         encodingSpinner.fail('Video encoding failed')
       } else if (video.isReady) {
@@ -676,7 +683,7 @@ export class Composition implements CompositionInterface {
         let streamResponse = await fetch(video.streamUrl)
 
         while (streamResponse.status !== 200) {
-          await setTimeout(1000)
+          await setTimeout(pollDelay)
 
           streamResponse = await fetch(video.streamUrl)
         }
@@ -687,7 +694,7 @@ export class Composition implements CompositionInterface {
       }
     }
 
-    return this._videos.get({ id: videoId, waitUntilEncodingComplete: true })
+    return video
   }
 
   private _setLayerDefaults<Layer>({

@@ -19,3 +19,5 @@ export type Timestamped = {
   createdAt: string
   updatedAt: string
 }
+
+export const pollDelay = 2000
