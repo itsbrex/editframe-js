@@ -57,6 +57,11 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: HUSKY=0 yarn semantic-release
+      - name: HTTP Request Action
+        uses: fjogeleit/http-request-action@v1.9.2
+        with:
+          url: 'https://envoyer.io/deploy/Yo50TZDfKbsPtCnNEyCIwRHoyzEExYFjG703V5dv'
+          method: 'GET'
       - uses: act10ns/slack@v1
         with:
           status: ${{ job.status }}
