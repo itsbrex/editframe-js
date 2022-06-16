@@ -92,7 +92,10 @@
   "engines": {
     "node": "14 - 16"
   },
-  "os": ["darwin", "linux"],
+  "os": [
+    "darwin",
+    "linux"
+  ],
   "files": [
     "dist",
     "README.md"
