@@ -3,13 +3,14 @@ import {
   CompositionInterface,
   FilterKey,
   FilterMethod,
+  FilterOptionKey,
   FilterOptions,
   Filters,
   LayerKey,
   LayerType,
 } from 'constant'
 import { Layer } from 'features/videos/layer'
-import { validateFilterLayer, withValidation } from 'utils'
+import { translateColor, validateFilterLayer, withValidation } from 'utils'
 
 export class Filter extends Layer {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
@@ -37,7 +38,13 @@ export class Filter extends Layer {
   }): this {
     return withValidation<this>(
       () => validateFilterLayer(FilterMethod.setFilter, { filter: { name, options } }),
-      () => this.setAttribute({ layerKey: LayerKey.filter, value: { name, options } })
+      () => {
+        if (FilterOptionKey.color in options) {
+          options.color = translateColor(options.color)
+        }
+
+        return this.setAttribute({ layerKey: LayerKey.filter, value: { name, options } })
+      }
     )
   }
 

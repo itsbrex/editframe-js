@@ -15,7 +15,7 @@ import {
   TextVerticalPositionValue,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
-import { filterUndefined, validateLayer, validateValueIsOfType } from 'utils/validation'
+import { filterUndefined, validateColor, validateLayer, validateValueIsOfType } from 'utils/validation'
 import { validatePosition, validateSize, validateTimeline, validateTrim } from 'utils/validation/layerConfigs'
 
 export const validateTextAlign = (callerName: string, textAlign: TextAlign): string | undefined => {
@@ -114,11 +114,11 @@ export const validateText: LayerValidator<TextLayer> = ({
   const errors: string[] = []
 
   errors.push(
-    validateValueIsOfType(
+    validateColor(
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.backgroundColor),
       backgroundColor,
-      PrimitiveType.string
+      false
     )
   )
   errors.push(
@@ -145,14 +145,7 @@ export const validateText: LayerValidator<TextLayer> = ({
       PrimitiveType.number
     )
   )
-  errors.push(
-    validateValueIsOfType(
-      callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.color),
-      color,
-      PrimitiveType.string
-    )
-  )
+  errors.push(validateColor(callerName, ValidationErrorText.SUB_FIELD(LayerKey.text, TextKey.color), color, false))
   errors.push(
     validateValueIsOfType(
       callerName,

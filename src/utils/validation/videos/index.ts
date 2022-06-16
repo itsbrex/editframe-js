@@ -17,7 +17,7 @@ import {
 } from 'constant'
 import { ValidationErrorText } from 'strings'
 import { urlOrFile } from 'utils/forms'
-import { assertType, validateValueIsOfType } from 'utils/validation'
+import { assertType, validateColor, validateValueIsOfType } from 'utils/validation'
 import { isPaginated } from 'utils/validation/pagination'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -86,7 +86,7 @@ export const isApiVideoMetadata = (metadata: any): metadata is ApiVideoMetadata 
 export const formDataKey = (file: CompositionFile, id: string): string => `${urlOrFile(file)}${id}`
 
 export const validateNewVideo = ({ backgroundColor, dimensions, duration, metadata }: VideoOptions): void => {
-  validateValueIsOfType(ApiVideoMethod.new, CompositionKey.backgroundColor, backgroundColor, PrimitiveType.string, true)
+  validateColor(ApiVideoMethod.new, CompositionKey.backgroundColor, backgroundColor, true)
   validateValueIsOfType(
     ApiVideoMethod.new,
     ValidationErrorText.SUB_FIELD(CompositionKey.dimensions, DimensionsKey.height),

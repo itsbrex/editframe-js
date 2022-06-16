@@ -19,12 +19,14 @@ import { VideoErrorText } from 'strings'
 import {
   createReadStream,
   createTemporaryDirectory,
+  deepClone,
   generatePath,
   isApiVideo,
   isApiVideoMetadata,
   isApiVideos,
   prepareFormData,
   processCompositionFile,
+  translateColor,
   urlOrFile,
   validateApiData,
   validateCompositionFile,
@@ -113,11 +115,15 @@ export class Videos {
           const { filepath, readStream } = await processCompositionFile(videoFile, temporaryDirectory)
           const { duration, height, width } = await this._getMetadata(readStream)
 
+          const transformedOptions = deepClone(options)
+
+          transformedOptions.backgroundColor = translateColor(options.backgroundColor)
+
           composition = new Composition({
             api: this._api,
             develop: this._develop,
             formData: new FormData(),
-            options: { ...options, dimensions: { height, width }, duration },
+            options: { ...transformedOptions, dimensions: { height, width }, duration },
             temporaryDirectory,
             videos: this,
           })
@@ -131,7 +137,7 @@ export class Videos {
             develop: this._develop,
             formData: new FormData(),
             options: {
-              backgroundColor,
+              backgroundColor: translateColor(backgroundColor),
               dimensions,
               duration,
               metadata,

@@ -1,4 +1,4 @@
-import { FilterKey, FilterName, FilterOptionTypes, LayerKey } from 'constant'
+import { FilterKey, FilterName, FilterOptionKey, FilterOptionTypes, LayerKey } from 'constant'
 import { mockFilterLayer } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as FilterValidationUtilsModule from 'utils/validation/layers/filter'
@@ -134,6 +134,19 @@ describe('validateFilter', () => {
           JSON.stringify(FilterOptionTypes[name])
         ),
       ])
+    })
+
+    describe('when the filter type has a `color` attribute', () => {
+      it('returns the correct errors when an invalid `color` is provided', () => {
+        const invalidColor = 're'
+
+        expect(
+          validateFilter({
+            callerName,
+            layer: { filter: { name: FilterName.fadeIn, options: { color: invalidColor, duration: 1, startTime: 0 } } },
+          })
+        ).toEqual([ValidationErrorText.INVALID_COLOR(callerName, FilterOptionKey.color, invalidColor)])
+      })
     })
 
     it('does not return an error message when no options are passed for a filter that does not require options', () => {

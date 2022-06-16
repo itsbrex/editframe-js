@@ -1,6 +1,6 @@
 import { LayerKey, LayerValidator, PrimitiveType, SubtitlesKey, SubtitlesLayer } from 'constant'
 import { ValidationErrorText } from 'strings'
-import { filterUndefined, validateLayer, validateValueIsOfType } from 'utils/validation'
+import { filterUndefined, validateColor, validateLayer, validateValueIsOfType } from 'utils/validation'
 import { validatePosition, validateTimeline, validateTrim } from 'utils/validation/layerConfigs'
 
 export const validateSubtitles: LayerValidator<SubtitlesLayer> = ({
@@ -12,20 +12,15 @@ export const validateSubtitles: LayerValidator<SubtitlesLayer> = ({
   const errors: string[] = []
 
   errors.push(
-    validateValueIsOfType(
+    validateColor(
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.subtitles, SubtitlesKey.backgroundColor),
       backgroundColor,
-      PrimitiveType.string
+      false
     )
   )
   errors.push(
-    validateValueIsOfType(
-      callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.subtitles, SubtitlesKey.color),
-      color,
-      PrimitiveType.string
-    )
+    validateColor(callerName, ValidationErrorText.SUB_FIELD(LayerKey.subtitles, SubtitlesKey.color), color, false)
   )
   errors.push(
     validateValueIsOfType(
