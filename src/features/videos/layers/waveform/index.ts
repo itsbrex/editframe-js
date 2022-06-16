@@ -16,7 +16,7 @@ import { SizeMixin } from 'features/videos/mixins/sizeMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
 import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
-import { validateValueIsOfType, withValidation } from 'utils'
+import { translateColor, validateColor, validateValueIsOfType, withValidation } from 'utils'
 
 export class Waveform extends Mixin(PositionMixin, SizeMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
@@ -42,24 +42,18 @@ export class Waveform extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Tra
   [WaveformMethod.setBackgroundColor](color?: string): this {
     return withValidation<this>(
       () => {
-        validateValueIsOfType(
-          WaveformMethod.setBackgroundColor,
-          WaveformKey.backgroundColor,
-          color,
-          PrimitiveType.string,
-          true
-        )
+        validateColor(WaveformMethod.setBackgroundColor, WaveformKey.backgroundColor, color, true)
       },
-      () => this._setWaveformAttribute(WaveformKey.backgroundColor, color)
+      () => this._setWaveformAttribute(WaveformKey.backgroundColor, translateColor(color))
     )
   }
 
   [WaveformMethod.setColor](color?: string): this {
     return withValidation<this>(
       () => {
-        validateValueIsOfType(WaveformMethod.setColor, WaveformKey.color, color, PrimitiveType.string, true)
+        validateColor(WaveformMethod.setColor, WaveformKey.color, color, true)
       },
-      () => this._setWaveformAttribute(WaveformKey.color, color)
+      () => this._setWaveformAttribute(WaveformKey.color, translateColor(color))
     )
   }
 

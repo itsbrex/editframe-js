@@ -1,4 +1,6 @@
-import { LayerValidator } from 'constant'
+import colorValidator from 'validate-color'
+
+import { LayerValidator, PrimitiveType } from 'constant'
 import { ValidationErrorText } from 'strings'
 import { logError } from 'utils/errors'
 import { exitProcess } from 'utils/process'
@@ -129,6 +131,27 @@ export const validateValueIsInList = (
       return message
     }
   }
+  return undefined
+}
+
+export const validateColor = (
+  caller: string,
+  fieldName: string,
+  value: string,
+  shouldThrow = false
+): string | undefined => {
+  validateValueIsOfType(caller, fieldName, value, PrimitiveType.string)
+
+  if (!colorValidator(value)) {
+    const message = ValidationErrorText.INVALID_COLOR(caller, fieldName, value)
+
+    if (shouldThrow) {
+      throw new TypeError(message)
+    } else {
+      return message
+    }
+  }
+
   return undefined
 }
 

@@ -14,7 +14,7 @@ import { PositionMixin } from 'features/videos/mixins/positionMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
 import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
-import { validateValueIsOfType, withValidation } from 'utils'
+import { translateColor, validateColor, validateValueIsOfType, withValidation } from 'utils'
 
 export class Subtitles extends Mixin(PositionMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
@@ -39,22 +39,15 @@ export class Subtitles extends Mixin(PositionMixin, TimelineMixin, TransitionsMi
 
   public [SubtitlesMethod.setBackgroundColor](color?: string): this {
     return withValidation<this>(
-      () =>
-        validateValueIsOfType(
-          SubtitlesMethod.setBackgroundColor,
-          SubtitlesKey.backgroundColor,
-          color,
-          PrimitiveType.string,
-          true
-        ),
-      () => this._setSubtitlesAttribute(SubtitlesKey.backgroundColor, color)
+      () => validateColor(SubtitlesMethod.setBackgroundColor, SubtitlesKey.backgroundColor, color, true),
+      () => this._setSubtitlesAttribute(SubtitlesKey.backgroundColor, translateColor(color))
     )
   }
 
   public [SubtitlesMethod.setColor](color?: string): this {
     return withValidation<this>(
-      () => validateValueIsOfType(SubtitlesMethod.setColor, SubtitlesKey.color, color, PrimitiveType.string, true),
-      () => this._setSubtitlesAttribute(SubtitlesKey.color, color)
+      () => validateColor(SubtitlesMethod.setColor, SubtitlesKey.color, color, true),
+      () => this._setSubtitlesAttribute(SubtitlesKey.color, translateColor(color))
     )
   }
 

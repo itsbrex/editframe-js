@@ -23,6 +23,8 @@ import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
 import { CompositionErrorText } from 'strings'
 import {
+  translateColor,
+  validateColor,
   validateFontStyle,
   validateFontWeight,
   validatePresenceOf,
@@ -107,15 +109,8 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
 
   public [TextMethod.setBackgroundColor](backgroundColor: string): this {
     return withValidation<this>(
-      () =>
-        validateValueIsOfType(
-          TextMethod.setBackgroundColor,
-          TextKey.backgroundColor,
-          backgroundColor,
-          PrimitiveType.string,
-          true
-        ),
-      () => this._setTextAttribute(TextKey.backgroundColor, backgroundColor)
+      () => validateColor(TextMethod.setBackgroundColor, TextKey.backgroundColor, backgroundColor, true),
+      () => this._setTextAttribute(TextKey.backgroundColor, translateColor(backgroundColor))
     )
   }
 
@@ -156,8 +151,8 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
 
   public [TextMethod.setColor](color: string): this {
     return withValidation<this>(
-      () => validateValueIsOfType(TextMethod.setColor, TextKey.color, color, PrimitiveType.string, true),
-      () => this._setTextAttribute(TextKey.color, color)
+      () => validateColor(TextMethod.setColor, TextKey.color, color, true),
+      () => this._setTextAttribute(TextKey.color, translateColor(color))
     )
   }
 

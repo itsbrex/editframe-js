@@ -1,4 +1,5 @@
 import {
+  Color,
   DefaultTextOptions,
   LayerHorizontalAlignmentValue,
   PrimitiveType,
@@ -13,7 +14,7 @@ import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
 import { CompositionErrorText } from 'strings'
-import { makeDefaultTextLayerConfig } from 'utils'
+import { makeDefaultTextLayerConfig, translateColor } from 'utils'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as LayerUtilsModule from 'utils/validation/layers/text'
 
@@ -27,6 +28,7 @@ describe('Text', () => {
   let layerOptionsDefaults: TextOptions
   let layerConfigDefaults: TextLayerConfig
 
+  let validateColorSpy: jest.SpyInstance
   let validateFontStyleSpy: jest.SpyInstance
   let validateFontWeightSpy: jest.SpyInstance
   let validatePresenceOfSpy: jest.SpyInstance
@@ -53,6 +55,7 @@ describe('Text', () => {
       },
       videos: new Videos({ api }),
     })
+    validateColorSpy = jest.spyOn(ValidationUtilsModule, 'validateColor')
     validateFontStyleSpy = jest.spyOn(LayerUtilsModule, 'validateFontStyle')
     validateFontWeightSpy = jest.spyOn(LayerUtilsModule, 'validateFontWeight')
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
@@ -91,18 +94,17 @@ describe('Text', () => {
   })
 
   describe('setBackgroundColor', () => {
-    const backgroundColor = 'backgroundColor'
+    const backgroundColor = Color.black
 
     beforeEach(() => {
       result = text.setBackgroundColor(backgroundColor)
     })
 
-    it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+    it('calls the `validateColor` function', () => {
+      expect(validateColorSpy).toHaveBeenCalledWith(
         TextMethod.setBackgroundColor,
         TextKey.backgroundColor,
         backgroundColor,
-        PrimitiveType.string,
         true
       )
     })
@@ -110,7 +112,7 @@ describe('Text', () => {
     it('sets the `backgroundColor`', () => {
       text.setBackgroundColor(backgroundColor)
 
-      expect(text.backgroundColor).toEqual(backgroundColor)
+      expect(text.backgroundColor).toEqual(translateColor(backgroundColor))
     })
 
     it('returns the `Text` instance', () => {
@@ -135,7 +137,7 @@ describe('Text', () => {
       )
     })
 
-    it('sets the `backgroundColor`', () => {
+    it('sets the `backgroundTransform`', () => {
       text.setBackgroundTransform(backgroundTransform)
 
       expect(text.backgroundTransform).toEqual(backgroundTransform)
@@ -203,26 +205,20 @@ describe('Text', () => {
   })
 
   describe('setColor', () => {
-    const color = 'color'
+    const color = Color.black
 
     beforeEach(() => {
       result = text.setColor(color)
     })
 
-    it('calls the `validateValueIsOfType` function', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        TextMethod.setColor,
-        TextKey.color,
-        color,
-        PrimitiveType.string,
-        true
-      )
+    it('calls the `validateColor` function', () => {
+      expect(validateColorSpy).toHaveBeenCalledWith(TextMethod.setColor, TextKey.color, color, true)
     })
 
     it('sets the `color`', () => {
       text.setColor(color)
 
-      expect(text.color).toEqual(color)
+      expect(text.color).toEqual(translateColor(color))
     })
 
     it('returns the `Text` instance', () => {
@@ -487,7 +483,7 @@ describe('Text', () => {
       )
     })
 
-    it('sets the `backgroundColor`', () => {
+    it('sets the `textTransform`', () => {
       text.setTextTransform(textTransform)
 
       expect(text.textTransform).toEqual(textTransform)

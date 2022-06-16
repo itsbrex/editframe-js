@@ -1,14 +1,6 @@
-import {
-  LayerKey,
-  LayerValidator,
-  PrimitiveType,
-  WaveformKey,
-  WaveformLayer,
-  WaveformStyle,
-  WaveformStyleValue,
-} from 'constant'
+import { LayerKey, LayerValidator, WaveformKey, WaveformLayer, WaveformStyle, WaveformStyleValue } from 'constant'
 import { ValidationErrorText } from 'strings'
-import { filterUndefined, validateLayer, validateValueIsInList, validateValueIsOfType } from 'utils/validation'
+import { filterUndefined, validateColor, validateLayer, validateValueIsInList } from 'utils/validation'
 import { validateTimeline } from 'utils/validation/layerConfigs'
 
 export const validateWaveformStyle = (callerName: string, style: WaveformStyle): string | undefined => {
@@ -30,20 +22,15 @@ export const validateWaveform: LayerValidator<WaveformLayer> = ({
   const errors: string[] = []
 
   errors.push(
-    validateValueIsOfType(
+    validateColor(
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.waveform, WaveformKey.backgroundColor),
       backgroundColor,
-      PrimitiveType.string
+      false
     )
   )
   errors.push(
-    validateValueIsOfType(
-      callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.waveform, WaveformKey.color),
-      color,
-      PrimitiveType.string
-    )
+    validateColor(callerName, ValidationErrorText.SUB_FIELD(LayerKey.waveform, WaveformKey.color), color, false)
   )
   errors.push(
     validateValueIsInList(

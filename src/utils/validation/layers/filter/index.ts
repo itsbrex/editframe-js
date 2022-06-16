@@ -13,7 +13,7 @@ import {
   PrimitiveType,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
-import { assertType, filterUndefined, validateLayer } from 'utils/validation'
+import { assertType, filterUndefined, validateColor, validateLayer } from 'utils/validation'
 
 export const isFilterBrightness = (options: Record<string, any>): options is FilterBrightness =>
   options &&
@@ -79,6 +79,12 @@ export const validateFilter: LayerValidator<FilterLayer> = ({
       options,
       JSON.stringify(FilterOptionTypes[name])
     )
+
+    errors.push(message)
+  }
+
+  if (options && FilterOptionKey.color in options) {
+    const message = validateColor(callerName, FilterOptionKey.color, options.color)
 
     errors.push(message)
   }

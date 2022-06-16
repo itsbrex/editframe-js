@@ -37,23 +37,31 @@ describe('isApiVideoMetadata', () => {
 
 describe('validateNewVideo', () => {
   const compositionOptions = mockCompositionOptions()
+  let validateColorSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   beforeEach(() => {
+    validateColorSpy = jest.spyOn(ValidationUtilsModule, 'validateColor')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     validateNewVideo(compositionOptions)
+  })
+
+  it('calls the `validateColor` function with the correct arguments', () => {
+    expect(validateColorSpy).toHaveBeenCalledWith(
+      ApiVideoMethod.new,
+      CompositionKey.backgroundColor,
+      compositionOptions.backgroundColor,
+      true
+    )
   })
 
   it('calls the `validateValueIsOfType` function with the correct arguments', () => {
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(5)
 
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-      ApiVideoMethod.new,
-      CompositionKey.backgroundColor,
-      compositionOptions.backgroundColor,
-      PrimitiveType.string,
-      true
-    )
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       ApiVideoMethod.new,
       ValidationErrorText.SUB_FIELD(CompositionKey.dimensions, DimensionsKey.height),

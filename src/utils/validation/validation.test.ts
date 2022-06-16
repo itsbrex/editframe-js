@@ -6,6 +6,7 @@ import * as ProcessUtilsModule from 'utils/process'
 
 import {
   assertType,
+  validateColor,
   validateOptions,
   validatePresenceOf,
   validateValueIsInList,
@@ -139,6 +140,30 @@ describe('validateValueIsInList', () => {
         ValidationErrorText.OR(types.map((type) => type.toString()))
       )
     )
+  })
+})
+
+describe('validateColor', () => {
+  const caller = 'caller'
+  const fieldName = 'field-name'
+  const value = 'invalid-color'
+
+  describe('when the provided `shouldThrow` argument evaluates to `true`', () => {
+    it('throws an error when the provided `value` an invalid color', () => {
+      expect(() => validateColor(caller, fieldName, value, true)).toThrow(
+        new Error(ValidationErrorText.INVALID_COLOR(caller, fieldName, value))
+      )
+    })
+  })
+
+  it('returns an error when the provided `value` is an invalid color', () => {
+    expect(validateColor(caller, fieldName, value)).toEqual(ValidationErrorText.INVALID_COLOR(caller, fieldName, value))
+  })
+
+  describe('when the provided `value` is a valid color', () => {
+    it('returns `undefined`', () => {
+      expect(validateColor(caller, fieldName, 'red')).toBeUndefined()
+    })
   })
 })
 
