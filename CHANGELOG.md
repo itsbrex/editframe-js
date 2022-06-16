@@ -1,3 +1,12 @@
+## [2.4.4](https://github.com/editframe/editframe-js/compare/v2.4.3...v2.4.4) (2022-06-16)
+
+
+### Bug Fixes
+
+* add color validation ([7636f30](https://github.com/editframe/editframe-js/commit/7636f3038d51764d32e5db21ebe84f444fd20baf))
+* replace 'node:timers/promises' with 'delay' ([8e0cc57](https://github.com/editframe/editframe-js/commit/8e0cc57f4618f9ce5b9796b24e36d03401707814))
+* use secrets for dev/prod deploy webhooks in gh actions ([7bcd70f](https://github.com/editframe/editframe-js/commit/7bcd70fa969847defe41e43ca60dd0eb6da70998))
+
 ## [2.4.3](https://github.com/editframe/editframe-js/compare/v2.4.2...v2.4.3) (2022-06-15)
 
 
