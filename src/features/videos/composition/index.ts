@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch'
+import delay from 'delay'
 import { Readable } from 'node:stream'
-import { setTimeout } from 'node:timers/promises'
 import open from 'open'
 import ora from 'ora'
 import prettyMilliseconds from 'pretty-ms'
@@ -683,7 +683,7 @@ export class Composition implements CompositionInterface {
         let streamResponse = await fetch(video.streamUrl)
 
         while (streamResponse.status !== 200) {
-          await setTimeout(pollDelay)
+          await delay(pollDelay)
 
           streamResponse = await fetch(video.streamUrl)
         }
