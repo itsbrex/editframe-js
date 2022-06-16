@@ -60,7 +60,7 @@ jobs:
       - name: HTTP Request Action
         uses: fjogeleit/http-request-action@v1.9.2
         with:
-          url: 'https://envoyer.io/deploy/Yo50TZDfKbsPtCnNEyCIwRHoyzEExYFjG703V5dv'
+          url: ${{ secrets.ENVOYER_DEPLOY_WEBHOOK }}
           method: 'GET'
       - uses: act10ns/slack@v1
         with:
