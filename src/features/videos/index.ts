@@ -1,5 +1,5 @@
+import delay from 'delay'
 import FormData from 'form-data'
-import { setTimeout } from 'node:timers/promises'
 
 import {
   ApiInterface,
@@ -81,7 +81,7 @@ export class Videos {
       let video = await getVideo()
 
       while (waitUntilEncodingComplete && !video.isFailed && !video.isReady) {
-        await setTimeout(pollDelay)
+        await delay(pollDelay)
 
         video = await getVideo()
       }
