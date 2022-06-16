@@ -2,7 +2,7 @@ import { Color, DefaultSubtitlesOptions, PrimitiveType, SubtitlesKey, SubtitlesM
 import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
-import { makeDefaultSubtitlesLayerConfig } from 'utils'
+import { makeDefaultSubtitlesLayerConfig, translateColor } from 'utils'
 import * as ValidationUtilsModule from 'utils/validation'
 
 import { Subtitles } from './'
@@ -12,6 +12,7 @@ describe('Subtitles', () => {
   let composition: Composition
   let subtitles: Subtitles
   let result: Subtitles | void
+  let validateColorSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
   afterEach(() => {
@@ -21,6 +22,7 @@ describe('Subtitles', () => {
   beforeEach(async () => {
     const api = mockApi()
 
+    validateColorSpy = jest.spyOn(ValidationUtilsModule, 'validateColor')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     composition = new Composition({
       api,
@@ -63,18 +65,17 @@ describe('Subtitles', () => {
       result = subtitles.setBackgroundColor(newBackgroundColor)
     })
 
-    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+    it('calls the `validateColor` function with the correct arguments', () => {
+      expect(validateColorSpy).toHaveBeenCalledWith(
         SubtitlesMethod.setBackgroundColor,
         SubtitlesKey.backgroundColor,
         newBackgroundColor,
-        PrimitiveType.string,
         true
       )
     })
 
     it('sets the `backgroundColor`', () => {
-      expect(subtitles.backgroundColor).toEqual(newBackgroundColor)
+      expect(subtitles.backgroundColor).toEqual(translateColor(newBackgroundColor))
     })
 
     it('returns the `Subtitles` instance', () => {
@@ -89,18 +90,12 @@ describe('Subtitles', () => {
       result = subtitles.setColor(newColor)
     })
 
-    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        SubtitlesMethod.setColor,
-        SubtitlesKey.color,
-        newColor,
-        PrimitiveType.string,
-        true
-      )
+    it('calls the `validateColor` function with the correct arguments', () => {
+      expect(validateColorSpy).toHaveBeenCalledWith(SubtitlesMethod.setColor, SubtitlesKey.color, newColor, true)
     })
 
     it('sets the `color`', () => {
-      expect(subtitles.color).toEqual(newColor)
+      expect(subtitles.color).toEqual(translateColor(newColor))
     })
 
     it('returns the `Subtitles` instance', () => {

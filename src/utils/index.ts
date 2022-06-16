@@ -1,4 +1,5 @@
 import { baseUrl, initializeFetchUtil, makeHeaders } from './api'
+import { translateColor } from './colors'
 import {
   makeDefaultAudioLayer,
   makeDefaultAudioLayerConfig,
@@ -41,6 +42,7 @@ import {
   assertType,
   filterUndefined,
   isValidUrl,
+  validateColor,
   validateLayer,
   validateOptions,
   validatePresenceOf,
@@ -165,12 +167,14 @@ export {
   sanitizeHtml,
   saveFile,
   setLayerDefaults,
+  translateColor,
   urlOrFile,
   uuid,
   validateApiData,
   validateAudio,
   validateAudioMixin,
   validateAudioLayer,
+  validateColor,
   validateCompositionFile,
   validateCompositionOptions,
   validateFilter,

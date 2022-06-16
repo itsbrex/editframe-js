@@ -1110,10 +1110,10 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@editframe/shared-types@3.2.2":
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.2.2.tgz#44b507ee0940575c8feed32deaff413458b30cc7"
-  integrity sha512-EJzSUuEZYbONZ9K0HXjQ6S6WdTrjBBrsXf2R2FDCd4q1Z3hdFuLjiiKGTv5SF8cMx2y3xFkxruxQTCzRiQPiuA==
+"@editframe/shared-types@3.2.3":
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.2.3.tgz#89efdc44271ae57611daa0bba9eea74af91e44aa"
+  integrity sha512-D1j0fH3T2BQ/TgKZ+Ym/Lx9S+j333FqXVtQG46t1bt+4ykdLocZwNIBQ8j5LPodk9fsk6Wkn3ZrniMveAZmHxw==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -2869,6 +2869,11 @@ colors@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
+
+colortranslator@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/colortranslator/-/colortranslator-1.9.2.tgz#baff13493677ae21355468366fb9f4a6242f9f39"
+  integrity sha512-Hr1qCLwL/5gbGhcRwfhl1+JbvHmybTGbecpbhyzn3IyizgYFxMpLpX8OGhAcvSPB0+K2bwrAcFIbeF60wqOJLg==
 
 columnify@^1.6.0:
   version "1.6.0"
@@ -7869,6 +7874,11 @@ v8-to-istanbul@^8.1.0:
     "@types/istanbul-lib-coverage" "^2.0.1"
     convert-source-map "^1.6.0"
     source-map "^0.7.3"
+
+validate-color@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/validate-color/-/validate-color-2.2.1.tgz#f97214883304f87eaa9dc1eb8e9d8cd8b606a5d1"
+  integrity sha512-1eDb1zqP6W6bbfKKl6dRXObelNoQpW7aF3BUTh2AivWuhcD0pa3ejwURWqrVsyKJMLBMlHLFcM3sj5J+dSFhbg==
 
 validate-npm-package-license@^3.0.1, validate-npm-package-license@^3.0.4:
   version "3.0.4"

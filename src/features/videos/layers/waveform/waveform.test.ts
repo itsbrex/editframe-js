@@ -1,4 +1,5 @@
 import {
+  Color,
   DefaultWaveformOptions,
   PrimitiveType,
   WaveformKey,
@@ -9,7 +10,7 @@ import {
 import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
-import { makeDefaultWaveformLayerConfig } from 'utils'
+import { makeDefaultWaveformLayerConfig, translateColor } from 'utils'
 import * as ValidationUtilsModule from 'utils/validation'
 
 import { Waveform } from './'
@@ -18,6 +19,7 @@ describe('Waveform', () => {
   let composition: Composition
   let waveform: Waveform
   let result: Waveform | void
+  let validateColorSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
   let layerConfigDefaults: WaveformLayerConfig
 
@@ -34,6 +36,7 @@ describe('Waveform', () => {
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
       videos: new Videos({ api }),
     })
+    validateColorSpy = jest.spyOn(ValidationUtilsModule, 'validateColor')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
 
     waveform = await composition.addWaveform('./package.json')
@@ -62,24 +65,23 @@ describe('Waveform', () => {
   })
 
   describe('setBackgroundColor', () => {
-    const backgroundColor = 'background-color'
+    const backgroundColor = Color.black
 
     beforeEach(async () => {
       result = waveform.setBackgroundColor(backgroundColor)
     })
 
-    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+    it('calls the `validateColor` function with the correct arguments', () => {
+      expect(validateColorSpy).toHaveBeenCalledWith(
         WaveformMethod.setBackgroundColor,
         WaveformKey.backgroundColor,
         backgroundColor,
-        PrimitiveType.string,
         true
       )
     })
 
     it('sets `backgroundColor` to the correct value', () => {
-      expect(waveform.backgroundColor).toEqual(backgroundColor)
+      expect(waveform.backgroundColor).toEqual(translateColor(backgroundColor))
     })
 
     it('returns the `Waveform` instance', () => {
@@ -88,24 +90,18 @@ describe('Waveform', () => {
   })
 
   describe('setColor', () => {
-    const color = 'color'
+    const color = Color.black
 
     beforeEach(async () => {
       result = waveform.setColor(color)
     })
 
-    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        WaveformMethod.setColor,
-        WaveformKey.color,
-        color,
-        PrimitiveType.string,
-        true
-      )
+    it('calls the `validateColor` function with the correct arguments', () => {
+      expect(validateColorSpy).toHaveBeenCalledWith(WaveformMethod.setColor, WaveformKey.color, color, true)
     })
 
     it('sets `color` to the correct value', () => {
-      expect(waveform.color).toEqual(color)
+      expect(waveform.color).toEqual(translateColor(color))
     })
 
     it('returns the `Waveform` instance', () => {

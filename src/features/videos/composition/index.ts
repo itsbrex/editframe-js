@@ -28,6 +28,7 @@ import {
   EncodeResponse,
   FilterKey,
   FilterLayer,
+  FilterOptionKey,
   Filters,
   FormDataInterface,
   HtmlKey,
@@ -99,6 +100,7 @@ import {
   removeDirectory,
   sanitizeHtml,
   setLayerDefaults,
+  translateColor,
   urlOrFile,
   uuid,
   validateApiData,
@@ -248,7 +250,7 @@ export class Composition implements CompositionInterface {
     name: FilterName
     options?: Filters[FilterName]
   }): Filter | undefined {
-    const filterLayer: FilterLayer = this._setLayerDefaults<FilterLayer>({
+    let filterLayer: FilterLayer = this._setLayerDefaults<FilterLayer>({
       layerType: LayerType.filter,
       options,
     })
@@ -260,6 +262,16 @@ export class Composition implements CompositionInterface {
         validateFilterLayer(CompositionMethod.addFilter, filterLayer)
       },
       () => {
+        if (FilterOptionKey.color in options) {
+          const transformedLayer: FilterLayer = deepClone(filterLayer)
+
+          if (FilterOptionKey.color in transformedLayer.filter.options) {
+            transformedLayer.filter.options.color = translateColor(transformedLayer.filter.options.color)
+          }
+
+          filterLayer = transformedLayer
+        }
+
         const { id } = this._addLayer({ type: LayerType.filter, ...filterLayer })
 
         return new Filter({ composition: this, id })
@@ -436,7 +448,16 @@ export class Composition implements CompositionInterface {
         validateSubtitlesLayer(CompositionMethod.addSubtitles, subtitlesLayer)
       },
       async () => {
-        const { id } = this._addLayer({ type: LayerType.subtitles, ...subtitlesLayer })
+        const {
+          subtitles: { backgroundColor, color },
+        } = subtitlesLayer
+
+        const transformedLayer: SubtitlesLayer = deepClone(subtitlesLayer)
+
+        transformedLayer.subtitles.backgroundColor = translateColor(backgroundColor)
+        transformedLayer.subtitles.color = translateColor(color)
+
+        const { id } = this._addLayer({ type: LayerType.subtitles, ...transformedLayer })
         const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
 
         this._files.push({ file: readStream, id })
@@ -461,7 +482,15 @@ export class Composition implements CompositionInterface {
         validateTextLayer(CompositionMethod.addText, textLayer)
       },
       () => {
-        const { id } = this._addLayer({ type: LayerType.text, ...textLayer })
+        const {
+          text: { backgroundColor, color },
+        } = textLayer
+        const transformedLayer: TextLayer = deepClone(textLayer)
+
+        transformedLayer.text.backgroundColor = translateColor(backgroundColor)
+        transformedLayer.text.color = translateColor(color)
+
+        const { id } = this._addLayer({ type: LayerType.text, ...transformedLayer })
 
         return new Text({ composition: this, id })
       }
@@ -507,7 +536,16 @@ export class Composition implements CompositionInterface {
         }
       },
       async () => {
-        const { id } = this._addLayer({ type: LayerType.waveform, ...waveformLayer })
+        const {
+          waveform: { backgroundColor, color },
+        } = waveformLayer
+
+        const transformedLayer: WaveformLayer = deepClone(waveformLayer)
+
+        transformedLayer.waveform.backgroundColor = translateColor(backgroundColor)
+        transformedLayer.waveform.color = translateColor(color)
+
+        const { id } = this._addLayer({ type: LayerType.waveform, ...transformedLayer })
 
         if (file) {
           const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
