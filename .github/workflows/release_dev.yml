@@ -59,7 +59,7 @@ jobs:
       - name: HTTP Request Action
         uses: fjogeleit/http-request-action@v1.9.2
         with:
-          url: 'https://forge.laravel.com/servers/526578/sites/1537210/deploy/http?token=MWzb3cZaVQ7vIvRuunnf1RujUrAKaKCSfd7bmdKi'
+          url: ${{ secrets.FORGE_DEPLOY_WEBHOOK }}
           method: 'GET'
       - uses: act10ns/slack@v1
         with:
