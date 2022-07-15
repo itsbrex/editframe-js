@@ -1,3 +1,11 @@
+## [2.4.5](https://github.com/editframe/editframe-js/compare/v2.4.4...v2.4.5) (2022-07-15)
+
+
+### Bug Fixes
+
+* prevent crossfade processing from adding duplicate fades ([ae18721](https://github.com/editframe/editframe-js/commit/ae18721033b77b63d078939c2c3b10af12bf1c16))
+* use JsonValue for value of Metadata record type ([9de5717](https://github.com/editframe/editframe-js/commit/9de5717b9481c61abd7681a1a601ce8c6ea2013d))
+
 ## [2.4.4](https://github.com/editframe/editframe-js/compare/v2.4.3...v2.4.4) (2022-06-16)
 
 
