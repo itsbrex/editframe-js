@@ -1,4 +1,5 @@
 import { Readable } from 'node:stream'
+import { JsonValue } from 'type-fest'
 
 import {
   ChildKey,
@@ -80,7 +81,7 @@ export interface CompositionInterface {
   }) => void
 }
 
-export type Metadata = Record<string, string>
+export type Metadata = Record<string, JsonValue>
 
 export type VideoOptions = {
   [CompositionKey.backgroundColor]?: string
