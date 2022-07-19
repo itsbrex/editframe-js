@@ -1110,10 +1110,12 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@editframe/shared-types@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.2.3.tgz#89efdc44271ae57611daa0bba9eea74af91e44aa"
-  integrity sha512-D1j0fH3T2BQ/TgKZ+Ym/Lx9S+j333FqXVtQG46t1bt+4ykdLocZwNIBQ8j5LPodk9fsk6Wkn3ZrniMveAZmHxw==
+"@editframe/shared-types@3.2.9":
+  version "3.2.9"
+  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.2.9.tgz#1e3cc7c5109232fd799f5261701a5aa9d25bb6f2"
+  integrity sha512-ZH3SXdMePJcTLKLvDry5ElROotmtfriRkf2btgDb4ucKzasdoZt2eUxXxqbTO4Kd0jrvV9JqwZmFl5Jy22kzXw==
+  dependencies:
+    type-fest "^2.14.0"
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -7738,7 +7740,7 @@ type-fest@^1.0.2, type-fest@^1.2.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.4.0.tgz#e9fb813fe3bf1744ec359d55d1affefa76f14be1"
   integrity sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==
 
-type-fest@^2.16.0:
+type-fest@^2.14.0, type-fest@^2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.16.0.tgz#1250fbd64dafaf4c8e405e393ef3fb16d9651db2"
   integrity sha512-qpaThT2HQkFb83gMOrdKVsfCN7LKxP26Yq+smPzY1FqoHRjqmjqHXA7n5Gkxi8efirtbeEUxzfEdePthQWCuHw==
