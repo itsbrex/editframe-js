@@ -8,5 +8,6 @@ export const Routes = {
     all: '/videos',
     create: '/videos',
     get: '/videos/:id',
+    prepare: '/videos/prepare'
   },
 }

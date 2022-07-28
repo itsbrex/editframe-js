@@ -48,6 +48,7 @@ export enum CompositionMethod {
   layer = 'layer',
   layers = 'layers',
   metadata = 'metadata',
+  prepare = 'prepare',
   preview = 'preview',
   setDuration = '_setDuration',
   setFile = '_setFile',
