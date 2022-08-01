@@ -1,9 +1,11 @@
 import fetch from 'cross-fetch'
 import delay from 'delay'
+import Echo from 'laravel-echo'
 import { Readable } from 'node:stream'
 import open from 'open'
 import ora from 'ora'
 import prettyMilliseconds from 'pretty-ms'
+import Pusher from 'pusher-js'
 
 import {
   ApiAudioMetadata,
@@ -567,6 +569,32 @@ export class Composition implements CompositionInterface {
     let encodeStartTime: Date
     let spinner: ora.Ora
 
+    const echo = new Echo({
+      broadcaster: 'pusher',
+      cluster: 'mt1',
+      forceTLS: true,
+      key: 'key',
+    })
+
+    ;(global as any).Echo = echo
+    ;(global as any).Pusher = Pusher
+
+    let waitingForData = true
+
+    echo
+      // .private(`App.Models.User.6`)
+      .channel('test')
+      .listen('\\App\\Events\\VideoEncoded', (data: any) => {
+        // echo.channel(`test`).listen('VideoEncoded', (data: any) => {
+        console.log('data: ', data)
+        waitingForData = false
+      })
+      .listen('VideoEncoded', (data: any) => {
+        // echo.channel(`test`).listen('VideoEncoded', (data: any) => {
+        console.log('data: ', data)
+        waitingForData = false
+      })
+
     try {
       if (!this.duration) {
         throw new Error(CompositionErrorText.durationRequired)
@@ -584,6 +612,10 @@ export class Composition implements CompositionInterface {
         const requestStart = new Date()
 
         data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
+
+        while (waitingForData) {
+          console.log('waiting')
+        }
 
         const requestEnd = new Date()
 
@@ -612,16 +644,19 @@ export class Composition implements CompositionInterface {
       removeDirectory(this._temporaryDirectory)
     }
 
+    echo.private(`App.Models.User.3`).listen('VideoEncoded', (data: any) => {
+      console.log('data: ', data)
+    })
+
     return synchronously ? this._getNewlyCreatedVideo({ encodeStartTime, videoId: encodeResponse.id }) : encodeResponse
   }
 
-  public async [CompositionMethod.prepare](): Promise<{ id: string, timestamp: string, status: string}> {
+  public async [CompositionMethod.prepare](): Promise<{ id: string; timestamp: string; status: string }> {
     this._generateConfig()
 
-    const result =  await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.prepare }) as any
-  
-  
-    return result;
+    const result = (await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.prepare })) as any
+
+    return result
   }
 
   public async [CompositionMethod.preview](): Promise<void> {
