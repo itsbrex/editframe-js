@@ -1,3 +1,10 @@
+## [2.4.7](https://github.com/editframe/editframe-js/compare/v2.4.6...v2.4.7) (2022-08-02)
+
+
+### Bug Fixes
+
+* add workflow job id to composition form data ([f060129](https://github.com/editframe/editframe-js/commit/f0601299549c21285f754f56534f1a7f1989ca6f))
+
 ## [2.4.6](https://github.com/editframe/editframe-js/compare/v2.4.5...v2.4.6) (2022-07-19)
 
 
