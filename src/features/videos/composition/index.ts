@@ -642,6 +642,10 @@ export class Composition implements CompositionInterface {
         layers: this._layers.filter((layer) => layer.type !== LayerType.sequence),
       })
     )
+
+    if (process.env.EDITFRAME_WORKFLOW_JOB_ID) {
+      this._formData.append('workflowJobId', process.env.EDITFRAME_WORKFLOW_JOB_ID)
+    }
   }
 
   private async [CompositionMethod.getMetadata](file: Readable, type: ApiVideoMetadataType): Promise<ApiMetadataTypes> {
