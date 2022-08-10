@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/editframe/editframe-js/compare/v2.4.7...v3.0.0) (2022-08-10)
+
+
+### Features
+
+* add experimental encode options ([571cbaa](https://github.com/editframe/editframe-js/commit/571cbaa7b12eba0d4abf35c7e6ca551851ccd795))
+
+
+### BREAKING CHANGES
+
+* splits `encode()` into `encode()` and `encodeSync()`
+
 ## [2.4.7](https://github.com/editframe/editframe-js/compare/v2.4.6...v2.4.7) (2022-08-02)
 
 
