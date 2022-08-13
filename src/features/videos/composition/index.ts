@@ -569,31 +569,42 @@ export class Composition implements CompositionInterface {
     let encodeStartTime: Date
     let spinner: ora.Ora
 
+    let awaitingWsResponse = true
+    const wsHost = this._api.options.host.replace('api', 'ws')
+    console.log(wsHost)
+    ;(global as any).Pusher = Pusher
+
     const echo = new Echo({
+      authorizer: (channel: any) => ({
+        authorize: (socketId: string, callback: any) => {
+          this._api
+            .post({
+              data: {
+                channel_name: channel.name,
+                socket_id: socketId
+              },
+              isForm: false,
+              url: Routes.ws.auth,
+            })
+            .then((response: any) => {
+              callback(false, response.data)
+            })
+            .catch((error) => {
+              callback(true, error)
+            })
+        },
+      }),
       broadcaster: 'pusher',
-      cluster: 'mt1',
+      disableStats: true,
       forceTLS: true,
       key: 'key',
+      wsHost,
+      wsPort: 6001,
+      wssHost: wsHost,
+      wssPort: 6001,
     })
 
     ;(global as any).Echo = echo
-    ;(global as any).Pusher = Pusher
-
-    let waitingForData = true
-
-    echo
-      // .private(`App.Models.User.6`)
-      .channel('test')
-      .listen('\\App\\Events\\VideoEncoded', (data: any) => {
-        // echo.channel(`test`).listen('VideoEncoded', (data: any) => {
-        console.log('data: ', data)
-        waitingForData = false
-      })
-      .listen('VideoEncoded', (data: any) => {
-        // echo.channel(`test`).listen('VideoEncoded', (data: any) => {
-        console.log('data: ', data)
-        waitingForData = false
-      })
 
     try {
       if (!this.duration) {
@@ -612,10 +623,6 @@ export class Composition implements CompositionInterface {
         const requestStart = new Date()
 
         data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
-
-        while (waitingForData) {
-          console.log('waiting')
-        }
 
         const requestEnd = new Date()
 
@@ -644,14 +651,37 @@ export class Composition implements CompositionInterface {
       removeDirectory(this._temporaryDirectory)
     }
 
-    echo.private(`App.Models.User.3`).listen('VideoEncoded', (data: any) => {
-      console.log('data: ', data)
+    const tick = setInterval(() => {
+      console.log('awaiting ws response')
+    }, 7000)
+
+    if (synchronously) {
+      console.log(`setting up echo private channel for App.Models.Video.${encodeResponse.id}`)
+      echo.private(`App.Models.Video.${encodeResponse.id}`).notification((notification: any) => {
+
+        console.log(notification)
+        awaitingWsResponse = false
+        clearInterval(tick)
+      })
+    } else {
+      return encodeResponse
+    }
+
+    await new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (!awaitingWsResponse) {
+          clearInterval(interval)
+          resolve(1)
+        }
+      }, 2000)
     })
 
-    return synchronously ? this._getNewlyCreatedVideo({ encodeStartTime, videoId: encodeResponse.id }) : encodeResponse
+    return this._getNewlyCreatedVideo({ encodeStartTime, videoId: encodeResponse.id })
+
+    // return synchronously ? this._getNewlyCreatedVideo({ encodeStartTime, videoId: encodeResponse.id }) : encodeResponse
   }
 
-  public async [CompositionMethod.prepare](): Promise<{ id: string; timestamp: string; status: string }> {
+  public async [CompositionMethod.prepare](): Promise<{ id: string; status: string, timestamp: string; }> {
     this._generateConfig()
 
     const result = (await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.prepare })) as any
