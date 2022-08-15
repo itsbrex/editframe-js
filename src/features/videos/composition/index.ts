@@ -1,11 +1,11 @@
-import fetch from 'cross-fetch'
-import delay from 'delay'
+import FormData from 'form-data'
 import Echo from 'laravel-echo'
 import { Readable } from 'node:stream'
 import open from 'open'
 import ora from 'ora'
 import prettyMilliseconds from 'pretty-ms'
 import Pusher from 'pusher-js'
+;(global as any).Pusher = Pusher
 
 import {
   ApiAudioMetadata,
@@ -70,7 +70,6 @@ import {
   WaveformLayer,
   WaveformLayerConfig,
   WaveformOptions,
-  pollDelay,
 } from 'constant'
 import { Videos } from 'features'
 import { Audio } from 'features/videos/layers/audio'
@@ -567,27 +566,27 @@ export class Composition implements CompositionInterface {
   > {
     let encodeResponse: EncodeResponse
     let encodeStartTime: Date
-    let spinner: ora.Ora
+    let createSpinner: ora.Ora
+    let encodingSpinner: ora.Ora
 
-    let awaitingWsResponse = true
-    const wsHost = this._api.options.host.replace('api', 'ws')
-    console.log(wsHost)
-    ;(global as any).Pusher = Pusher
+    const { host } = this._api.options
+    const wsHost = host.replace('https://api', 'ws')
 
     const echo = new Echo({
       authorizer: (channel: any) => ({
         authorize: (socketId: string, callback: any) => {
+          const authPayload = new FormData()
+
+          authPayload.append('channel_name', channel.name)
+          authPayload.append('socket_id', socketId)
           this._api
             .post({
-              data: {
-                channel_name: channel.name,
-                socket_id: socketId
-              },
-              isForm: false,
-              url: Routes.ws.auth,
+              data: authPayload,
+              isForm: true,
+              url: Routes.ws.auth.replace(':host', wsHost),
             })
             .then((response: any) => {
-              callback(false, response.data)
+              callback(false, response)
             })
             .catch((error) => {
               callback(true, error)
@@ -597,14 +596,13 @@ export class Composition implements CompositionInterface {
       broadcaster: 'pusher',
       disableStats: true,
       forceTLS: true,
+      host: wsHost,
       key: 'key',
       wsHost,
       wsPort: 6001,
       wssHost: wsHost,
       wssPort: 6001,
     })
-
-    ;(global as any).Echo = echo
 
     try {
       if (!this.duration) {
@@ -614,7 +612,7 @@ export class Composition implements CompositionInterface {
       this._generateConfig()
 
       if (this._develop) {
-        spinner = ora('Uploading assets')
+        createSpinner = ora('Uploading assets')
       }
 
       let data
@@ -627,11 +625,13 @@ export class Composition implements CompositionInterface {
         const requestEnd = new Date()
 
         if (this._develop) {
-          spinner.succeed(`Assets uploaded in ${prettyMilliseconds(requestEnd.getTime() - requestStart.getTime())}`)
+          createSpinner.succeed(
+            `Assets uploaded in ${prettyMilliseconds(requestEnd.getTime() - requestStart.getTime())}`
+          )
         }
       } catch (error) {
         if (this._develop) {
-          spinner.fail('Asset upload failed')
+          createSpinner.fail('Asset upload failed')
         }
 
         throw error
@@ -651,37 +651,32 @@ export class Composition implements CompositionInterface {
       removeDirectory(this._temporaryDirectory)
     }
 
-    const tick = setInterval(() => {
-      console.log('awaiting ws response')
-    }, 7000)
-
     if (synchronously) {
-      console.log(`setting up echo private channel for App.Models.Video.${encodeResponse.id}`)
-      echo.private(`App.Models.Video.${encodeResponse.id}`).notification((notification: any) => {
+      if (this._develop) {
+        encodingSpinner = ora('Encoding video').start()
+      }
+      await new Promise((resolve) => {
+        echo.private(`App.Models.Video.${encodeResponse.id}`).notification(async (notification: any) => {
+          if (notification.type === 'video.encoded') {
+            if (this._develop) {
+              const encodeEndTime = new Date(notification.timestamp * 1000)
+              const encodeDuration = prettyMilliseconds(encodeEndTime.getTime() - encodeStartTime.getTime())
 
-        console.log(notification)
-        awaitingWsResponse = false
-        clearInterval(tick)
+              encodingSpinner.succeed(`Video encoded in ${encodeDuration}`)
+            }
+            await open(notification.stream_url)
+            resolve(notification)
+          }
+          if (notification.type === 'video.failed') {
+            /*TODO: Handle failed encoding*/
+          }
+        })
       })
-    } else {
-      return encodeResponse
     }
-
-    await new Promise((resolve) => {
-      const interval = setInterval(() => {
-        if (!awaitingWsResponse) {
-          clearInterval(interval)
-          resolve(1)
-        }
-      }, 2000)
-    })
-
-    return this._getNewlyCreatedVideo({ encodeStartTime, videoId: encodeResponse.id })
-
-    // return synchronously ? this._getNewlyCreatedVideo({ encodeStartTime, videoId: encodeResponse.id }) : encodeResponse
+    return synchronously ? await this._videos.get({ id: encodeResponse.id }) : encodeResponse
   }
 
-  public async [CompositionMethod.prepare](): Promise<{ id: string; status: string, timestamp: string; }> {
+  public async [CompositionMethod.prepare](): Promise<{ id: string; status: string; timestamp: string }> {
     this._generateConfig()
 
     const result = (await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.prepare })) as any
@@ -748,65 +743,6 @@ export class Composition implements CompositionInterface {
     newLayers[layerIndex] = newLayer
 
     this._layers = newLayers
-  }
-
-  /**
-   * get a newly-created video which is likely still being encoded
-   *
-   * waits for encoding attempt to complete before returning
-   *
-   * in develop mode, outputs state to console and opens the video stream url when ready
-   */
-  private async _getNewlyCreatedVideo({
-    encodeStartTime,
-    videoId,
-  }: {
-    encodeStartTime: Date
-    videoId: string
-  }): Promise<ApiVideo> {
-    let encodingSpinner: ora.Ora
-    let video: ApiVideo
-
-    if (this._develop) {
-      encodingSpinner = ora('Encoding video').start()
-    }
-
-    try {
-      video = await this._videos.get({ id: videoId, waitUntilEncodingComplete: true })
-    } catch (error) {
-      if (this._develop) {
-        encodingSpinner.stop()
-      }
-
-      throw error
-    }
-
-    if (this._develop) {
-      if (video.isFailed) {
-        encodingSpinner.fail('Video encoding failed')
-      } else if (video.isReady) {
-        const encodeEndTime = new Date(video.timestamp * 1000)
-        const encodeDuration = prettyMilliseconds(encodeEndTime.getTime() - encodeStartTime.getTime())
-
-        encodingSpinner.succeed(`Video encoded in ${encodeDuration}`)
-
-        const gettingSpinner = ora('Getting video').start()
-
-        let streamResponse = await fetch(video.streamUrl)
-
-        while (streamResponse.status !== 200) {
-          await delay(pollDelay)
-
-          streamResponse = await fetch(video.streamUrl)
-        }
-
-        gettingSpinner.stop()
-
-        await open(video.streamUrl)
-      }
-    }
-
-    return video
   }
 
   private _setLayerDefaults<Layer>({

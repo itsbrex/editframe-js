@@ -11,6 +11,6 @@ export const Routes = {
     prepare: '/videos/prepare',
   },
   ws: {
-    auth: '/ws/broadcasting/auth',
+    auth: 'https://:host/broadcasting/auth',
   },
 }
