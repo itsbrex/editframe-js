@@ -1,4 +1,4 @@
-import { mockApi, mockApiAudioMetadata, mockApiVideoMetadata } from './api'
+import { defaultMockApiOptions, mockApi, mockApiAudioMetadata, mockApiVideoMetadata } from './api'
 import { mockApplication } from './applications'
 import { mockComposition, mockCompositionOptions, mockEncodeResponse } from './composition'
 import {
@@ -40,6 +40,7 @@ import { mockPagination } from './pagination'
 import { mockApiVideo } from './videos'
 
 export {
+  defaultMockApiOptions,
   mockApi,
   mockApiAudioMetadata,
   mockApiVideo,

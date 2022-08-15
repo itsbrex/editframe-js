@@ -2,7 +2,7 @@ import FormData from 'form-data'
 
 export interface ApiInterface {
   get: ({ url }: { url: string }) => Promise<unknown>
-  options: ApiOptions,
+  options: ApiOptions
   post: ({
     data,
     isForm,
@@ -11,7 +11,7 @@ export interface ApiInterface {
     data: FormData | Record<string, any>
     isForm: boolean
     url: string
-  }) => Promise<unknown>,
+  }) => Promise<unknown>
   put: ({
     data,
     isForm,

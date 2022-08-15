@@ -863,7 +863,7 @@ describe('Composition', () => {
 
     beforeEach(async () => {
       postMock.mockResolvedValue(encodeResponse)
-      apiMock = mockApi({ options: { host: 'https://api.editframe.test' }, post: postMock })
+      apiMock = mockApi({ post: postMock })
       processCompositionFileSpy.mockResolvedValueOnce(makeProcessedCompositionFile(LayerType.audio))
       processCompositionFileSpy.mockResolvedValueOnce(makeProcessedCompositionFile(LayerType.image))
       processCompositionFileSpy.mockResolvedValueOnce(makeProcessedCompositionFile(LayerType.subtitles))
