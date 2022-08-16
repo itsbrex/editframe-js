@@ -43,6 +43,7 @@ export enum CompositionMethod {
   dimensions = 'dimensions',
   duration = 'duration',
   encode = 'encode',
+  encodeSync = 'encodeSync',
   getLayerAttribute = 'getLayerAttribute',
   getMetadata = '_getMetadata',
   layer = 'layer',
@@ -107,6 +108,12 @@ export enum EncodeResponseKey {
   id = 'id',
   status = 'status',
   timestamp = 'timestamp',
+}
+
+export type EncodeOptions = {
+  experimental?: {
+    renderingEngine: 'v2-beta'
+  }
 }
 
 export type EncodeResponse = {

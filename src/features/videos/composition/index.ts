@@ -27,6 +27,7 @@ import {
   CompositionMethod,
   CompositionOptions,
   Dimensions,
+  EncodeOptions,
   EncodeResponse,
   FilterKey,
   FilterLayer,
@@ -126,6 +127,7 @@ import {
 export class Composition implements CompositionInterface {
   private _api: ApiInterface
   private _develop: boolean
+  private _encodeOptions?: EncodeOptions
   private _files: IdentifiedFile[]
   private _formData: FormDataInterface
   private _layers: IdentifiedLayer[] = []
@@ -559,13 +561,33 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  public async [CompositionMethod.encode](options?: { synchronously?: false }): Promise<EncodeResponse>
-  public async [CompositionMethod.encode](options?: { synchronously?: true }): Promise<ApiVideo>
-  public async [CompositionMethod.encode]({ synchronously }: { synchronously?: boolean } = {}): Promise<
-    ApiVideo | EncodeResponse
-  > {
+  public async [CompositionMethod.encode](encodeOptions?: EncodeOptions): Promise<EncodeResponse> {
+    this._encodeOptions = encodeOptions
+
+    try {
+      if (!this.duration) {
+        throw new Error(CompositionErrorText.durationRequired)
+      }
+
+      this._generateConfig()
+
+      const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
+
+      return validateApiData<EncodeResponse>(data, {
+        invalidDataError: CompositionErrorText.malformedEncodingResponse,
+        validate: isEncodeResponse,
+      })
+    } catch (error) {
+      console.error(CompositionErrorText.errorEncoding(error.message))
+
+      return undefined
+    } finally {
+      removeDirectory(this._temporaryDirectory)
+    }
+  }
+
+  public async [CompositionMethod.encodeSync](encodeOptions?: EncodeOptions): Promise<ApiVideo> {
     let encodeResponse: EncodeResponse
-    let encodeStartTime: Date
     let createSpinner: ora.Ora
     let encodingSpinner: ora.Ora
 
@@ -604,78 +626,54 @@ export class Composition implements CompositionInterface {
       wssPort: 6001,
     })
 
+    if (this._develop) {
+      createSpinner = ora('Uploading video configuration and assets')
+    }
+
     try {
-      if (!this.duration) {
-        throw new Error(CompositionErrorText.durationRequired)
-      }
+      const requestStart = new Date()
 
-      this._generateConfig()
+      encodeResponse = await this.encode(encodeOptions)
+
+      const requestEnd = new Date()
 
       if (this._develop) {
-        createSpinner = ora('Uploading assets')
+        createSpinner.succeed(`Assets uploaded in ${prettyMilliseconds(requestEnd.getTime() - requestStart.getTime())}`)
       }
-
-      let data
-
-      try {
-        const requestStart = new Date()
-
-        data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
-
-        const requestEnd = new Date()
-
-        if (this._develop) {
-          createSpinner.succeed(
-            `Assets uploaded in ${prettyMilliseconds(requestEnd.getTime() - requestStart.getTime())}`
-          )
-        }
-      } catch (error) {
-        if (this._develop) {
-          createSpinner.fail('Asset upload failed')
-        }
-
-        throw error
-      }
-
-      encodeResponse = validateApiData<EncodeResponse>(data, {
-        invalidDataError: CompositionErrorText.malformedEncodingResponse,
-        validate: isEncodeResponse,
-      })
-
-      encodeStartTime = new Date()
     } catch (error) {
-      console.error(CompositionErrorText.errorEncoding(error.message))
-
-      return undefined
-    } finally {
-      removeDirectory(this._temporaryDirectory)
-    }
-
-    if (synchronously) {
       if (this._develop) {
-        encodingSpinner = ora('Encoding video').start()
+        createSpinner.fail('Upload failed')
       }
-      await new Promise((resolve) => {
-        echo.private(`App.Models.Video.${encodeResponse.id}`).notification(async (notification: any) => {
-          if (notification.type === 'video.encoded') {
-            if (this._develop) {
-              const encodeEndTime = new Date(notification.timestamp * 1000)
-              const encodeDuration = prettyMilliseconds(encodeEndTime.getTime() - encodeStartTime.getTime())
 
-              encodingSpinner.succeed(`Video encoded in ${encodeDuration}`)
-            }
-            await open(notification.stream_url)
-            resolve(notification)
-          }
-          if (notification.type === 'video.failed') {
-            if (this._develop) {
-              encodingSpinner.fail('Video encoding failed')
-            }
-          }
-        })
-      })
+      throw error
     }
-    return synchronously ? await this._videos.get({ id: encodeResponse.id }) : encodeResponse
+
+    const encodeStartTime = new Date()
+
+    if (this._develop) {
+      encodingSpinner = ora('Encoding video').start()
+    }
+    await new Promise((resolve) => {
+      echo.private(`App.Models.Video.${encodeResponse.id}`).notification(async (notification: any) => {
+        if (notification.type === 'video.encoded') {
+          if (this._develop) {
+            const encodeEndTime = new Date(notification.timestamp * 1000)
+            const encodeDuration = prettyMilliseconds(encodeEndTime.getTime() - encodeStartTime.getTime())
+
+            encodingSpinner.succeed(`Video encoded in ${encodeDuration}`)
+          }
+          await open(notification.stream_url)
+          resolve(notification)
+        }
+        if (notification.type === 'video.failed') {
+          if (this._develop) {
+            encodingSpinner.fail('Video encoding failed')
+          }
+        }
+      })
+    })
+
+    return this._videos.get({ id: encodeResponse.id })
   }
 
   public async [CompositionMethod.prepare](): Promise<{ id: string; status: string; timestamp: string }> {
@@ -713,6 +711,14 @@ export class Composition implements CompositionInterface {
         layers: this._layers.filter((layer) => layer.type !== LayerType.sequence),
       })
     )
+
+    if (process.env.EDITFRAME_WORKFLOW_JOB_ID) {
+      this._formData.append('workflowJobId', process.env.EDITFRAME_WORKFLOW_JOB_ID)
+    }
+
+    if (this._encodeOptions?.experimental) {
+      this._formData.append('experimental', JSON.stringify(this._encodeOptions.experimental))
+    }
   }
 
   private async [CompositionMethod.getMetadata](file: Readable, type: ApiVideoMetadataType): Promise<ApiMetadataTypes> {
