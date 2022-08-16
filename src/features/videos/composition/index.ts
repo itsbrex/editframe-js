@@ -130,6 +130,7 @@ export class Composition implements CompositionInterface {
   private _encodeOptions?: EncodeOptions
   private _files: IdentifiedFile[]
   private _formData: FormDataInterface
+  private _host: string
   private _layers: IdentifiedLayer[] = []
   private _options: CompositionOptions
   private _temporaryDirectory: string
@@ -139,6 +140,7 @@ export class Composition implements CompositionInterface {
     api,
     develop = false,
     formData,
+    host,
     options,
     temporaryDirectory,
     videos,
@@ -146,6 +148,7 @@ export class Composition implements CompositionInterface {
     api: ApiInterface
     develop?: boolean
     formData: FormDataInterface
+    host: string
     options: CompositionOptions
     temporaryDirectory?: string
     videos: Videos
@@ -154,6 +157,7 @@ export class Composition implements CompositionInterface {
     this._develop = develop
     this._files = []
     this._formData = formData
+    this._host = host
     this._options = options
     this._temporaryDirectory = temporaryDirectory ?? createTemporaryDirectory()
     this._videos = videos
@@ -591,8 +595,7 @@ export class Composition implements CompositionInterface {
     let createSpinner: ora.Ora
     let encodingSpinner: ora.Ora
 
-    const { host } = this._api.options
-    const wsHost = host.replace('https://api', 'ws')
+    const wsHost = this._host.replace('https://api', 'ws')
 
     const echo = new Echo({
       authorizer: (channel: any) => ({

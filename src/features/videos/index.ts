@@ -40,10 +40,12 @@ import { Composition } from './composition'
 export class Videos {
   private _api: ApiInterface
   private _develop: boolean
+  private _host: string
 
-  constructor({ api, develop = false }: { api: ApiInterface; develop?: boolean }) {
+  constructor({ api, develop = false, host }: { api: ApiInterface; develop?: boolean; host: string }) {
     this._api = api
     this._develop = develop
+    this._host = host
   }
 
   public async [ApiVideoMethod.all](page?: number, perPage?: number): Promise<ApiVideo[]> {
@@ -123,6 +125,7 @@ export class Videos {
             api: this._api,
             develop: this._develop,
             formData: new FormData(),
+            host: this._host,
             options: { ...transformedOptions, dimensions: { height, width }, duration },
             temporaryDirectory,
             videos: this,
@@ -136,6 +139,7 @@ export class Videos {
             api: this._api,
             develop: this._develop,
             formData: new FormData(),
+            host: this._host,
             options: {
               backgroundColor: translateColor(backgroundColor),
               dimensions,

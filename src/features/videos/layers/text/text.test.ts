@@ -21,6 +21,7 @@ import * as LayerUtilsModule from 'utils/validation/layers/text'
 import { Text } from './'
 
 describe('Text', () => {
+  const host = 'host'
   const initialText = 'initial-text'
   let composition: Composition
   let text: Text
@@ -46,6 +47,7 @@ describe('Text', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: {
         dimensions: {
           height: 1920,
@@ -53,7 +55,7 @@ describe('Text', () => {
         },
         duration: 10,
       },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
     validateColorSpy = jest.spyOn(ValidationUtilsModule, 'validateColor')
     validateFontStyleSpy = jest.spyOn(LayerUtilsModule, 'validateFontStyle')

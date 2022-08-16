@@ -1,28 +1,13 @@
-import { ApiAudioMetadata, ApiInterface, ApiOptions, ApiVideoMetadata, ApiVideoMetadataKey } from 'constant'
-
-export const defaultMockApiOptions = {
-  clientId: 'client-id',
-  fetch: (): Promise<void> => Promise.resolve(),
-  host: 'https://api.editframe.com',
-  token: 'token',
-  version: 2,
-}
+import { ApiAudioMetadata, ApiInterface, ApiVideoMetadata, ApiVideoMetadataKey } from 'constant'
 
 export const mockApi = (
-  {
-    get = () => {},
-    options = defaultMockApiOptions,
-    post = () => {},
-    put = () => {},
-  }: { get?: any; options?: ApiOptions; post?: any; put?: any } = {
+  { get = () => {}, post = () => {}, put = () => {} }: { get?: any; post?: any; put?: any } = {
     get: () => {},
-    options: defaultMockApiOptions,
     post: () => {},
     put: () => {},
   }
 ): ApiInterface => ({
   get,
-  options,
   post,
   put,
 })

@@ -7,6 +7,7 @@ import { makeDefaultImageLayerConfig } from 'utils'
 import { Image } from './'
 
 describe('Image', () => {
+  const host = 'host'
   let composition: Composition
   let image: Image
   let layerConfigDefaults: ImageLayerConfig
@@ -21,8 +22,9 @@ describe('Image', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
     image = await composition.addImage('./package.json')
     layerConfigDefaults = makeDefaultImageLayerConfig()

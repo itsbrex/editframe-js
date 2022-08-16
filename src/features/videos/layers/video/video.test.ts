@@ -7,6 +7,7 @@ import { makeDefaultVideoLayerConfig } from 'utils'
 import { Video } from './'
 
 describe('Video', () => {
+  const host = 'host'
   let composition: Composition
   let video: Video
   let layerConfigDefaults: VideoLayerConfig
@@ -21,8 +22,9 @@ describe('Video', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
     video = await composition.addVideo('./package.json')
     layerConfigDefaults = makeDefaultVideoLayerConfig()

@@ -2,7 +2,6 @@ import FormData from 'form-data'
 
 export interface ApiInterface {
   get: ({ url }: { url: string }) => Promise<unknown>
-  options: ApiOptions
   post: ({
     data,
     isForm,

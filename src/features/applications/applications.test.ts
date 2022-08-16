@@ -1,5 +1,5 @@
 import { ApiApplication, ApiInterface, Routes } from 'constant'
-import { defaultMockApiOptions, mockApplication } from 'mocks'
+import { mockApplication } from 'mocks'
 import { ApplicationErrorText } from 'strings'
 import { generatePath } from 'utils'
 
@@ -11,7 +11,6 @@ describe('Applications', () => {
 
   let apiMock: ApiInterface = {
     get: jest.fn().mockReturnValue(applicationsMock),
-    options: defaultMockApiOptions,
     post: jest.fn(),
     put: jest.fn(),
   }
@@ -37,7 +36,6 @@ describe('Applications', () => {
       beforeEach(() => {
         apiMock = {
           get: jest.fn().mockReturnValue([{}]),
-          options: defaultMockApiOptions,
           post: jest.fn(),
           put: jest.fn(),
         }
@@ -74,7 +72,6 @@ describe('Applications', () => {
       beforeEach(() => {
         apiMock = {
           get: jest.fn().mockReturnValue([{}]),
-          options: defaultMockApiOptions,
           post: jest.fn(),
           put: jest.fn(),
         }

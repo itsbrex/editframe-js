@@ -30,7 +30,7 @@ export class Editframe {
     this._token = token
     this._version = version
     this.applications = new Applications(this._api)
-    this.videos = new Videos({ api: this._api, develop })
+    this.videos = new Videos({ api: this._api, develop, host: this._host })
   }
 
   public get clientId(): string {

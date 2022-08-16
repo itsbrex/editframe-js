@@ -12,10 +12,6 @@ export class Api implements ApiInterface {
     this._fetch = options.fetch
   }
 
-  get options(): ApiOptions {
-    return this._options
-  }
-
   public async get({ url }: { url: string }): Promise<unknown> {
     return await this._fetch({ headers: makeHeaders(this._options), url })
   }

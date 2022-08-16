@@ -68,6 +68,7 @@ import * as PreviewUtilsModule from 'utils/video/preview'
 import { Composition } from './'
 
 describe('Composition', () => {
+  const host = 'host'
   const uuids = {
     [LayerType.audio]: '123456',
     [LayerType.image]: '23456',
@@ -147,9 +148,10 @@ describe('Composition', () => {
     return new Composition({
       api,
       formData: formDataMock,
+      host,
       options: compositionOptions ? compositionOptions : { ...options },
       temporaryDirectory,
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
   }
 
@@ -828,9 +830,10 @@ describe('Composition', () => {
         composition = new Composition({
           api: apiMock,
           formData: formDataMock,
+          host,
           options: { ...options, duration: 0 },
           temporaryDirectory,
-          videos: new Videos({ api: apiMock }),
+          videos: new Videos({ api: apiMock, host }),
         })
 
         await composition.encode()
