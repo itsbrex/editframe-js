@@ -595,20 +595,24 @@ export class Composition implements CompositionInterface {
     let createSpinner: ora.Ora
     let encodingSpinner: ora.Ora
 
-    const wsHost = this._host.replace('https://api', 'ws')
+    const { wsUrl } = this
 
     const echo = new Echo({
       authorizer: (channel: any) => ({
         authorize: (socketId: string, callback: any) => {
           const authPayload = new FormData()
+          const url = new URL(wsUrl)
+
+          url.pathname = Routes.ws.auth
 
           authPayload.append('channel_name', channel.name)
           authPayload.append('socket_id', socketId)
+
           this._api
             .post({
               data: authPayload,
               isForm: true,
-              url: Routes.ws.auth.replace(':host', wsHost),
+              url: url.toString(),
             })
             .then((response: any) => {
               callback(false, response)
@@ -621,11 +625,11 @@ export class Composition implements CompositionInterface {
       broadcaster: 'pusher',
       disableStats: true,
       forceTLS: true,
-      host: wsHost,
+      host: wsUrl.hostname,
       key: 'key',
-      wsHost,
+      wsHost: wsUrl.hostname,
       wsPort: 6001,
-      wssHost: wsHost,
+      wssHost: wsUrl.hostname,
       wssPort: 6001,
     })
 
@@ -722,6 +726,15 @@ export class Composition implements CompositionInterface {
     if (this._encodeOptions?.experimental) {
       this._formData.append('experimental', JSON.stringify(this._encodeOptions.experimental))
     }
+  }
+
+  private get wsUrl(): URL {
+    const host = new URL(this._host)
+
+    host.hostname = host.hostname.replace('api', 'ws')
+    host.pathname = '' // just in case
+
+    return host
   }
 
   private async [CompositionMethod.getMetadata](file: Readable, type: ApiVideoMetadataType): Promise<ApiMetadataTypes> {
