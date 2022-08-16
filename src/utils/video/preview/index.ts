@@ -3,8 +3,7 @@ import { execSync } from 'node:child_process'
 import path from 'path'
 
 import { previewConfigFilepath, previewDirectory, previewPort } from 'constant'
-import { createDirectory, fileExists } from 'utils/'
-import { saveFile } from 'utils/files'
+import { createDirectory, fileExists, saveFile } from 'utils/files'
 
 export const preparePreview = async (configJson: string): Promise<void> => {
   if (!fileExists(previewDirectory)) {
