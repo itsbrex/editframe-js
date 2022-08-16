@@ -683,14 +683,6 @@ export class Composition implements CompositionInterface {
     return this._videos.get({ id: encodeResponse.id })
   }
 
-  public async [CompositionMethod.prepare](): Promise<{ id: string; status: string; timestamp: string }> {
-    this._generateConfig()
-
-    const result = (await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.prepare })) as any
-
-    return result
-  }
-
   public async [CompositionMethod.preview](): Promise<void> {
     await preparePreview(
       JSON.stringify({
