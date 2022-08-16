@@ -668,7 +668,9 @@ export class Composition implements CompositionInterface {
             resolve(notification)
           }
           if (notification.type === 'video.failed') {
-            /*TODO: Handle failed encoding*/
+            if (this._develop) {
+              encodingSpinner.fail('Video encoding failed')
+            }
           }
         })
       })
