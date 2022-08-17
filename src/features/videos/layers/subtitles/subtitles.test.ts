@@ -9,6 +9,7 @@ import { Subtitles } from './'
 
 describe('Subtitles', () => {
   const defaultSubtitlesLayerConfig = makeDefaultSubtitlesLayerConfig()
+  const host = 'host'
   let composition: Composition
   let subtitles: Subtitles
   let result: Subtitles | void
@@ -27,6 +28,7 @@ describe('Subtitles', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: {
         dimensions: {
           height: 1920,
@@ -34,7 +36,7 @@ describe('Subtitles', () => {
         },
         duration: 10,
       },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
 
     subtitles = await composition.addSubtitles('./package.json')

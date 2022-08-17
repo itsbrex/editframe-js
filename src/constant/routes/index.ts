@@ -9,4 +9,7 @@ export const Routes = {
     create: '/videos',
     get: '/videos/:id',
   },
+  ws: {
+    auth: '/broadcasting/auth',
+  },
 }

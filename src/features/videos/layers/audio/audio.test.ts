@@ -7,6 +7,7 @@ import { makeDefaultAudioLayerConfig } from 'utils'
 import { Audio } from './'
 
 describe('Audio', () => {
+  const host = 'host'
   const defaultAudioLayerConfig = makeDefaultAudioLayerConfig()
   let composition: Composition
   let audio: Audio
@@ -21,8 +22,9 @@ describe('Audio', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
 
     audio = await composition.addAudio('./package.json')

@@ -7,6 +7,7 @@ import * as FilterValidationUtilsModule from 'utils/validation/layers/filter'
 import { Filter } from './'
 
 describe('Filter', () => {
+  const host = 'host'
   const initialName = FilterName.brightness
   const initialOptions = { brightness: 10 }
   let composition: Composition
@@ -24,8 +25,9 @@ describe('Filter', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
     validateFilterLayerSpy = jest.spyOn(FilterValidationUtilsModule, 'validateFilterLayer')
     filter = composition.addFilter({ name: initialName, options: initialOptions })
