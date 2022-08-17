@@ -660,7 +660,8 @@ export class Composition implements CompositionInterface {
     if (this._develop) {
       encodingSpinner = ora('Encoding video').start()
     }
-    await new Promise((resolve) => {
+
+    await new Promise<void>((resolve, reject) => {
       echo.private(`App.Models.Video.${encodeResponse.id}`).notification(async (notification: any) => {
         if (notification.type === 'video.encoded') {
           if (this._develop) {
@@ -668,14 +669,18 @@ export class Composition implements CompositionInterface {
             const encodeDuration = prettyMilliseconds(encodeEndTime.getTime() - encodeStartTime.getTime())
 
             encodingSpinner.succeed(`Video encoded in ${encodeDuration}`)
+            await open(notification.stream_url)
           }
-          await open(notification.stream_url)
-          resolve(notification)
-        }
-        if (notification.type === 'video.failed') {
+
+          resolve()
+        } else if (notification.type === 'video.failed') {
+          const errorMessage = 'Video encoding failed'
+
           if (this._develop) {
-            encodingSpinner.fail('Video encoding failed')
+            encodingSpinner.fail(errorMessage)
           }
+
+          reject(new Error(errorMessage))
         }
       })
     })
