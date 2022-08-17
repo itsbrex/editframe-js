@@ -601,9 +601,9 @@ export class Composition implements CompositionInterface {
       authorizer: (channel: any) => ({
         authorize: (socketId: string, callback: any) => {
           const authPayload = new FormData()
-          const url = new URL(wsUrl)
+          const authUrl = new URL(this._host)
 
-          url.pathname = Routes.ws.auth
+          authUrl.pathname = Routes.ws.auth
 
           authPayload.append('channel_name', channel.name)
           authPayload.append('socket_id', socketId)
@@ -612,7 +612,7 @@ export class Composition implements CompositionInterface {
             .post({
               data: authPayload,
               isForm: true,
-              url: url.toString(),
+              url: authUrl.toString(),
             })
             .then((response: any) => {
               callback(false, response)
