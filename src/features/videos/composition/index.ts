@@ -663,6 +663,8 @@ export class Composition implements CompositionInterface {
 
     await new Promise<void>((resolve, reject) => {
       echo.private(`App.Models.Video.${encodeResponse.id}`).notification(async (notification: any) => {
+        echo.disconnect()
+
         if (notification.type === 'video.encoded') {
           if (this._develop) {
             const encodeEndTime = new Date(notification.timestamp * 1000)
