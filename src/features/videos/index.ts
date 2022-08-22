@@ -99,7 +99,7 @@ export class Videos {
 
           const transformedOptions = deepClone(options)
 
-          transformedOptions.backgroundColor = translateColor(options.backgroundColor)
+          transformedOptions.backgroundColor = translateColor(options.backgroundColor || Color.black)
 
           composition = new Composition({
             api: this._api,
@@ -121,7 +121,7 @@ export class Videos {
             formData: new FormData(),
             host: this._host,
             options: {
-              backgroundColor: translateColor(backgroundColor),
+              backgroundColor: translateColor(backgroundColor || Color.black),
               dimensions,
               duration,
               metadata,
