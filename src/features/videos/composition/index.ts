@@ -634,7 +634,7 @@ export class Composition implements CompositionInterface {
     })
 
     if (this._develop) {
-      createSpinner = ora('Uploading video configuration and assets')
+      createSpinner = ora('Uploading video configuration and assets').start()
     }
 
     try {
