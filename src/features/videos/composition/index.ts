@@ -31,7 +31,6 @@ import {
   EncodeResponse,
   FilterKey,
   FilterLayer,
-  FilterOptionKey,
   Filters,
   FormDataInterface,
   HtmlKey,
@@ -257,7 +256,7 @@ export class Composition implements CompositionInterface {
     name: FilterName
     options?: Filters[FilterName]
   }): Filter | undefined {
-    let filterLayer: FilterLayer = this._setLayerDefaults<FilterLayer>({
+    const filterLayer: FilterLayer = this._setLayerDefaults<FilterLayer>({
       layerType: LayerType.filter,
       options,
     })
@@ -269,16 +268,6 @@ export class Composition implements CompositionInterface {
         validateFilterLayer(CompositionMethod.addFilter, filterLayer)
       },
       () => {
-        if (FilterOptionKey.color in options) {
-          const transformedLayer: FilterLayer = deepClone(filterLayer)
-
-          if (FilterOptionKey.color in transformedLayer.filter.options) {
-            transformedLayer.filter.options.color = translateColor(transformedLayer.filter.options.color)
-          }
-
-          filterLayer = transformedLayer
-        }
-
         const { id } = this._addLayer({ type: LayerType.filter, ...filterLayer })
 
         return new Filter({ composition: this, id })

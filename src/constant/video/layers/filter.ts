@@ -8,16 +8,6 @@ export const FilterOptionTypes = {
   [FilterName.contrast]: {
     [FilterOptionKey.contrast]: PrimitiveType.number,
   },
-  [FilterName.fadeIn]: {
-    [FilterOptionKey.color]: PrimitiveType.string,
-    [FilterOptionKey.duration]: PrimitiveType.number,
-    [FilterOptionKey.startTime]: PrimitiveType.number,
-  },
-  [FilterName.fadeOut]: {
-    [FilterOptionKey.color]: PrimitiveType.string,
-    [FilterOptionKey.duration]: PrimitiveType.number,
-    [FilterOptionKey.startTime]: PrimitiveType.number,
-  },
   [FilterName.saturation]: {
     [FilterOptionKey.saturation]: PrimitiveType.number,
   },
