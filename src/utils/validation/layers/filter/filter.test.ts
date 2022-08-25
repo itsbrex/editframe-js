@@ -1,16 +1,9 @@
-import { FilterKey, FilterName, FilterOptionKey, FilterOptionTypes, LayerKey } from 'constant'
+import { FilterKey, FilterName, FilterOptionTypes, LayerKey } from 'constant'
 import { mockFilterLayer } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as FilterValidationUtilsModule from 'utils/validation/layers/filter'
 
-import {
-  isFilterBrightness,
-  isFilterContrast,
-  isFilterFade,
-  isFilterSaturation,
-  validateFilter,
-  validateFilterLayer,
-} from './'
+import { isFilterBrightness, isFilterContrast, isFilterSaturation, validateFilter, validateFilterLayer } from './'
 
 describe('isFilterBrightness', () => {
   it('returns `false` when there are an incorrect number of keys in the options', () => {
@@ -45,34 +38,6 @@ describe('isFilterContrast', () => {
 
   it('returns `true` when the `contrast` value is a `number`', () => {
     expect(isFilterContrast({ contrast: 1 })).toEqual(true)
-  })
-})
-
-describe('isFilterFade', () => {
-  it('returns `false` when there are an incorrect number of keys in the options', () => {
-    expect(isFilterFade({ color: '#ffffff', duration: 10, notARealKey: 'not-a-real-key', startTime: 20 })).toEqual(
-      false
-    )
-  })
-
-  it('returns `false` when a `duration` key is missing', () => {
-    expect(isFilterFade({ color: '#ffffff', startTime: 20 })).toEqual(false)
-  })
-
-  it('returns `false` when the `color` value is not a `string`', () => {
-    expect(isFilterFade({ color: 10 })).toEqual(false)
-  })
-
-  it('returns `false` when the `duration` value is not a `number`', () => {
-    expect(isFilterFade({ duration: 'not-a-number' })).toEqual(false)
-  })
-
-  it('returns `false` when the `startTime` value is not a `number`', () => {
-    expect(isFilterFade({ startTime: 'not-a-number' })).toEqual(false)
-  })
-
-  it('returns `true` when the `color` value is a `string`, the `duation` value is a `number` and the `startTime` value is a `number`', () => {
-    expect(isFilterFade({ color: '#ffffff', duration: 10, startTime: 20 })).toEqual(true)
   })
 })
 
@@ -134,19 +99,6 @@ describe('validateFilter', () => {
           JSON.stringify(FilterOptionTypes[name])
         ),
       ])
-    })
-
-    describe('when the filter type has a `color` attribute', () => {
-      it('returns the correct errors when an invalid `color` is provided', () => {
-        const invalidColor = 're'
-
-        expect(
-          validateFilter({
-            callerName,
-            layer: { filter: { name: FilterName.fadeIn, options: { color: invalidColor, duration: 1, startTime: 0 } } },
-          })
-        ).toEqual([ValidationErrorText.INVALID_COLOR(callerName, FilterOptionKey.color, invalidColor)])
-      })
     })
 
     it('does not return an error message when no options are passed for a filter that does not require options', () => {

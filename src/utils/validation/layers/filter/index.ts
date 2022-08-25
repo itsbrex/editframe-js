@@ -1,7 +1,6 @@
 import {
   FilterBrightness,
   FilterContrast,
-  FilterFade,
   FilterKey,
   FilterLayer,
   FilterName,
@@ -13,7 +12,7 @@ import {
   PrimitiveType,
 } from 'constant'
 import { ValidationErrorText } from 'strings'
-import { assertType, filterUndefined, validateColor, validateLayer } from 'utils/validation'
+import { assertType, filterUndefined, validateLayer } from 'utils/validation'
 
 export const isFilterBrightness = (options: Record<string, any>): options is FilterBrightness =>
   options &&
@@ -27,16 +26,6 @@ export const isFilterContrast = (options: Record<string, any>): options is Filte
   FilterOptionKey.contrast in options &&
   assertType(options[FilterOptionKey.contrast], PrimitiveType.number)
 
-export const isFilterFade = (options: Record<string, any>): options is FilterFade =>
-  options &&
-  [1, 2, 3].includes(Object.keys(options).length) &&
-  FilterOptionKey.color in options &&
-  FilterOptionKey.duration in options &&
-  FilterOptionKey.startTime in options &&
-  assertType(options[FilterOptionKey.color], [PrimitiveType.string, PrimitiveType.undefined]) &&
-  assertType(options[FilterOptionKey.duration], PrimitiveType.number) &&
-  assertType(options[FilterOptionKey.startTime], [PrimitiveType.number, PrimitiveType.undefined])
-
 export const isFilterSaturation = (options: Record<string, any>): options is FilterSaturation =>
   options &&
   Object.keys(options).length === 1 &&
@@ -46,8 +35,6 @@ export const isFilterSaturation = (options: Record<string, any>): options is Fil
 const filterValidators = {
   [FilterName.brightness]: isFilterBrightness,
   [FilterName.contrast]: isFilterContrast,
-  [FilterName.fadeIn]: isFilterFade,
-  [FilterName.fadeOut]: isFilterFade,
   [FilterName.saturation]: isFilterSaturation,
 }
 
@@ -79,12 +66,6 @@ export const validateFilter: LayerValidator<FilterLayer> = ({
       options,
       JSON.stringify(FilterOptionTypes[name])
     )
-
-    errors.push(message)
-  }
-
-  if (options && FilterOptionKey.color in options) {
-    const message = validateColor(callerName, FilterOptionKey.color, options.color)
 
     errors.push(message)
   }
