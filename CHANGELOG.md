@@ -1,3 +1,18 @@
+# [3.1.0](https://github.com/editframe/editframe-js/compare/v3.0.0...v3.1.0) (2022-09-07)
+
+
+### Bug Fixes
+
+* only validate composition background color if it is supplied, else use black ([3a89f5a](https://github.com/editframe/editframe-js/commit/3a89f5a0f5c4036d04e22772d6684870049f907e))
+* remove fade in/out, sobel, vintage filters ([938dfd2](https://github.com/editframe/editframe-js/commit/938dfd2b1325da56f94fbf5f1ae6a6c57aef8785))
+* start upload spinner ([e856ac7](https://github.com/editframe/editframe-js/commit/e856ac742c20547273106f8b30bfd9aa47e1cd94))
+
+
+### Features
+
+* fail when receiving video.failed ws notification ([5bdda67](https://github.com/editframe/editframe-js/commit/5bdda674a055e7051f519f32d9b957030611d84a))
+* update broadcasting auth url ([0311a49](https://github.com/editframe/editframe-js/commit/0311a49a490e3b1a3cd33a599c9288b9ae1f843a))
+
 # [3.0.0](https://github.com/editframe/editframe-js/compare/v2.4.7...v3.0.0) (2022-08-10)
 
 
