@@ -290,6 +290,7 @@ describe('processCompositionFile', () => {
 })
 
 describe('processCrossfades', () => {
+  const host = 'host'
   const currentTime = 0
   const currentLayerCrossfadeDuration = 1
   const previousLayerCrossfadeDuration = 2
@@ -307,8 +308,9 @@ describe('processCrossfades', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
 
     currentLayer = composition.addText({ text: 'currentLayer' }, { trim: { end: 3 } })

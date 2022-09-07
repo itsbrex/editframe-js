@@ -25,7 +25,6 @@ export {
   DimensionsKey,
   FilterBrightness,
   FilterContrast,
-  FilterFade,
   FilterKey,
   FilterLayer,
   FilterName,

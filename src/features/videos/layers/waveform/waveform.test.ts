@@ -16,6 +16,7 @@ import * as ValidationUtilsModule from 'utils/validation'
 import { Waveform } from './'
 
 describe('Waveform', () => {
+  const host = 'host'
   let composition: Composition
   let waveform: Waveform
   let result: Waveform | void
@@ -33,8 +34,9 @@ describe('Waveform', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
     validateColorSpy = jest.spyOn(ValidationUtilsModule, 'validateColor')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')

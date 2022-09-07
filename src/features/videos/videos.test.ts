@@ -13,6 +13,7 @@ import * as CompositionUtilsModule from 'utils/video/compositions'
 import { Videos } from './'
 
 describe('Videos', () => {
+  const host = 'host'
   const videoMock = mockApiVideo()
   const videosMock: ApiVideo[] = [videoMock]
 
@@ -35,7 +36,7 @@ describe('Videos', () => {
 
   describe('all', () => {
     beforeEach(() => {
-      videos = new Videos({ api: apiMock })
+      videos = new Videos({ api: apiMock, host })
     })
 
     it('makes a `get` request to the api with the correct arguments', async () => {
@@ -50,7 +51,7 @@ describe('Videos', () => {
           get: jest.fn().mockReturnValue([{}]),
         })
 
-        videos = new Videos({ api: apiMock })
+        videos = new Videos({ api: apiMock, host })
       })
 
       it('logs the correct error to the console', async () => {
@@ -66,7 +67,7 @@ describe('Videos', () => {
 
   describe('get', () => {
     beforeEach(() => {
-      videos = new Videos({ api: apiMock })
+      videos = new Videos({ api: apiMock, host })
       consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
     })
 
@@ -84,7 +85,7 @@ describe('Videos', () => {
           get: jest.fn().mockReturnValue([{}]),
         })
 
-        videos = new Videos({ api: apiMock })
+        videos = new Videos({ api: apiMock, host })
       })
 
       it('logs the correct error to the console', async () => {
@@ -114,7 +115,7 @@ describe('Videos', () => {
       jest.spyOn(FilesUtilsModule, 'createReadStream').mockReturnValue(readStreamMock)
       validateNewVideoSpy = jest.spyOn(VideosUtilsModule, 'validateNewVideo')
       validateCompositionFileSpy = jest.spyOn(CompositionValidationUtilsModule, 'validateCompositionFile')
-      videos = new Videos({ api: apiMock })
+      videos = new Videos({ api: apiMock, host })
     })
 
     describe('when a `videoPath` argument is provided', () => {

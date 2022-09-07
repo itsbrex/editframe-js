@@ -1110,10 +1110,10 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@editframe/shared-types@3.2.9":
-  version "3.2.9"
-  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.2.9.tgz#1e3cc7c5109232fd799f5261701a5aa9d25bb6f2"
-  integrity sha512-ZH3SXdMePJcTLKLvDry5ElROotmtfriRkf2btgDb4ucKzasdoZt2eUxXxqbTO4Kd0jrvV9JqwZmFl5Jy22kzXw==
+"@editframe/shared-types@3.2.13":
+  version "3.2.13"
+  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.2.13.tgz#efca3a65e75368a3212bcedcaa210e92cf99c5cd"
+  integrity sha512-0knBaSHBwPGY1r/StAbn2XhsbWzSrOQW7j4CXfz4m+lT0BX3tEEJEmex/IWOFsnBJ+RGVE4IuR/WNtDFRMqOxA==
   dependencies:
     type-fest "^2.14.0"
 
@@ -1964,6 +1964,11 @@
   version "4.14.182"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.182.tgz#05301a4d5e62963227eaafe0ce04dd77c54ea5c2"
   integrity sha512-/THyiqyQAP9AfARo4pF+aCGcyiQ94tX/Is2I7HofNRqoYLgN1PBoOWu2/zTA5zMxzP5EFutMtWtGAFRKUe961Q==
+
+"@types/mime@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/mime/-/mime-3.0.1.tgz#5f8f2bca0a5863cb69bc0b0acd88c96cb1d4ae10"
+  integrity sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==
 
 "@types/minimist@^1.2.0":
   version "1.2.2"
@@ -3212,11 +3217,6 @@ del@^6.0.0:
     p-map "^4.0.0"
     rimraf "^3.0.2"
     slash "^3.0.0"
-
-delay@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/delay/-/delay-5.0.0.tgz#137045ef1b96e5071060dd5be60bf9334436bd1d"
-  integrity sha512-ReEBKkIfe4ya47wlPYf/gu5ib6yUG0/Aez0JQZQz94kiWtRQvZIQbTiehsnwHvLSWJnQdhVeqYue7Id1dKr0qw==
 
 delayed-stream@~1.0.0:
   version "1.0.0"
@@ -5302,6 +5302,11 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
+laravel-echo@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/laravel-echo/-/laravel-echo-1.13.0.tgz#9955e773b2c66ab810ba9f5eb4c80dbfcbdd672e"
+  integrity sha512-KWcr9Sthr8DUfrFtCKNMGq4IRTmswW+Xu92eL1yH2V7/C/3XGOxrTgzTB98jnk423gy+1DMyaavnujG9HeY3Jg==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"
@@ -6581,6 +6586,13 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+pusher-js@^7.3.0:
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/pusher-js/-/pusher-js-7.3.0.tgz#0d4334bc67fb16b599cff7a1464016dfbd6d5658"
+  integrity sha512-N7uFRZGK6PKFfKd8e1aKsQ81OrilATGNhIbj42xJKmK+3zhstGBCQ110ZiF2nIngPTEKxQQqf15SJsVnQfNuqQ==
+  dependencies:
+    tweetnacl "^1.0.3"
+
 q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
@@ -7685,6 +7697,11 @@ ttypescript@^1.5.13:
   integrity sha512-KT/RBfGGlVJFqEI8cVvI3nMsmYcFvPSZh8bU0qX+pAwbi7/ABmYkzn7l/K8skw0xmYjVCoyaV6WLsBQxdadybQ==
   dependencies:
     resolve ">=1.9.0"
+
+tweetnacl@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
+  integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"

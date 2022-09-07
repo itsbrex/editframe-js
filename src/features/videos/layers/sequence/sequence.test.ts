@@ -7,6 +7,7 @@ import { makeDefaultSequenceLayerConfig } from 'utils'
 import { Sequence } from './'
 
 describe('Sequence', () => {
+  const host = 'host'
   let composition: Composition
   let sequence: Sequence
   let result: Sequence | void
@@ -19,6 +20,7 @@ describe('Sequence', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: {
         dimensions: {
           height: 1920,
@@ -26,7 +28,7 @@ describe('Sequence', () => {
         },
         duration: 10,
       },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
 
     text1 = composition.addText({ text: 'text-1' }, { trim: { end: 5 } })

@@ -1,4 +1,3 @@
-import delay from 'delay'
 import FormData from 'form-data'
 
 import {
@@ -13,7 +12,6 @@ import {
   Paginated,
   Routes,
   VideoOptions,
-  pollDelay,
 } from 'constant'
 import { VideoErrorText } from 'strings'
 import {
@@ -40,10 +38,12 @@ import { Composition } from './composition'
 export class Videos {
   private _api: ApiInterface
   private _develop: boolean
+  private _host: string
 
-  constructor({ api, develop = false }: { api: ApiInterface; develop?: boolean }) {
+  constructor({ api, develop = false, host }: { api: ApiInterface; develop?: boolean; host: string }) {
     this._api = api
     this._develop = develop
+    this._host = host
   }
 
   public async [ApiVideoMethod.all](page?: number, perPage?: number): Promise<ApiVideo[]> {
@@ -63,32 +63,14 @@ export class Videos {
     return []
   }
 
-  public async [ApiVideoMethod.get]({
-    id,
-    waitUntilEncodingComplete = false,
-  }: {
-    id: string
-    waitUntilEncodingComplete?: boolean
-  }): Promise<ApiVideo | undefined> {
-    const getVideo = async () => {
+  public async [ApiVideoMethod.get]({ id }: { id: string }): Promise<ApiVideo | undefined> {
+    try {
       const data = await this._api.get({ url: generatePath(Routes.videos.get, { id }) })
 
       return validateApiData<ApiVideo>(data, {
         invalidDataError: VideoErrorText.malformedResponse,
         validate: isApiVideo,
       })
-    }
-
-    try {
-      let video = await getVideo()
-
-      while (waitUntilEncodingComplete && !video.isFailed && !video.isReady) {
-        await delay(pollDelay)
-
-        video = await getVideo()
-      }
-
-      return video
     } catch (error) {
       console.error(VideoErrorText.get(error.message))
     }
@@ -117,12 +99,13 @@ export class Videos {
 
           const transformedOptions = deepClone(options)
 
-          transformedOptions.backgroundColor = translateColor(options.backgroundColor)
+          transformedOptions.backgroundColor = translateColor(options.backgroundColor || Color.black)
 
           composition = new Composition({
             api: this._api,
             develop: this._develop,
             formData: new FormData(),
+            host: this._host,
             options: { ...transformedOptions, dimensions: { height, width }, duration },
             temporaryDirectory,
             videos: this,
@@ -136,8 +119,9 @@ export class Videos {
             api: this._api,
             develop: this._develop,
             formData: new FormData(),
+            host: this._host,
             options: {
-              backgroundColor: translateColor(backgroundColor),
+              backgroundColor: translateColor(backgroundColor || Color.black),
               dimensions,
               duration,
               metadata,

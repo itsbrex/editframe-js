@@ -1,4 +1,5 @@
 import { fetch } from 'cross-fetch'
+import mime from 'mime'
 import fs, { createWriteStream, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { parse } from 'path'
 import { Readable } from 'stream'
@@ -24,8 +25,9 @@ export const createTemporaryDirectory = (): string => {
 }
 
 export const downloadFile = async (url: string, directory: string): Promise<{ temporaryFilePath: string }> => {
-  const temporaryFilePath = `${directory}/${uuid()}${getExtension(url)}`
   const res = (await fetch(url)) as FetchResponse
+  const contentType = res.headers.get('Content-Type')
+  const temporaryFilePath = `${directory}/${uuid()}${getExtension(url, contentType)}`
   const fileStream = createWriteStream(temporaryFilePath)
 
   await new Promise((resolve, reject) => {
@@ -39,7 +41,11 @@ export const downloadFile = async (url: string, directory: string): Promise<{ te
 
 export const fileExists = (filepath: string): boolean => existsSync(filepath)
 
-export const getExtension = (filepath: string): string => parse(filepath).ext
+export const getExtension = (filepath: string, contentType?: string): string => {
+  const urlExtension = parse(filepath).ext
+
+  return urlExtension ? urlExtension : `.${mime.getExtension(contentType)}`
+}
 
 export const removeDirectory = (directory: string): void => {
   if (fileExists(directory)) {

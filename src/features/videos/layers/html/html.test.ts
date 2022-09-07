@@ -8,6 +8,7 @@ import * as ValidationUtilsModule from 'utils/validation'
 import { Html } from './'
 
 describe('Html', () => {
+  const host = 'host'
   const text = 'text'
   const page = `<html>${text}</html>`
   let composition: Composition
@@ -26,8 +27,9 @@ describe('Html', () => {
     composition = new Composition({
       api,
       formData: { append: jest.fn() },
+      host,
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
-      videos: new Videos({ api }),
+      videos: new Videos({ api, host }),
     })
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
 
