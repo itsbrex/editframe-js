@@ -87,6 +87,7 @@ export type Metadata = Record<string, JsonValue>
 export type VideoOptions = {
   [CompositionKey.backgroundColor]?: string
   [CompositionKey.dimensions]?: Dimensions
+  [CompositionKey.filename]?: string
   [CompositionKey.duration]?: number
   [CompositionKey.metadata]?: Metadata
 }
@@ -95,6 +96,7 @@ export type CompositionOptions = {
   [CompositionKey.backgroundColor]?: string
   [CompositionKey.dimensions]: Dimensions
   [CompositionKey.duration]?: number
+  [CompositionKey.filename]?: string
   [CompositionKey.metadata]?: Metadata
 }
 

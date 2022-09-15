@@ -113,7 +113,7 @@ export class Videos {
 
           await composition.addVideo(createReadStream(filepath))
         } else {
-          const { backgroundColor, dimensions, duration, metadata } = options
+          const { backgroundColor, dimensions, duration, filename, metadata } = options
 
           composition = new Composition({
             api: this._api,
@@ -124,6 +124,7 @@ export class Videos {
               backgroundColor: translateColor(backgroundColor || Color.black),
               dimensions,
               duration,
+              filename,
               metadata,
             },
             videos: this,
