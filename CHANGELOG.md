@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/editframe/editframe-js/compare/v3.1.0...v3.2.0) (2022-09-15)
+
+
+### Features
+
+* specify filename at composition instantiation ([536c13a](https://github.com/editframe/editframe-js/commit/536c13a230b2dd6656f3f592192984cd00a0c5b4))
+
 # [3.1.0](https://github.com/editframe/editframe-js/compare/v3.0.0...v3.1.0) (2022-09-07)
 
 
