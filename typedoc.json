@@ -1,0 +1,24 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "./src/index.ts", 
+    "./src/features/videos/index.ts", 
+    "./src/features/videos/composition/index.ts", 
+    "./src/features/videos/layers/audio/index.ts", 
+    "./src/features/videos/layers/filter/index.ts", 
+    "./src/features/videos/layers/html/index.ts", 
+    "./src/features/videos/layers/image/index.ts", 
+    "./src/features/videos/layers/lottie/index.ts", 
+    "./src/features/videos/layers/sequence/index.ts", 
+    "./src/features/videos/layers/text/index.ts", 
+    "./src/features/videos/layers/video/index.ts", 
+    "./src/features/videos/layers/waveform/index.ts",
+    "./src/features/applications/index.ts", 
+    "./src/constant/index.ts"
+  ],
+  "excludeProtected": true,
+  "excludePrivate": true,
+  "gaID": "UA-116480461-1",
+  "out": "docs",
+  "hideGenerator": true
+}
