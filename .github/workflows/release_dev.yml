@@ -26,6 +26,7 @@ jobs:
       - run: yarn build
       - run: yarn lint
       - run: yarn test
+      - run: yarn docs
       - uses: act10ns/slack@v1
         with:
           status: ${{ job.status }}
