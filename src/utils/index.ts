@@ -34,7 +34,7 @@ import {
 } from './files'
 import { prepareFormData, urlOrFile } from './forms'
 import { deepClone, deepMerge } from './objects'
-import { generatePath, withPaginationQueryParams, withQueryParams } from './paths'
+import { generatePath, stripQueryParams, withPaginationQueryParams, withQueryParams } from './paths'
 import { exitProcess } from './process'
 import { sanitizeHtml } from './sanitization'
 import { uuid } from './strings'
@@ -167,6 +167,7 @@ export {
   sanitizeHtml,
   saveFile,
   setLayerDefaults,
+  stripQueryParams,
   translateColor,
   urlOrFile,
   uuid,

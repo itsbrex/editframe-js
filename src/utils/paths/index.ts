@@ -9,6 +9,15 @@ const compilePath = (path: string): ((params: any, options: any) => string) => c
 export const generatePath = (path = '/', params = {}): string =>
   path === '/' ? path : compilePath(path)(params, { pretty: true })
 
+export const stripQueryParams = (url: string): string => {
+  const stripped = new URL(url)
+
+  stripped.hash = ''
+  stripped.search = ''
+
+  return stripped.toString()
+}
+
 export const withQueryParams = (path: string, params: Record<string, string | number | undefined>): string => {
   const queryParams = queryString.stringify(params)
 
