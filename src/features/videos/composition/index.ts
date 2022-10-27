@@ -592,12 +592,12 @@ export class Composition implements CompositionInterface {
       forceTLS: true,
     }
 
-    if(host.host.includes('.com')){
-      echoOptions = Object.assign({}, echoOptions, { 
+    if (host.host.includes('.com')) {
+      echoOptions = Object.assign({}, echoOptions, {
         key: 'bdc00bc12bed37d7c253',
       })
     } else {
-      echoOptions = Object.assign({}, echoOptions, { 
+      echoOptions = Object.assign({}, echoOptions, {
         key: '133dac3e22bd7f3f7f18',
       })
     }
@@ -627,7 +627,7 @@ export class Composition implements CompositionInterface {
             })
         },
       }),
-      ...echoOptions
+      ...echoOptions,
     })
 
     if (this._develop) {

@@ -29,12 +29,12 @@ describe('TransitionsMixin', () => {
     const type = 'crossfadeIn'
 
     beforeEach(() => {
-      result = transitions.addTransition({ duration, type })
+      result = transitions.addTransition({ options: { duration }, type })
     })
 
     it('calls the `validateTimelineMixin` function with the correct arguments', () => {
       expect(validateTransitionsMixinSpy).toHaveBeenCalledWith(TransitionsMethod.addTransition, {
-        transitions: [{ duration, options: {}, type }],
+        transitions: [{ options: { duration }, type }],
       })
     })
 
@@ -42,7 +42,7 @@ describe('TransitionsMixin', () => {
       expect(compositionMock.setLayerAttribute).toHaveBeenCalledWith({
         id,
         layerKey: LayerKey.transitions,
-        value: [{ duration, options: {}, type }],
+        value: [{ options: { duration }, type }],
       })
     })
 

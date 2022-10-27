@@ -1,4 +1,11 @@
-import { CompositionInterface, LayerKey, TransitionOptions, TransitionTypes, TransitionsMethod } from 'constant'
+import {
+  CompositionInterface,
+  LayerKey,
+  TransitionOptions,
+  TransitionTypes,
+  TransitionsMethod,
+  TransitionsToOptions,
+} from 'constant'
 import { Layer } from 'features/videos/layer'
 import { deepClone, validateTransitionsMixin, withValidation } from 'utils'
 
@@ -11,21 +18,19 @@ export class TransitionsMixin extends Layer {
     return this.getAttribute<TransitionOptions[]>({ layerKey: LayerKey.transitions })
   }
 
-  [TransitionsMethod.addTransition]({
-    duration,
-    options = {},
+  [TransitionsMethod.addTransition]<TransitionType extends keyof TransitionsToOptions>({
+    options,
     type,
   }: {
-    duration: number
-    options?: Record<string, any>
+    options: TransitionsToOptions[TransitionType]
     type: TransitionTypes
   }): this {
     return withValidation<this>(
-      () => validateTransitionsMixin(TransitionsMethod.addTransition, { transitions: [{ duration, options, type }] }),
+      () => validateTransitionsMixin(TransitionsMethod.addTransition, { transitions: [{ options, type }] }),
       () =>
         this.setAttribute({
           layerKey: LayerKey.transitions,
-          value: deepClone([...(this.transitions || []), { duration, options, type }]),
+          value: deepClone([...(this.transitions || []), { options, type }]),
         })
     )
   }

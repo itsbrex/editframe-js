@@ -592,8 +592,8 @@ describe('Composition', () => {
         layer2 = composition.addText({ text: 'layer2' }, { trim: { end: layer2Duration } })
         layer3 = composition.addText({ text: 'layer3' }, { trim: { end: layer3Duration } })
 
-        layer1.addTransition({ duration: layer1TransitionDuration, type: TransitionType.crossfadeOut })
-        layer3.addTransition({ duration: layer3TransitionDuration, type: TransitionType.crossfadeIn })
+        layer1.addTransition({ options: { duration: layer1TransitionDuration }, type: TransitionType.crossfadeOut })
+        layer3.addTransition({ options: { duration: layer3TransitionDuration }, type: TransitionType.crossfadeIn })
 
         processCrossfadesSpy.mockReturnValueOnce(processCrossfadeResults[0])
         processCrossfadesSpy.mockReturnValueOnce(processCrossfadeResults[1])
