@@ -55,17 +55,63 @@ describe('validateY', () => {
 
 describe('validatePosition', () => {
   const callerName = 'caller-name'
+  const angle = 20
+  const angleX = 40
+  const angleY = 60
+  const isRelative = false
+  const scale = 0.5
   const x = 5
   const y = 10
-  const layer = { position: { x, y } }
+  const layer = { position: { angle, angleX, angleY, isRelative, scale, x, y } }
+  let validateValueIsOfTypeSpy: jest.SpyInstance
   let validateXSpy: jest.SpyInstance
   let validateYSpy: jest.SpyInstance
 
   beforeEach(() => {
+    validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     validateXSpy = jest.spyOn(PositionValidationModule, 'validateX')
     validateYSpy = jest.spyOn(PositionValidationModule, 'validateY')
 
     validatePosition({ callerName, layer })
+  })
+
+  it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(7) // twice via validateX/Y
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.angle),
+      angle,
+      PrimitiveType.number
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.angleX),
+      angleX,
+      PrimitiveType.number
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.angleY),
+      angleY,
+      PrimitiveType.number
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.isRelative),
+      isRelative,
+      PrimitiveType.boolean
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.scale),
+      scale,
+      PrimitiveType.number
+    )
   })
 
   it('calls the `validateX` function with the correct arguments', () => {
