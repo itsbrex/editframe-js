@@ -76,6 +76,17 @@ describe('validateTransitions', () => {
       ),
     ])
   })
+
+  it('returns the correct errors when an invalid number of transitions is provided for a specific transition type', () => {
+    const type = TransitionType.x
+
+    expect(
+      validateTransitions({
+        callerName,
+        layer: { transitions: [{ options: { time: 0, value: 10 }, type }] },
+      })
+    ).toEqual([ValidationErrorText.TWO_TRANSITIONS_REQUIRED(type)])
+  })
 })
 
 describe('validateTransitionsMixin', () => {

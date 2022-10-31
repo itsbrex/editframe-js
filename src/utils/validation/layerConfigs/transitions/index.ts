@@ -30,7 +30,15 @@ const isParameterTransition = (options: Record<string, any>): options is Transit
 export const validateTransitions: LayerValidator<Transitions> = ({ callerName, layer: { transitions } }) => {
   const errors: string[] = []
 
+  const transitionsByType = {}
+
   transitions.forEach(({ options, type }) => {
+    if (transitions[type]) {
+      transitionsByType[type].push({ options, type })
+    } else {
+      transitionsByType[type] = [{ options, type }]
+    }
+
     if (isParameterTransition(options)) {
       errors.push(
         validateValueIsOfType(
@@ -76,6 +84,23 @@ export const validateTransitions: LayerValidator<Transitions> = ({ callerName, l
       errors.push(message)
     }
   })
+
+  if (errors.filter(filterUndefined).length === 0) {
+    for (const [type, transitions] of Object.entries(transitionsByType)) {
+      if (
+        ![
+          TransitionType.crossfadeIn as string,
+          TransitionType.crossfadeOut as string,
+          TransitionType.fadeIn as string,
+          TransitionType.fadeOut as string,
+        ].includes(type) &&
+        transitions &&
+        (transitions as any).length < 2
+      ) {
+        errors.push(ValidationErrorText.TWO_TRANSITIONS_REQUIRED(type))
+      }
+    }
+  }
 
   return errors.filter(filterUndefined)
 }
