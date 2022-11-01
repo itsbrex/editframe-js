@@ -59,10 +59,9 @@ describe('validatePosition', () => {
   const angleX = 40
   const angleY = 60
   const isRelative = false
-  const scale = 0.5
   const x = 5
   const y = 10
-  const layer = { position: { angle, angleX, angleY, isRelative, scale, x, y } }
+  const layer = { position: { angle, angleX, angleY, isRelative, x, y } }
   let validateValueIsOfTypeSpy: jest.SpyInstance
   let validateXSpy: jest.SpyInstance
   let validateYSpy: jest.SpyInstance
@@ -76,7 +75,7 @@ describe('validatePosition', () => {
   })
 
   it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(7) // twice via validateX/Y
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(6) // twice via validateX/Y
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
@@ -104,13 +103,6 @@ describe('validatePosition', () => {
       ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.isRelative),
       isRelative,
       PrimitiveType.boolean
-    )
-
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-      callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.scale),
-      scale,
-      PrimitiveType.number
     )
   })
 

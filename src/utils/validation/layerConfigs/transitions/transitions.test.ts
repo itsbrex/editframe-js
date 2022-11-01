@@ -77,7 +77,7 @@ describe('validateTransitions', () => {
     ])
   })
 
-  it('returns the correct errors when an invalid number of transitions is provided for a specific transition type', () => {
+  it('returns the correct errors when less than 2 transitions are provided for parameter transitions', () => {
     const type = TransitionType.x
 
     expect(

@@ -3,7 +3,6 @@ export enum PositionMethod {
   setAngleX = 'setAngleX',
   setAngleY = 'setAngleY',
   setIsRelative = 'setIsRelative',
-  setScale = 'setScale',
   setX = 'setX',
   setY = 'setY',
 }

@@ -32,10 +32,6 @@ export class PositionMixin extends Layer {
     return this._getPositionAttribute<boolean | undefined>(PositionKey.isRelative)
   }
 
-  get scale(): number {
-    return this._getPositionAttribute<number>(PositionKey.scale)
-  }
-
   get x(): X | undefined {
     return this._getPositionAttribute<X | undefined>(PositionKey.x)
   }
@@ -69,13 +65,6 @@ export class PositionMixin extends Layer {
     return withValidation<this>(
       () => validatePositionMixin(PositionMethod.setIsRelative, { position: { isRelative } }),
       () => this._setPositionAttribute(PositionKey.isRelative, isRelative)
-    )
-  }
-
-  public [PositionMethod.setScale](scale = 1): this {
-    return withValidation<this>(
-      () => validatePositionMixin(PositionMethod.setScale, { position: { scale } }),
-      () => this._setPositionAttribute(PositionKey.scale, scale)
     )
   }
 
