@@ -61,6 +61,7 @@ import * as SanitizationUtilsModule from 'utils/sanitization'
 import * as StringsUtilsModule from 'utils/strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as CompositionValidationUtilsModule from 'utils/validation/composition'
+import * as TransitionsValidationUtilsModule from 'utils/validation/layerConfigs/transitions'
 import * as LayerValidationUtilsModule from 'utils/validation/layers'
 import * as CompositionUtilsModule from 'utils/video/compositions'
 import * as PreviewUtilsModule from 'utils/video/preview'
@@ -137,6 +138,7 @@ describe('Composition', () => {
   let validateCompositionFileSpy: jest.SpyInstance
   let validateCompositionOptionsSpy: jest.SpyInstance
   let validatePresenceOfSpy: jest.SpyInstance
+  let validateTransitionsKeyframesSpy: jest.SpyInstance
   let composition: Composition
 
   const makeComposition = ({
@@ -185,6 +187,7 @@ describe('Composition', () => {
     validateCompositionFileSpy = jest.spyOn(CompositionValidationUtilsModule, 'validateCompositionFile')
     validateCompositionOptionsSpy = jest.spyOn(CompositionValidationUtilsModule, 'validateCompositionOptions')
     validatePresenceOfSpy = jest.spyOn(ValidationUtilsModule, 'validatePresenceOf')
+    validateTransitionsKeyframesSpy = jest.spyOn(TransitionsValidationUtilsModule, 'validateTransitionsKeyframes')
   })
 
   describe('initialization', () => {
@@ -825,23 +828,34 @@ describe('Composition', () => {
   })
 
   describe('encode', () => {
-    describe('when no `duration` exists on the `composition`', () => {
-      it('logs an error to the console', async () => {
-        composition = new Composition({
-          api: apiMock,
-          formData: formDataMock,
-          host,
-          options: { ...options, duration: 0 },
-          temporaryDirectory,
-          videos: new Videos({ api: apiMock, host }),
-        })
-
-        await composition.encode()
-
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
-          CompositionErrorText.errorEncoding(CompositionErrorText.durationRequired)
-        )
+    it('calls the `validatePresenceOf` function with the correct arguments', async () => {
+      composition = new Composition({
+        api: apiMock,
+        formData: formDataMock,
+        host,
+        options,
+        temporaryDirectory,
+        videos: new Videos({ api: apiMock, host }),
       })
+
+      await composition.encode()
+
+      expect(validatePresenceOfSpy).toHaveBeenCalledWith(options.duration, CompositionErrorText.durationRequired)
+    })
+
+    it('calls the `validateTransitionsKeyframes` function with the correct arguments', async () => {
+      composition = new Composition({
+        api: apiMock,
+        formData: formDataMock,
+        host,
+        options,
+        temporaryDirectory,
+        videos: new Videos({ api: apiMock, host }),
+      })
+
+      await composition.encode()
+
+      expect(validateTransitionsKeyframesSpy).toHaveBeenCalledWith(composition.layers)
     })
 
     describe('when the encode response is malformed', () => {
@@ -858,9 +872,7 @@ describe('Composition', () => {
 
         await composition.encode()
 
-        expect(consoleErrorSpy).toHaveBeenCalledWith(
-          CompositionErrorText.errorEncoding(CompositionErrorText.malformedEncodingResponse)
-        )
+        expect(consoleErrorSpy).toHaveBeenCalledTimes(1)
       })
     })
 

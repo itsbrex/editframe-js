@@ -173,7 +173,11 @@ export const withValidation = <T>(validate: () => void, callback?: () => T | und
   }
 }
 
-export const withValidationAsync = async <T>(validate: () => void, callback?: () => Promise<T>): Promise<T> => {
+export const withValidationAsync = async <T>(
+  validate: () => void,
+  callback?: () => Promise<T>,
+  cleanup?: () => void
+): Promise<T> => {
   try {
     validate()
 
@@ -188,6 +192,10 @@ export const withValidationAsync = async <T>(validate: () => void, callback?: ()
     exitProcess()
 
     return undefined
+  } finally {
+    if (cleanup) {
+      cleanup()
+    }
   }
 }
 

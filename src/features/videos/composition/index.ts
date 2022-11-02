@@ -117,6 +117,7 @@ import {
   validateSequenceLayer,
   validateSubtitlesLayer,
   validateTextLayer,
+  validateTransitionsKeyframes,
   validateVideoLayer,
   validateWaveformLayer,
   withValidation,
@@ -557,26 +558,27 @@ export class Composition implements CompositionInterface {
   public async [CompositionMethod.encode](encodeOptions?: EncodeOptions): Promise<EncodeResponse> {
     this._encodeOptions = encodeOptions
 
-    try {
-      if (!this.duration) {
-        throw new Error(CompositionErrorText.durationRequired)
-      }
+    return withValidationAsync(
+      () => {
+        validatePresenceOf(this.duration, CompositionErrorText.durationRequired)
+        validateTransitionsKeyframes(this._layers)
+      },
+      async () => {
+        try {
+          this._generateConfig()
 
-      this._generateConfig()
+          const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
-      const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
-
-      return validateApiData<EncodeResponse>(data, {
-        invalidDataError: CompositionErrorText.malformedEncodingResponse,
-        validate: isEncodeResponse,
-      })
-    } catch (error) {
-      console.error(CompositionErrorText.errorEncoding(error.message))
-
-      return undefined
-    } finally {
-      removeDirectory(this._temporaryDirectory)
-    }
+          return validateApiData<EncodeResponse>(data, {
+            invalidDataError: CompositionErrorText.malformedEncodingResponse,
+            validate: isEncodeResponse,
+          })
+        } catch (error) {
+          throw new Error(CompositionErrorText.errorEncoding(error.message))
+        }
+      },
+      () => removeDirectory(this._temporaryDirectory)
+    )
   }
 
   public async [CompositionMethod.encodeSync](encodeOptions?: EncodeOptions): Promise<ApiVideo> {

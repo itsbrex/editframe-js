@@ -76,17 +76,6 @@ describe('validateTransitions', () => {
       ),
     ])
   })
-
-  it('returns the correct errors when less than 2 transitions are provided for parameter transitions', () => {
-    const type = TransitionType.x
-
-    expect(
-      validateTransitions({
-        callerName,
-        layer: { transitions: [{ options: { time: 0, value: 10 }, type }] },
-      })
-    ).toEqual([ValidationErrorText.TWO_TRANSITIONS_REQUIRED(type)])
-  })
 })
 
 describe('validateTransitionsMixin', () => {
