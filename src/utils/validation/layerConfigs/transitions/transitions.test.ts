@@ -1,4 +1,4 @@
-import { LayerKey, PrimitiveType, TransitionKey, TransitionType, TransitionsMethod } from 'constant'
+import { EasingType, LayerKey, PrimitiveType, TransitionKey, TransitionType, TransitionsMethod } from 'constant'
 import { mockTransitionsOptions } from 'mocks'
 import { ValidationErrorText } from 'strings'
 import * as ValidationUtilsModule from 'utils/validation'
@@ -8,28 +8,66 @@ import { validateTransitions, validateTransitionsMixin } from './'
 describe('validateTransitions', () => {
   const callerName = 'caller-name'
   const duration = 5
+  const easing = EasingType.easeIn
+  const time = 10
+  const value = 200
   const type = TransitionType.crossfadeIn
   let validateValueIsOfTypeSpy: jest.SpyInstance
 
-  beforeEach(() => {
-    validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
+  describe('when the transition is of interface `TransitionFade`', () => {
+    beforeEach(() => {
+      validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
 
-    validateTransitions({ callerName, layer: { transitions: [{ duration, type }] } })
+      validateTransitions({ callerName, layer: { transitions: [{ options: { duration }, type }] } })
+    })
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        callerName,
+        ValidationErrorText.SUB_FIELD(LayerKey.transitions, TransitionKey.options),
+        duration,
+        PrimitiveType.number
+      )
+    })
   })
 
-  it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-      callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.transitions, TransitionKey.duration),
-      duration,
-      PrimitiveType.number
-    )
+  describe('when the transition is of interface `TransitionParameter`', () => {
+    beforeEach(() => {
+      validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
+
+      validateTransitions({ callerName, layer: { transitions: [{ options: { easing, time, value }, type }] } })
+    })
+
+    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        callerName,
+        ValidationErrorText.SUB_FIELD(LayerKey.transitions, TransitionKey.options),
+        easing,
+        PrimitiveType.string
+      )
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        callerName,
+        ValidationErrorText.SUB_FIELD(LayerKey.transitions, TransitionKey.options),
+        time,
+        PrimitiveType.number
+      )
+
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        callerName,
+        ValidationErrorText.SUB_FIELD(LayerKey.transitions, TransitionKey.options),
+        value,
+        PrimitiveType.number
+      )
+    })
   })
 
   it('returns the correct errors when an invalid transition `type` is provided', () => {
     const type = 'fake-transition'
 
-    expect(validateTransitions({ callerName, layer: { transitions: [{ duration, type: type as any }] } })).toEqual([
+    expect(
+      validateTransitions({ callerName, layer: { transitions: [{ options: { duration }, type: type as any }] } })
+    ).toEqual([
       ValidationErrorText.MUST_BE_TYPE(
         callerName,
         TransitionKey.type,

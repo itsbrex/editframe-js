@@ -2,7 +2,7 @@ import { validateAudio, validateAudioMixin } from './audio'
 import { validatePosition, validatePositionMixin, validateX, validateY } from './position'
 import { validateSize, validateSizeMixin } from './size'
 import { validateTimeline, validateTimelineMixin } from './timeline'
-import { validateTransitions, validateTransitionsMixin } from './transitions'
+import { validateTransitions, validateTransitionsKeyframes, validateTransitionsMixin } from './transitions'
 import { validateTrim, validateTrimMixin } from './trim'
 
 export {
@@ -15,6 +15,7 @@ export {
   validateTimeline,
   validateTimelineMixin,
   validateTransitions,
+  validateTransitionsKeyframes,
   validateTransitionsMixin,
   validateTrim,
   validateTrimMixin,

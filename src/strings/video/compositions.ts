@@ -16,7 +16,7 @@ export const CompositionErrorText = {
   errorEncoding: (error: string): string => `Error encoding video: ${error}`,
   filterRequired: `\\${chalk.white('filter')}\\ must be provided`,
   htmlPageOrUrlRequired: `Either \\${chalk.white('page')}\\ or \\${chalk.white('url')}\\ must be provided`,
-  malformedEncodingResponse: `malformed ${chalk.white('encoding')}\\ response`,
+  malformedEncodingResponse: `malformed \\${chalk.white('encoding')}\\ response`,
   optionsRequired: `\\${chalk.white('options')}\\ must be provided`,
   textRequired: `\\${chalk.white('text')}\\ field required`,
   trimEndRequired: (layerType: string): string =>

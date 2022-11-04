@@ -9,6 +9,7 @@ describe('validateSize', () => {
   const callerName = 'caller-name'
   const format = 'fill'
   const height = 5
+  const scale = 0.5
   const width = 10
   let validateValueIsInListSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
@@ -21,10 +22,10 @@ describe('validateSize', () => {
     validateValueIsInListSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsInList')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
 
-    validateSize({ callerName, layer: { size: { format, height, width } } })
+    validateSize({ callerName, layer: { size: { format, height, scale, width } } })
   })
 
-  it('calls the `validatevalueisinlist` function with the correct arguments', () => {
+  it('calls the `validateValueIsInList` function with the correct arguments', () => {
     expect(validateValueIsInListSpy).toHaveBeenCalledWith(
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.size, SizeKey.format),
@@ -34,12 +35,19 @@ describe('validateSize', () => {
   })
 
   it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(2)
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(3)
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.size, SizeKey.height),
       height,
+      PrimitiveType.number
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.size, SizeKey.scale),
+      scale,
       PrimitiveType.number
     )
 

@@ -74,7 +74,7 @@ export const validateY = (callerName: string, layerKey: string, y: Y): string | 
 export const validatePosition: LayerValidator<Position> = ({
   callerName,
   layer: {
-    position: { isRelative, x, y },
+    position: { angle, angleX, angleY, isRelative, origin, x, y },
   },
 }) => {
   const errors: string[] = []
@@ -82,9 +82,41 @@ export const validatePosition: LayerValidator<Position> = ({
   errors.push(
     validateValueIsOfType(
       callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.angle),
+      angle,
+      PrimitiveType.number
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.angleX),
+      angleX,
+      PrimitiveType.number
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.angleY),
+      angleY,
+      PrimitiveType.number
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.isRelative),
       isRelative,
       PrimitiveType.boolean
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.origin),
+      origin,
+      PrimitiveType.string
     )
   )
   errors.push(validateX(callerName, ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.x), x))

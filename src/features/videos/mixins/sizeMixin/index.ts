@@ -32,6 +32,10 @@ export class SizeMixin extends Layer {
     return this._getSizeAttribute<number>(SizeKey.height)
   }
 
+  get scale(): number {
+    return this._getSizeAttribute<number>(SizeKey.scale)
+  }
+
   get width(): number {
     return this._getSizeAttribute<number>(SizeKey.width)
   }
@@ -58,6 +62,13 @@ export class SizeMixin extends Layer {
     return withValidation<this>(
       () => validateSizeMixin(SizeMethod.setHeight, { size: { height } }),
       () => this._setSizeAttribute(SizeKey.height, height)
+    )
+  }
+
+  public [SizeMethod.setScale](scale = 1): this {
+    return withValidation<this>(
+      () => validateSizeMixin(SizeMethod.setScale, { size: { scale } }),
+      () => this._setSizeAttribute(SizeKey.scale, scale)
     )
   }
 
