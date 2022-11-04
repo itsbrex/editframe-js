@@ -1,3 +1,22 @@
+# [3.3.0](https://github.com/editframe/editframe-js/compare/v3.2.0...v3.3.0) (2022-11-04)
+
+
+### Bug Fixes
+
+* add origin to position mixin ([fe87d50](https://github.com/editframe/editframe-js/commit/fe87d5075a5e86101435f2806a474087c93c71a9))
+* add typedocs ([d3325b7](https://github.com/editframe/editframe-js/commit/d3325b72961a23316a43556a9ab3ffa77ccfbba1))
+* move scale to size mixin ([efab797](https://github.com/editframe/editframe-js/commit/efab79727d7a90fcd06b5267050f4ee045b696b2))
+* move transition entry length validation to encode function ([b7e74cb](https://github.com/editframe/editframe-js/commit/b7e74cb37bf526b10ce8c6f397121d9f3d13f0f0))
+* strip query params from composition files ([1c486d0](https://github.com/editframe/editframe-js/commit/1c486d0b687f9e528e6d2139417fd6fff49e0522))
+* validate that parameter transitions have at least two entries ([8fd6ad2](https://github.com/editframe/editframe-js/commit/8fd6ad2997d108ba1f97e8f1bba8e218b1882b49))
+
+
+### Features
+
+* add parameter transitions validation and update transitions options api ([20d4a39](https://github.com/editframe/editframe-js/commit/20d4a39f51ec6c7e6958b916fd70caed8d8ebe39))
+* add support for angle, angleX, angleY, scale position attributes ([109845d](https://github.com/editframe/editframe-js/commit/109845d4859ff82b2d6ffefd4f7bf0d728b95f97))
+* update echo options to allow ws in prod ([b40a749](https://github.com/editframe/editframe-js/commit/b40a74931745e7e13537741777705176f93fa0cb))
+
 # [3.2.0](https://github.com/editframe/editframe-js/compare/v3.1.0...v3.2.0) (2022-09-15)
 
 
