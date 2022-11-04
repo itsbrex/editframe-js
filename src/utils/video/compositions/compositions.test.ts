@@ -1,6 +1,13 @@
 import { PassThrough } from 'stream'
 
-import { LayerType, SequenceableLayer, TransitionOptions, TransitionType, defaultFilterLayer } from 'constant'
+import {
+  LayerType,
+  SequenceableLayer,
+  TransitionFadeOptions,
+  TransitionOptions,
+  TransitionType,
+  defaultFilterLayer,
+} from 'constant'
 import { Videos } from 'features'
 import { Composition } from 'features/videos/composition'
 import {
@@ -322,7 +329,10 @@ describe('processCrossfades', () => {
 
   describe('when the previous layer is crossfading out from the current layer', () => {
     beforeEach(() => {
-      previousLayer.addTransition({ duration: previousLayerCrossfadeDuration, type: TransitionType.crossfadeOut })
+      previousLayer.addTransition({
+        options: { duration: previousLayerCrossfadeDuration },
+        type: TransitionType.crossfadeOut,
+      })
 
       result = processCrossfades(currentTime, currentLayer, previousLayer, undefined)
 
@@ -330,7 +340,7 @@ describe('processCrossfades', () => {
     })
 
     it('adds a `fadeIn` transition on the current layer with the correct duration', () => {
-      expect(transition.duration).toEqual(previousLayerCrossfadeDuration)
+      expect((transition.options as TransitionFadeOptions)?.duration).toEqual(previousLayerCrossfadeDuration)
       expect(transition.type).toEqual(TransitionType.fadeIn)
     })
 
@@ -345,7 +355,7 @@ describe('processCrossfades', () => {
 
   describe('when the next layer is crossfading in from the current layer', () => {
     beforeEach(() => {
-      nextLayer.addTransition({ duration: nextLayerCrossfadeDuration, type: TransitionType.crossfadeIn })
+      nextLayer.addTransition({ options: { duration: nextLayerCrossfadeDuration }, type: TransitionType.crossfadeIn })
 
       result = processCrossfades(currentTime, currentLayer, previousLayer, nextLayer)
 
@@ -353,7 +363,7 @@ describe('processCrossfades', () => {
     })
 
     it('adds a `fadeOut` transition on the current layer with the correct duration', () => {
-      expect(transition.duration).toEqual(nextLayerCrossfadeDuration)
+      expect((transition.options as TransitionFadeOptions)?.duration).toEqual(nextLayerCrossfadeDuration)
       expect(transition.type).toEqual(TransitionType.fadeOut)
     })
 
@@ -368,7 +378,10 @@ describe('processCrossfades', () => {
 
   describe('when the current layer is crossfading in from the previous layer', () => {
     beforeEach(() => {
-      currentLayer.addTransition({ duration: currentLayerCrossfadeDuration, type: TransitionType.crossfadeIn })
+      currentLayer.addTransition({
+        options: { duration: currentLayerCrossfadeDuration },
+        type: TransitionType.crossfadeIn,
+      })
 
       result = processCrossfades(currentTime, currentLayer, previousLayer, nextLayer)
 
@@ -376,7 +389,7 @@ describe('processCrossfades', () => {
     })
 
     it('adds a `fadeOut` transition on the previous layer with the correct duration', () => {
-      expect(transition.duration).toEqual(currentLayerCrossfadeDuration)
+      expect((transition.options as TransitionFadeOptions)?.duration).toEqual(currentLayerCrossfadeDuration)
       expect(transition.type).toEqual(TransitionType.fadeOut)
     })
 

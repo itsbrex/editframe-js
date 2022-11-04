@@ -1,6 +1,6 @@
 import { PaginationQueryParam } from 'constant'
 
-import { generatePath, withPaginationQueryParams, withQueryParams } from './'
+import { generatePath, stripQueryParams, withPaginationQueryParams, withQueryParams } from './'
 
 describe('generatePath', () => {
   describe('with pattern="/"', () => {
@@ -64,6 +64,14 @@ describe('generatePath', () => {
 
       expect(generatePath(pattern, params)).toBe('/view/Q29tcGxhaW50OjVhZjFhMDg0MzhjMTk1MThiMTdlOTQ2Yg==')
     })
+  })
+})
+
+describe('stripQueryParams', () => {
+  it('removes query params and hashes', () => {
+    const url = 'https://example.com/?foo=bar#baz'
+
+    expect(stripQueryParams(url)).toBe('https://example.com/')
   })
 })
 

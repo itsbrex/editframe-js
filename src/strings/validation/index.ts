@@ -18,4 +18,8 @@ export const ValidationErrorText = {
   OR: (types: string[]): string => types.join(' | '),
   REQUIRED_FIELD: (name: string): string => `\\${chalk.white(name)}\\ field is required`,
   SUB_FIELD: (parent: string, child: string): string => `${parent}: { ${child} }`,
+  TWO_TRANSITIONS_REQUIRED: (type: string, layerType: string): string =>
+    `Only one transition of type \\${chalk.white(type)}\\ has been added to layer of type \\${chalk.white(
+      layerType
+    )}\\. There must be at least two transitions added in order to interpolate between the transition values`,
 }

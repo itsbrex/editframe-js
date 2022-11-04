@@ -13,6 +13,7 @@ import {
   LayerOptions,
   LayerType,
   SequenceableLayer,
+  TransitionFadeOptions,
   TransitionType,
   defaultFilterLayer,
   defaultFilterOptions,
@@ -32,6 +33,7 @@ import {
 import { createReadStream, downloadFile, fileExists } from 'utils/files'
 import { urlOrFile } from 'utils/forms'
 import { deepClone, deepMerge } from 'utils/objects'
+import { stripQueryParams } from 'utils/paths'
 import { isValidUrl } from 'utils/validation'
 
 export const formDataKey = (file: CompositionFile, id: string): string => `${urlOrFile(file)}${id}`
@@ -98,7 +100,7 @@ export const processCompositionFile = async (
   }
 
   if (isValidUrl(file)) {
-    const { temporaryFilePath } = await downloadFile(file, temporaryDirectory)
+    const { temporaryFilePath } = await downloadFile(stripQueryParams(file), temporaryDirectory)
 
     return {
       filepath: temporaryFilePath,
@@ -129,25 +131,37 @@ export const processCrossfades = (
   const nextLayerCrossfadeIn = nextLayer
     ? nextLayer.transitions.find((transition) => transition.type === TransitionType.crossfadeIn)
     : undefined
+  const currentLayerCrossfadeInOptions = currentLayerCrossfadeIn?.options as TransitionFadeOptions
+  const previousLayerCrossfadeOutOptions = previousLayerCrossfadeOut?.options as TransitionFadeOptions
+  const nextLayerCrossfadeInOptions = nextLayerCrossfadeIn?.options as TransitionFadeOptions
 
   if (previousLayer && previousLayerCrossfadeOut) {
     if (currentLayer.transitions.find(({ type }) => type === TransitionType.fadeIn) === undefined) {
-      currentLayer.addTransition({ duration: previousLayerCrossfadeOut.duration, type: TransitionType.fadeIn })
+      currentLayer.addTransition({
+        options: { duration: previousLayerCrossfadeOutOptions?.duration },
+        type: TransitionType.fadeIn,
+      })
     }
-    currentLayer.setStart(newCurrentTime - previousLayerCrossfadeOut.duration)
-    newCurrentTime = newCurrentTime - previousLayerCrossfadeOut.duration
+    currentLayer.setStart(newCurrentTime - previousLayerCrossfadeOutOptions.duration)
+    newCurrentTime = newCurrentTime - previousLayerCrossfadeOutOptions.duration
   } else if (nextLayer && nextLayerCrossfadeIn) {
     if (currentLayer.transitions.find(({ type }) => type === TransitionType.fadeOut) === undefined) {
-      currentLayer.addTransition({ duration: nextLayerCrossfadeIn.duration, type: TransitionType.fadeOut })
+      currentLayer.addTransition({
+        options: { duration: nextLayerCrossfadeInOptions.duration },
+        type: TransitionType.fadeOut,
+      })
     }
     currentLayer.setStart(newCurrentTime)
-    newCurrentTime = newCurrentTime - nextLayerCrossfadeIn.duration
+    newCurrentTime = newCurrentTime - nextLayerCrossfadeInOptions.duration
   } else if (previousLayer && currentLayerCrossfadeIn) {
     if (previousLayer.transitions.find(({ type }) => type === TransitionType.fadeOut) === undefined) {
-      previousLayer.addTransition({ duration: currentLayerCrossfadeIn.duration, type: TransitionType.fadeOut })
+      previousLayer.addTransition({
+        options: { duration: currentLayerCrossfadeInOptions.duration },
+        type: TransitionType.fadeOut,
+      })
     }
-    currentLayer.setStart(newCurrentTime - currentLayerCrossfadeIn.duration)
-    newCurrentTime = newCurrentTime - currentLayerCrossfadeIn.duration
+    currentLayer.setStart(newCurrentTime - currentLayerCrossfadeInOptions?.duration)
+    newCurrentTime = newCurrentTime - currentLayerCrossfadeInOptions?.duration
   } else {
     currentLayer.setStart(newCurrentTime)
   }

@@ -5,7 +5,7 @@ import { filterUndefined, validateLayer, validateValueIsInList, validateValueIsO
 export const validateSize: LayerValidator<Size> = ({
   callerName,
   layer: {
-    size: { format, height, width },
+    size: { format, height, scale, width },
   },
 }) => {
   const errors: string[] = []
@@ -23,6 +23,14 @@ export const validateSize: LayerValidator<Size> = ({
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.size, SizeKey.height),
       height,
+      PrimitiveType.number
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.size, SizeKey.scale),
+      scale,
       PrimitiveType.number
     )
   )

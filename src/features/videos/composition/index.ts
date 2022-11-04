@@ -117,6 +117,7 @@ import {
   validateSequenceLayer,
   validateSubtitlesLayer,
   validateTextLayer,
+  validateTransitionsKeyframes,
   validateVideoLayer,
   validateWaveformLayer,
   withValidation,
@@ -557,26 +558,27 @@ export class Composition implements CompositionInterface {
   public async [CompositionMethod.encode](encodeOptions?: EncodeOptions): Promise<EncodeResponse> {
     this._encodeOptions = encodeOptions
 
-    try {
-      if (!this.duration) {
-        throw new Error(CompositionErrorText.durationRequired)
-      }
+    return withValidationAsync(
+      () => {
+        validatePresenceOf(this.duration, CompositionErrorText.durationRequired)
+        validateTransitionsKeyframes(this._layers)
+      },
+      async () => {
+        try {
+          this._generateConfig()
 
-      this._generateConfig()
+          const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
-      const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
-
-      return validateApiData<EncodeResponse>(data, {
-        invalidDataError: CompositionErrorText.malformedEncodingResponse,
-        validate: isEncodeResponse,
-      })
-    } catch (error) {
-      console.error(CompositionErrorText.errorEncoding(error.message))
-
-      return undefined
-    } finally {
-      removeDirectory(this._temporaryDirectory)
-    }
+          return validateApiData<EncodeResponse>(data, {
+            invalidDataError: CompositionErrorText.malformedEncodingResponse,
+            validate: isEncodeResponse,
+          })
+        } catch (error) {
+          throw new Error(CompositionErrorText.errorEncoding(error.message))
+        }
+      },
+      () => removeDirectory(this._temporaryDirectory)
+    )
   }
 
   public async [CompositionMethod.encodeSync](encodeOptions?: EncodeOptions): Promise<ApiVideo> {
@@ -584,7 +586,23 @@ export class Composition implements CompositionInterface {
     let createSpinner: ora.Ora
     let encodingSpinner: ora.Ora
 
-    const { wsUrl } = this
+    const host = new URL(this._host)
+
+    let echoOptions = {
+      broadcaster: 'pusher',
+      cluster: 'us2',
+      forceTLS: true,
+    }
+
+    if (host.host.includes('.com')) {
+      echoOptions = Object.assign({}, echoOptions, {
+        key: 'bdc00bc12bed37d7c253',
+      })
+    } else {
+      echoOptions = Object.assign({}, echoOptions, {
+        key: '133dac3e22bd7f3f7f18',
+      })
+    }
 
     const echo = new Echo({
       authorizer: (channel: any) => ({
@@ -611,15 +629,7 @@ export class Composition implements CompositionInterface {
             })
         },
       }),
-      broadcaster: 'pusher',
-      disableStats: true,
-      forceTLS: true,
-      host: wsUrl.hostname,
-      key: 'key',
-      wsHost: wsUrl.hostname,
-      wsPort: 6001,
-      wssHost: wsUrl.hostname,
-      wssPort: 6001,
+      ...echoOptions,
     })
 
     if (this._develop) {
@@ -714,15 +724,6 @@ export class Composition implements CompositionInterface {
     if (this._encodeOptions?.experimental) {
       this._formData.append('experimental', JSON.stringify(this._encodeOptions.experimental))
     }
-  }
-
-  private get wsUrl(): URL {
-    const host = new URL(this._host)
-
-    host.hostname = host.hostname.replace('api', 'ws')
-    host.pathname = '' // just in case
-
-    return host
   }
 
   private async [CompositionMethod.getMetadata](file: Readable, type: ApiVideoMetadataType): Promise<ApiMetadataTypes> {
