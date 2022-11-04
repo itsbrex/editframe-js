@@ -1,12 +1,35 @@
-import { HtmlKey, HtmlLayer, LayerKey, LayerValidator, PrimitiveType } from 'constant'
+import { HtmlKey, HtmlLayer, HtmlPage, HtmlPageKey, LayerKey, LayerValidator, PrimitiveType } from 'constant'
 import { CompositionErrorText, ValidationErrorText } from 'strings'
 import { filterUndefined, validateLayer, validateValueIsOfType } from 'utils/validation'
 import { validatePosition, validateSize, validateTimeline, validateTrim } from 'utils/validation/layerConfigs'
 
+export const validateHtmlPage = (callerName: string, page: HtmlPage): string[] => {
+  const errors: string[] = []
+
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.html, ValidationErrorText.SUB_FIELD(HtmlKey.page, HtmlPageKey.body)),
+      page?.body,
+      PrimitiveType.string
+    )
+  )
+  errors.push(
+    validateValueIsOfType(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.html, ValidationErrorText.SUB_FIELD(HtmlKey.page, HtmlPageKey.styles)),
+      page?.styles,
+      PrimitiveType.string
+    )
+  )
+
+  return errors
+}
+
 export const validateHtml: LayerValidator<HtmlLayer> = ({
   callerName,
   layer: {
-    html: { page, url, withTransparentBackground },
+    html: { page, url, withTailwind, withTransparentBackground },
   },
 }) => {
   const errors: string[] = []
@@ -15,12 +38,16 @@ export const validateHtml: LayerValidator<HtmlLayer> = ({
     errors.push(CompositionErrorText.htmlPageOrUrlRequired)
   }
 
+  const pageErrors = validateHtmlPage(callerName, page)
+
+  pageErrors.forEach((error) => errors.push(error))
+
   errors.push(
     validateValueIsOfType(
       callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.html, HtmlKey.page),
-      page,
-      PrimitiveType.string
+      ValidationErrorText.SUB_FIELD(LayerKey.html, HtmlKey.withTailwind),
+      withTailwind,
+      PrimitiveType.boolean
     )
   )
   errors.push(

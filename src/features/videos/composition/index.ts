@@ -104,7 +104,6 @@ import {
   processCrossfades,
   processKenBurns,
   removeDirectory,
-  sanitizeHtml,
   setLayerDefaults,
   translateColor,
   urlOrFile,
@@ -305,16 +304,7 @@ export class Composition implements CompositionInterface {
         validateHtmlLayer(CompositionMethod.addHtml, htmlLayer)
       },
       async () => {
-        const {
-          html: { page },
-        } = htmlLayer
-        const transformedLayer: HtmlLayer = deepClone(htmlLayer)
-
-        if (page) {
-          transformedLayer.html.page = await sanitizeHtml(page)
-        }
-
-        const { id } = this._addIdentifiedLayer({ type: LayerType.html, ...transformedLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.html, ...htmlLayer })
         const html = new Html({ composition: this, id })
 
         this.addLayer(html)

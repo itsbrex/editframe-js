@@ -1,4 +1,4 @@
-import { HtmlKey, LayerKey, PrimitiveType } from 'constant'
+import { HtmlKey, HtmlPageKey, LayerKey, PrimitiveType } from 'constant'
 import { mockHtmlLayer, mockHtmlLayerConfig, mockHtmlOptions } from 'mocks'
 import { CompositionErrorText, ValidationErrorText } from 'strings'
 import { deepMerge } from 'utils/objects'
@@ -33,16 +33,30 @@ describe('validateHtml', () => {
     const layer = deepMerge({ html: htmlOptions }, htmlLayerConfig)
     const finalErrors = validateHtml({ callerName, layer })
     const {
-      html: { page, url, withTransparentBackground },
+      html: { page, url, withTailwind, withTransparentBackground },
     } = layer
 
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(3)
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(5)
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
-      ValidationErrorText.SUB_FIELD(LayerKey.html, HtmlKey.page),
-      page,
+      ValidationErrorText.SUB_FIELD(LayerKey.html, ValidationErrorText.SUB_FIELD(HtmlKey.page, HtmlPageKey.body)),
+      page?.body,
       PrimitiveType.string
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.html, ValidationErrorText.SUB_FIELD(HtmlKey.page, HtmlPageKey.styles)),
+      page?.styles,
+      PrimitiveType.string
+    )
+
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.html, HtmlKey.withTailwind),
+      withTailwind,
+      PrimitiveType.boolean
     )
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(

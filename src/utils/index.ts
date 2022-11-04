@@ -36,7 +36,6 @@ import { prepareFormData, urlOrFile } from './forms'
 import { deepClone, deepMerge } from './objects'
 import { generatePath, stripQueryParams, withPaginationQueryParams, withQueryParams } from './paths'
 import { exitProcess } from './process'
-import { sanitizeHtml } from './sanitization'
 import { uuid } from './strings'
 import {
   assertType,
@@ -81,6 +80,7 @@ import {
   validateFontWeight,
   validateHtml,
   validateHtmlLayer,
+  validateHtmlPage,
   validateImageLayer,
   validateLottie,
   validateLottieLayer,
@@ -172,7 +172,6 @@ export {
   processCrossfades,
   processKenBurns,
   removeDirectory,
-  sanitizeHtml,
   saveFile,
   setLayerDefaults,
   stripQueryParams,
@@ -192,6 +191,7 @@ export {
   validateFontWeight,
   validateHtml,
   validateHtmlLayer,
+  validateHtmlPage,
   validateImageLayer,
   validateLayer,
   validateLottie,
