@@ -18,6 +18,7 @@ import {
   defaultFilterLayer,
   defaultFilterOptions,
 } from 'constant'
+import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { ValidationErrorText } from 'strings'
 import {
   makeDefaultAudioLayer,
@@ -167,4 +168,76 @@ export const processCrossfades = (
   }
 
   return newCurrentTime
+}
+
+export const processKenBurns = ({
+  end,
+  layer,
+  scale1,
+  scale2,
+  start,
+  x1,
+  x2,
+  y1,
+  y2,
+}: {
+  end: number
+  layer: TransitionsMixin
+  scale1: number
+  scale2: number
+  start: number
+  x1: number
+  x2: number
+  y1: number
+  y2: number
+}): TransitionsMixin => {
+  layer.addTransition({
+    options: {
+      time: start,
+      value: scale1,
+    },
+    type: TransitionType.scale,
+  })
+
+  layer.addTransition({
+    options: {
+      time: end,
+      value: scale2,
+    },
+    type: TransitionType.scale,
+  })
+
+  layer.addTransition({
+    options: {
+      time: start,
+      value: x1,
+    },
+    type: TransitionType.x,
+  })
+
+  layer.addTransition({
+    options: {
+      time: end,
+      value: x2,
+    },
+    type: TransitionType.x,
+  })
+
+  layer.addTransition({
+    options: {
+      time: start,
+      value: y1,
+    },
+    type: TransitionType.y,
+  })
+
+  layer.addTransition({
+    options: {
+      time: end,
+      value: y2,
+    },
+    type: TransitionType.y,
+  })
+
+  return layer
 }

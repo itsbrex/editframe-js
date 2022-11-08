@@ -50,4 +50,31 @@ describe('TransitionsMixin', () => {
       expect(result).toBeInstanceOf(TransitionsMixin)
     })
   })
+
+  describe('setTransitions', () => {
+    const duration = 5
+    const type = 'crossfadeIn'
+
+    beforeEach(() => {
+      result = transitions.setTransitions([{ options: { duration }, type }])
+    })
+
+    it('calls the `validateTimelineMixin` function with the correct arguments', () => {
+      expect(validateTransitionsMixinSpy).toHaveBeenCalledWith(TransitionsMethod.setTransitions, {
+        transitions: [{ options: { duration }, type }],
+      })
+    })
+
+    it('calls the `setLayerAttribute` method on the composition with the correct arguments', () => {
+      expect(compositionMock.setLayerAttribute).toHaveBeenCalledWith({
+        id,
+        layerKey: LayerKey.transitions,
+        value: [{ options: { duration }, type }],
+      })
+    })
+
+    it('returns the `TransitionsMixin` instance', () => {
+      expect(result).toBeInstanceOf(TransitionsMixin)
+    })
+  })
 })
