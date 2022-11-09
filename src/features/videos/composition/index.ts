@@ -22,6 +22,7 @@ import {
   AudioLayerConfig,
   AudioOptions,
   ChildKey,
+  ComposableLayer,
   CompositionFile,
   CompositionInterface,
   CompositionMethod,
@@ -63,6 +64,8 @@ import {
   TextLayer,
   TextLayerConfig,
   TextOptions,
+  TransitionKenBurnsOptions,
+  TransitionType,
   TypedLayer,
   VideoLayer,
   VideoLayerConfig,
@@ -82,6 +85,7 @@ import { Subtitles } from 'features/videos/layers/subtitles'
 import { Text } from 'features/videos/layers/text'
 import { Video } from 'features/videos/layers/video'
 import { Waveform } from 'features/videos/layers/waveform'
+import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { CompositionErrorText } from 'strings'
 import {
   createReadStream,
@@ -98,6 +102,7 @@ import {
   preparePreview,
   processCompositionFile,
   processCrossfades,
+  processKenBurns,
   removeDirectory,
   sanitizeHtml,
   setLayerDefaults,
@@ -131,7 +136,8 @@ export class Composition implements CompositionInterface {
   private _files: IdentifiedFile[]
   private _formData: FormDataInterface
   private _host: string
-  private _layers: IdentifiedLayer[] = []
+  public layers: IdentifiedLayer[] = []
+  private _identifiedLayers: IdentifiedLayer[] = []
   private _options: CompositionOptions
   private _temporaryDirectory: string
   private _videos: Videos
@@ -181,12 +187,16 @@ export class Composition implements CompositionInterface {
     return this._options.metadata
   }
 
-  get [CompositionMethod.layers](): IdentifiedLayer[] {
-    return this._layers
+  get [CompositionMethod.identifiedLayers](): IdentifiedLayer[] {
+    return this._identifiedLayers
+  }
+
+  public addLayer(layer: IdentifiedLayer): void {
+    this.layers.push(layer)
   }
 
   public [CompositionMethod.layer](id: string): IdentifiedLayer {
-    return this._layers.find((layer) => layer.id && layer.id === id)
+    return this._identifiedLayers.find((layer) => layer.id && layer.id === id)
   }
 
   public [CompositionMethod.getLayerAttribute]<AttributeValue>({
@@ -198,7 +208,7 @@ export class Composition implements CompositionInterface {
     id: string
     layerKey: LayerKey
   }): AttributeValue {
-    const layerAttribute = this._layers.find((layer) => layer.id === id)[layerKey]
+    const layerAttribute = this._identifiedLayers.find((layer) => layer.id === id)[layerKey]
 
     return childKey ? layerAttribute[childKey] : layerAttribute
   }
@@ -243,12 +253,14 @@ export class Composition implements CompositionInterface {
         validateAudioLayer(CompositionMethod.addAudio, audioLayer)
       },
       async () => {
-        const { id } = this._addLayer({ type: LayerType.audio, ...audioLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.audio, ...audioLayer })
         const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
+        const audio = new Audio({ composition: this, id })
 
         this._files.push({ file: readStream, id })
+        this.addLayer(audio)
 
-        return new Audio({ composition: this, id })
+        return audio
       }
     )
   }
@@ -269,9 +281,12 @@ export class Composition implements CompositionInterface {
         validateFilterLayer(CompositionMethod.addFilter, filterLayer)
       },
       () => {
-        const { id } = this._addLayer({ type: LayerType.filter, ...filterLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.filter, ...filterLayer })
+        const filter = new Filter({ composition: this, id })
 
-        return new Filter({ composition: this, id })
+        this.addLayer(filter)
+
+        return filter
       }
     )
   }
@@ -299,9 +314,12 @@ export class Composition implements CompositionInterface {
           transformedLayer.html.page = await sanitizeHtml(page)
         }
 
-        const { id } = this._addLayer({ type: LayerType.html, ...transformedLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.html, ...transformedLayer })
+        const html = new Html({ composition: this, id })
 
-        return new Html({ composition: this, id })
+        this.addLayer(html)
+
+        return html
       }
     )
   }
@@ -315,12 +333,14 @@ export class Composition implements CompositionInterface {
         validateImageLayer(CompositionMethod.addImage, imageLayer)
       },
       async () => {
-        const { id } = this._addLayer({ type: LayerType.image, ...imageLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.image, ...imageLayer })
         const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
+        const image = new Image({ composition: this, id })
 
         this._files.push({ file: readStream, id })
+        this.addLayer(image)
 
-        return new Image({ composition: this, id })
+        return image
       }
     )
   }
@@ -339,9 +359,12 @@ export class Composition implements CompositionInterface {
         validateLottieLayer(CompositionMethod.addLottie, lottieLayer)
       },
       () => {
-        const { id } = this._addLayer({ type: LayerType.lottie, ...lottieLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.lottie, ...lottieLayer })
+        const lottie = new Lottie({ composition: this, id })
 
-        return new Lottie({ composition: this, id })
+        this.addLayer(lottie)
+
+        return lottie
       }
     )
   }
@@ -420,7 +443,7 @@ export class Composition implements CompositionInterface {
 
         this._setDuration(currentTime)
 
-        const { id } = this._addLayer({ type: LayerType.sequence, ...sequenceLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.sequence, ...sequenceLayer })
 
         return new Sequence({ composition: this, id, layers })
       }
@@ -454,7 +477,7 @@ export class Composition implements CompositionInterface {
         transformedLayer.subtitles.backgroundColor = translateColor(backgroundColor)
         transformedLayer.subtitles.color = translateColor(color)
 
-        const { id } = this._addLayer({ type: LayerType.subtitles, ...transformedLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.subtitles, ...transformedLayer })
         const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
 
         this._files.push({ file: readStream, id })
@@ -487,9 +510,12 @@ export class Composition implements CompositionInterface {
         transformedLayer.text.backgroundColor = translateColor(backgroundColor)
         transformedLayer.text.color = translateColor(color)
 
-        const { id } = this._addLayer({ type: LayerType.text, ...transformedLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.text, ...transformedLayer })
+        const text = new Text({ composition: this, id })
 
-        return new Text({ composition: this, id })
+        this.addLayer(text)
+
+        return text
       }
     )
   }
@@ -503,12 +529,14 @@ export class Composition implements CompositionInterface {
         validateVideoLayer(CompositionMethod.addVideo, videoLayer)
       },
       async () => {
-        const { id } = this._addLayer({ type: LayerType.video, ...videoLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.video, ...videoLayer })
         const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
+        const video = new Video({ composition: this, id })
 
         this._files.push({ file: readStream, id })
+        this.addLayer(video)
 
-        return new Video({ composition: this, id })
+        return video
       }
     )
   }
@@ -542,7 +570,8 @@ export class Composition implements CompositionInterface {
         transformedLayer.waveform.backgroundColor = translateColor(backgroundColor)
         transformedLayer.waveform.color = translateColor(color)
 
-        const { id } = this._addLayer({ type: LayerType.waveform, ...transformedLayer })
+        const { id } = this._addIdentifiedLayer({ type: LayerType.waveform, ...transformedLayer })
+        const waveform = new Waveform({ composition: this, id })
 
         if (file) {
           const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
@@ -550,7 +579,9 @@ export class Composition implements CompositionInterface {
           this._files.push({ file: readStream, id })
         }
 
-        return new Waveform({ composition: this, id })
+        this.addLayer(waveform)
+
+        return waveform
       }
     )
   }
@@ -561,10 +592,10 @@ export class Composition implements CompositionInterface {
     return withValidationAsync(
       () => {
         validatePresenceOf(this.duration, CompositionErrorText.durationRequired)
-        validateTransitionsKeyframes(this._layers)
       },
       async () => {
         try {
+          this._processDynamicTransitions()
           this._generateConfig()
 
           const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
@@ -694,17 +725,43 @@ export class Composition implements CompositionInterface {
       JSON.stringify({
         ...this._options,
         files: this._files,
-        layers: this._layers,
+        layers: this._identifiedLayers,
       })
     )
   }
 
-  private _addLayer(options: TypedLayer): IdentifiedLayer {
+  private _addIdentifiedLayer(options: TypedLayer): IdentifiedLayer {
     const newLayer: IdentifiedLayer = deepMerge({ id: uuid() }, options)
 
-    this._layers.push(newLayer)
+    this._identifiedLayers.push(newLayer)
 
     return newLayer
+  }
+
+  private _processDynamicTransitions(): void {
+    return withValidation(
+      () => {
+        validateTransitionsKeyframes(this._identifiedLayers)
+      },
+      () => {
+        this.layers.forEach((layer: ComposableLayer) => {
+          if (LayerKey.transitions in layer && layer.transitions.length) {
+            layer.transitions.forEach((transition) => {
+              if (transition.type === TransitionType.kenBurns) {
+                processKenBurns({
+                  ...(transition.options as TransitionKenBurnsOptions),
+                  layer: layer as TransitionsMixin,
+                })
+              }
+
+              ;(layer as TransitionsMixin).setTransitions(
+                layer.transitions.filter((t) => t.type !== TransitionType.kenBurns)
+              )
+            })
+          }
+        })
+      }
+    )
   }
 
   private _generateConfig(): void {
@@ -713,7 +770,7 @@ export class Composition implements CompositionInterface {
       'config',
       JSON.stringify({
         ...this._options,
-        layers: this._layers.filter((layer) => layer.type !== LayerType.sequence),
+        layers: this._identifiedLayers.filter((layer) => layer.type !== LayerType.sequence),
       })
     )
 
@@ -750,12 +807,12 @@ export class Composition implements CompositionInterface {
   }
 
   private [CompositionMethod.setLayer](id: string, newLayer: IdentifiedLayer): void {
-    const newLayers = deepClone(this.layers)
+    const newLayers = deepClone(this.identifiedLayers)
     const layerIndex = newLayers.findIndex((layer) => layer.id === id)
 
     newLayers[layerIndex] = newLayer
 
-    this._layers = newLayers
+    this._identifiedLayers = newLayers
   }
 
   private _setLayerDefaults<Layer>({

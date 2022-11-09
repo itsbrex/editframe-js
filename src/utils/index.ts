@@ -106,7 +106,13 @@ import {
   isEncodeResponse,
   validateNewVideo,
 } from './validation/videos'
-import { formDataKey, processCompositionFile, processCrossfades, setLayerDefaults } from './video/compositions'
+import {
+  formDataKey,
+  processCompositionFile,
+  processCrossfades,
+  processKenBurns,
+  setLayerDefaults,
+} from './video/compositions'
 import { preparePreview } from './video/preview'
 
 export {
@@ -164,6 +170,7 @@ export {
   preparePreview,
   processCompositionFile,
   processCrossfades,
+  processKenBurns,
   removeDirectory,
   sanitizeHtml,
   saveFile,

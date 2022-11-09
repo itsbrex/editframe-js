@@ -86,20 +86,22 @@ export const validateTransitionsKeyframes = (layers: IdentifiedLayer[]): void =>
 
   layers.forEach((layer) => {
     if ('transitions' in layer && layer.transitions.length) {
-      layer.transitions.forEach((transition) => {
-        if (
-          ![
-            TransitionType.crossfadeIn as string,
-            TransitionType.crossfadeOut as string,
-            TransitionType.fadeIn as string,
-            TransitionType.fadeOut as string,
-          ].includes(transition.type) &&
-          layer.transitions.length &&
-          layer.transitions.length < 2
-        ) {
-          error = ValidationErrorText.TWO_TRANSITIONS_REQUIRED(transition.type, layer.type)
-        }
-      })
+      layer.transitions
+        .filter((transition) => transition.type !== TransitionType.kenBurns)
+        .forEach((transition) => {
+          if (
+            ![
+              TransitionType.crossfadeIn as string,
+              TransitionType.crossfadeOut as string,
+              TransitionType.fadeIn as string,
+              TransitionType.fadeOut as string,
+            ].includes(transition.type) &&
+            layer.transitions.length &&
+            layer.transitions.length < 2
+          ) {
+            error = ValidationErrorText.TWO_TRANSITIONS_REQUIRED(transition.type, layer.type)
+          }
+        })
     }
   })
 

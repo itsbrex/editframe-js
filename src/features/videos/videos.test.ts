@@ -136,7 +136,7 @@ describe('Videos', () => {
 
         expect(composition.duration).toEqual(duration)
         expect(composition.dimensions).toEqual({ height, width })
-        expect(composition.layers[0].type).toEqual(LayerType.video)
+        expect(composition.identifiedLayers[0].type).toEqual(LayerType.video)
       })
     })
 
@@ -148,7 +148,7 @@ describe('Videos', () => {
         expect(composition.duration).toEqual(compositionOptions.duration)
         expect(composition.dimensions).toEqual(compositionOptions.dimensions)
         expect(composition.metadata).toEqual(compositionOptions.metadata)
-        expect(composition.layers).toHaveLength(0)
+        expect(composition.identifiedLayers).toHaveLength(0)
       })
     })
   })
