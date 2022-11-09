@@ -121,6 +121,7 @@ describe('Composition', () => {
   let preparePreviewSpy: jest.SpyInstance
   let processCompositionFileSpy: jest.SpyInstance
   let processCrossfadesSpy: jest.SpyInstance
+  let processKenBurnsSpy: jest.SpyInstance
   let removeDirectorySpy: jest.SpyInstance
   let sanitizeHtmlSpy: jest.SpyInstance
   let uuidSpy: jest.SpyInstance
@@ -172,6 +173,7 @@ describe('Composition', () => {
     preparePreviewSpy = jest.spyOn(PreviewUtilsModule, 'preparePreview').mockResolvedValue(undefined)
     processCompositionFileSpy = jest.spyOn(CompositionUtilsModule, 'processCompositionFile')
     processCrossfadesSpy = jest.spyOn(CompositionUtilsModule, 'processCrossfades')
+    processKenBurnsSpy = jest.spyOn(CompositionUtilsModule, 'processKenBurns')
     removeDirectorySpy = jest.spyOn(FilesUtilsModule, 'removeDirectory').mockReturnValue(undefined)
     validateAudioLayerSpy = jest.spyOn(LayerValidationUtilsModule, 'validateAudioLayer')
     validateFilterLayerSpy = jest.spyOn(LayerValidationUtilsModule, 'validateFilterLayer')
@@ -242,7 +244,7 @@ describe('Composition', () => {
       })
       const identifiedLayer = deepMerge(layer, { id: uuidMock, type: LayerType.text })
 
-      expect(composition.layers).toEqual([identifiedLayer])
+      expect(composition.identifiedLayers).toEqual([identifiedLayer])
     })
   })
 
@@ -311,7 +313,7 @@ describe('Composition', () => {
     })
 
     it('adds an `audio` layer with the correct attributes', () => {
-      expect(composition.layers[0]).toEqual({
+      expect(composition.identifiedLayers[0]).toEqual({
         audio: audioOptions,
         id: uuidMock,
         type: LayerType.audio,
@@ -346,7 +348,7 @@ describe('Composition', () => {
     })
 
     it('adds a `filter` layer with the correct attributes', () => {
-      expect(composition.layers[0]).toEqual({
+      expect(composition.identifiedLayers[0]).toEqual({
         filter: filterOptions,
         id: uuidMock,
         type: LayerType.filter,
@@ -420,7 +422,7 @@ describe('Composition', () => {
       })
 
       it('adds an `html` layer with the correct attributes', () => {
-        expect(composition.layers[0]).toEqual(
+        expect(composition.identifiedLayers[0]).toEqual(
           deepMerge(layer, {
             html: {
               page: sanitizedHtmlMock,
@@ -457,7 +459,7 @@ describe('Composition', () => {
     })
 
     it('adds an `image` layer with the correct attributes', () => {
-      expect(composition.layers[0]).toEqual({
+      expect(composition.identifiedLayers[0]).toEqual({
         id: uuidMock,
         type: LayerType.image,
         ...imageLayerConfig,
@@ -494,7 +496,7 @@ describe('Composition', () => {
     })
 
     it('adds a `lottie` layer with the correct attributes', () => {
-      expect(composition.layers[0]).toEqual({
+      expect(composition.identifiedLayers[0]).toEqual({
         id: uuidMock,
         lottie: lottieOptions,
         type: LayerType.lottie,
@@ -612,6 +614,52 @@ describe('Composition', () => {
       })
     })
 
+    describe('when layers have `kenBurns` transitions', () => {
+      let layer: Text
+      const end = 1
+      const scale1 = 1
+      const scale2 = 2
+      const start = 0
+      const x1 = 0
+      const x2 = 10
+      const y1 = 0
+      const y2 = 10
+
+      beforeEach(async () => {
+        const composition = makeComposition({
+          compositionOptions: {
+            dimensions: options.dimensions,
+            duration: options.duration,
+          },
+        })
+
+        layer = composition.addText({ text: 'layer' }, { trim: { end } })
+        layer.addTransition({
+          options: {
+            end,
+            scale1,
+            scale2,
+            start,
+            x1,
+            x2,
+            y1,
+            y2,
+          },
+          type: TransitionType.kenBurns,
+        })
+
+        await composition.encode()
+      })
+
+      it('calls the `processKenBurns` function with the correct arguments', () => {
+        expect(processKenBurnsSpy).toHaveBeenCalledWith({ end, layer, scale1, scale2, start, x1, x2, y1, y2 })
+      })
+
+      it("removes the `kenBurns` transition from the layer's transitions", () => {
+        expect(layer.transitions.find((transition) => transition.type === TransitionType.kenBurns)).toBeUndefined()
+      })
+    })
+
     describe('always', () => {
       let sequence: Sequence
       let text: Text
@@ -624,7 +672,7 @@ describe('Composition', () => {
       })
 
       it('adds a `sequence` layer with the correct attributes', () => {
-        expect(composition.layers[1]).toEqual({
+        expect(composition.identifiedLayers[1]).toEqual({
           id: uuidMock,
           type: LayerType.sequence,
           ...sequenceLayerConfig,
@@ -666,7 +714,7 @@ describe('Composition', () => {
     })
 
     it('adds a `subtitles` layer with the correct attributes', () => {
-      expect(composition.layers[0]).toEqual({
+      expect(composition.identifiedLayers[0]).toEqual({
         id: uuidMock,
         subtitles: subtitlesOptions,
         type: LayerType.subtitles,
@@ -705,7 +753,7 @@ describe('Composition', () => {
     })
 
     it('adds a `text` layer with the correct attributes', () => {
-      expect(composition.layers[0]).toEqual({
+      expect(composition.identifiedLayers[0]).toEqual({
         id: uuidMock,
         text: textOptions,
         type: LayerType.text,
@@ -738,7 +786,7 @@ describe('Composition', () => {
     })
 
     it('adds a `video` layer with the correct attributes', () => {
-      expect(composition.layers[0]).toEqual({
+      expect(composition.identifiedLayers[0]).toEqual({
         id: uuidMock,
         type: LayerType.video,
         ...videoLayerConfig,
@@ -798,7 +846,7 @@ describe('Composition', () => {
       })
 
       it('adds a `waveform` layer with the correct attributes', () => {
-        expect(composition.layers[0]).toEqual({
+        expect(composition.identifiedLayers[0]).toEqual({
           id: uuidMock,
           type: LayerType.waveform,
           waveform: waveformOptions,
@@ -855,7 +903,7 @@ describe('Composition', () => {
 
       await composition.encode()
 
-      expect(validateTransitionsKeyframesSpy).toHaveBeenCalledWith(composition.layers)
+      expect(validateTransitionsKeyframesSpy).toHaveBeenCalledWith(composition.identifiedLayers)
     })
 
     describe('when the encode response is malformed', () => {
@@ -925,7 +973,7 @@ describe('Composition', () => {
         'config',
         JSON.stringify({
           ...options,
-          layers: composition.layers,
+          layers: composition.identifiedLayers,
         })
       )
     })

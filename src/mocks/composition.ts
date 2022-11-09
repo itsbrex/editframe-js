@@ -4,27 +4,27 @@ export const mockComposition = (
   {
     duration = 10,
     getLayerAttribute = () => {},
+    identifiedLayers = [],
     layer = () => {},
-    layers = [],
     setLayerAttribute = () => {},
   }: {
     duration?: number
     getLayerAttribute?: any
+    identifiedLayers?: any
     layer?: any
-    layers?: any
     setLayerAttribute?: any
   } = {
     duration: 10,
     getLayerAttribute: () => {},
+    identifiedLayers: [],
     layer: () => {},
-    layers: [],
     setLayerAttribute: () => {},
   }
 ): CompositionInterface => ({
   duration,
   getLayerAttribute,
+  identifiedLayers,
   layer,
-  layers,
   setLayerAttribute,
 })
 

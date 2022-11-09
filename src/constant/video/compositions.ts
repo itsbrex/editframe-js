@@ -46,8 +46,8 @@ export enum CompositionMethod {
   encodeSync = 'encodeSync',
   getLayerAttribute = 'getLayerAttribute',
   getMetadata = '_getMetadata',
+  identifiedLayers = 'identifiedLayers',
   layer = 'layer',
-  layers = 'layers',
   metadata = 'metadata',
   preview = 'preview',
   setDuration = '_setDuration',
@@ -59,7 +59,7 @@ export enum CompositionMethod {
 export interface CompositionInterface {
   readonly [CompositionMethod.duration]: number
   [CompositionMethod.layer]: (id: string) => IdentifiedLayer
-  [CompositionMethod.layers]: IdentifiedLayer[]
+  [CompositionMethod.identifiedLayers]: IdentifiedLayer[]
   [CompositionMethod.getLayerAttribute]: <LayerAttributeValue>({
     childKey,
     id,

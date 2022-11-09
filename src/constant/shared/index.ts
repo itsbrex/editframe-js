@@ -93,6 +93,7 @@ export {
   TimelineOptions,
   Transitions,
   TransitionFadeOptions,
+  TransitionKenBurnsOptions,
   TransitionKey,
   TransitionOptionKey,
   TransitionOptions,

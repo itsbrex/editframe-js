@@ -34,4 +34,15 @@ export class TransitionsMixin extends Layer {
         })
     )
   }
+
+  [TransitionsMethod.setTransitions](transitions: TransitionOptions[]): this {
+    return withValidation<this>(
+      () => validateTransitionsMixin(TransitionsMethod.setTransitions, { transitions }),
+      () =>
+        this.setAttribute({
+          layerKey: LayerKey.transitions,
+          value: transitions,
+        })
+    )
+  }
 }

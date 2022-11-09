@@ -42,7 +42,7 @@ import { makeDefaultWaveformLayer } from 'utils/defaults/waveform'
 import * as FilesUtilsModule from 'utils/files'
 import { deepMerge } from 'utils/objects'
 
-import { formDataKey, processCompositionFile, processCrossfades, setLayerDefaults } from './'
+import { formDataKey, processCompositionFile, processCrossfades, processKenBurns, setLayerDefaults } from './'
 
 describe('setLayerDefaults', () => {
   const dimensions = { height: 10, width: 30 }
@@ -416,5 +416,76 @@ describe('processCrossfades', () => {
     it('returns the normal current time', () => {
       expect(result).toEqual(currentTime)
     })
+  })
+})
+
+describe('processKenBurns', () => {
+  it('adds the correct transitions', () => {
+    const host = 'host'
+    const api = mockApi({ get: jest.fn(), post: jest.fn(), put: jest.fn() })
+    const composition = new Composition({
+      api,
+      formData: { append: jest.fn() },
+      host,
+      options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
+      videos: new Videos({ api, host }),
+    })
+    const layer = composition.addText({ text: 'currentLayer' }, { trim: { end: 3 } })
+
+    const end = 1
+    const scale1 = 1
+    const scale2 = 2
+    const start = 0
+    const x1 = 0
+    const x2 = 10
+    const y1 = 0
+    const y2 = 10
+
+    processKenBurns({ end, layer, scale1, scale2, start, x1, x2, y1, y2 })
+
+    expect(layer.transitions).toEqual([
+      {
+        options: {
+          time: start,
+          value: scale1,
+        },
+        type: TransitionType.scale,
+      },
+      {
+        options: {
+          time: end,
+          value: scale2,
+        },
+        type: TransitionType.scale,
+      },
+      {
+        options: {
+          time: start,
+          value: x1,
+        },
+        type: TransitionType.x,
+      },
+      {
+        options: {
+          time: end,
+          value: x2,
+        },
+        type: TransitionType.x,
+      },
+      {
+        options: {
+          time: start,
+          value: y1,
+        },
+        type: TransitionType.y,
+      },
+      {
+        options: {
+          time: end,
+          value: y2,
+        },
+        type: TransitionType.y,
+      },
+    ])
   })
 })
