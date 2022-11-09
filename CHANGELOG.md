@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/editframe/editframe-js/compare/v3.3.0...v3.4.0) (2022-11-09)
+
+
+### Features
+
+* add ken burns transition ([717b383](https://github.com/editframe/editframe-js/commit/717b383d64967356d3513a9fd91a1e2dfc7c7aa1))
+
 # [3.3.0](https://github.com/editframe/editframe-js/compare/v3.2.0...v3.3.0) (2022-11-04)
 
 
