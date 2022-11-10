@@ -1,3 +1,11 @@
+## [3.5.1](https://github.com/editframe/editframe-js/compare/v3.5.0...v3.5.1) (2022-11-10)
+
+
+### Bug Fixes
+
+* empty commit ([6a9a4c2](https://github.com/editframe/editframe-js/commit/6a9a4c2d84b2b7e7199ef32a1e61d3cf4c67494b))
+* update shared types to 3.7.1 ([248583d](https://github.com/editframe/editframe-js/commit/248583dae4e2ce13e1c65066ab22803e3a74a7fc))
+
 # [3.5.0](https://github.com/editframe/editframe-js/compare/v3.4.0...v3.5.0) (2022-11-10)
 
 
