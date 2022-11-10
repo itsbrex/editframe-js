@@ -1,3 +1,15 @@
+# [3.5.0](https://github.com/editframe/editframe-js/compare/v3.4.0...v3.5.0) (2022-11-10)
+
+
+### Bug Fixes
+
+* add missing position and size tests ([dad25da](https://github.com/editframe/editframe-js/commit/dad25dab7ccf1e44ca3b99436a31562b37d2771f))
+
+
+### Features
+
+* break down html page into object with body and styles. add withTailwind option ([40d802f](https://github.com/editframe/editframe-js/commit/40d802fc7b8639373a4f2d978193a05d18830e23))
+
 # [3.4.0](https://github.com/editframe/editframe-js/compare/v3.3.0...v3.4.0) (2022-11-09)
 
 
