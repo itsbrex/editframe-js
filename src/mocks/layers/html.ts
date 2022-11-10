@@ -33,16 +33,19 @@ export const mockHtmlLayerConfig = (
 export const mockHtmlOptions = (
   {
     withHtml = true,
+    withTailwind = true,
     withTransparentBackground = true,
     withUrl = false,
-  }: { withHtml?: boolean; withTransparentBackground?: boolean; withUrl?: boolean } = {
+  }: { withHtml?: boolean; withTailwind?: boolean; withTransparentBackground?: boolean; withUrl?: boolean } = {
     withHtml: true,
+    withTailwind: true,
     withTransparentBackground: true,
     withUrl: false,
   }
 ): HtmlOptions => ({
-  page: withHtml ? 'html' : undefined,
+  page: withHtml ? { body: 'html', styles: 'styles' } : undefined,
   url: withUrl ? 'url' : undefined,
+  withTailwind,
   withTransparentBackground,
 })
 

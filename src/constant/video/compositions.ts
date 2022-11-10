@@ -7,6 +7,7 @@ import {
   Dimensions,
   FilterOptions,
   HtmlOptions,
+  HtmlPage,
   IdentifiedLayer,
   LayerKey,
   SubtitlesOptions,
@@ -21,6 +22,7 @@ export type LayerAttributeValue =
   | string
   | FilterOptions
   | HtmlOptions
+  | HtmlPage
   | LottieAnimationData
   | Readable
   | SubtitlesOptions

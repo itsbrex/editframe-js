@@ -57,7 +57,6 @@ import {
 import { CompositionErrorText } from 'strings'
 import { deepMerge, makeDefaultTextLayer } from 'utils'
 import * as FilesUtilsModule from 'utils/files'
-import * as SanitizationUtilsModule from 'utils/sanitization'
 import * as StringsUtilsModule from 'utils/strings'
 import * as ValidationUtilsModule from 'utils/validation'
 import * as CompositionValidationUtilsModule from 'utils/validation/composition'
@@ -108,7 +107,6 @@ describe('Composition', () => {
   const videoLayerConfig = mockVideoLayerConfig()
   const waveformLayerConfig = mockWaveformLayerConfig()
   const waveformOptions = mockWaveformOptions()
-  const sanitizedHtmlMock = 'sanitized-html'
   const uuidMock = '123456'
   const makeProcessedCompositionFile = (layerType: LayerType) => ({
     filepath: filenames[layerType],
@@ -123,7 +121,6 @@ describe('Composition', () => {
   let processCrossfadesSpy: jest.SpyInstance
   let processKenBurnsSpy: jest.SpyInstance
   let removeDirectorySpy: jest.SpyInstance
-  let sanitizeHtmlSpy: jest.SpyInstance
   let uuidSpy: jest.SpyInstance
   let validateAudioLayerSpy: jest.SpyInstance
   let validateFilterLayerSpy: jest.SpyInstance
@@ -167,7 +164,6 @@ describe('Composition', () => {
     jest.spyOn(FilesUtilsModule, 'createReadStream').mockReturnValue(new PassThrough())
     postMock = jest.fn()
     apiMock = mockApi()
-    sanitizeHtmlSpy = jest.spyOn(SanitizationUtilsModule, 'sanitizeHtml').mockResolvedValue(sanitizedHtmlMock)
     formDataMock = { append: jest.fn() }
     uuidSpy = jest.spyOn(StringsUtilsModule, 'uuid').mockReturnValue(uuidMock)
     preparePreviewSpy = jest.spyOn(PreviewUtilsModule, 'preparePreview').mockResolvedValue(undefined)
@@ -367,32 +363,6 @@ describe('Composition', () => {
       processCompositionFileSpy.mockResolvedValue(makeProcessedCompositionFile(LayerType.html))
     })
 
-    describe('when a `url` is provided', () => {
-      beforeEach(async () => {
-        htmlOptions = mockHtmlOptions({ withHtml: false, withUrl: true })
-        composition = makeComposition()
-
-        await composition.addHtml(htmlOptions, htmlLayerConfig)
-      })
-
-      it('does not sanitize html', () => {
-        expect(sanitizeHtmlSpy).not.toHaveBeenCalled()
-      })
-    })
-
-    describe('when a `page` is provided', () => {
-      beforeEach(async () => {
-        htmlOptions = mockHtmlOptions()
-        composition = makeComposition()
-
-        await composition.addHtml(htmlOptions, htmlLayerConfig)
-      })
-
-      it('sanitizes the provided html', () => {
-        expect(sanitizeHtmlSpy).toHaveBeenCalledWith('html')
-      })
-    })
-
     describe('always', () => {
       let layer: HtmlLayer
 
@@ -424,9 +394,7 @@ describe('Composition', () => {
       it('adds an `html` layer with the correct attributes', () => {
         expect(composition.identifiedLayers[0]).toEqual(
           deepMerge(layer, {
-            html: {
-              page: sanitizedHtmlMock,
-            },
+            html: htmlOptions,
             id: uuidMock,
             type: LayerType.html,
           })

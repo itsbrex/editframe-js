@@ -106,6 +106,31 @@ describe('SizeMixin', () => {
     })
   })
 
+  describe('setScale', () => {
+    const scale = 0.5
+
+    beforeEach(() => {
+      result = size.setScale(scale)
+    })
+
+    it('calls the `validateSizeMixin` function with the correct arguments', () => {
+      expect(validateSizeMixinSpy).toHaveBeenCalledWith(SizeMethod.setScale, { size: { scale } })
+    })
+
+    it('calls the `setLayerAttribute` method on the composition with the correct arguments', () => {
+      expect(compositionMock.setLayerAttribute).toHaveBeenCalledWith({
+        childKey: SizeKey.scale,
+        id,
+        layerKey: LayerKey.size,
+        value: scale,
+      })
+    })
+
+    it('returns the `SizeMixin` instance', () => {
+      expect(result).toBeInstanceOf(SizeMixin)
+    })
+  })
+
   describe('setWidth', () => {
     const width = 200
 

@@ -5,6 +5,7 @@ import {
   CompositionInterface,
   HtmlKey,
   HtmlMethod,
+  HtmlPage,
   LayerAttributeValue,
   LayerKey,
   LayerType,
@@ -15,7 +16,7 @@ import { SizeMixin } from 'features/videos/mixins/sizeMixin'
 import { TimelineMixin } from 'features/videos/mixins/timelineMixin'
 import { TransitionsMixin } from 'features/videos/mixins/transitionMixin'
 import { TrimMixin } from 'features/videos/mixins/trimMixin'
-import { sanitizeHtml, validateValueIsOfType, withValidation, withValidationAsync } from 'utils'
+import { validateHtmlPage, validateValueIsOfType, withValidation, withValidationAsync } from 'utils'
 
 export class Html extends Mixin(PositionMixin, SizeMixin, TimelineMixin, TransitionsMixin, TrimMixin) {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
@@ -26,24 +27,28 @@ export class Html extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
     return LayerType.html
   }
 
-  get page(): string | undefined {
-    return this._getHtmlAttribute<string | undefined>(HtmlKey.page)
+  get page(): HtmlPage | undefined {
+    return this._getHtmlAttribute<HtmlPage | undefined>(HtmlKey.page)
   }
 
   get url(): string | undefined {
     return this._getHtmlAttribute<string | undefined>(HtmlKey.url)
   }
 
+  get withTailwind(): boolean {
+    return this._getHtmlAttribute<boolean>(HtmlKey.withTailwind)
+  }
+
   get withTransparentBackground(): boolean {
     return this._getHtmlAttribute<boolean>(HtmlKey.withTransparentBackground)
   }
 
-  public async [HtmlMethod.setPage](page?: string): Promise<this> {
+  public [HtmlMethod.setPage](page?: HtmlPage): Promise<this> {
     return withValidationAsync<this>(
-      () => validateValueIsOfType(HtmlMethod.setPage, HtmlKey.page, page, PrimitiveType.string, true),
+      () => validateHtmlPage(HtmlMethod.setPage, page),
       async () => {
         this.setHtmlAttribute(HtmlKey.url, undefined)
-        return this.setHtmlAttribute(HtmlKey.page, await sanitizeHtml(page))
+        return this.setHtmlAttribute(HtmlKey.page, page)
       }
     )
   }
@@ -58,8 +63,32 @@ export class Html extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
     )
   }
 
+  public [HtmlMethod.setWithTailwind](withTailwind: boolean): this {
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          HtmlMethod.setWithTailwind,
+          HtmlKey.withTailwind,
+          withTailwind,
+          PrimitiveType.boolean,
+          true
+        ),
+      () => this.setHtmlAttribute(HtmlKey.withTailwind, withTailwind)
+    )
+  }
+
   public [HtmlMethod.setWithTransparentBackground](withTransparentBackground: boolean): this {
-    return this.setHtmlAttribute(HtmlKey.withTransparentBackground, withTransparentBackground)
+    return withValidation<this>(
+      () =>
+        validateValueIsOfType(
+          HtmlMethod.setWithTransparentBackground,
+          HtmlKey.withTransparentBackground,
+          withTransparentBackground,
+          PrimitiveType.boolean,
+          true
+        ),
+      () => this.setHtmlAttribute(HtmlKey.withTransparentBackground, withTransparentBackground)
+    )
   }
 
   private _getHtmlAttribute<AttributeValue>(childKey: ChildKey): AttributeValue {

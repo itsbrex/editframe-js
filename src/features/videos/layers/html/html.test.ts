@@ -4,16 +4,21 @@ import { Composition } from 'features/videos/composition'
 import { mockApi } from 'mocks'
 import { makeDefaultHtmlLayerConfig } from 'utils'
 import * as ValidationUtilsModule from 'utils/validation'
+import * as HtmlValidationUtilsModule from 'utils/validation/layers/html'
 
 import { Html } from './'
 
 describe('Html', () => {
   const host = 'host'
   const text = 'text'
-  const page = `<html>${text}</html>`
+  const page = {
+    body: `<html>${text}</html>`,
+    styles: 'styles',
+  }
   let composition: Composition
   let html: Html
   let result: Html | void
+  let validateHtmlPageSpy: jest.SpyInstance
   let validateValueIsOfTypeSpy: jest.SpyInstance
   let layerConfigDefaults: HtmlLayerConfig
 
@@ -31,6 +36,7 @@ describe('Html', () => {
       options: { dimensions: { height: 1080, width: 1920 }, duration: 10 },
       videos: new Videos({ api, host }),
     })
+    validateHtmlPageSpy = jest.spyOn(HtmlValidationUtilsModule, 'validateHtmlPage')
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
 
     html = await composition.addHtml({ page })
@@ -41,8 +47,10 @@ describe('Html', () => {
 
   describe('initialization', () => {
     it('sets the correct options and defaults', () => {
-      expect(html.page).toEqual(`<html><head></head><body>${text}</body></html>`)
+      expect(html.page.body).toEqual(`<html>${text}</html>`)
+      expect(html.page.styles).toEqual(page.styles)
       expect(html.url).toEqual(DefaultHtmlOptions.url)
+      expect(html.withTailwind).toEqual(DefaultHtmlOptions.withTailwind)
       expect(html.withTransparentBackground).toEqual(DefaultHtmlOptions.withTransparentBackground)
     })
 
@@ -59,25 +67,18 @@ describe('Html', () => {
   })
 
   describe('setPage', () => {
-    const newText = 'new-text'
-    const newPage = `<html>${newText}</html>`
+    const newPage = { body: `body`, styles: 'styles' }
 
     beforeEach(async () => {
       result = await html.setPage(newPage)
     })
 
-    it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
-        HtmlMethod.setPage,
-        HtmlKey.page,
-        newPage,
-        PrimitiveType.string,
-        true
-      )
+    it('calls the `validateHtmlPage` function with the correct arguments', () => {
+      expect(validateHtmlPageSpy).toHaveBeenCalledWith(HtmlMethod.setPage, newPage)
     })
 
     it('sets `page` to the correct value', () => {
-      expect(html.page).toEqual(`<html><head></head><body>${newText}</body></html>`)
+      expect(html.page).toEqual(newPage)
     })
 
     it('sets `url` to the correct value', () => {
@@ -119,9 +120,47 @@ describe('Html', () => {
     })
   })
 
-  describe('setWithTransparentBackground', () => {
+  describe('setWithTailwind', () => {
+    const withTailwind = true
+
     beforeEach(() => {
-      result = html.setWithTransparentBackground(true)
+      result = html.setWithTailwind(withTailwind)
+    })
+
+    it('calls `validateValueIsOfTypeSpy` with the correct arguments', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        HtmlMethod.setWithTailwind,
+        HtmlKey.withTailwind,
+        withTailwind,
+        PrimitiveType.boolean,
+        true
+      )
+    })
+
+    it('sets `withTailwind` to the correct value', () => {
+      expect(html.withTailwind).toEqual(true)
+    })
+
+    it('returns the `Html` instance', () => {
+      expect(result).toBeInstanceOf(Html)
+    })
+  })
+
+  describe('setWithTransparentBackground', () => {
+    const withTransparentBackground = true
+
+    beforeEach(() => {
+      result = html.setWithTransparentBackground(withTransparentBackground)
+    })
+
+    it('calls `validateValueIsOfTypeSpy` with the correct arguments', () => {
+      expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+        HtmlMethod.setWithTransparentBackground,
+        HtmlKey.withTransparentBackground,
+        withTransparentBackground,
+        PrimitiveType.boolean,
+        true
+      )
     })
 
     it('sets `withTransparentBackground` to the correct value', () => {
