@@ -43,6 +43,8 @@ export {
   HtmlKey,
   HtmlLayer,
   HtmlLayerConfig,
+  HtmlPage,
+  HtmlPageKey,
   HtmlNamespace,
   HtmlOptions,
   IdentifiedFile,
