@@ -1,3 +1,10 @@
+## [3.5.2](https://github.com/editframe/editframe-js/compare/v3.5.1...v3.5.2) (2022-11-11)
+
+
+### Bug Fixes
+
+* move shared-types to dependencies ([6bf0167](https://github.com/editframe/editframe-js/commit/6bf0167d07bd68a1e61bbbdf9472f4824cfe3625))
+
 ## [3.5.1](https://github.com/editframe/editframe-js/compare/v3.5.0...v3.5.1) (2022-11-10)
 
 
