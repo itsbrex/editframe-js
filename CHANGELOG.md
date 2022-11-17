@@ -1,3 +1,10 @@
+## [3.5.3](https://github.com/editframe/editframe-js/compare/v3.5.2...v3.5.3) (2022-11-17)
+
+
+### Bug Fixes
+
+* update docs link in readme ([b4d8fd9](https://github.com/editframe/editframe-js/commit/b4d8fd9c5e014ad0821894572fe1efaf3e3021e7))
+
 ## [3.5.2](https://github.com/editframe/editframe-js/compare/v3.5.1...v3.5.2) (2022-11-11)
 
 
