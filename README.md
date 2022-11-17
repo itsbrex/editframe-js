@@ -25,4 +25,4 @@ yarn add @editframe/editframe-js
 
 # Documentation
 
-[Editframe Documentation](https://docs.editframe.com)
+[Editframe Documentation](https://editframe.com/docs)
