@@ -1,3 +1,10 @@
+# [3.6.0](https://github.com/editframe/editframe-js/compare/v3.5.3...v3.6.0) (2022-11-21)
+
+
+### Features
+
+* add addGroups, make groups sequenceable ([32f8776](https://github.com/editframe/editframe-js/commit/32f877674df39374fd837e4aef2be691365144e9))
+
 ## [3.5.3](https://github.com/editframe/editframe-js/compare/v3.5.2...v3.5.3) (2022-11-17)
 
 
