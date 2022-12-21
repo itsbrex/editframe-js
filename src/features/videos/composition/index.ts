@@ -259,7 +259,8 @@ export class Composition implements CompositionInterface {
         validateAudioLayer(CompositionMethod.addAudio, audioLayer)
       },
       async () => {
-        const { id } = this._addIdentifiedLayer({ type: LayerType.audio, ...audioLayer })
+        const fileUrl = typeof file === 'string' ? (file as string) : undefined
+        const { id } = this._addIdentifiedLayer({ type: LayerType.audio, ...audioLayer }, fileUrl)
         const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
         const audio = new Audio({ composition: this, id })
 
@@ -350,7 +351,8 @@ export class Composition implements CompositionInterface {
         validateImageLayer(CompositionMethod.addImage, imageLayer)
       },
       async () => {
-        const { id } = this._addIdentifiedLayer({ type: LayerType.image, ...imageLayer })
+        const fileUrl = typeof file === 'string' ? (file as string) : undefined
+        const { id } = this._addIdentifiedLayer({ type: LayerType.image, ...imageLayer }, fileUrl)
         const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
         const image = new Image({ composition: this, id })
 
@@ -550,7 +552,8 @@ export class Composition implements CompositionInterface {
         validateVideoLayer(CompositionMethod.addVideo, videoLayer)
       },
       async () => {
-        const { id } = this._addIdentifiedLayer({ type: LayerType.video, ...videoLayer })
+        const fileUrl = typeof file === 'string' ? (file as string) : undefined
+        const { id } = this._addIdentifiedLayer({ type: LayerType.video, ...videoLayer }, fileUrl)
         const { readStream } = await processCompositionFile(file, this._temporaryDirectory)
         const video = new Video({ composition: this, id })
 
@@ -591,7 +594,8 @@ export class Composition implements CompositionInterface {
         transformedLayer.waveform.backgroundColor = translateColor(backgroundColor)
         transformedLayer.waveform.color = translateColor(color)
 
-        const { id } = this._addIdentifiedLayer({ type: LayerType.waveform, ...transformedLayer })
+        const fileUrl = typeof file === 'string' ? (file as string) : undefined
+        const { id } = this._addIdentifiedLayer({ type: LayerType.waveform, ...transformedLayer }, fileUrl)
         const waveform = new Waveform({ composition: this, id })
 
         if (file) {
@@ -617,7 +621,8 @@ export class Composition implements CompositionInterface {
       async () => {
         try {
           this._processDynamicTransitions()
-          this._generateConfig()
+          this.prepareFormData()
+
           const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
           return validateApiData<EncodeResponse>(data, {
@@ -750,8 +755,8 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  private _addIdentifiedLayer(options: TypedLayer): IdentifiedLayer {
-    const newLayer: IdentifiedLayer = deepMerge({ id: uuid() }, options)
+  private _addIdentifiedLayer(options: TypedLayer, file?: string | Readable): IdentifiedLayer {
+    const newLayer: IdentifiedLayer = deepMerge({ file, id: uuid() }, options)
 
     this._identifiedLayers.push(newLayer)
 
@@ -784,16 +789,21 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  private _generateConfig(): void {
+  public generateConfig(): string {
+    return JSON.stringify({
+      ...this._options,
+      layers: this._nonUtilLayers(),
+    })
+  }
+
+  private prepareFormData(): void {
     this._files.forEach(({ file, id }) => this._formData.append(formDataKey(file, id), file))
 
     this._formData.append(
       'config',
       JSON.stringify({
         ...this._options,
-        layers: this._identifiedLayers
-          .filter((layer) => ![LayerType.group, LayerType.sequence].includes(layer.type))
-          .sort(sortLayersByZIndex),
+        layers: this._nonUtilLayers(),
       })
     )
 
@@ -804,6 +814,10 @@ export class Composition implements CompositionInterface {
     if (this._encodeOptions?.experimental) {
       this._formData.append('experimental', JSON.stringify(this._encodeOptions.experimental))
     }
+  }
+
+  private _nonUtilLayers(): ComposableLayer[] {
+    return this._identifiedLayers.filter((layer) => ![LayerType.group, LayerType.sequence].includes(layer.type)).sort(sortLayersByZIndex)
   }
 
   private async [CompositionMethod.getMetadata](file: Readable, type: ApiVideoMetadataType): Promise<ApiMetadataTypes> {
