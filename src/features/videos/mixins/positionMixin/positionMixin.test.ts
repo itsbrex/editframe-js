@@ -198,4 +198,28 @@ describe('PositionMixin', () => {
       expect(result).toBeInstanceOf(PositionMixin)
     })
   })
+  describe('setZ', () => {
+    const z = 3
+
+    beforeEach(() => {
+      result = position.setZ(z)
+    })
+
+    it('calls the `validatePositionMixin` function with the correct arguments', () => {
+      expect(validatePositionMixinSpy).toHaveBeenCalledWith(PositionMethod.setZ, { position: { z } })
+    })
+
+    it('calls the `setLayerAttribute` method on the composition with the correct arguments', () => {
+      expect(compositionMock.setLayerAttribute).toHaveBeenCalledWith({
+        childKey: PositionKey.z,
+        id,
+        layerKey: LayerKey.position,
+        value: z,
+      })
+    })
+
+    it('returns the `PositionMixin` instance', () => {
+      expect(result).toBeInstanceOf(PositionMixin)
+    })
+  })
 })

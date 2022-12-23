@@ -43,6 +43,9 @@ export class PositionMixin extends Layer {
   get y(): Y | undefined {
     return this._getPositionAttribute<Y | undefined>(PositionKey.y)
   }
+  get z(): number | undefined {
+    return this._getPositionAttribute<number>(PositionKey.z)
+  }
 
   public [PositionMethod.setAngle](angle = 0): this {
     return withValidation<this>(
@@ -90,6 +93,12 @@ export class PositionMixin extends Layer {
     return withValidation<this>(
       () => validatePositionMixin(PositionMethod.setY, { position: { y } }),
       () => this._setPositionAttribute(PositionKey.y, y)
+    )
+  }
+  public [PositionMethod.setZ](z?: number): this {
+    return withValidation<this>(
+      () => validatePositionMixin(PositionMethod.setZ, { position: { z } }),
+      () => this._setPositionAttribute(PositionKey.z, z)
     )
   }
 

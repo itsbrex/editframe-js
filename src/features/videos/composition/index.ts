@@ -110,6 +110,7 @@ import {
   processKenBurns,
   removeDirectory,
   setLayerDefaults,
+  sortLayersByZIndex,
   translateColor,
   urlOrFile,
   uuid,
@@ -617,7 +618,6 @@ export class Composition implements CompositionInterface {
         try {
           this._processDynamicTransitions()
           this._generateConfig()
-
           const data = await this._api.post({ data: this._formData, isForm: true, url: Routes.videos.create })
 
           return validateApiData<EncodeResponse>(data, {
@@ -786,11 +786,14 @@ export class Composition implements CompositionInterface {
 
   private _generateConfig(): void {
     this._files.forEach(({ file, id }) => this._formData.append(formDataKey(file, id), file))
+
     this._formData.append(
       'config',
       JSON.stringify({
         ...this._options,
-        layers: this._identifiedLayers.filter((layer) => ![LayerType.group, LayerType.sequence].includes(layer.type)),
+        layers: this._identifiedLayers
+          .filter((layer) => ![LayerType.group, LayerType.sequence].includes(layer.type))
+          .sort(sortLayersByZIndex),
       })
     )
 
@@ -831,7 +834,6 @@ export class Composition implements CompositionInterface {
     const layerIndex = newLayers.findIndex((layer) => layer.id === id)
 
     newLayers[layerIndex] = newLayer
-
     this._identifiedLayers = newLayers
   }
 
