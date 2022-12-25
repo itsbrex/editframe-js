@@ -15,6 +15,7 @@ import {
   LayerConfigs,
   LayerOptions,
   LayerType,
+  MaybePositionLayer,
   PositionableLayers,
   SequenceableLayer,
   SizeableLayers,
@@ -313,4 +314,12 @@ export const processKenBurns = ({
   })
 
   return layer
+}
+
+export const sortLayersByZIndex = (a: MaybePositionLayer, b: MaybePositionLayer): number => {
+  if (a.position && b.position) {
+    return a.position.z - b.position.z
+  } else {
+    return 0
+  }
 }

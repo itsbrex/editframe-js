@@ -973,6 +973,56 @@ describe('Composition', () => {
       expect(validatePresenceOfSpy).toHaveBeenCalledWith(options.duration, CompositionErrorText.durationRequired)
     })
 
+    it('sort the layers by their z index', async () => {
+      const z1 = 1
+      const z2 = 3
+      const z3 = 5
+
+      composition = new Composition({
+        api: apiMock,
+        formData: formDataMock,
+        host,
+        options,
+        temporaryDirectory,
+        videos: new Videos({ api: apiMock, host }),
+      })
+      composition.addText(
+        {
+          text: 'Hello world',
+        },
+        {
+          position: {
+            z: z2,
+          },
+        }
+      )
+      composition.addText(
+        {
+          text: 'Hello world',
+        },
+        {
+          position: {
+            z: z1,
+          },
+        }
+      )
+      composition.addText(
+        {
+          text: 'Hello world',
+        },
+        {
+          position: {
+            z: z3,
+          },
+        }
+      )
+      await composition.encode()
+      const { layers } = JSON.parse((formDataMock.append as jest.Mock).mock.calls[0][1])
+
+      expect(layers[0].position.z).toEqual(z1)
+      expect(layers[1].position.z).toEqual(z2)
+      expect(layers[2].position.z).toEqual(z3)
+    })
     it('calls the `validateTransitionsKeyframes` function with the correct arguments', async () => {
       composition = new Composition({
         api: apiMock,

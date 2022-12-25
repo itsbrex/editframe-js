@@ -62,7 +62,8 @@ describe('validatePosition', () => {
   const origin = 'left'
   const x = 5
   const y = 10
-  const layer = { position: { angle, angleX, angleY, isRelative, origin, x, y } }
+  const z = 3
+  const layer = { position: { angle, angleX, angleY, isRelative, origin, x, y, z } }
   let validateValueIsOfTypeSpy: jest.SpyInstance
   let validateXSpy: jest.SpyInstance
   let validateYSpy: jest.SpyInstance
@@ -71,12 +72,11 @@ describe('validatePosition', () => {
     validateValueIsOfTypeSpy = jest.spyOn(ValidationUtilsModule, 'validateValueIsOfType')
     validateXSpy = jest.spyOn(PositionValidationModule, 'validateX')
     validateYSpy = jest.spyOn(PositionValidationModule, 'validateY')
-
     validatePosition({ callerName, layer })
   })
 
   it('calls the `validateValueIsOfType` function with the correct arguments', () => {
-    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(7) // twice via validateX/Y
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledTimes(8) // twice via validateX/Y
 
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
@@ -98,7 +98,12 @@ describe('validatePosition', () => {
       angleY,
       PrimitiveType.number
     )
-
+    expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
+      callerName,
+      ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.z),
+      z,
+      PrimitiveType.number
+    )
     expect(validateValueIsOfTypeSpy).toHaveBeenCalledWith(
       callerName,
       ValidationErrorText.SUB_FIELD(LayerKey.position, PositionKey.isRelative),

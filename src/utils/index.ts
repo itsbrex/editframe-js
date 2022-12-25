@@ -114,6 +114,7 @@ import {
   processGroupedLayer,
   processKenBurns,
   setLayerDefaults,
+  sortLayersByZIndex,
 } from './video/compositions'
 import { preparePreview } from './video/preview'
 
@@ -178,6 +179,7 @@ export {
   saveFile,
   setLayerDefaults,
   stripQueryParams,
+  sortLayersByZIndex,
   translateColor,
   urlOrFile,
   uuid,
