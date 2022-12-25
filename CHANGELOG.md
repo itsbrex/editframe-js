@@ -1,3 +1,10 @@
+# [3.7.0](https://github.com/editframe/editframe-js/compare/v3.6.0...v3.7.0) (2022-12-25)
+
+
+### Features
+
+* add support for z-index position attribute ([e4b4bee](https://github.com/editframe/editframe-js/commit/e4b4bee8e8bc7fad7c0a13c73dc03f67bd0c409d))
+
 # [3.6.0](https://github.com/editframe/editframe-js/compare/v3.5.3...v3.6.0) (2022-11-21)
 
 
