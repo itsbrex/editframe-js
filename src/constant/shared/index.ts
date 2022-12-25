@@ -109,6 +109,7 @@ export {
   TrimOptions,
   TrimKey,
   TypedLayer,
+  MaybePositionLayer,
   VideoLayer,
   VideoLayerConfig,
   WaveformKey,

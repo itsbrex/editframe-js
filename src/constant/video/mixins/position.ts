@@ -8,6 +8,7 @@ export enum PositionMethod {
   setOrigin = 'setOrigin',
   setX = 'setX',
   setY = 'setY',
+  setZ = 'setZ',
 }
 
 export const PositionableLayers = [

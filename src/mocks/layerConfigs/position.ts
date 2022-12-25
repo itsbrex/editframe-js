@@ -8,6 +8,7 @@ export const MockPositionOptionsValue = {
   [PositionKey.origin]: LayerHorizontalAlignmentValue.center,
   [PositionKey.x]: 0,
   [PositionKey.y]: 0,
+  [PositionKey.z]: 0,
 }
 
 export const mockPositionOptions = ({
@@ -18,6 +19,7 @@ export const mockPositionOptions = ({
   origin = MockPositionOptionsValue.origin,
   x = MockPositionOptionsValue.x,
   y = MockPositionOptionsValue.y,
+  z = MockPositionOptionsValue.z,
 }: PositionOptions = MockPositionOptionsValue): PositionOptions => ({
   angle,
   angleX,
@@ -26,4 +28,5 @@ export const mockPositionOptions = ({
   origin,
   x,
   y,
+  z,
 })
