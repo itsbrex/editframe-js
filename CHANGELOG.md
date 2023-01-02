@@ -1,3 +1,10 @@
+## [3.7.1](https://github.com/editframe/editframe-js/compare/v3.7.0...v3.7.1) (2023-01-02)
+
+
+### Bug Fixes
+
+* download file with their query params ([7d08e69](https://github.com/editframe/editframe-js/commit/7d08e69beb34f50ae710a3487e0c2d4ee56a4a56))
+
 # [3.7.0](https://github.com/editframe/editframe-js/compare/v3.6.0...v3.7.0) (2022-12-25)
 
 
