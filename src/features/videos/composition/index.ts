@@ -30,6 +30,7 @@ import {
   Dimensions,
   EncodeOptions,
   EncodeResponse,
+  ExportableConfig,
   FilterKey,
   FilterLayer,
   Filters,
@@ -134,7 +135,6 @@ import {
   withValidation,
   withValidationAsync,
 } from 'utils'
-
 export class Composition implements CompositionInterface {
   private _api: ApiInterface
   private _develop: boolean
@@ -789,11 +789,13 @@ export class Composition implements CompositionInterface {
     )
   }
 
-  public generateConfig(): string {
-    return JSON.stringify({
+  public generateConfig(asString = false): string | ExportableConfig {
+    const config = {
       ...this._options,
       layers: this._nonUtilLayers(),
-    })
+    }
+    
+    return asString ? JSON.stringify(config) : config
   }
 
   private prepareFormData(): void {

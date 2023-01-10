@@ -3,6 +3,7 @@ import { JsonValue } from 'type-fest'
 
 import {
   ChildKey,
+  ComposableLayer,
   CompositionKey,
   Dimensions,
   FilterOptions,
@@ -124,4 +125,8 @@ export type EncodeResponse = {
   [EncodeResponseKey.id]: string
   [EncodeResponseKey.status]: string
   [EncodeResponseKey.timestamp]: number
+}
+
+export type ExportableConfig = CompositionOptions & {
+  layers: ComposableLayer[]
 }
