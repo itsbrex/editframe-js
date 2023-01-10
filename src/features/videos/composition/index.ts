@@ -794,7 +794,7 @@ export class Composition implements CompositionInterface {
       ...this._options,
       layers: this._nonUtilLayers(),
     }
-    
+
     return asString ? JSON.stringify(config) : config
   }
 
