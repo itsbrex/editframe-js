@@ -819,7 +819,9 @@ export class Composition implements CompositionInterface {
   }
 
   private _nonUtilLayers(): ComposableLayer[] {
-    return this._identifiedLayers.filter((layer) => ![LayerType.group, LayerType.sequence].includes(layer.type)).sort(sortLayersByZIndex)
+    return this._identifiedLayers
+      .filter((layer) => ![LayerType.group, LayerType.sequence].includes(layer.type))
+      .sort(sortLayersByZIndex)
   }
 
   private async [CompositionMethod.getMetadata](file: Readable, type: ApiVideoMetadataType): Promise<ApiMetadataTypes> {
