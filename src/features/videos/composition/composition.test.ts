@@ -315,6 +315,7 @@ describe('Composition', () => {
     it('adds an `audio` layer with the correct attributes', () => {
       expect(composition.identifiedLayers[0]).toEqual({
         audio: audioOptions,
+        file: filenames.audio,
         id: uuidMock,
         type: LayerType.audio,
         ...audioLayerConfig,
@@ -534,6 +535,7 @@ describe('Composition', () => {
 
     it('adds an `image` layer with the correct attributes', () => {
       expect(composition.identifiedLayers[0]).toEqual({
+        file: filenames.image,
         id: uuidMock,
         type: LayerType.image,
         ...imageLayerConfig,
@@ -869,6 +871,7 @@ describe('Composition', () => {
 
     it('adds a `video` layer with the correct attributes', () => {
       expect(composition.identifiedLayers[0]).toEqual({
+        file: filenames.video,
         id: uuidMock,
         type: LayerType.video,
         ...videoLayerConfig,
