@@ -1,3 +1,10 @@
+# [3.8.0](https://github.com/editframe/editframe-js/compare/v3.7.1...v3.8.0) (2023-01-11)
+
+
+### Features
+
+* **composition:** add generateConfig method to Composition class ([4f9dde1](https://github.com/editframe/editframe-js/commit/4f9dde1c1415dce9b431a431b83586f4e87416ea))
+
 ## [3.7.1](https://github.com/editframe/editframe-js/compare/v3.7.0...v3.7.1) (2023-01-02)
 
 
