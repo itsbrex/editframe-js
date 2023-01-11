@@ -1110,7 +1110,7 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@editframe/shared-types@3.8.3":
+"@editframe/shared-types@^3.8.3":
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.8.3.tgz#b71e96af4b2ffe41222844cebacdebc779b681e2"
   integrity sha512-ElrU8NmwoAeQGHxCNavDU3DhtVLjWKTuEwXjnwfIIxsukvndX1uYJQe7dj8Ui5JZhRkfSUVX/NnIudYmHOYEKg==
