@@ -428,11 +428,18 @@ export class Composition implements CompositionInterface {
             }
           })
         )
-
         let currentTime = sequenceLayer.timeline.start || 0
 
         layersWithDurationAndFilepath.map(({ duration, filepath, layer }, i) => {
-          const { type } = layer
+          const { type } = layer;
+
+          if (LayerKey.timeline in layer) {
+            const { start = 0 } = layer.timeline
+
+            if (start) {  
+                currentTime = start;  
+            }
+          }
           const previousLayer = i > 0 ? layersWithDurationAndFilepath[i - 1].layer : undefined
           const nextLayer =
             i < layersWithDurationAndFilepath.length - 1 ? layersWithDurationAndFilepath[i + 1].layer : undefined
@@ -442,11 +449,9 @@ export class Composition implements CompositionInterface {
           if (filepath) {
             this._setFile(layer.id, createReadStream(filepath))
           }
-
           if (type === LayerType.group) {
             layer.setStart(currentTime)
           }
-
           if (LayerKey.trim in layer) {
             const { end, start = 0 } = layer.trim
 
