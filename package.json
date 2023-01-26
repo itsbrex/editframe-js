@@ -4,7 +4,7 @@
     "url": "https://github.com/editframe/editframe-js/issues"
   },
   "dependencies": {
-    "@editframe/shared-types": "^3.8.3",
+    "@editframe/shared-types": "^3.10.0",
     "audio-extensions": "^0.0.0",
     "camelcase-keys": "^7.0.2",
     "chalk": "^4",
@@ -24,6 +24,7 @@
     "path-to-regexp": "^6.2.0",
     "pretty-ms": "^7.0.1",
     "query-string": "^7.1.1",
+    "tailwind-merge": "^1.8.1",
     "temp-dir": "^2.0.0",
     "ts-mixer": "^6.0.0",
     "type-fest": "^2.16.0",
