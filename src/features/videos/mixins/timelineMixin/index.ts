@@ -1,4 +1,4 @@
-import { ChildKey, CompositionInterface, LayerAttributeValue, LayerKey, TimelineKey, TimelineMethod } from 'constant'
+import { ChildKey, CompositionInterface, LayerAttributeValue, LayerKey, TimelineKey, TimelineMethod, TimelineOptions } from 'constant'
 import { Layer } from 'features/videos/layer'
 import { validateTimelineMixin, withValidation } from 'utils'
 
@@ -6,7 +6,9 @@ export class TimelineMixin extends Layer {
   constructor({ composition, id }: { composition: CompositionInterface; id: string }) {
     super({ composition, id })
   }
-
+  get timeline(): TimelineOptions {
+    return this._composition.getLayerAttribute<TimelineOptions>({ id: this.id, layerKey: LayerKey.timeline })
+  }
   get start(): number {
     return this._getTimelineAttribute<number>(TimelineKey.start)
   }

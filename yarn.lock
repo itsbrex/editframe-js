@@ -1110,10 +1110,10 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
-"@editframe/shared-types@^3.8.3":
-  version "3.8.3"
-  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.8.3.tgz#b71e96af4b2ffe41222844cebacdebc779b681e2"
-  integrity sha512-ElrU8NmwoAeQGHxCNavDU3DhtVLjWKTuEwXjnwfIIxsukvndX1uYJQe7dj8Ui5JZhRkfSUVX/NnIudYmHOYEKg==
+"@editframe/shared-types@^3.10.0":
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/@editframe/shared-types/-/shared-types-3.10.0.tgz#9fd9f4c0466de53c7bc33fcf5f868754e50b3cd9"
+  integrity sha512-w84bY/KYI99ZON+E3/A4BAvBEJwO7ixXJer2Q7CET/9LmSJFbbh7UgauMpEUuHc4k+wRcLLyKB0CFEyccdFbDg==
   dependencies:
     type-fest "^2.14.0"
 
@@ -7482,6 +7482,11 @@ table@^6.0.9:
     slice-ansi "^4.0.0"
     string-width "^4.2.3"
     strip-ansi "^6.0.1"
+
+tailwind-merge@^1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-1.8.1.tgz#0e56c8afbab2491f72e06381043ffec8b720ba04"
+  integrity sha512-+fflfPxvHFr81hTJpQ3MIwtqgvefHZFUHFiIHpVIRXvG/nX9+gu2P7JNlFu2bfDMJ+uHhi/pUgzaYacMoXv+Ww==
 
 tar@^6.0.2, tar@^6.1.0, tar@^6.1.11, tar@^6.1.2:
   version "6.1.11"

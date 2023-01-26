@@ -106,6 +106,9 @@ export class Text extends Mixin(PositionMixin, SizeMixin, TimelineMixin, Transit
   get textTransform(): string {
     return this._getTextAttribute<string>(TextKey.textTransform)
   }
+  get tailwind(): string {
+    return this._getTextAttribute<string>(TextKey.tailwind)
+  }
 
   public [TextMethod.setBackgroundColor](backgroundColor: string): this {
     return withValidation<this>(

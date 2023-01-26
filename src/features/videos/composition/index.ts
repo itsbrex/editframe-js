@@ -5,6 +5,7 @@ import open from 'open'
 import ora from 'ora'
 import prettyMilliseconds from 'pretty-ms'
 import Pusher from 'pusher-js'
+import { twMerge } from 'tailwind-merge'
 ;(global as any).Pusher = Pusher
 
 import {
@@ -428,11 +429,18 @@ export class Composition implements CompositionInterface {
             }
           })
         )
-
         let currentTime = sequenceLayer.timeline.start || 0
 
         layersWithDurationAndFilepath.map(({ duration, filepath, layer }, i) => {
-          const { type } = layer
+          const { type } = layer;
+
+          if (LayerKey.timeline in layer) {
+            const { start = 0 } = layer.timeline
+
+            if (start) {  
+                currentTime = start;  
+            }
+          }
           const previousLayer = i > 0 ? layersWithDurationAndFilepath[i - 1].layer : undefined
           const nextLayer =
             i < layersWithDurationAndFilepath.length - 1 ? layersWithDurationAndFilepath[i + 1].layer : undefined
@@ -442,11 +450,9 @@ export class Composition implements CompositionInterface {
           if (filepath) {
             this._setFile(layer.id, createReadStream(filepath))
           }
-
           if (type === LayerType.group) {
             layer.setStart(currentTime)
           }
-
           if (LayerKey.trim in layer) {
             const { end, start = 0 } = layer.trim
 
@@ -526,12 +532,28 @@ export class Composition implements CompositionInterface {
       },
       () => {
         const {
-          text: { backgroundColor, color },
+          text: {
+            backgroundColor,
+            color,
+            fontSize,
+            fontStyle,
+            fontWeight,
+            padding,
+            tailwind,
+            textAlign,
+            textDecoration,
+          },
         } = textLayer
         const transformedLayer: TextLayer = deepClone(textLayer)
 
         transformedLayer.text.backgroundColor = translateColor(backgroundColor)
         transformedLayer.text.color = translateColor(color)
+        if (tailwind && tailwind.length > 0) {
+          transformedLayer.text.tailwind = twMerge(
+            `text-[${color}] text-[${fontSize}px] bg-[${backgroundColor}] p-[${padding}px] ${fontStyle} font-[${fontWeight}] text-${textAlign} ${textDecoration} `,
+            tailwind
+          )
+        }
 
         const { id } = this._addIdentifiedLayer({ type: LayerType.text, ...transformedLayer })
         const text = new Text({ composition: this, id })
