@@ -1,3 +1,15 @@
+# [3.9.0](https://github.com/editframe/editframe-js/compare/v3.8.0...v3.9.0) (2023-01-26)
+
+
+### Bug Fixes
+
+* setStart when adding sequence layers ([cdea7c9](https://github.com/editframe/editframe-js/commit/cdea7c99249fe1757e1b5f5e9e9febf775bef815))
+
+
+### Features
+
+* add tailwindcss filed to text layer ([e7569b3](https://github.com/editframe/editframe-js/commit/e7569b39344fff8af11068a947767a62b1dff55a))
+
 # [3.8.0](https://github.com/editframe/editframe-js/compare/v3.7.1...v3.8.0) (2023-01-11)
 
 
