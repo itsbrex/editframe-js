@@ -432,13 +432,13 @@ export class Composition implements CompositionInterface {
         let currentTime = sequenceLayer.timeline.start || 0
 
         layersWithDurationAndFilepath.map(({ duration, filepath, layer }, i) => {
-          const { type } = layer;
+          const { type } = layer
 
           if (LayerKey.timeline in layer) {
             const { start = 0 } = layer.timeline
 
-            if (start) {  
-                currentTime = start;  
+            if (start) {
+              currentTime = start
             }
           }
           const previousLayer = i > 0 ? layersWithDurationAndFilepath[i - 1].layer : undefined

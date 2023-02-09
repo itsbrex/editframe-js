@@ -1,4 +1,12 @@
-import { ChildKey, CompositionInterface, LayerAttributeValue, LayerKey, TimelineKey, TimelineMethod, TimelineOptions } from 'constant'
+import {
+  ChildKey,
+  CompositionInterface,
+  LayerAttributeValue,
+  LayerKey,
+  TimelineKey,
+  TimelineMethod,
+  TimelineOptions,
+} from 'constant'
 import { Layer } from 'features/videos/layer'
 import { validateTimelineMixin, withValidation } from 'utils'
 

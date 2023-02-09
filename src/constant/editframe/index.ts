@@ -1,9 +1,9 @@
 export interface EditframeOptions {
-  clientId: string
+  clientId?: string
   develop?: boolean
   host?: string
   log?: boolean
-  token: string
+  token?: string
   version?: number
 }
 
