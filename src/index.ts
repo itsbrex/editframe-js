@@ -1,7 +1,6 @@
 import { Api } from 'api'
 import { CommonResolution, EditframeOptions, defaultHost } from 'constant'
 import { Applications, Videos } from 'features'
-import { EditframeErrorText } from 'strings'
 import { baseUrl, initializeFetchUtil } from 'utils'
 
 export class Editframe {
@@ -14,10 +13,6 @@ export class Editframe {
   private _version: number
 
   constructor({ clientId, develop = false, host = defaultHost, token, version = 2 }: EditframeOptions) {
-    if (!clientId || !token) {
-      throw new Error(EditframeErrorText.clientIdAndTokenRequired)
-    }
-
     this._api = new Api({
       clientId,
       fetch: initializeFetchUtil(baseUrl(host, version)),
