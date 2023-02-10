@@ -1,0 +1,12 @@
+import { AudioLayer, CompositionFile, CompositionOptions, FilterLayer, ImageLayer, LayerValidator, LottieLayer, TextLayer, VideoLayer, VideoOptions, WaveformLayer } from 'constant';
+export declare const formDataKey: (file: CompositionFile, id: string) => string;
+export declare const validateVideoOptions: ({ backgroundColor, dimensions, duration }: VideoOptions) => void;
+export declare const validateCompositionOptions: ({ backgroundColor, dimensions, duration }: CompositionOptions) => void;
+export declare const validateLayerMethod: (validators: LayerValidator[], callerName: string, options: Record<string, any>) => void;
+export declare const validateAddAudio: (options: AudioLayer) => void;
+export declare const validateAddImage: (options: ImageLayer) => void;
+export declare const validateAddLottie: (options: LottieLayer) => void;
+export declare const validateAddText: (options: TextLayer) => void;
+export declare const validateAddVideo: (options: VideoLayer) => void;
+export declare const validateAddFilter: (options: FilterLayer) => void;
+export declare const validateAddWaveform: (options: WaveformLayer) => void;

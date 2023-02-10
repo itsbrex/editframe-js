@@ -1,0 +1,10 @@
+import { AudioLayer, FilterLayer, LayerAlignment, LayerBase, LayerHorizontalAlignment, LayerLottie, LayerText, LayerTrim, LayerVisualMedia } from 'constant';
+export declare const validateLayerBase: (callerName: string, { length, start }: LayerBase) => string[];
+export declare const validateLayerLottie: (callerName: string, { data }: LayerLottie) => string[];
+export declare const validateLayerFilter: (callerName: string, { filter }: FilterLayer) => string[];
+export declare const validateLayerTrim: (callerName: string, { trim }: LayerTrim) => string[];
+export declare const validateLayerVisualMedia: (callerName: string, { backgroundColor, color, x, y }: LayerVisualMedia) => string[];
+export declare const validateLayerAudio: (callerName: string, options: AudioLayer) => string[];
+export declare const validateHorizontalAlignment: (callerName: string, layerAttribute: string, horizontalAlignment: LayerHorizontalAlignment) => string | undefined;
+export declare const validateLayerAlignment: (callerName: string, { horizontalAlignment, verticalAlignment }: LayerAlignment) => string[];
+export declare const validateLayerText: (callerName: string, { fontFamily, fontSize, maxFontSize, maxHeight, maxWidth, text, textAlignment }: LayerText) => string[];
