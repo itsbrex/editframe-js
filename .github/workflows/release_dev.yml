@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
-      - run: npm run install
+      - run: npm install
       - run: npm run build
       - run: npm run lint
       - run: npm run test
@@ -55,7 +55,7 @@ jobs:
         with:
           node-version: '16'
           cache: 'npm'
-      - run: npm run install
+      - run: npm install
       - run: npm run build
       - name: HTTP Request Action
         uses: fjogeleit/http-request-action@v1.9.2
