@@ -1,5 +1,4 @@
 export interface EditframeOptions {
-  clientId?: string
   develop?: boolean
   host?: string
   log?: boolean

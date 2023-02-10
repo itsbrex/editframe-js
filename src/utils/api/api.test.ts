@@ -19,7 +19,7 @@ describe('initializeFetchUtil', () => {
   const url = '/route'
   const data = JSON.stringify({ key: 'value' })
   const request = initializeFetchUtil(baseUrl)
-  const postHeaders = makeHeaders({ clientId: 'client-id', isForm: true, token: 'token' })
+  const postHeaders = makeHeaders({ isForm: true, token: 'token' })
 
   beforeEach(() => {
     fetchMock.resetMocks()
@@ -130,11 +130,10 @@ describe('makeRequest', () => {
 describe('makeHeaders', () => {
   describe('when the `isForm` argument evaluates to `true`', () => {
     it('generates headers with the correct `accept`, `xRequestedWith` and `contentType` values', () => {
-      const clientId = 'client-id'
       const isForm = true
       const token = 'token'
 
-      const headers = makeHeaders({ clientId, isForm, token })
+      const headers = makeHeaders({ isForm, token })
 
       expect(headers[ApiHeaderKey.accept]).toEqual(MimeType.json)
       expect(headers[ApiHeaderKey.xRequestedWith]).toEqual(ApiHeaderValue.xRequestedWithXML)
@@ -144,11 +143,10 @@ describe('makeHeaders', () => {
 
   describe('when the `isForm` argument evaluates to `false`', () => {
     it('generates headers with the correct `accept`, `xRequestedWith` and `contentType` values', () => {
-      const clientId = 'client-id'
       const isForm = false
       const token = 'token'
 
-      const headers = makeHeaders({ clientId, isForm, token })
+      const headers = makeHeaders({ isForm, token })
 
       expect(headers[ApiHeaderKey.accept]).toBeUndefined()
       expect(headers[ApiHeaderKey.xRequestedWith]).toBeUndefined()

@@ -7,7 +7,6 @@ import * as ApiUtilsModule from 'utils/api'
 import { Editframe } from './'
 
 describe('Editframe', () => {
-  const clientId = 'client-id'
   const host = 'host'
   const token = 'token'
   const version = 2
@@ -20,7 +19,7 @@ describe('Editframe', () => {
   let applicationsSpy: jest.SpyInstance
   let videosSpy: jest.SpyInstance
 
-  describe('when both `clientId` and `token` are provided to the constructor', () => {
+  describe('when `token` is provided to the constructor', () => {
     afterEach(() => {
       jest.clearAllMocks()
     })
@@ -30,11 +29,7 @@ describe('Editframe', () => {
       initializeFetchSpy = jest.spyOn(ApiUtilsModule, 'initializeFetchUtil').mockReturnValue(fetchMock as FetchFunction)
       applicationsSpy = jest.spyOn(ApplicationsModule, 'Applications')
       videosSpy = jest.spyOn(VideosModule, 'Videos')
-      editframe = new Editframe({ clientId, host, token, version })
-    })
-
-    it('sets the `clientId` correctly', () => {
-      expect(editframe.clientId).toEqual(clientId)
+      editframe = new Editframe({ host, token, version })
     })
 
     it('sets the `host` correctly', () => {
@@ -53,7 +48,6 @@ describe('Editframe', () => {
       expect(initializeFetchSpy).toHaveBeenCalledWith(ApiUtilsModule.baseUrl(host, version))
 
       expect(apiSpy).toHaveBeenCalledWith({
-        clientId,
         fetch: fetchMock,
         host,
         token,
