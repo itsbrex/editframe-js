@@ -23,7 +23,6 @@ export interface ApiInterface {
 }
 
 export type ApiOptions = {
-  clientId: string
   fetch: FetchFunction
   host?: string
   token: string
@@ -34,7 +33,6 @@ export enum ApiHeaderKey {
   accept = 'Accept',
   authorization = 'Authorization',
   contentType = 'Content-Type',
-  editframeClientId = 'Editframe-Client-Id',
   userAgent = 'User-Agent',
   xRequestedWith = 'X-Requested-With',
 }
@@ -49,7 +47,6 @@ export type ApiHeaders = Record<string, string> & {
   [ApiHeaderKey.accept]?: string
   [ApiHeaderKey.authorization]: string
   [ApiHeaderKey.contentType]?: string
-  [ApiHeaderKey.editframeClientId]: string
   [ApiHeaderKey.userAgent]?: string
   [ApiHeaderKey.xRequestedWith]?: string
 }

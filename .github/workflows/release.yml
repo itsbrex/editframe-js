@@ -21,12 +21,12 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-          cache: 'yarn'
-      - run: yarn install
-      - run: yarn build
-      - run: yarn lint
-      - run: yarn test
-      - run: yarn docs
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run test
+      - run: npm run docs
       - uses: act10ns/slack@v1
         with:
           status: ${{ job.status }}
@@ -54,16 +54,15 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-          cache: 'yarn'
-      - run: yarn install
-      - run: yarn build
-      - run: yarn docs
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build
+      - run: npm run docs
       - name: Deploy Github Pages 
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
           folder: docs
-      - run: HUSKY=0 yarn semantic-release
       - name: HTTP Request Action
         uses: fjogeleit/http-request-action@v1.9.2
         with:

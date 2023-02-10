@@ -6,12 +6,11 @@ import { makeHeaders } from 'utils'
 import { Api } from './'
 
 describe('Api', () => {
-  const clientId = 'client-id'
   const host = 'host'
   const token = 'token'
   const version = 2
   const mockFetch = jest.fn()
-  const api = new Api({ clientId, fetch: mockFetch, host, token, version })
+  const api = new Api({ fetch: mockFetch, host, token, version })
 
   describe('get', () => {
     it('calls the private `_fetch` method with the correct arguments', async () => {
@@ -19,7 +18,7 @@ describe('Api', () => {
 
       await api.get({ url })
 
-      expect(mockFetch).toHaveBeenCalledWith({ headers: makeHeaders({ clientId, token }), url })
+      expect(mockFetch).toHaveBeenCalledWith({ headers: makeHeaders({ token }), url })
     })
   })
 
@@ -34,7 +33,7 @@ describe('Api', () => {
 
         expect(mockFetch).toHaveBeenCalledWith({
           data,
-          headers: makeHeaders({ clientId, isForm, token }),
+          headers: makeHeaders({ isForm, token }),
           method: HTTPMethod.post,
           url,
         })
@@ -51,7 +50,7 @@ describe('Api', () => {
 
         expect(mockFetch).toHaveBeenCalledWith({
           data,
-          headers: makeHeaders({ clientId, isForm, token }),
+          headers: makeHeaders({ isForm, token }),
           method: HTTPMethod.post,
           url,
         })
@@ -70,7 +69,7 @@ describe('Api', () => {
 
         expect(mockFetch).toHaveBeenCalledWith({
           data,
-          headers: makeHeaders({ clientId, isForm, token }),
+          headers: makeHeaders({ isForm, token }),
           method: HTTPMethod.put,
           url,
         })
@@ -87,7 +86,7 @@ describe('Api', () => {
 
         expect(mockFetch).toHaveBeenCalledWith({
           data,
-          headers: makeHeaders({ clientId, isForm, token }),
+          headers: makeHeaders({ isForm, token }),
           method: HTTPMethod.put,
           url,
         })

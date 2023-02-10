@@ -35,17 +35,14 @@ export const makeRequest: MakeFetchFunction =
   }
 
 export const makeHeaders = ({
-  clientId,
   isForm = false,
   token,
 }: {
-  clientId: string
   isForm?: boolean
   token: string
 }): ApiHeaders => {
   const headers: ApiHeaders = {
     [ApiHeaderKey.userAgent]: `${ApiHeaderValue.editframeJs}${version}`,
-    [ApiHeaderKey.editframeClientId]: clientId,
     [ApiHeaderKey.authorization]: `${ApiHeaderValue.bearer}${token}`,
   }
 
