@@ -79,7 +79,7 @@ export class Videos {
   }
 
   public async [ApiVideoMethod.new](
-    options: VideoOptions = { backgroundColor: Color.black },
+    options: VideoOptions = { backgroundColor: Color.black, fps: 29.97 },
     videoFile?: CompositionFile
   ): Promise<Composition> {
     return withValidationAsync<Composition>(
@@ -95,7 +95,7 @@ export class Videos {
         if (videoFile) {
           const temporaryDirectory = createTemporaryDirectory()
           const { filepath, readStream } = await processCompositionFile(videoFile, temporaryDirectory)
-          const { duration, height, width } = await this._getMetadata(readStream)
+          const { duration, fps, height, width } = await this._getMetadata(readStream)
 
           const transformedOptions = deepClone(options)
 
@@ -106,14 +106,15 @@ export class Videos {
             develop: this._develop,
             formData: new FormData(),
             host: this._host,
-            options: { ...transformedOptions, dimensions: { height, width }, duration },
+            options: { ...transformedOptions, dimensions: { height, width }, duration, fps },
             temporaryDirectory,
             videos: this,
           })
 
           await composition.addVideo(createReadStream(filepath))
         } else {
-          const { backgroundColor, dimensions, duration, filename, metadata } = options
+          const { backgroundColor, dimensions, duration, filename, fps, metadata
+          } = options
 
           composition = new Composition({
             api: this._api,
@@ -125,6 +126,7 @@ export class Videos {
               dimensions,
               duration,
               filename,
+              fps: fps || 29.97,
               metadata,
             },
             videos: this,
@@ -136,7 +138,7 @@ export class Videos {
     )
   }
 
-  private async [ApiVideoMethod.getMetadata](videoFile: CompositionFile): Promise<ApiVideoMetadata> {
+  private async[ApiVideoMethod.getMetadata](videoFile: CompositionFile): Promise<ApiVideoMetadata> {
     const formData = prepareFormData([
       [urlOrFile(videoFile), videoFile],
       [ApiVideoMetadataFormDataKey.type, ApiVideoMetadataType.video],

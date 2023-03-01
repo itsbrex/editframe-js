@@ -85,9 +85,12 @@ export const isApiVideoMetadata = (metadata: any): metadata is ApiVideoMetadata 
 
 export const formDataKey = (file: CompositionFile, id: string): string => `${urlOrFile(file)}${id}`
 
-export const validateNewVideo = ({ backgroundColor, dimensions, duration, metadata }: VideoOptions): void => {
+export const validateNewVideo = ({ backgroundColor, dimensions, duration, fps, metadata }: VideoOptions): void => {
   if (backgroundColor) {
     validateColor(ApiVideoMethod.new, CompositionKey.backgroundColor, backgroundColor, true)
+  }
+  if (fps) {
+    validateValueIsOfType(ApiVideoMethod.new, CompositionKey.fps, duration, PrimitiveType.number, true)
   }
   validateValueIsOfType(
     ApiVideoMethod.new,
