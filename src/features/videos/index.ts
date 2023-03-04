@@ -79,7 +79,7 @@ export class Videos {
   }
 
   public async [ApiVideoMethod.new](
-    options: VideoOptions = { backgroundColor: Color.black, fps: 29.97 },
+    options: VideoOptions = { backgroundColor: Color.black, fps: 30 },
     videoFile?: CompositionFile
   ): Promise<Composition> {
     return withValidationAsync<Composition>(
