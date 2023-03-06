@@ -93,6 +93,7 @@ export type VideoOptions = {
   [CompositionKey.dimensions]?: Dimensions
   [CompositionKey.filename]?: string
   [CompositionKey.duration]?: number
+  [CompositionKey.fps]?: number
   [CompositionKey.metadata]?: Metadata
 }
 
@@ -100,6 +101,7 @@ export type CompositionOptions = {
   [CompositionKey.backgroundColor]?: string
   [CompositionKey.dimensions]: Dimensions
   [CompositionKey.duration]?: number
+  [CompositionKey.fps]?: number
   [CompositionKey.filename]?: string
   [CompositionKey.metadata]?: Metadata
 }
