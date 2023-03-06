@@ -126,7 +126,7 @@ export class Videos {
               dimensions,
               duration,
               filename,
-              fps: fps,
+              fps,
               metadata,
             },
             videos: this,
