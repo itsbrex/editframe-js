@@ -13,7 +13,8 @@ import {
   LayerKey,
   SubtitlesOptions,
   TextPosition,
-  TransitionOptions,
+  TransitionOptions,  
+  VideoExtensions
 } from 'constant/shared'
 import { LottieAnimationData } from 'constant/video/layers/lottie'
 
@@ -48,6 +49,7 @@ export enum CompositionMethod {
   duration = 'duration',
   encode = 'encode',
   encodeSync = 'encodeSync',
+  extension = 'extension',
   getLayerAttribute = 'getLayerAttribute',
   getMetadata = '_getMetadata',
   identifiedLayers = 'identifiedLayers',
@@ -94,6 +96,7 @@ export type VideoOptions = {
   [CompositionKey.filename]?: string
   [CompositionKey.duration]?: number
   [CompositionKey.fps]?: number
+  [CompositionKey.extension]?: VideoExtensions
   [CompositionKey.metadata]?: Metadata
 }
 
@@ -102,6 +105,7 @@ export type CompositionOptions = {
   [CompositionKey.dimensions]: Dimensions
   [CompositionKey.duration]?: number
   [CompositionKey.fps]?: number
+  [CompositionKey.extension]?: VideoExtensions
   [CompositionKey.filename]?: string
   [CompositionKey.metadata]?: Metadata
 }

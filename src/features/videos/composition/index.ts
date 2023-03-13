@@ -72,6 +72,7 @@ import {
   TransitionKenBurnsOptions,
   TransitionType,
   TypedLayer,
+  VideoExtensions,
   VideoLayer,
   VideoLayerConfig,
   WaveformKey,
@@ -192,6 +193,9 @@ export class Composition implements CompositionInterface {
 
   get [CompositionMethod.metadata](): Metadata {
     return this._options.metadata
+  }
+  get [CompositionMethod.extension](): VideoExtensions {
+    return this._options.extension
   }
 
   get [CompositionMethod.identifiedLayers](): IdentifiedLayer[] {

@@ -1,6 +1,6 @@
 import colorValidator from 'validate-color'
 
-import { LayerValidator, PrimitiveType } from 'constant'
+import { LayerValidator, PrimitiveType, VideoExtensions } from 'constant'
 import { ValidationErrorText } from 'strings'
 import { logError } from 'utils/errors'
 import { exitProcess } from 'utils/process'
@@ -153,6 +153,26 @@ export const validateColor = (
   }
 
   return undefined
+}
+export const validateVideoExtension = (
+  caller: string,
+  fieldName: string,
+  value: string,
+  shouldThrow = false
+): string | undefined => {
+  validateValueIsOfType(caller, fieldName, value, PrimitiveType.string)
+
+  if (value in VideoExtensions) {
+    return undefined
+  } else {
+    const message = ValidationErrorText.INVALID_VIDEO_EXTENSIONS(fieldName, Object.values(VideoExtensions).join(","), value)
+
+    if (shouldThrow) {
+      throw new TypeError(message)
+    } else {
+      return message
+    }
+  }
 }
 
 export const withValidation = <T>(validate: () => void, callback?: () => T | undefined): T => {

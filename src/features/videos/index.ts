@@ -11,6 +11,7 @@ import {
   CompositionFile,
   Paginated,
   Routes,
+  VideoExtensions,
   VideoOptions,
 } from 'constant'
 import { VideoErrorText } from 'strings'
@@ -79,7 +80,7 @@ export class Videos {
   }
 
   public async [ApiVideoMethod.new](
-    options: VideoOptions = { backgroundColor: Color.black, fps: 30 },
+    options: VideoOptions = { backgroundColor: Color.black, extension: VideoExtensions.mp4, fps: 30 },
     videoFile?: CompositionFile
   ): Promise<Composition> {
     return withValidationAsync<Composition>(
@@ -100,6 +101,7 @@ export class Videos {
           const transformedOptions = deepClone(options)
 
           transformedOptions.backgroundColor = translateColor(options.backgroundColor || Color.black)
+          transformedOptions.extension = VideoExtensions.mp4
 
           composition = new Composition({
             api: this._api,
@@ -113,8 +115,7 @@ export class Videos {
 
           await composition.addVideo(createReadStream(filepath))
         } else {
-          const { backgroundColor, dimensions, duration, filename, fps, metadata
-          } = options
+          const { backgroundColor, dimensions, duration, extension, filename, fps, metadata } = options
 
           composition = new Composition({
             api: this._api,
@@ -125,6 +126,7 @@ export class Videos {
               backgroundColor: translateColor(backgroundColor || Color.black),
               dimensions,
               duration,
+              extension: extension || VideoExtensions.mp4,
               filename,
               fps,
               metadata,

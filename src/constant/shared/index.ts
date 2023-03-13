@@ -112,6 +112,7 @@ export {
   MaybePositionLayer,
   VideoLayer,
   VideoLayerConfig,
+  VideoExtensions,
   WaveformKey,
   WaveformLayer,
   WaveformLayerConfig,

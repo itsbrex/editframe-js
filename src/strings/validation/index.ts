@@ -11,6 +11,10 @@ export const ValidationErrorText = {
       JSON.stringify(expected_keys)
     )}\\. Got: \\${chalk.white(JSON.stringify(actual_keys))}\\`,
   INVALID_URL: (url: string): string => `\\${chalk.white(url)}\\ is not valid url`,
+  INVALID_VIDEO_EXTENSIONS: (caller: string, expected_keys: string, actual_keys: string): string =>
+    `\n  \\${chalk.white(caller)}\\ attribute should contain one these keys \\${chalk.white(
+      JSON.stringify(expected_keys)
+    )}\\. Got: \\${chalk.white(JSON.stringify(actual_keys))}\\`,
   MUST_BE_TYPE: (caller: string, fieldName: string, value: any, type: string): string =>
     `\n  \\${chalk.white(fieldName)}\\ attribute in \\${chalk.white(caller)}\\ must be of type \\${chalk.white(
       type
